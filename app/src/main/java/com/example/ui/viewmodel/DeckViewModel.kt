@@ -571,6 +571,34 @@ class DeckViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
+    fun updateL2Discipline(
+        l1: String,
+        oldL2Name: String,
+        newL2Name: String,
+        iconKey: String,
+        colorHex: String,
+        onComplete: (() -> Unit)? = null
+    ) {
+        viewModelScope.launch {
+            val cleanName = newL2Name.trim().ifBlank { oldL2Name }
+            DisciplinePalette.setCustomColor(cleanName, colorHex)
+            DisciplinePalette.setCustomIcon(cleanName, iconKey)
+
+            prefs.edit()
+                .putString("custom_color_$cleanName", colorHex)
+                .putString("custom_icon_$cleanName", iconKey)
+                .apply()
+
+            if (cleanName != oldL2Name) {
+                repository.renameL2Discipline(l1, oldL2Name, cleanName)
+                if (_selectedL2Filter.value == oldL2Name) {
+                    _selectedL2Filter.value = cleanName
+                }
+            }
+            onComplete?.invoke()
+        }
+    }
+
     // Move multiple L2 decks across L1s to a new or existing target L1 deck
     fun moveMultipleL2ToL1(
         itemsToMove: List<Pair<String, String>>, // list of (sourceL1, l2)

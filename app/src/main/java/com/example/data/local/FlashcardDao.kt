@@ -92,6 +92,9 @@ interface FlashcardDao {
     @Query("UPDATE flashcards SET l1 = :newL1, deckRaw = :newL1 || ' :: ' || l2 || ' :: ' || l3 WHERE l1 = :oldL1")
     suspend fun renameL1Deck(oldL1: String, newL1: String)
 
+    @Query("UPDATE flashcards SET l2 = :newL2, deckRaw = l1 || ' :: ' || :newL2 || ' :: ' || l3 WHERE l1 = :l1 AND l2 = :oldL2")
+    suspend fun renameL2Discipline(l1: String, oldL2: String, newL2: String)
+
     @Query("DELETE FROM flashcards WHERE l1 = :l1 AND l2 = :l2")
     suspend fun deleteL2Discipline(l1: String, l2: String)
 

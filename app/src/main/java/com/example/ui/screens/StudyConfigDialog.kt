@@ -472,18 +472,18 @@ fun StudyConfigDialog(
                             fontWeight = FontWeight.SemiBold,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
-                        Spacer(modifier = Modifier.height(4.dp))
+                        Spacer(modifier = Modifier.height(6.dp))
                         Row(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .horizontalScroll(rememberScrollState()),
-                            horizontalArrangement = Arrangement.spacedBy(6.dp)
+                            horizontalArrangement = Arrangement.spacedBy(8.dp)
                         ) {
                             listOf(0 to "Livre", 5 to "5 min", 10 to "10 min", 15 to "15 min", 25 to "25 min (Pomodoro)").forEach { (mins, label) ->
                                 FilterChip(
                                     selected = selectedTargetMinutes == mins,
                                     onClick = { selectedTargetMinutes = mins },
-                                    label = { Text(label) },
+                                    label = { Text(label, style = MaterialTheme.typography.labelMedium) },
                                     modifier = Modifier.testTag("target_min_pill_$mins")
                                 )
                             }
@@ -493,31 +493,38 @@ fun StudyConfigDialog(
 
                 Spacer(modifier = Modifier.height(20.dp))
 
-                // Matching preview & Launch Button
-                Surface(
-                    shape = RoundedCornerShape(12.dp),
-                    color = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.4f),
+                // Matching preview & Launch Button (Padronizado e sem overflow)
+                Card(
+                    shape = RoundedCornerShape(16.dp),
+                    colors = CardDefaults.cardColors(
+                        containerColor = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.45f)
+                    ),
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    Row(
+                    Column(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(12.dp),
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically
+                            .padding(14.dp),
+                        verticalArrangement = Arrangement.spacedBy(12.dp)
                     ) {
-                        Column {
-                            Text(
-                                text = "${matchingCards.size} cards selecionados",
-                                style = MaterialTheme.typography.titleMedium,
-                                fontWeight = FontWeight.Bold,
-                                color = MaterialTheme.colorScheme.primary
-                            )
-                            Text(
-                                text = if (smartShuffleEnabled) "Smart Shuffle ativado" else "Ordem padrão",
-                                style = MaterialTheme.typography.bodySmall,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant
-                            )
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Column {
+                                Text(
+                                    text = "${matchingCards.size} cards selecionados",
+                                    style = MaterialTheme.typography.titleMedium,
+                                    fontWeight = FontWeight.Bold,
+                                    color = MaterialTheme.colorScheme.primary
+                                )
+                                Text(
+                                    text = if (smartShuffleEnabled) "Smart Shuffle ativado" else "Ordem padrão",
+                                    style = MaterialTheme.typography.bodySmall,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                                )
+                            }
                         }
 
                         Button(
@@ -531,11 +538,15 @@ fun StudyConfigDialog(
                                 }
                             },
                             enabled = matchingCards.isNotEmpty(),
-                            modifier = Modifier.testTag("btn_start_filtered_study")
+                            shape = RoundedCornerShape(12.dp),
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(48.dp)
+                                .testTag("btn_start_filtered_study")
                         ) {
-                            Icon(Icons.Default.PlayArrow, contentDescription = null)
-                            Spacer(modifier = Modifier.width(4.dp))
-                            Text("Iniciar", fontWeight = FontWeight.Bold)
+                            Icon(Icons.Default.PlayArrow, contentDescription = null, modifier = Modifier.size(20.dp))
+                            Spacer(modifier = Modifier.width(8.dp))
+                            Text("Iniciar Estudo", style = MaterialTheme.typography.titleSmall, fontWeight = FontWeight.Bold)
                         }
                     }
                 }

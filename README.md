@@ -4,16 +4,25 @@ Aplicativo Android nativo de alta performance para preparação de concursos de 
 
 ---
 
-## 📱 Versão Atual: v1.2.0 (Code 3)
+## 📱 Versão Atual: v1.4.0 (Code 5)
 
-### 🚀 Principais Novidades da Versão 1.2.0:
-* **Painel Completo de Telemetria e Quota da API Key Gemini (`SettingsScreen`)**:
-  * **Monitoramento de Quota Diária:** Contador de requisições realizadas vs limite gratuito (1.500 RPD) com barra de progresso em tempo real.
-  * **Contagem Regressiva de Reset de Quota:** Cálculo regressivo dinâmico para a meia-noite do Horário do Pacífico (`00:00 PT / 04:00 BRT`), quando o Google AI Studio zera as cotas diárias de uso.
-  * **Monitor de Consumo de Tokens com Classificação de Intensidade:** Medição exata de tokens de entrada (`promptTokenCount`) e saída (`candidatesTokenCount`) reportados pelo nó `usageMetadata` do Gemini REST v1beta, com classificação de tráfego (*🟢 Uso Leve* < 50k tokens, *🟡 Moderado* até 200k, *🔴 Intenso* acima de 200k).
-  * **Decomposição da Última Análise:** Exibição da contagem detalhada de tokens e da latência exata da chamada em milissegundos.
-  * **Teste Ativo de Chave & Latência com Cascata de Resiliência:** Botão "Testar Chave" que envia um ping à API e, em caso de HTTP 503 (Overloaded) no modelo primário, aciona automaticamente o fallback para `gemini-flash-lite-latest` mensurando a latência da conexão.
-  * **Auto-Reset Diário e Botão de Reset Manual:** Persistência no `SharedPreferences` com limpeza automática de contadores ao mudar o dia civil ou por clique manual do usuário.
+### 🚀 Principais Novidades da Versão 1.4.0:
+* **Motor de IA Gemini Otimizado & Resiliência Avançada (`GeminiStudyAnalyzer`)**:
+  * **Remoção de Aliases Inexistentes:** Eliminação do modelo `gemini-3.5-flash` (que retornava 404) e integração do `gemini-2.0-flash` na cascata (`requestedModel` ➔ `gemini-flash-latest` ➔ `gemini-flash-lite-latest` ➔ `gemini-2.0-flash`).
+  * **Cache Reutilizável de Moshi Adapters:** Instanciação única de `requestAdapter` e `responseAdapter`, eliminando overhead de reflexão repetida em chamadas à rede.
+  * **Compactação Semântica de Prompt para 18.000+ Flashcards:** Envio de resumos estatísticos por disciplina e foco exclusivo nos tópicos L3 críticos com cartões vencidos (`dueNow > 0`), mantendo o prompt sob 2.000 tokens e latência inferior a 1 segundo no modelo Lite.
+  * **Filtragem Nativa de Pensamentos (*Thoughts*):** Garantia de exclusão de blocos de raciocínio intermediário e metadados de modelos Gemini 2.0+.
+* **Algoritmo Anki SRS com Day-Cutoff & Índices Compostos no Room**:
+  * **Corte Diário às 04:00 AM:** Alinhamento dos prazos de vencimento (`dueTimestamp`) ao início do ciclo diário do Anki, assegurando que revisões noturnas fiquem imediatamente prontas para o ciclo da manhã seguinte.
+  * **Aceleração de Consultas com Índices Compostos:** Adição dos índices `(l1, dueTimestamp)`, `(l1, masteryLevel)` e `(l1, l2, dueTimestamp)` no `FlashcardEntity` com migração `MIGRATION_1_2` segura (`CREATE INDEX IF NOT EXISTS`) e bump para Room v2.
+* **Sincronização Supabase em Lotes Resiliente (`SupabaseSyncManager`)**:
+  * **Batching em Chunks de 250 Cards:** Envio particionado sequencial com `resolution=merge-duplicates`, eliminando estouros de payload HTTP 413 (Payload Too Large) e protegendo contra OutOfMemory em celulares intermediários.
+  * **Expansão de Download:** Limite ampliado para até 50.000 cartões em requisições diretas de restauração.
+* **Ergonomia Mobile Jetpack Compose & Customização L2**:
+  * **Diálogo de Comparação Otimizado:** Barra de botões inferior unificada em linha única de 44dp com padding de 80dp, eliminando 100% da sobreposição com a barra de 3 botões do Android.
+  * **Edição Completa de Matérias L2:** Diálogo dedicado para renomeação, alteração de paleta Material 3 e ícones de disciplina com persistência no Room e SharedPreferences.
+* **Integração com o Segundo Cérebro (Obsidian)**:
+  * Criação do índice dedicado `00-indice-superflash-tcu.md` e formalização das Decisões de Engenharia 10, 11 e 12 no cofre.
 
 ---
 

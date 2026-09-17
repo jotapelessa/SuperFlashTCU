@@ -402,17 +402,39 @@ class DeckRepository(private val dao: FlashcardDao) {
             else -> 0
         }
 
+        val nextDue = calculateNextDueDate(newInterval, now)
+
         val updated = card.copy(
             intervalDays = newInterval,
             easeFactor = newEase,
             reps = newReps,
             lapses = newLapses,
             masteryLevel = masteryLevel,
-            dueTimestamp = now + (newInterval * oneDay),
+            dueTimestamp = nextDue,
             lastReviewedTimestamp = now
         )
 
         dao.updateFlashcard(updated)
+    }
+
+    /**
+     * Calculates next due timestamp aligning with Anki's standard 04:00 AM day cutoff.
+     * Prevents cards reviewed late at night from being hidden on the subsequent review morning.
+     */
+    fun calculateNextDueDate(intervalDays: Int, now: Long = System.currentTimeMillis()): Long {
+        if (intervalDays <= 0) return now
+        val calendar = java.util.Calendar.getInstance().apply {
+            timeInMillis = now
+            if (get(java.util.Calendar.HOUR_OF_DAY) < 4) {
+                add(java.util.Calendar.DAY_OF_YEAR, -1)
+            }
+            set(java.util.Calendar.HOUR_OF_DAY, 4)
+            set(java.util.Calendar.MINUTE, 0)
+            set(java.util.Calendar.SECOND, 0)
+            set(java.util.Calendar.MILLISECOND, 0)
+            add(java.util.Calendar.DAY_OF_YEAR, intervalDays)
+        }
+        return calendar.timeInMillis
     }
 
     suspend fun saveCard(card: FlashcardEntity): FlashcardEntity {
@@ -802,6 +824,10 @@ class DeckRepository(private val dao: FlashcardDao) {
 
     suspend fun renameL1Deck(oldL1: String, newL1: String) {
         dao.renameL1Deck(oldL1, newL1)
+    }
+
+    suspend fun renameL2Discipline(l1: String, oldL2: String, newL2: String) {
+        dao.renameL2Discipline(l1, oldL2, newL2)
     }
 
     suspend fun deleteL2Discipline(l1: String, l2: String) {

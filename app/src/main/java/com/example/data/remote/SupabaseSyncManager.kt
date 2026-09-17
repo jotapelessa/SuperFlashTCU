@@ -82,54 +82,78 @@ class SupabaseSyncManager {
         }
 
         try {
-            // 1. Convert Cards to JSONArray
-            val cardsArray = JSONArray()
-            cards.forEach { card ->
-                val obj = JSONObject().apply {
-                    put("id", card.id)
-                    put("deck_raw", card.deckRaw)
-                    put("l1", card.l1)
-                    put("l2", card.l2)
-                    put("l3", card.l3)
-                    put("note_type", card.noteType)
-                    put("front_html", card.frontHtml)
-                    put("back_html", card.backHtml)
-                    put("tags", card.tags)
-                    put("content_hash", card.contentHash)
-                    put("interval_days", card.intervalDays)
-                    put("ease_factor", card.easeFactor)
-                    put("reps", card.reps)
-                    put("lapses", card.lapses)
-                    put("mastery_level", card.masteryLevel)
-                    put("due_timestamp", card.dueTimestamp)
-                    put("last_reviewed_timestamp", card.lastReviewedTimestamp)
+            // 1. Upload cards in batches of 250 to prevent HTTP 413 (Payload Too Large) and OOM
+            val chunks = cards.chunked(250)
+            var uploadedCount = 0
+            for (chunk in chunks) {
+                val chunkArray = JSONArray()
+                chunk.forEach { card ->
+                    val obj = JSONObject().apply {
+                        put("id", card.id)
+                        put("deck_raw", card.deckRaw)
+                        put("l1", card.l1)
+                        put("l2", card.l2)
+                        put("l3", card.l3)
+                        put("note_type", card.noteType)
+                        put("front_html", card.frontHtml)
+                        put("back_html", card.backHtml)
+                        put("tags", card.tags)
+                        put("content_hash", card.contentHash)
+                        put("interval_days", card.intervalDays)
+                        put("ease_factor", card.easeFactor)
+                        put("reps", card.reps)
+                        put("lapses", card.lapses)
+                        put("mastery_level", card.masteryLevel)
+                        put("due_timestamp", card.dueTimestamp)
+                        put("last_reviewed_timestamp", card.lastReviewedTimestamp)
+                    }
+                    chunkArray.put(obj)
                 }
-                cardsArray.put(obj)
+
+                val cardsReq = Request.Builder()
+                    .url("$cleanUrl/rest/v1/app_flashcards")
+                    .addHeader("apikey", supabaseKey.trim())
+                    .addHeader("Authorization", "Bearer ${supabaseKey.trim()}")
+                    .addHeader("Content-Type", "application/json")
+                    .addHeader("Prefer", "resolution=merge-duplicates,return=minimal")
+                    .post(chunkArray.toString().toRequestBody(jsonMediaType))
+                    .build()
+
+                client.newCall(cardsReq).execute().use { resp ->
+                    if (resp.isSuccessful || resp.code == 201 || resp.code == 204) {
+                        uploadedCount += chunk.size
+                    }
+                }
             }
 
-            // 2. Try uploading cards to app_flashcards table
-            val cardsReq = Request.Builder()
-                .url("$cleanUrl/rest/v1/app_flashcards")
-                .addHeader("apikey", supabaseKey.trim())
-                .addHeader("Authorization", "Bearer ${supabaseKey.trim()}")
-                .addHeader("Content-Type", "application/json")
-                .addHeader("Prefer", "resolution=merge-duplicates,return=minimal")
-                .post(cardsArray.toString().toRequestBody(jsonMediaType))
-                .build()
-
-            var cardsUploaded = false
-            client.newCall(cardsReq).execute().use { resp ->
-                if (resp.isSuccessful || resp.code == 201 || resp.code == 204) {
-                    cardsUploaded = true
+            // 2. Dual strategy: Also upload backup payload to `app_sync_backups` table
+            // If card count is reasonable (<= 2000), include cards_json; otherwise omit to avoid postgREST 10MB limit
+            val cardsJsonForBackup = if (cards.size <= 2000) {
+                val sampleArray = JSONArray()
+                cards.forEach { card ->
+                    val obj = JSONObject().apply {
+                        put("id", card.id)
+                        put("deck_raw", card.deckRaw)
+                        put("l1", card.l1)
+                        put("l2", card.l2)
+                        put("l3", card.l3)
+                        put("content_hash", card.contentHash)
+                        put("interval_days", card.intervalDays)
+                        put("mastery_level", card.masteryLevel)
+                        put("due_timestamp", card.dueTimestamp)
+                    }
+                    sampleArray.put(obj)
                 }
+                sampleArray.toString()
+            } else {
+                ""
             }
 
-            // 3. Dual strategy: Also upload full backup payload to `app_sync_backups` table
             val fullPayloadObj = JSONObject().apply {
                 put("key", "master_backup")
                 put("updated_at", System.currentTimeMillis())
                 put("cards_count", cards.size)
-                put("cards_json", cardsArray.toString())
+                put("cards_json", cardsJsonForBackup)
                 put("settings_json", settingsJson)
                 put("progress_json", progressReportToJson(progressReport))
             }
@@ -152,10 +176,10 @@ class SupabaseSyncManager {
                 }
             }
 
-            if (cardsUploaded || backupUploaded) {
+            if (uploadedCount > 0 || backupUploaded) {
                 SupabaseSyncResult.Success(
-                    "Sincronização concluída com sucesso! ${cards.size} flashcards e configurações enviados ao Supabase.",
-                    cards.size
+                    "Sincronização concluída com sucesso! $uploadedCount flashcards sincronizados e backup atualizado no Supabase.",
+                    uploadedCount
                 )
             } else {
                 SupabaseSyncResult.Error("Não foi possível enviar para as tabelas Supabase. Verifique se as permissões de gravação ou RLS estão configuradas.")
@@ -192,15 +216,17 @@ class SupabaseSyncManager {
                         val cardsJsonStr = obj.optString("cards_json", "")
                         if (cardsJsonStr.isNotBlank()) {
                             val cardsList = parseCardsFromJsonArrayStr(cardsJsonStr)
-                            return@withContext Pair(cardsList, null)
+                            if (cardsList.isNotEmpty()) {
+                                return@withContext Pair(cardsList, null)
+                            }
                         }
                     }
                 }
             }
 
-            // Fallback: fetch directly from app_flashcards
+            // Fallback: fetch directly from app_flashcards (up to 50k cards)
             val cardsReq = Request.Builder()
-                .url("$cleanUrl/rest/v1/app_flashcards?select=*&limit=10000")
+                .url("$cleanUrl/rest/v1/app_flashcards?select=*&limit=50000")
                 .addHeader("apikey", supabaseKey.trim())
                 .addHeader("Authorization", "Bearer ${supabaseKey.trim()}")
                 .get()

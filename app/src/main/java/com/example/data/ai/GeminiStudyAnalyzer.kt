@@ -17,7 +17,8 @@ import java.util.concurrent.TimeUnit
 
 @JsonClass(generateAdapter = true)
 data class GeminiPart(
-    val text: String? = null
+    val text: String? = null,
+    val thought: Boolean? = null
 )
 
 @JsonClass(generateAdapter = true)
@@ -72,6 +73,9 @@ class GeminiStudyAnalyzer(
         .add(KotlinJsonAdapterFactory())
         .build()
 
+    private val requestAdapter = moshi.adapter(GeminiRequest::class.java)
+    private val responseAdapter = moshi.adapter(GeminiResponse::class.java)
+
     suspend fun analyzeStudyData(
         l1Decks: List<L1DeckSummary>,
         allCards: List<FlashcardEntity>,
@@ -117,7 +121,7 @@ class GeminiStudyAnalyzer(
             requestedModel,
             "gemini-flash-latest",
             "gemini-flash-lite-latest",
-            "gemini-3.5-flash"
+            "gemini-2.0-flash"
         ).distinct()
 
         // 1. Build prompt context from L1/L2/L3 hierarchies and study stats
@@ -136,6 +140,7 @@ class GeminiStudyAnalyzer(
         if (l1Decks.isEmpty()) {
             promptBuilder.appendLine("Nenhum baralho cadastrado.")
         } else {
+            val nowTime = System.currentTimeMillis()
             l1Decks.forEach { l1 ->
                 promptBuilder.appendLine("### [L1] Baralho Principal: ${l1.l1}")
                 promptBuilder.appendLine("  - Total Cards: ${l1.totalCards}")
@@ -144,18 +149,24 @@ class GeminiStudyAnalyzer(
                 promptBuilder.appendLine("  - Dominados: ${l1.masteredCards}")
                 promptBuilder.appendLine("  - Taxa de Domínio: ${String.format("%.1f", l1.masteryPercentage)}%")
 
-                // Group cards under this L1 by L2 and L3
+                // Group cards under this L1 by L2 and L3 with smart compacting for 18k+ card bases
                 val cardsInL1 = allCards.filter { it.l1 == l1.l1 }
                 val l2Groups = cardsInL1.groupBy { it.l2 }
                 l2Groups.forEach { (l2Name, l2Cards) ->
-                    val l2Due = l2Cards.count { it.dueTimestamp <= System.currentTimeMillis() }
+                    val l2Due = l2Cards.count { it.dueTimestamp <= nowTime }
                     val l2Mastered = l2Cards.count { it.masteryLevel >= 2 }
                     promptBuilder.appendLine("    * [L2 Disciplina] $l2Name: ${l2Cards.size} cards (Vencidos: $l2Due, Dominados: $l2Mastered)")
 
                     val l3Groups = l2Cards.groupBy { it.l3 }
-                    l3Groups.forEach { (l3Name, l3Cards) ->
-                        val l3Due = l3Cards.count { it.dueTimestamp <= System.currentTimeMillis() }
-                        promptBuilder.appendLine("      - [L3 Tópico] $l3Name: ${l3Cards.size} cards (Vencidos: $l3Due)")
+                    val dueL3Groups = l3Groups.filter { (_, cards) -> cards.any { it.dueTimestamp <= nowTime } }
+                    val topicsToShow = dueL3Groups.entries.take(6)
+                    topicsToShow.forEach { (l3Name, l3Cards) ->
+                        val l3Due = l3Cards.count { it.dueTimestamp <= nowTime }
+                        promptBuilder.appendLine("      - [L3 Tópico Crítico] $l3Name: ${l3Cards.size} cards (Vencidos: $l3Due)")
+                    }
+                    val remainingDue = dueL3Groups.size - topicsToShow.size
+                    if (remainingDue > 0) {
+                        promptBuilder.appendLine("      - (+ $remainingDue outros tópicos com cards vencidos)")
                     }
                 }
                 promptBuilder.appendLine()
@@ -194,8 +205,7 @@ class GeminiStudyAnalyzer(
 
         var lastException: Throwable? = null
 
-        val jsonAdapter = moshi.adapter(GeminiRequest::class.java)
-        val jsonString = jsonAdapter.toJson(requestPayload)
+        val jsonString = requestAdapter.toJson(requestPayload)
         val body = jsonString.toRequestBody("application/json; charset=utf-8".toMediaType())
 
         for (modelName in modelsToTry) {
@@ -212,10 +222,10 @@ class GeminiStudyAnalyzer(
                 val responseBody = response.body?.string()
 
                 if (response.isSuccessful && !responseBody.isNullOrBlank()) {
-                    val responseAdapter = moshi.adapter(GeminiResponse::class.java)
                     val parsedResponse = responseAdapter.fromJson(responseBody)
 
                     val textParts = parsedResponse?.candidates?.firstOrNull()?.content?.parts
+                        ?.filter { it.thought != true }
                         ?.mapNotNull { it.text?.takeIf { t -> t.isNotBlank() } }
 
                     val fullText = textParts?.joinToString("\n\n")
@@ -270,7 +280,8 @@ class GeminiStudyAnalyzer(
         val modelsToTry = listOf(
             primary,
             "gemini-flash-latest",
-            "gemini-flash-lite-latest"
+            "gemini-flash-lite-latest",
+            "gemini-2.0-flash"
         ).distinct()
 
         val payload = GeminiRequest(
@@ -280,8 +291,7 @@ class GeminiStudyAnalyzer(
                 )
             )
         )
-        val jsonAdapter = moshi.adapter(GeminiRequest::class.java)
-        val body = jsonAdapter.toJson(payload).toRequestBody("application/json; charset=utf-8".toMediaType())
+        val body = requestAdapter.toJson(payload).toRequestBody("application/json; charset=utf-8".toMediaType())
 
         var lastException: Exception? = null
 

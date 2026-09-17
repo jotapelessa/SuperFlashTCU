@@ -100,6 +100,9 @@ import androidx.compose.material.icons.filled.DriveFileMove
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.runtime.mutableStateListOf
+import androidx.activity.compose.BackHandler
+import androidx.compose.ui.draw.rotate
+import androidx.compose.runtime.saveable.rememberSaveable
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
@@ -124,14 +127,88 @@ fun SubDeckScreen(
     onOpenMoveL2ToL1: () -> Unit = {},
     onOpenCompareDecks: () -> Unit = {},
     onDeleteL2Discipline: (l1: String, l2: String) -> Unit = { _, _ -> },
+    onUpdateL2Discipline: (l1: String, oldL2: String, newL2: String, iconKey: String, colorHex: String) -> Unit = { _, _, _, _, _ -> },
     modifier: Modifier = Modifier
 ) {
-    var selectedTab by remember { mutableIntStateOf(0) }
+    var selectedTab by rememberSaveable { mutableIntStateOf(0) }
+    var selectedL2Detail by rememberSaveable { mutableStateOf<String?>(null) }
+    var selectedL2Tab by rememberSaveable(selectedL2Detail) { mutableIntStateOf(0) }
     var showDeleteConfirm by remember { mutableStateOf(false) }
     var showMoveDialog by remember { mutableStateOf(false) }
     val selectedL3Topics = remember { mutableStateListOf<Pair<String, String>>() }
-    val expandedL2Map = remember { mutableStateMapOf<String, Boolean>() }
 
+    // Dedicated L2 Screen (Nível L2)
+    if (selectedL2Detail != null) {
+        val currentDiscipline = l2Disciplines.find { it.l2 == selectedL2Detail }
+        if (currentDiscipline != null) {
+            val l2Cards = remember(filteredCards, currentDiscipline.l2) {
+                filteredCards.filter { it.l2 == currentDiscipline.l2 }
+            }
+            val l2ReviewStats = remember(l2Cards) {
+                calculateL2ReviewStats(l2Cards)
+            }
+            val l2DomainStats = remember(l2Cards) {
+                calculateL2DomainStats(l2Cards)
+            }
+
+            BackHandler(enabled = true) {
+                selectedL2Detail = null
+            }
+
+            L2DedicatedDetailScreen(
+                l1 = l1,
+                discipline = currentDiscipline,
+                selectedL2Tab = selectedL2Tab,
+                onSelectTab = { selectedL2Tab = it },
+                l2Cards = l2Cards,
+                l2ReviewStats = l2ReviewStats,
+                l2DomainStats = l2DomainStats,
+                selectedL3Topics = selectedL3Topics,
+                onBackToL1 = { selectedL2Detail = null },
+                onToggleSelectL3 = { l2, l3 ->
+                    val pair = Pair(l2, l3)
+                    if (selectedL3Topics.contains(pair)) {
+                        selectedL3Topics.remove(pair)
+                    } else {
+                        selectedL3Topics.add(pair)
+                    }
+                },
+                onClearL3Selection = { selectedL3Topics.clear() },
+                onOpenMoveDialog = { showMoveDialog = true },
+                onStudyCards = onStudyCards,
+                onOpenCreateCard = onOpenCreateCard,
+                onOpenStudyConfig = onOpenStudyConfig,
+                onEditCard = onEditCard,
+                onEditL2Discipline = { newName, iconKey, colorHex ->
+                    onUpdateL2Discipline(l1, currentDiscipline.l2, newName, iconKey, colorHex)
+                    selectedL2Detail = newName
+                },
+                onDeleteL2 = {
+                    onDeleteL2Discipline(l1, currentDiscipline.l2)
+                    selectedL2Detail = null
+                }
+            )
+
+            if (showMoveDialog && selectedL3Topics.isNotEmpty()) {
+                MoveL3ToL2Dialog(
+                    selectedTopicsCount = selectedL3Topics.size,
+                    existingL2Names = l2Disciplines.map { it.l2 },
+                    onDismiss = { showMoveDialog = false },
+                    onConfirm = { newL2Name, iconKey, colorHex ->
+                        showMoveDialog = false
+                        val topicsToMove = selectedL3Topics.toList()
+                        selectedL3Topics.clear()
+                        onMoveL3TopicsToNewL2(topicsToMove, newL2Name, iconKey, colorHex)
+                    }
+                )
+            }
+            return
+        } else {
+            selectedL2Detail = null
+        }
+    }
+
+    // L1 Screen Overview (Nível L1)
     Scaffold(
         modifier = modifier.fillMaxSize(),
         contentWindowInsets = WindowInsets(0, 0, 0, 0),
@@ -147,7 +224,7 @@ fun SubDeckScreen(
                             overflow = TextOverflow.Ellipsis
                         )
                         Text(
-                            text = "Estrutura Hierárquica L2 & L3",
+                            text = "${l2Disciplines.size} matérias • ${filteredCards.size} cards",
                             style = MaterialTheme.typography.labelSmall,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
@@ -223,7 +300,7 @@ fun SubDeckScreen(
                 .fillMaxSize()
                 .padding(innerPadding)
         ) {
-            // Three Tabs: Estrutura (L2/L3), Revisão, Domínio
+            // Three Tabs: Disciplinas (L2), Revisão Geral, Domínio Geral
             PrimaryTabRow(
                 selectedTabIndex = selectedTab,
                 containerColor = MaterialTheme.colorScheme.surface
@@ -231,7 +308,7 @@ fun SubDeckScreen(
                 Tab(
                     selected = selectedTab == 0,
                     onClick = { selectedTab = 0 },
-                    text = { Text("Estrutura (L2/L3)", fontWeight = FontWeight.SemiBold) },
+                    text = { Text("Disciplinas (L2)", fontWeight = FontWeight.SemiBold) },
                     icon = { Icon(Icons.Default.Folder, contentDescription = null, modifier = Modifier.size(18.dp)) },
                     modifier = Modifier.testTag("tab_structure")
                 )
@@ -240,7 +317,7 @@ fun SubDeckScreen(
                     onClick = { selectedTab = 1 },
                     text = {
                         Row(verticalAlignment = Alignment.CenterVertically) {
-                            Text("Revisão", fontWeight = FontWeight.SemiBold)
+                            Text("Revisão Geral", fontWeight = FontWeight.SemiBold)
                             if (reviewStats.dueNow > 0) {
                                 Spacer(modifier = Modifier.width(4.dp))
                                 Surface(
@@ -265,7 +342,7 @@ fun SubDeckScreen(
                 Tab(
                     selected = selectedTab == 2,
                     onClick = { selectedTab = 2 },
-                    text = { Text("Domínio", fontWeight = FontWeight.SemiBold) },
+                    text = { Text("Domínio Geral", fontWeight = FontWeight.SemiBold) },
                     icon = { Icon(Icons.Default.Psychology, contentDescription = null, modifier = Modifier.size(18.dp)) },
                     modifier = Modifier.testTag("tab_domain")
                 )
@@ -273,46 +350,14 @@ fun SubDeckScreen(
 
             when (selectedTab) {
                 0 -> {
-                    // Structure: List-based design of L2 Disciplines & L3 Topics
-                    StructureTabContent(
+                    // Item 3.1: Visualização limpa com Atalhos L2 para as áreas dedicadas
+                    L1DisciplinesOverviewContent(
+                        l1 = l1,
                         l2Disciplines = l2Disciplines,
-                        expandedL2Map = expandedL2Map,
-                        selectedL3Topics = selectedL3Topics,
-                        onToggleExpandL2 = { l2 ->
-                            expandedL2Map[l2] = !(expandedL2Map[l2] ?: true)
-                        },
-                        onToggleSelectL3 = { l2, l3 ->
-                            val pair = Pair(l2, l3)
-                            if (selectedL3Topics.contains(pair)) {
-                                selectedL3Topics.remove(pair)
-                            } else {
-                                selectedL3Topics.add(pair)
-                            }
-                        },
-                        onSelectAllL3InL2 = { l2, topics ->
-                            val pairs = topics.map { Pair(l2, it.l3) }
-                            if (selectedL3Topics.containsAll(pairs)) {
-                                selectedL3Topics.removeAll(pairs.toSet())
-                            } else {
-                                pairs.forEach { if (!selectedL3Topics.contains(it)) selectedL3Topics.add(it) }
-                            }
-                        },
-                        onClearL3Selection = { selectedL3Topics.clear() },
-                        onOpenMoveDialog = { showMoveDialog = true },
-                        onStudyL2 = { discipline ->
-                            val cardsToStudy = filteredCards.filter { it.l2 == discipline.l2 }
-                            onStudyCards(cardsToStudy)
-                        },
-                        onStudyL3 = { topic ->
-                            val cardsToStudy = filteredCards.filter { it.l2 == topic.l2 && it.l3 == topic.l3 }
-                            onStudyCards(cardsToStudy)
-                        },
-                        onStudyAllL1 = {
-                            onStudyCards(filteredCards)
-                        },
-                        onDeleteL2 = { l2Name ->
-                            onDeleteL2Discipline(l1, l2Name)
-                        }
+                        totalCardsCount = filteredCards.size,
+                        domainStats = domainStats,
+                        onSelectL2 = { selectedL2Detail = it },
+                        onStudyAllL1 = { onStudyCards(filteredCards) }
                     )
                 }
                 1 -> {
@@ -393,22 +438,594 @@ fun SubDeckScreen(
     }
 }
 
+// ─────────────────────────────────────────────────────────────────────────────
+// FUNÇÕES AUXILIARES DE CÁLCULO DE ESTATÍSTICAS DEDICADAS DO L2
+// ─────────────────────────────────────────────────────────────────────────────
+
+private fun calculateL2DomainStats(cards: List<FlashcardEntity>): DomainStats {
+    if (cards.isEmpty()) return DomainStats()
+    val total = cards.size
+    val mastered = cards.count { it.masteryLevel == 2 }
+    val learning = cards.count { it.masteryLevel == 1 }
+    val newCards = cards.count { it.masteryLevel == 0 && it.reps == 0 }
+    val percentage = ((mastered * 1.0f + learning * 0.4f) / total) * 100f
+    return DomainStats(
+        total = total,
+        mastered = mastered,
+        learning = learning,
+        newCards = newCards,
+        masteryPercentage = percentage
+    )
+}
+
+private fun calculateL2ReviewStats(cards: List<FlashcardEntity>): ReviewStats {
+    if (cards.isEmpty()) return ReviewStats()
+    val now = System.currentTimeMillis()
+    val oneDay = 24L * 3600L * 1000L
+    val dueNow = cards.count { it.reps > 0 && it.dueTimestamp <= now }
+    val dueToday = cards.count { it.reps > 0 && it.dueTimestamp <= (now + oneDay) }
+    val reviewed = cards.filter { it.reps > 0 }
+    val totalReviews = reviewed.sumOf { it.reps }
+    val totalLapses = reviewed.sumOf { it.lapses }
+    val retention = if (totalReviews > 0) {
+        kotlin.math.max(0f, (1f - (totalLapses.toFloat() / totalReviews)) * 100f)
+    } else {
+        100f
+    }
+    val avgInterval = if (reviewed.isNotEmpty()) {
+        reviewed.map { it.intervalDays }.average().toFloat()
+    } else 0f
+
+    return ReviewStats(
+        dueNow = dueNow,
+        dueToday = dueToday,
+        totalReviewed = totalReviews,
+        retentionRate = retention,
+        averageIntervalDays = avgInterval
+    )
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// COMPONENTES DA VISÃO GERAL DO L1 (ATALHOS L2)
+// ─────────────────────────────────────────────────────────────────────────────
+
 @Composable
-private fun StructureTabContent(
+private fun L1DisciplinesOverviewContent(
+    l1: String,
     l2Disciplines: List<L2DisciplineSummary>,
-    expandedL2Map: Map<String, Boolean>,
+    totalCardsCount: Int,
+    domainStats: DomainStats,
+    onSelectL2: (String) -> Unit,
+    onStudyAllL1: () -> Unit
+) {
+    LazyColumn(
+        modifier = Modifier.fillMaxSize(),
+        contentPadding = PaddingValues(16.dp),
+        verticalArrangement = Arrangement.spacedBy(14.dp)
+    ) {
+        item {
+            Card(
+                colors = CardDefaults.cardColors(
+                    containerColor = MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.4f)
+                ),
+                shape = RoundedCornerShape(16.dp),
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp),
+                    verticalArrangement = Arrangement.spacedBy(12.dp)
+                ) {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Column(modifier = Modifier.weight(1f)) {
+                            Text(
+                                text = "Visão Completa do Baralho",
+                                style = MaterialTheme.typography.titleMedium,
+                                fontWeight = FontWeight.Bold
+                            )
+                            Text(
+                                text = "${l2Disciplines.size} matérias (L2) • ${l2Disciplines.sumOf { it.l3Count }} tópicos (L3) • $totalCardsCount cards",
+                                style = MaterialTheme.typography.bodySmall,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+                        }
+
+                        Button(
+                            onClick = onStudyAllL1,
+                            shape = RoundedCornerShape(10.dp),
+                            modifier = Modifier.testTag("btn_study_all_l1")
+                        ) {
+                            Icon(Icons.Default.PlayArrow, contentDescription = null, modifier = Modifier.size(16.dp))
+                            Spacer(modifier = Modifier.width(4.dp))
+                            Text("Estudar Tudo")
+                        }
+                    }
+
+                    Surface(
+                        shape = RoundedCornerShape(8.dp),
+                        color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f)
+                    ) {
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 10.dp, vertical = 8.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.Folder,
+                                contentDescription = null,
+                                modifier = Modifier.size(16.dp),
+                                tint = MaterialTheme.colorScheme.primary
+                            )
+                            Spacer(modifier = Modifier.width(8.dp))
+                            Text(
+                                text = "Toque em uma matéria para acessar seus tópicos L3 e abas dedicadas de revisão e domínio.",
+                                style = MaterialTheme.typography.labelSmall,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+                        }
+                    }
+                }
+            }
+        }
+
+        item {
+            Text(
+                text = "Disciplinas do Baralho (${l2Disciplines.size})",
+                style = MaterialTheme.typography.titleSmall,
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.padding(top = 4.dp, start = 4.dp)
+            )
+        }
+
+        items(l2Disciplines, key = { it.l2 }) { discipline ->
+            L2DisciplineShortcutCard(
+                discipline = discipline,
+                onClick = { onSelectL2(discipline.l2) }
+            )
+        }
+    }
+}
+
+@Composable
+private fun L2DisciplineShortcutCard(
+    discipline: L2DisciplineSummary,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    val disciplineColor = DisciplinePalette.parseColor(discipline.colorHex)
+    val iconVector = DisciplinePalette.getIconVector(discipline.iconKey)
+
+    Card(
+        modifier = modifier
+            .fillMaxWidth()
+            .testTag("l2_card_${discipline.l2}")
+            .clickable(onClick = onClick),
+        shape = RoundedCornerShape(16.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surfaceContainerLow
+        ),
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Box(
+                    modifier = Modifier
+                        .size(44.dp)
+                        .clip(CircleShape)
+                        .background(disciplineColor.copy(alpha = 0.18f)),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Icon(
+                        imageVector = iconVector,
+                        contentDescription = discipline.l2,
+                        tint = disciplineColor,
+                        modifier = Modifier.size(24.dp)
+                    )
+                }
+
+                Spacer(modifier = Modifier.width(14.dp))
+
+                Column(modifier = Modifier.weight(1f)) {
+                    Text(
+                        text = discipline.l2,
+                        style = MaterialTheme.typography.titleMedium,
+                        fontWeight = FontWeight.Bold,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                    Spacer(modifier = Modifier.height(4.dp))
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(6.dp)
+                    ) {
+                        Surface(
+                            shape = RoundedCornerShape(6.dp),
+                            color = MaterialTheme.colorScheme.surfaceVariant
+                        ) {
+                            Text(
+                                text = "${discipline.totalCards} cards",
+                                modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp),
+                                style = MaterialTheme.typography.labelSmall.copy(fontSize = 11.sp),
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+                        }
+
+                        Surface(
+                            shape = RoundedCornerShape(6.dp),
+                            color = MaterialTheme.colorScheme.surfaceVariant
+                        ) {
+                            Text(
+                                text = "${discipline.l3Count} tópicos",
+                                modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp),
+                                style = MaterialTheme.typography.labelSmall.copy(fontSize = 11.sp),
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+                        }
+
+                        if (discipline.dueCards > 0) {
+                            Surface(
+                                shape = RoundedCornerShape(6.dp),
+                                color = MaterialTheme.colorScheme.errorContainer
+                            ) {
+                                Text(
+                                    text = "⚠️ ${discipline.dueCards} a revisar",
+                                    modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp),
+                                    style = MaterialTheme.typography.labelSmall.copy(fontSize = 11.sp),
+                                    fontWeight = FontWeight.Bold,
+                                    color = MaterialTheme.colorScheme.onErrorContainer
+                                )
+                            }
+                        } else {
+                            Surface(
+                                shape = RoundedCornerShape(6.dp),
+                                color = Color(0xFF10B981).copy(alpha = 0.15f)
+                            ) {
+                                Text(
+                                    text = "✓ Em dia",
+                                    modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp),
+                                    style = MaterialTheme.typography.labelSmall.copy(fontSize = 11.sp),
+                                    fontWeight = FontWeight.Bold,
+                                    color = Color(0xFF059669)
+                                )
+                            }
+                        }
+                    }
+                }
+
+                IconButton(
+                    onClick = onClick,
+                    modifier = Modifier.size(36.dp)
+                ) {
+                    Icon(
+                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                        contentDescription = "Acessar Matéria",
+                        modifier = Modifier
+                            .size(18.dp)
+                            .rotate(180f),
+                        tint = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
+            }
+
+            // Barra de Progresso de Domínio da Matéria
+            Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = "Domínio da Disciplina",
+                        style = MaterialTheme.typography.labelSmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                    Text(
+                        text = "${discipline.masteryPercentage.toInt()}%",
+                        style = MaterialTheme.typography.labelSmall,
+                        fontWeight = FontWeight.Bold,
+                        color = disciplineColor
+                    )
+                }
+                LinearProgressIndicator(
+                    progress = { (discipline.masteryPercentage / 100f).coerceIn(0f, 1f) },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(6.dp)
+                        .clip(RoundedCornerShape(3.dp)),
+                    color = disciplineColor,
+                    trackColor = disciplineColor.copy(alpha = 0.15f)
+                )
+            }
+        }
+    }
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// ÁREA DEDICADA DA MATÉRIA L2 (COM SUAS PRÓPRIAS ABAS: TÓPICOS L3, REVISÃO, DOMÍNIO)
+// ─────────────────────────────────────────────────────────────────────────────
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun L2DedicatedDetailScreen(
+    l1: String,
+    discipline: L2DisciplineSummary,
+    selectedL2Tab: Int,
+    onSelectTab: (Int) -> Unit,
+    l2Cards: List<FlashcardEntity>,
+    l2ReviewStats: ReviewStats,
+    l2DomainStats: DomainStats,
     selectedL3Topics: List<Pair<String, String>>,
-    onToggleExpandL2: (String) -> Unit,
+    onBackToL1: () -> Unit,
     onToggleSelectL3: (l2: String, l3: String) -> Unit,
-    onSelectAllL3InL2: (l2: String, topics: List<L3TopicSummary>) -> Unit,
     onClearL3Selection: () -> Unit,
     onOpenMoveDialog: () -> Unit,
-    onStudyL2: (L2DisciplineSummary) -> Unit,
-    onStudyL3: (L3TopicSummary) -> Unit,
-    onStudyAllL1: () -> Unit,
-    onDeleteL2: ((String) -> Unit)? = null
+    onStudyCards: (List<FlashcardEntity>) -> Unit,
+    onOpenCreateCard: (defaultL1: String, defaultL2: String?) -> Unit,
+    onOpenStudyConfig: (defaultL1: String) -> Unit,
+    onEditCard: (FlashcardEntity) -> Unit,
+    onEditL2Discipline: (newName: String, iconKey: String, colorHex: String) -> Unit,
+    onDeleteL2: () -> Unit
 ) {
-    var l2ToDelete by remember { mutableStateOf<L2DisciplineSummary?>(null) }
+    var showEditL2Dialog by remember { mutableStateOf(false) }
+    var showDeleteL2Confirm by remember { mutableStateOf(false) }
+    val disciplineColor = DisciplinePalette.parseColor(discipline.colorHex)
+    val iconVector = DisciplinePalette.getIconVector(discipline.iconKey)
+
+    Scaffold(
+        modifier = Modifier.fillMaxSize(),
+        contentWindowInsets = WindowInsets(0, 0, 0, 0),
+        topBar = {
+            TopAppBar(
+                title = {
+                    Column {
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Box(
+                                modifier = Modifier
+                                    .size(20.dp)
+                                    .clip(CircleShape)
+                                    .background(disciplineColor),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                Icon(
+                                    imageVector = iconVector,
+                                    contentDescription = null,
+                                    tint = Color.White,
+                                    modifier = Modifier.size(12.dp)
+                                )
+                            }
+                            Spacer(modifier = Modifier.width(8.dp))
+                            Text(
+                                text = discipline.l2,
+                                style = MaterialTheme.typography.titleMedium,
+                                fontWeight = FontWeight.Bold,
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis
+                            )
+                        }
+                        Text(
+                            text = "Baralho L1: $l1",
+                            style = MaterialTheme.typography.labelSmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis
+                        )
+                    }
+                },
+                navigationIcon = {
+                    IconButton(
+                        onClick = onBackToL1,
+                        modifier = Modifier.testTag("btn_back_to_l1")
+                    ) {
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                            contentDescription = "Voltar para Lista de Matérias L1"
+                        )
+                    }
+                },
+                actions = {
+                    IconButton(
+                        onClick = { showEditL2Dialog = true },
+                        modifier = Modifier.testTag("btn_edit_l2_discipline")
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Edit,
+                            contentDescription = "Editar Matéria L2 (Nome, Cor e Ícone)"
+                        )
+                    }
+                    IconButton(
+                        onClick = { onOpenCreateCard(l1, discipline.l2) },
+                        modifier = Modifier.testTag("btn_add_card_l2")
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Add,
+                            contentDescription = "Novo Card nesta Matéria"
+                        )
+                    }
+                    IconButton(
+                        onClick = { showDeleteL2Confirm = true },
+                        modifier = Modifier.testTag("btn_delete_l2")
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Delete,
+                            contentDescription = "Excluir Matéria L2",
+                            tint = MaterialTheme.colorScheme.error
+                        )
+                    }
+                },
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.surface
+                )
+            )
+        }
+    ) { innerPadding ->
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(innerPadding)
+        ) {
+            // Três Abas Dedicadas Exclusivas deste L2
+            PrimaryTabRow(
+                selectedTabIndex = selectedL2Tab,
+                containerColor = MaterialTheme.colorScheme.surface
+            ) {
+                Tab(
+                    selected = selectedL2Tab == 0,
+                    onClick = { onSelectTab(0) },
+                    text = { Text("Tópicos (L3)", fontWeight = FontWeight.SemiBold) },
+                    icon = { Icon(Icons.Default.Folder, contentDescription = null, modifier = Modifier.size(18.dp)) },
+                    modifier = Modifier.testTag("tab_l2_topics")
+                )
+                Tab(
+                    selected = selectedL2Tab == 1,
+                    onClick = { onSelectTab(1) },
+                    text = {
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Text("Revisão", fontWeight = FontWeight.SemiBold)
+                            if (l2ReviewStats.dueNow > 0) {
+                                Spacer(modifier = Modifier.width(4.dp))
+                                Surface(
+                                    shape = CircleShape,
+                                    color = MaterialTheme.colorScheme.error,
+                                    modifier = Modifier.size(16.dp)
+                                ) {
+                                    Box(contentAlignment = Alignment.Center) {
+                                        Text(
+                                            text = "${l2ReviewStats.dueNow}",
+                                            style = MaterialTheme.typography.labelSmall.copy(fontSize = 10.sp),
+                                            color = MaterialTheme.colorScheme.onError
+                                        )
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    icon = { Icon(Icons.Default.HourglassTop, contentDescription = null, modifier = Modifier.size(18.dp)) },
+                    modifier = Modifier.testTag("tab_l2_review")
+                )
+                Tab(
+                    selected = selectedL2Tab == 2,
+                    onClick = { onSelectTab(2) },
+                    text = { Text("Domínio", fontWeight = FontWeight.SemiBold) },
+                    icon = { Icon(Icons.Default.Psychology, contentDescription = null, modifier = Modifier.size(18.dp)) },
+                    modifier = Modifier.testTag("tab_l2_domain")
+                )
+            }
+
+            when (selectedL2Tab) {
+                0 -> {
+                    // Aba 1: Tópicos L3 pertencentes a este L2
+                    L2TopicsTabContent(
+                        discipline = discipline,
+                        l2Cards = l2Cards,
+                        selectedL3Topics = selectedL3Topics,
+                        onToggleSelectL3 = onToggleSelectL3,
+                        onClearL3Selection = onClearL3Selection,
+                        onOpenMoveDialog = onOpenMoveDialog,
+                        onStudyCards = onStudyCards
+                    )
+                }
+                1 -> {
+                    // Aba 2: Revisão Dedicada deste L2
+                    ReviewTabContent(
+                        reviewStats = l2ReviewStats,
+                        filteredCards = l2Cards,
+                        l2Disciplines = listOf(discipline),
+                        selectedL2Filter = discipline.l2,
+                        selectedL3Filter = null,
+                        onSelectL2Filter = {},
+                        onSelectL3Filter = {},
+                        onStartReviewSession = {
+                            val dueCards = l2Cards.filter { it.dueTimestamp <= System.currentTimeMillis() }
+                            onStudyCards(if (dueCards.isNotEmpty()) dueCards else l2Cards)
+                        },
+                        onOpenStudyConfig = { onOpenStudyConfig(l1) },
+                        onEditCard = onEditCard
+                    )
+                }
+                2 -> {
+                    // Aba 3: Domínio Dedicado deste L2
+                    DomainTabContent(
+                        domainStats = l2DomainStats,
+                        filteredCards = l2Cards,
+                        l2Disciplines = listOf(discipline),
+                        selectedL2Filter = discipline.l2,
+                        selectedL3Filter = null,
+                        onSelectL2Filter = {},
+                        onSelectL3Filter = {},
+                        onStudyNewCards = {
+                            val newCards = l2Cards.filter { it.reps == 0 }
+                            onStudyCards(if (newCards.isNotEmpty()) newCards else l2Cards)
+                        },
+                        onEditCard = onEditCard
+                    )
+                }
+            }
+        }
+    }
+
+    if (showDeleteL2Confirm) {
+        AlertDialog(
+            onDismissRequest = { showDeleteL2Confirm = false },
+            title = { Text("Excluir Matéria L2?") },
+            text = { Text("Deseja realmente excluir '${discipline.l2}' e todos os seus ${discipline.totalCards} cards?") },
+            confirmButton = {
+                Button(
+                    onClick = {
+                        showDeleteL2Confirm = false
+                        onDeleteL2()
+                    },
+                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error)
+                ) {
+                    Text("Excluir")
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { showDeleteL2Confirm = false }) {
+                    Text("Cancelar")
+                }
+            }
+        )
+    }
+
+    if (showEditL2Dialog) {
+        EditL2DisciplineDialog(
+            currentL2Name = discipline.l2,
+            currentColorHex = discipline.colorHex,
+            currentIconKey = discipline.iconKey,
+            onDismiss = { showEditL2Dialog = false },
+            onConfirm = { newName, iconKey, colorHex ->
+                showEditL2Dialog = false
+                onEditL2Discipline(newName, iconKey, colorHex)
+            }
+        )
+    }
+}
+
+@Composable
+private fun L2TopicsTabContent(
+    discipline: L2DisciplineSummary,
+    l2Cards: List<FlashcardEntity>,
+    selectedL3Topics: List<Pair<String, String>>,
+    onToggleSelectL3: (l2: String, l3: String) -> Unit,
+    onClearL3Selection: () -> Unit,
+    onOpenMoveDialog: () -> Unit,
+    onStudyCards: (List<FlashcardEntity>) -> Unit
+) {
+    val disciplineColor = DisciplinePalette.parseColor(discipline.colorHex)
 
     Box(modifier = Modifier.fillMaxSize()) {
         LazyColumn(
@@ -421,14 +1038,14 @@ private fun StructureTabContent(
                     colors = CardDefaults.cardColors(
                         containerColor = MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.4f)
                     ),
-                    shape = RoundedCornerShape(14.dp),
+                    shape = RoundedCornerShape(16.dp),
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     Column(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(14.dp),
-                        verticalArrangement = Arrangement.spacedBy(10.dp)
+                            .padding(16.dp),
+                        verticalArrangement = Arrangement.spacedBy(12.dp)
                     ) {
                         Row(
                             modifier = Modifier.fillMaxWidth(),
@@ -437,25 +1054,25 @@ private fun StructureTabContent(
                         ) {
                             Column(modifier = Modifier.weight(1f)) {
                                 Text(
-                                    text = "Visão Completa do Baralho",
-                                    style = MaterialTheme.typography.titleSmall,
+                                    text = discipline.l2,
+                                    style = MaterialTheme.typography.titleMedium,
                                     fontWeight = FontWeight.Bold
                                 )
                                 Text(
-                                    text = "${l2Disciplines.size} matérias (L2) • ${l2Disciplines.sumOf { it.l3Count }} tópicos (L3)",
+                                    text = "${discipline.totalCards} cards • ${discipline.topics.size} tópicos (L3)",
                                     style = MaterialTheme.typography.bodySmall,
                                     color = MaterialTheme.colorScheme.onSurfaceVariant
                                 )
                             }
 
                             Button(
-                                onClick = onStudyAllL1,
+                                onClick = { onStudyCards(l2Cards) },
                                 shape = RoundedCornerShape(10.dp),
-                                modifier = Modifier.testTag("btn_study_all_l1")
+                                modifier = Modifier.testTag("btn_study_l2_all")
                             ) {
                                 Icon(Icons.Default.PlayArrow, contentDescription = null, modifier = Modifier.size(16.dp))
                                 Spacer(modifier = Modifier.width(4.dp))
-                                Text("Estudar Tudo")
+                                Text("Estudar Matéria")
                             }
                         }
 
@@ -472,7 +1089,7 @@ private fun StructureTabContent(
                                     verticalAlignment = Alignment.CenterVertically
                                 ) {
                                     Text(
-                                        text = "${selectedL3Topics.size} tópico(s) L3 marcado(s)",
+                                        text = "${selectedL3Topics.size} tópico(s) L3 selecionado(s)",
                                         style = MaterialTheme.typography.labelMedium,
                                         fontWeight = FontWeight.Bold,
                                         color = MaterialTheme.colorScheme.onPrimaryContainer
@@ -487,171 +1104,42 @@ private fun StructureTabContent(
                 }
             }
 
-            items(l2Disciplines, key = { it.l2 }) { discipline ->
-                val isExpanded = expandedL2Map[discipline.l2] ?: true
-                val disciplineColor = DisciplinePalette.parseColor(discipline.colorHex)
-                val iconVector = DisciplinePalette.getIconVector(discipline.iconKey)
-                val l3PairsInDiscipline = discipline.topics.map { Pair(discipline.l2, it.l3) }
-                val isAllL3SelectedInDiscipline = discipline.topics.isNotEmpty() && selectedL3Topics.containsAll(l3PairsInDiscipline)
+            item {
+                Text(
+                    text = "Tópicos de Estudo (L3)",
+                    style = MaterialTheme.typography.titleSmall,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier.padding(start = 4.dp)
+                )
+            }
 
-                Card(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .testTag("l2_card_${discipline.l2}"),
-                    shape = RoundedCornerShape(14.dp),
-                    colors = CardDefaults.cardColors(
-                        containerColor = MaterialTheme.colorScheme.surfaceContainerLow
-                    ),
-                    elevation = CardDefaults.cardElevation(defaultElevation = 1.dp)
-                ) {
-                    Column(modifier = Modifier.fillMaxWidth()) {
-                        // L2 Discipline Header Row
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .clickable { onToggleExpandL2(discipline.l2) }
-                                .padding(14.dp),
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Box(
-                                modifier = Modifier
-                                    .size(38.dp)
-                                    .clip(CircleShape)
-                                    .background(disciplineColor.copy(alpha = 0.18f)),
-                                contentAlignment = Alignment.Center
-                            ) {
-                                Icon(
-                                    imageVector = iconVector,
-                                    contentDescription = discipline.l2,
-                                    tint = disciplineColor,
-                                    modifier = Modifier.size(20.dp)
-                                )
-                            }
-
-                            Spacer(modifier = Modifier.width(12.dp))
-
-                            Column(modifier = Modifier.weight(1f)) {
-                                Row(verticalAlignment = Alignment.CenterVertically) {
-                                    Surface(
-                                        shape = RoundedCornerShape(4.dp),
-                                        color = disciplineColor.copy(alpha = 0.15f)
-                                    ) {
-                                        Text(
-                                            text = "L2 MATÉRIA",
-                                            modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp),
-                                            style = MaterialTheme.typography.labelSmall.copy(fontSize = 9.sp),
-                                            fontWeight = FontWeight.Bold,
-                                            color = disciplineColor
-                                        )
-                                    }
-                                    Spacer(modifier = Modifier.width(6.dp))
-                                    Text(
-                                        text = "${discipline.totalCards} cards",
-                                        style = MaterialTheme.typography.bodySmall.copy(fontSize = 11.sp),
-                                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                                    )
-                                    if (discipline.dueCards > 0) {
-                                        Spacer(modifier = Modifier.width(6.dp))
-                                        Text(
-                                            text = "• ${discipline.dueCards} a revisar",
-                                            style = MaterialTheme.typography.bodySmall.copy(fontSize = 11.sp),
-                                            fontWeight = FontWeight.Bold,
-                                            color = MaterialTheme.colorScheme.error
-                                        )
-                                    }
-                                }
-
-                                Spacer(modifier = Modifier.height(4.dp))
-
-                                Text(
-                                    text = discipline.l2,
-                                    style = MaterialTheme.typography.titleMedium,
-                                    fontWeight = FontWeight.Bold,
-                                    color = MaterialTheme.colorScheme.onSurface
-                                )
-                            }
-
-                            if (discipline.topics.isNotEmpty()) {
-                                IconButton(
-                                    onClick = { onSelectAllL3InL2(discipline.l2, discipline.topics) },
-                                    modifier = Modifier.testTag("btn_select_all_l3_${discipline.l2}")
-                                ) {
-                                    Icon(
-                                        imageVector = if (isAllL3SelectedInDiscipline) Icons.Default.CheckCircle else Icons.Default.Checklist,
-                                        contentDescription = "Selecionar todos os tópicos deste L2",
-                                        tint = if (isAllL3SelectedInDiscipline) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant
-                                    )
-                                }
-                            }
-
-                            IconButton(
-                                onClick = { onStudyL2(discipline) },
-                                modifier = Modifier.testTag("btn_study_l2_${discipline.l2}")
-                            ) {
-                                Icon(
-                                    imageVector = Icons.Default.School,
-                                    contentDescription = "Estudar Matéria",
-                                    tint = disciplineColor
-                                )
-                            }
-
-                            if (onDeleteL2 != null) {
-                                IconButton(
-                                    onClick = { l2ToDelete = discipline },
-                                    modifier = Modifier.testTag("btn_delete_l2_${discipline.l2}")
-                                ) {
-                                    Icon(
-                                        imageVector = Icons.Default.Delete,
-                                        contentDescription = "Deletar Matéria L2",
-                                        tint = MaterialTheme.colorScheme.error
-                                    )
-                                }
-                            }
-
-                            IconButton(onClick = { onToggleExpandL2(discipline.l2) }) {
-                                Icon(
-                                    imageVector = if (isExpanded) Icons.Default.ExpandLess else Icons.Default.ExpandMore,
-                                    contentDescription = if (isExpanded) "Recolher" else "Expandir",
-                                    tint = MaterialTheme.colorScheme.onSurfaceVariant
-                                )
-                            }
+            if (discipline.topics.isEmpty()) {
+                item {
+                    Text(
+                        text = "Nenhum subtópico L3 cadastrado nesta matéria.",
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        modifier = Modifier.padding(16.dp)
+                    )
+                }
+            } else {
+                items(discipline.topics, key = { it.l3 }) { topic ->
+                    val isSelected = selectedL3Topics.contains(Pair(discipline.l2, topic.l3))
+                    L3TopicRow(
+                        topic = topic,
+                        disciplineColor = disciplineColor,
+                        isSelected = isSelected,
+                        onToggleSelect = { onToggleSelectL3(discipline.l2, topic.l3) },
+                        onStudy = {
+                            val topicCards = l2Cards.filter { it.l3 == topic.l3 }
+                            onStudyCards(if (topicCards.isNotEmpty()) topicCards else l2Cards)
                         }
-
-                        // Nested L3 Sub-decks List
-                        AnimatedVisibility(visible = isExpanded) {
-                            Column(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .background(MaterialTheme.colorScheme.surfaceContainerLowest)
-                                    .padding(horizontal = 14.dp, vertical = 8.dp),
-                                verticalArrangement = Arrangement.spacedBy(8.dp)
-                            ) {
-                                if (discipline.topics.isEmpty()) {
-                                    Text(
-                                        text = "Nenhum subtópico L3 específico cadastrado",
-                                        style = MaterialTheme.typography.bodySmall,
-                                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                                        modifier = Modifier.padding(8.dp)
-                                    )
-                                } else {
-                                    discipline.topics.forEach { topic ->
-                                        val isSelected = selectedL3Topics.contains(Pair(discipline.l2, topic.l3))
-                                        L3TopicRow(
-                                            topic = topic,
-                                            disciplineColor = disciplineColor,
-                                            isSelected = isSelected,
-                                            onToggleSelect = { onToggleSelectL3(discipline.l2, topic.l3) },
-                                            onStudy = { onStudyL3(topic) }
-                                        )
-                                    }
-                                }
-                            }
-                        }
-                    }
+                    )
                 }
             }
         }
 
+        // Barra de Ação Flutuante para Mover Tópicos Selecionados
         if (selectedL3Topics.isNotEmpty()) {
             Surface(
                 modifier = Modifier
@@ -700,33 +1188,6 @@ private fun StructureTabContent(
                     }
                 }
             }
-        }
-
-        // Delete L2 Discipline Confirmation Dialog
-        l2ToDelete?.let { disc ->
-            AlertDialog(
-                onDismissRequest = { l2ToDelete = null },
-                title = { Text("Excluir Matéria L2 Repetida?") },
-                text = {
-                    Text("Deseja realmente excluir a matéria '${disc.l2}' e todos os seus ${disc.totalCards} cards?\n\nEsta ação excluirá as matérias iguais/repetidas do banco de dados permanentemente.")
-                },
-                confirmButton = {
-                    Button(
-                        onClick = {
-                            onDeleteL2?.invoke(disc.l2)
-                            l2ToDelete = null
-                        },
-                        colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error)
-                    ) {
-                        Text("Excluir Matéria")
-                    }
-                },
-                dismissButton = {
-                    TextButton(onClick = { l2ToDelete = null }) {
-                        Text("Cancelar")
-                    }
-                }
-            )
         }
     }
 }
@@ -1035,6 +1496,205 @@ private fun MoveL3ToL2Dialog(
                 enabled = deckName.isNotBlank()
             ) {
                 Text("Confirmar Mover")
+            }
+        },
+        dismissButton = {
+            TextButton(onClick = onDismiss) {
+                Text("Cancelar")
+            }
+        }
+    )
+}
+
+@OptIn(ExperimentalLayoutApi::class)
+@Composable
+private fun EditL2DisciplineDialog(
+    currentL2Name: String,
+    currentColorHex: String,
+    currentIconKey: String,
+    onDismiss: () -> Unit,
+    onConfirm: (newName: String, iconKey: String, colorHex: String) -> Unit
+) {
+    var l2Name by remember { mutableStateOf(currentL2Name) }
+    var selectedColorHex by remember { mutableStateOf(currentColorHex) }
+    var selectedIconKey by remember { mutableStateOf(currentIconKey) }
+
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Icon(
+                    imageVector = Icons.Default.Edit,
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.primary
+                )
+                Spacer(modifier = Modifier.width(8.dp))
+                Text(text = "Editar Matéria (L2)", fontWeight = FontWeight.Bold)
+            }
+        },
+        text = {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .verticalScroll(rememberScrollState()),
+                verticalArrangement = Arrangement.spacedBy(14.dp)
+            ) {
+                Text(
+                    text = "Personalize o nome, ícone e cor desta disciplina para todos os cards associados.",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+
+                OutlinedTextField(
+                    value = l2Name,
+                    onValueChange = { l2Name = it },
+                    label = { Text("Nome da Matéria L2") },
+                    singleLine = true,
+                    modifier = Modifier.fillMaxWidth()
+                )
+
+                Column {
+                    Text(
+                        text = "Ícone da Matéria:",
+                        style = MaterialTheme.typography.labelMedium,
+                        fontWeight = FontWeight.Bold
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+                    FlowRow(
+                        horizontalArrangement = Arrangement.spacedBy(6.dp),
+                        verticalArrangement = Arrangement.spacedBy(6.dp),
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        DisciplinePalette.selectableIcons.forEach { item ->
+                            val isSelected = selectedIconKey == item.key
+                            Surface(
+                                onClick = { selectedIconKey = item.key },
+                                shape = RoundedCornerShape(12.dp),
+                                color = if (isSelected) MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.surfaceContainerLow,
+                                border = if (isSelected) BorderStroke(2.dp, MaterialTheme.colorScheme.primary) else BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant),
+                                modifier = Modifier.padding(2.dp)
+                            ) {
+                                Row(
+                                    modifier = Modifier.padding(horizontal = 10.dp, vertical = 8.dp),
+                                    verticalAlignment = Alignment.CenterVertically,
+                                    horizontalArrangement = Arrangement.spacedBy(6.dp)
+                                ) {
+                                    Icon(
+                                        imageVector = item.icon,
+                                        contentDescription = item.label,
+                                        tint = if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface,
+                                        modifier = Modifier.size(18.dp)
+                                    )
+                                    Text(
+                                        text = item.label.split("/").first().trim(),
+                                        style = MaterialTheme.typography.labelSmall,
+                                        fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal,
+                                        color = if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface
+                                    )
+                                }
+                            }
+                        }
+                    }
+                }
+
+                Column {
+                    Text(
+                        text = "Cor de Destaque:",
+                        style = MaterialTheme.typography.labelMedium,
+                        fontWeight = FontWeight.Bold
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+                    FlowRow(
+                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                        verticalArrangement = Arrangement.spacedBy(8.dp),
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        DisciplinePalette.selectableColors.forEach { hex ->
+                            val color = DisciplinePalette.parseColor(hex)
+                            val isSelected = selectedColorHex.equals(hex, ignoreCase = true)
+                            Box(
+                                modifier = Modifier
+                                    .size(32.dp)
+                                    .clip(CircleShape)
+                                    .background(color)
+                                    .clickable { selectedColorHex = hex }
+                                    .border(
+                                        width = if (isSelected) 3.dp else 0.dp,
+                                        color = if (isSelected) MaterialTheme.colorScheme.onSurface else Color.Transparent,
+                                        shape = CircleShape
+                                    ),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                if (isSelected) {
+                                    Icon(
+                                        imageVector = Icons.Default.Check,
+                                        contentDescription = "Selecionado",
+                                        tint = Color.White,
+                                        modifier = Modifier.size(16.dp)
+                                    )
+                                }
+                            }
+                        }
+                    }
+                }
+
+                // Prévia do Card L2 atualizado
+                Card(
+                    shape = RoundedCornerShape(12.dp),
+                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerHighest),
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Column(modifier = Modifier.padding(12.dp)) {
+                        Text(
+                            text = "Prévia Atualizada",
+                            style = MaterialTheme.typography.labelSmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                        Spacer(modifier = Modifier.height(6.dp))
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Box(
+                                modifier = Modifier
+                                    .size(36.dp)
+                                    .clip(CircleShape)
+                                    .background(DisciplinePalette.parseColor(selectedColorHex).copy(alpha = 0.2f)),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                Icon(
+                                    imageVector = DisciplinePalette.getIconVector(selectedIconKey),
+                                    contentDescription = null,
+                                    tint = DisciplinePalette.parseColor(selectedColorHex),
+                                    modifier = Modifier.size(20.dp)
+                                )
+                            }
+                            Spacer(modifier = Modifier.width(10.dp))
+                            Column {
+                                Text(
+                                    text = l2Name.ifBlank { "Nome da Matéria L2" },
+                                    style = MaterialTheme.typography.titleSmall,
+                                    fontWeight = FontWeight.Bold,
+                                    color = MaterialTheme.colorScheme.onSurface
+                                )
+                                Text(
+                                    text = "Estilo e identificador visual",
+                                    style = MaterialTheme.typography.bodySmall,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                                )
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        confirmButton = {
+            Button(
+                onClick = {
+                    if (l2Name.isNotBlank()) {
+                        onConfirm(l2Name.trim(), selectedIconKey, selectedColorHex)
+                    }
+                },
+                enabled = l2Name.isNotBlank()
+            ) {
+                Text("Salvar Alterações")
             }
         },
         dismissButton = {

@@ -271,7 +271,10 @@ fun AnkiAppNavigation(viewModel: DeckViewModel) {
                             },
                             onOpenMoveL2ToL1 = { showMoveL2ToL1Dialog = true },
                             onOpenCompareDecks = { showCompareDecksDialog = true },
-                            onDeleteL2Discipline = { l1Target, l2Target -> viewModel.deleteL2Discipline(l1Target, l2Target) }
+                            onDeleteL2Discipline = { l1Target, l2Target -> viewModel.deleteL2Discipline(l1Target, l2Target) },
+                            onUpdateL2Discipline = { l1Target, oldL2, newL2, iconKey, colorHex ->
+                                viewModel.updateL2Discipline(l1Target, oldL2, newL2, iconKey, colorHex)
+                            }
                         )
                     } ?: run {
                         subDestination = null
