@@ -159,6 +159,7 @@ fun AnkiAppNavigation(viewModel: DeckViewModel) {
     val sessionTimerConfig by viewModel.sessionTimerConfig.collectAsStateWithLifecycle()
     val geminiApiKey by viewModel.geminiApiKey.collectAsStateWithLifecycle()
     val geminiModelVersion by viewModel.geminiModelVersion.collectAsStateWithLifecycle()
+    val geminiTelemetry by viewModel.geminiTelemetry.collectAsStateWithLifecycle()
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
@@ -381,6 +382,9 @@ fun AnkiAppNavigation(viewModel: DeckViewModel) {
                         onSetAccentColor = { viewModel.setAccentColor(it) },
                         onSetGeminiApiKey = { viewModel.setGeminiApiKey(it) },
                         onSetGeminiModelVersion = { viewModel.setGeminiModelVersion(it) },
+                        geminiTelemetry = geminiTelemetry,
+                        onTestGeminiApiKey = { viewModel.testGeminiApiKey() },
+                        onResetGeminiTelemetry = { viewModel.resetGeminiDailyStats() },
                         onSetSupabaseUrl = { viewModel.setSupabaseUrl(it) },
                         onSetSupabaseKey = { viewModel.setSupabaseKey(it) },
                         onSetSupabaseAutoSync = { viewModel.setSupabaseAutoSync(it) },

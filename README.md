@@ -4,7 +4,20 @@ Aplicativo Android nativo de alta performance para preparação de concursos de 
 
 ---
 
-## 📱 Versão Atual: v1.1.0 (Code 2)
+## 📱 Versão Atual: v1.2.0 (Code 3)
+
+### 🚀 Principais Novidades da Versão 1.2.0:
+* **Painel Completo de Telemetria e Quota da API Key Gemini (`SettingsScreen`)**:
+  * **Monitoramento de Quota Diária:** Contador de requisições realizadas vs limite gratuito (1.500 RPD) com barra de progresso em tempo real.
+  * **Contagem Regressiva de Reset de Quota:** Cálculo regressivo dinâmico para a meia-noite do Horário do Pacífico (`00:00 PT / 04:00 BRT`), quando o Google AI Studio zera as cotas diárias de uso.
+  * **Monitor de Consumo de Tokens com Classificação de Intensidade:** Medição exata de tokens de entrada (`promptTokenCount`) e saída (`candidatesTokenCount`) reportados pelo nó `usageMetadata` do Gemini REST v1beta, com classificação de tráfego (*🟢 Uso Leve* < 50k tokens, *🟡 Moderado* até 200k, *🔴 Intenso* acima de 200k).
+  * **Decomposição da Última Análise:** Exibição da contagem detalhada de tokens e da latência exata da chamada em milissegundos.
+  * **Teste Ativo de Chave & Latência com Cascata de Resiliência:** Botão "Testar Chave" que envia um ping à API e, em caso de HTTP 503 (Overloaded) no modelo primário, aciona automaticamente o fallback para `gemini-flash-lite-latest` mensurando a latência da conexão.
+  * **Auto-Reset Diário e Botão de Reset Manual:** Persistência no `SharedPreferences` com limpeza automática de contadores ao mudar o dia civil ou por clique manual do usuário.
+
+---
+
+## 📱 Versão Anterior: v1.1.0 (Code 2)
 
 ### 🚀 Principais Novidades da Versão 1.1.0:
 * **Aba Dedicada ao Tutor IA Gemini (`AiTutorScreen`)**:

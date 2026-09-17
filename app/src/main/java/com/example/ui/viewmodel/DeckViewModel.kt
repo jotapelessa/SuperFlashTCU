@@ -745,8 +745,47 @@ class DeckViewModel(application: Application) : AndroidViewModel(application) {
         prefs.edit().putString("gemini_model_version", version).apply()
     }
 
-    // Gemini AI Analysis
+    // Gemini AI Analysis & Telemetry
     private val aiAnalyzer = com.example.data.ai.GeminiStudyAnalyzer()
+
+    data class GeminiTelemetryState(
+        val requestsToday: Int = 0,
+        val tokensToday: Int = 0,
+        val lastPromptTokens: Int = 0,
+        val lastResponseTokens: Int = 0,
+        val lastLatencyMs: Long = 0L,
+        val lastModelUsed: String = "",
+        val isTestingKey: Boolean = false,
+        val testResult: String? = null
+    )
+
+    private val _geminiTelemetry = MutableStateFlow(loadInitialGeminiTelemetry())
+    val geminiTelemetry: StateFlow<GeminiTelemetryState> = _geminiTelemetry.asStateFlow()
+
+    private fun loadInitialGeminiTelemetry(): GeminiTelemetryState {
+        val lastResetDay = prefs.getInt("gemini_telemetry_last_day", -1)
+        val currentDay = java.util.Calendar.getInstance().get(java.util.Calendar.DAY_OF_YEAR)
+
+        val requests = if (lastResetDay == currentDay) prefs.getInt("gemini_requests_today", 0) else 0
+        val tokens = if (lastResetDay == currentDay) prefs.getInt("gemini_tokens_today", 0) else 0
+
+        if (lastResetDay != currentDay) {
+            prefs.edit()
+                .putInt("gemini_telemetry_last_day", currentDay)
+                .putInt("gemini_requests_today", 0)
+                .putInt("gemini_tokens_today", 0)
+                .apply()
+        }
+
+        return GeminiTelemetryState(
+            requestsToday = requests,
+            tokensToday = tokens,
+            lastPromptTokens = prefs.getInt("gemini_last_prompt_tokens", 0),
+            lastResponseTokens = prefs.getInt("gemini_last_response_tokens", 0),
+            lastLatencyMs = prefs.getLong("gemini_last_latency_ms", 0L),
+            lastModelUsed = prefs.getString("gemini_last_model_used", "") ?: ""
+        )
+    }
 
     private val _aiLoading = MutableStateFlow(false)
     val aiLoading: StateFlow<Boolean> = _aiLoading.asStateFlow()
@@ -761,7 +800,7 @@ class DeckViewModel(application: Application) : AndroidViewModel(application) {
         viewModelScope.launch {
             _aiLoading.value = true
             _aiErrorMessage.value = null
-            val result = aiAnalyzer.analyzeStudyData(
+            val result = aiAnalyzer.analyzeStudyDataWithMetadata(
                 l1Decks = l1Decks.value,
                 allCards = allCards.value,
                 progressReport = progressReport.value,
@@ -771,13 +810,75 @@ class DeckViewModel(application: Application) : AndroidViewModel(application) {
                 customApiKey = geminiApiKey.value,
                 customModelVersion = geminiModelVersion.value
             )
-            result.onSuccess { text ->
-                _aiAnalysisResult.value = text
+            result.onSuccess { meta ->
+                _aiAnalysisResult.value = meta.text
+
+                // Atualiza Telemetria
+                val currentDay = java.util.Calendar.getInstance().get(java.util.Calendar.DAY_OF_YEAR)
+                val newRequests = _geminiTelemetry.value.requestsToday + 1
+                val newTokens = _geminiTelemetry.value.tokensToday + meta.totalTokens
+
+                _geminiTelemetry.value = _geminiTelemetry.value.copy(
+                    requestsToday = newRequests,
+                    tokensToday = newTokens,
+                    lastPromptTokens = meta.promptTokens,
+                    lastResponseTokens = meta.candidatesTokens,
+                    lastLatencyMs = meta.latencyMs,
+                    lastModelUsed = meta.modelUsed
+                )
+
+                prefs.edit()
+                    .putInt("gemini_telemetry_last_day", currentDay)
+                    .putInt("gemini_requests_today", newRequests)
+                    .putInt("gemini_tokens_today", newTokens)
+                    .putInt("gemini_last_prompt_tokens", meta.promptTokens)
+                    .putInt("gemini_last_response_tokens", meta.candidatesTokens)
+                    .putLong("gemini_last_latency_ms", meta.latencyMs)
+                    .putString("gemini_last_model_used", meta.modelUsed)
+                    .apply()
             }.onFailure { err ->
                 _aiErrorMessage.value = err.localizedMessage ?: "Erro ao gerar análise com Gemini."
             }
             _aiLoading.value = false
         }
+    }
+
+    fun testGeminiApiKey() {
+        viewModelScope.launch {
+            _geminiTelemetry.value = _geminiTelemetry.value.copy(
+                isTestingKey = true,
+                testResult = null
+            )
+            val result = aiAnalyzer.testApiKeyConnection(
+                customApiKey = geminiApiKey.value,
+                modelVersion = geminiModelVersion.value
+            )
+            result.onSuccess { (latency, modelUsed) ->
+                _geminiTelemetry.value = _geminiTelemetry.value.copy(
+                    isTestingKey = false,
+                    testResult = "✅ Conexão ativa! Latência: ${latency}ms ($modelUsed)"
+                )
+            }.onFailure { err ->
+                _geminiTelemetry.value = _geminiTelemetry.value.copy(
+                    isTestingKey = false,
+                    testResult = "❌ Falha na conexão: ${err.localizedMessage ?: "Erro desconhecido"}"
+                )
+            }
+        }
+    }
+
+    fun resetGeminiDailyStats() {
+        val currentDay = java.util.Calendar.getInstance().get(java.util.Calendar.DAY_OF_YEAR)
+        _geminiTelemetry.value = _geminiTelemetry.value.copy(
+            requestsToday = 0,
+            tokensToday = 0,
+            testResult = null
+        )
+        prefs.edit()
+            .putInt("gemini_telemetry_last_day", currentDay)
+            .putInt("gemini_requests_today", 0)
+            .putInt("gemini_tokens_today", 0)
+            .apply()
     }
 
     fun clearAiAnalysis() {

@@ -38,8 +38,25 @@ data class GeminiCandidate(
 )
 
 @JsonClass(generateAdapter = true)
+data class GeminiUsageMetadata(
+    val promptTokenCount: Int? = null,
+    val candidatesTokenCount: Int? = null,
+    val totalTokenCount: Int? = null
+)
+
+@JsonClass(generateAdapter = true)
 data class GeminiResponse(
-    val candidates: List<GeminiCandidate>?
+    val candidates: List<GeminiCandidate>?,
+    val usageMetadata: GeminiUsageMetadata? = null
+)
+
+data class GeminiAnalysisResult(
+    val text: String,
+    val promptTokens: Int,
+    val candidatesTokens: Int,
+    val totalTokens: Int,
+    val latencyMs: Long,
+    val modelUsed: String
 )
 
 class GeminiStudyAnalyzer(
@@ -64,7 +81,29 @@ class GeminiStudyAnalyzer(
         customQuestion: String? = null,
         customApiKey: String? = null,
         customModelVersion: String? = null
-    ): Result<String> = withContext(Dispatchers.IO) {
+    ): Result<String> {
+        return analyzeStudyDataWithMetadata(
+            l1Decks = l1Decks,
+            allCards = allCards,
+            progressReport = progressReport,
+            todayReviewed = todayReviewed,
+            dailyGoal = dailyGoal,
+            customQuestion = customQuestion,
+            customApiKey = customApiKey,
+            customModelVersion = customModelVersion
+        ).map { it.text }
+    }
+
+    suspend fun analyzeStudyDataWithMetadata(
+        l1Decks: List<L1DeckSummary>,
+        allCards: List<FlashcardEntity>,
+        progressReport: StudyProgressReport,
+        todayReviewed: Int,
+        dailyGoal: Int,
+        customQuestion: String? = null,
+        customApiKey: String? = null,
+        customModelVersion: String? = null
+    ): Result<GeminiAnalysisResult> = withContext(Dispatchers.IO) {
         val resolvedDefault = defaultApiKeyProvider()
         val apiKey = if (!customApiKey.isNullOrBlank()) customApiKey.trim() else resolvedDefault
         if (apiKey.isBlank() || apiKey == "MY_GEMINI_API_KEY") {
@@ -160,6 +199,7 @@ class GeminiStudyAnalyzer(
         val body = jsonString.toRequestBody("application/json; charset=utf-8".toMediaType())
 
         for (modelName in modelsToTry) {
+            val startTime = System.currentTimeMillis()
             try {
                 val url = "https://generativelanguage.googleapis.com/v1beta/models/$modelName:generateContent?key=$apiKey"
                 val request = Request.Builder()
@@ -168,6 +208,7 @@ class GeminiStudyAnalyzer(
                     .build()
 
                 val response = client.newCall(request).execute()
+                val latency = System.currentTimeMillis() - startTime
                 val responseBody = response.body?.string()
 
                 if (response.isSuccessful && !responseBody.isNullOrBlank()) {
@@ -180,7 +221,21 @@ class GeminiStudyAnalyzer(
                     val fullText = textParts?.joinToString("\n\n")
 
                     if (!fullText.isNullOrBlank()) {
-                        return@withContext Result.success(fullText)
+                        val usage = parsedResponse.usageMetadata
+                        val pTokens = usage?.promptTokenCount ?: (promptBuilder.length / 4)
+                        val cTokens = usage?.candidatesTokenCount ?: (fullText.length / 4)
+                        val tTokens = usage?.totalTokenCount ?: (pTokens + cTokens)
+
+                        return@withContext Result.success(
+                            GeminiAnalysisResult(
+                                text = fullText,
+                                promptTokens = pTokens,
+                                candidatesTokens = cTokens,
+                                totalTokens = tTokens,
+                                latencyMs = latency,
+                                modelUsed = modelName
+                            )
+                        )
                     } else {
                         lastException = Exception("O modelo $modelName não retornou texto utilizável.")
                     }
@@ -188,7 +243,6 @@ class GeminiStudyAnalyzer(
                     val code = response.code
                     val msg = response.message
                     lastException = Exception("Falha na chamada da API Gemini para o modelo $modelName (HTTP $code): $msg")
-                    // If it is a transient/recoverable code (503, 429, 404), log and proceed to fallback model
                     android.util.Log.w("GeminiStudyAnalyzer", "Falha no modelo $modelName (HTTP $code). Tentando modelo alternativo se houver...")
                 }
             } catch (e: Exception) {
@@ -197,6 +251,58 @@ class GeminiStudyAnalyzer(
             }
         }
 
-        Result.failure<String>(lastException ?: Exception("Não foi possível obter resposta da API Gemini."))
+        Result.failure<GeminiAnalysisResult>(lastException ?: Exception("Não foi possível obter resposta da API Gemini."))
+    }
+
+    suspend fun testApiKeyConnection(
+        customApiKey: String? = null,
+        modelVersion: String? = null
+    ): Result<Pair<Long, String>> = withContext(Dispatchers.IO) {
+        val resolvedDefault = defaultApiKeyProvider()
+        val apiKey = if (!customApiKey.isNullOrBlank()) customApiKey.trim() else resolvedDefault
+        if (apiKey.isBlank() || apiKey == "MY_GEMINI_API_KEY") {
+            return@withContext Result.failure(
+                IllegalStateException("Nenhuma chave informada para teste.")
+            )
+        }
+
+        val primary = if (!modelVersion.isNullOrBlank()) modelVersion.trim() else "gemini-flash-latest"
+        val modelsToTry = listOf(
+            primary,
+            "gemini-flash-latest",
+            "gemini-flash-lite-latest"
+        ).distinct()
+
+        val payload = GeminiRequest(
+            contents = listOf(
+                GeminiContent(
+                    parts = listOf(GeminiPart(text = "ping"))
+                )
+            )
+        )
+        val jsonAdapter = moshi.adapter(GeminiRequest::class.java)
+        val body = jsonAdapter.toJson(payload).toRequestBody("application/json; charset=utf-8".toMediaType())
+
+        var lastException: Exception? = null
+
+        for (m in modelsToTry) {
+            val startTime = System.currentTimeMillis()
+            try {
+                val url = "https://generativelanguage.googleapis.com/v1beta/models/$m:generateContent?key=$apiKey"
+                val request = Request.Builder().url(url).post(body).build()
+                val response = client.newCall(request).execute()
+                val latency = System.currentTimeMillis() - startTime
+                if (response.isSuccessful) {
+                    return@withContext Result.success(Pair(latency, m))
+                } else {
+                    val code = response.code
+                    lastException = Exception("HTTP $code ($m): ${response.message}")
+                    android.util.Log.w("GeminiStudyAnalyzer", "Falha de teste em $m (HTTP $code). Tentando fallback...")
+                }
+            } catch (e: Exception) {
+                lastException = e
+            }
+        }
+        Result.failure(lastException ?: Exception("Falha ao testar conexão com a API Gemini."))
     }
 }
