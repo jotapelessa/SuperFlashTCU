@@ -52,6 +52,10 @@ import com.example.ui.screens.SubDeckScreen
 import com.example.ui.theme.MyApplicationTheme
 import com.example.ui.viewmodel.DeckViewModel
 
+import androidx.compose.material.icons.filled.AutoAwesome
+import androidx.compose.material.icons.outlined.AutoAwesome
+import androidx.compose.runtime.saveable.rememberSaveable
+import com.example.ui.screens.AiTutorScreen
 import com.example.ui.components.AiAnalysisBottomSheet
 
 class MainActivity : ComponentActivity() {
@@ -87,8 +91,8 @@ enum class AppTab(
     val testTag: String
 ) {
     DECKS("Baralhos", Icons.Filled.School, Icons.Outlined.School, "tab_decks"),
+    TUTOR_AI("Tutor IA", Icons.Filled.AutoAwesome, Icons.Outlined.AutoAwesome, "tab_tutor_ai"),
     STATISTICS("Estatísticas", Icons.Filled.BarChart, Icons.Outlined.BarChart, "tab_statistics"),
-    PROGRESS("Progresso", Icons.Filled.Timeline, Icons.Outlined.Timeline, "tab_progress"),
     SETTINGS("Configurações", Icons.Filled.Settings, Icons.Outlined.Settings, "tab_settings")
 }
 
@@ -101,8 +105,8 @@ enum class AppDestination {
 
 @Composable
 fun AnkiAppNavigation(viewModel: DeckViewModel) {
-    var selectedTab by remember { mutableStateOf(AppTab.DECKS) }
-    var subDestination by remember { mutableStateOf<AppDestination?>(null) }
+    var selectedTab by rememberSaveable { mutableStateOf(AppTab.DECKS) }
+    var subDestination by rememberSaveable { mutableStateOf<AppDestination?>(null) }
 
     var showImportDialog by remember { mutableStateOf(false) }
     var showStudyConfigDialog by remember { mutableStateOf(false) }
@@ -316,6 +320,28 @@ fun AnkiAppNavigation(viewModel: DeckViewModel) {
                     )
                 }
 
+                selectedTab == AppTab.TUTOR_AI -> {
+                    AiTutorScreen(
+                        isLoading = aiLoading,
+                        analysisResult = aiAnalysisResult,
+                        errorMessage = aiErrorMessage,
+                        activeModelVersion = geminiModelVersion,
+                        l1Decks = l1Decks,
+                        allCards = allCards,
+                        progressReport = progressReport,
+                        onAnalyze = { customQuestion ->
+                            viewModel.runAiAnalysis(customQuestion)
+                        },
+                        onClearAnalysis = {
+                            viewModel.clearAiAnalysis()
+                        },
+                        onStudyCriticalCards = { cards ->
+                            viewModel.startStudySession(cards, sessionTimerConfig)
+                            subDestination = AppDestination.STUDY
+                        }
+                    )
+                }
+
                 selectedTab == AppTab.STATISTICS -> {
                     AnalyticsScreen(
                         report = progressReport,
@@ -324,27 +350,7 @@ fun AnkiAppNavigation(viewModel: DeckViewModel) {
                             selectedTab = AppTab.DECKS
                         },
                         onOpenAiAnalysis = {
-                            showAiAnalysisSheet = true
-                            if (aiAnalysisResult == null) {
-                                viewModel.runAiAnalysis()
-                            }
-                        }
-                    )
-                }
-
-                selectedTab == AppTab.PROGRESS -> {
-                    ProgressScreen(
-                        report = progressReport,
-                        todayReviewed = todayReviewedCount,
-                        dailyGoal = dailyStudyGoal,
-                        onSetDailyGoal = { viewModel.setDailyStudyGoal(it) },
-                        onStartStudySession = {
-                            val dueCards = allCards.filter { it.dueTimestamp <= System.currentTimeMillis() }
-                            viewModel.startStudySession(if (dueCards.isNotEmpty()) dueCards else allCards, sessionTimerConfig)
-                            subDestination = AppDestination.STUDY
-                        },
-                        onOpenAiAnalysis = {
-                            showAiAnalysisSheet = true
+                            selectedTab = AppTab.TUTOR_AI
                             if (aiAnalysisResult == null) {
                                 viewModel.runAiAnalysis()
                             }

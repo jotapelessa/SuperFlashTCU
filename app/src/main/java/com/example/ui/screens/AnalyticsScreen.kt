@@ -382,17 +382,72 @@ private fun StudyFrequencyChartCard(frequencyList: List<DayStudyStat>) {
             val gridColor = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f)
             val labelTextColor = MaterialTheme.colorScheme.onSurfaceVariant.toArgb()
 
+            val density = androidx.compose.ui.platform.LocalDensity.current
+            val labelTextSizePx = remember(density) { with(density) { 11.sp.toPx() } }
+            val countTextSizePx = remember(density) { with(density) { 10.sp.toPx() } }
+            val cornerRadiusPx = remember(density) { with(density) { 6.dp.toPx() } }
+            val minBarHeightPx = remember(density) { with(density) { 8.dp.toPx() } }
+            val minEmptyBarHeightPx = remember(density) { with(density) { 2.dp.toPx() } }
+
+            val labelPaintNormal = remember(labelTextColor, labelTextSizePx) {
+                android.graphics.Paint().apply {
+                    color = labelTextColor
+                    textSize = labelTextSizePx
+                    isAntiAlias = true
+                    textAlign = android.graphics.Paint.Align.CENTER
+                }
+            }
+            val labelPaintBold = remember(labelTextColor, labelTextSizePx) {
+                android.graphics.Paint().apply {
+                    color = labelTextColor
+                    textSize = labelTextSizePx
+                    isAntiAlias = true
+                    isFakeBoldText = true
+                    textAlign = android.graphics.Paint.Align.CENTER
+                }
+            }
+            val countPaintToday = remember(countTextSizePx) {
+                android.graphics.Paint().apply {
+                    color = Color(0xFF059669).toArgb()
+                    textSize = countTextSizePx
+                    isAntiAlias = true
+                    isFakeBoldText = true
+                    textAlign = android.graphics.Paint.Align.CENTER
+                }
+            }
+            val countPaintPrimary = remember(primaryColor, countTextSizePx) {
+                android.graphics.Paint().apply {
+                    color = primaryColor.toArgb()
+                    textSize = countTextSizePx
+                    isAntiAlias = true
+                    isFakeBoldText = true
+                    textAlign = android.graphics.Paint.Align.CENTER
+                }
+            }
+
+            val todayBrush = remember {
+                Brush.verticalGradient(
+                    colors = listOf(Color(0xFF10B981), Color(0xFF059669))
+                )
+            }
+            val activeBrush = remember(primaryColor) {
+                Brush.verticalGradient(
+                    colors = listOf(primaryColor, primaryColor.copy(alpha = 0.7f))
+                )
+            }
+            val emptyBrush = remember(tertiaryColor) {
+                Brush.verticalGradient(
+                    colors = listOf(tertiaryColor.copy(alpha = 0.2f), tertiaryColor.copy(alpha = 0.1f))
+                )
+            }
+
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(180.dp)
             ) {
                 Canvas(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .clickable {
-                            // Touch toggles
-                        }
+                    modifier = Modifier.fillMaxSize()
                 ) {
                     val chartWidth = size.width
                     val chartHeight = size.height - 30f // Leave space for bottom labels
@@ -401,7 +456,7 @@ private fun StudyFrequencyChartCard(frequencyList: List<DayStudyStat>) {
 
                     val availableWidthPerBar = chartWidth / barCount
                     val barWidth = availableWidthPerBar * 0.45f
-                    val cornerRadius = CornerRadius(6.dp.toPx(), 6.dp.toPx())
+                    val cornerRadius = CornerRadius(cornerRadiusPx, cornerRadiusPx)
 
                     // Draw reference gridlines
                     val gridLines = 3
@@ -415,27 +470,19 @@ private fun StudyFrequencyChartCard(frequencyList: List<DayStudyStat>) {
                         )
                     }
 
-                    // Draw bars
+                    // Draw bars sem alocações
                     sortedFrequencyList.forEachIndexed { index, dayStat ->
                         val count = dayStat.reviewsCount
                         val normalizedHeight = (count.toFloat() / maxCount) * chartHeight * animationProgress.value
-                        val barHeight = normalizedHeight.coerceAtLeast(if (count > 0) 8.dp.toPx() else 2.dp.toPx())
+                        val barHeight = normalizedHeight.coerceAtLeast(if (count > 0) minBarHeightPx else minEmptyBarHeightPx)
 
                         val x = (index * availableWidthPerBar) + (availableWidthPerBar - barWidth) / 2f
                         val y = chartHeight - barHeight
 
-                        val barBrush = if (dayStat.isToday) {
-                            Brush.verticalGradient(
-                                colors = listOf(Color(0xFF10B981), Color(0xFF059669))
-                            )
-                        } else if (count > 0) {
-                            Brush.verticalGradient(
-                                colors = listOf(primaryColor, primaryColor.copy(alpha = 0.7f))
-                            )
-                        } else {
-                            Brush.verticalGradient(
-                                colors = listOf(tertiaryColor.copy(alpha = 0.2f), tertiaryColor.copy(alpha = 0.1f))
-                            )
+                        val barBrush = when {
+                            dayStat.isToday -> todayBrush
+                            count > 0 -> activeBrush
+                            else -> emptyBrush
                         }
 
                         // Draw background track for bar
@@ -455,16 +502,7 @@ private fun StudyFrequencyChartCard(frequencyList: List<DayStudyStat>) {
                         )
 
                         // Draw bottom text label
-                        val paint = android.graphics.Paint().apply {
-                            this.color = labelTextColor
-                            textSize = 11.sp.toPx()
-                            isAntiAlias = true
-                            textAlign = android.graphics.Paint.Align.CENTER
-                            if (dayStat.isToday) {
-                                isFakeBoldText = true
-                            }
-                        }
-
+                        val paint = if (dayStat.isToday) labelPaintBold else labelPaintNormal
                         drawContext.canvas.nativeCanvas.drawText(
                             dayStat.dayLabel,
                             x + (barWidth / 2f),
@@ -474,13 +512,7 @@ private fun StudyFrequencyChartCard(frequencyList: List<DayStudyStat>) {
 
                         // Draw count label on top of bar if > 0
                         if (count > 0) {
-                            val countPaint = android.graphics.Paint().apply {
-                                this.color = if (dayStat.isToday) Color(0xFF059669).toArgb() else primaryColor.toArgb()
-                                textSize = 10.sp.toPx()
-                                isAntiAlias = true
-                                isFakeBoldText = true
-                                textAlign = android.graphics.Paint.Align.CENTER
-                            }
+                            val countPaint = if (dayStat.isToday) countPaintToday else countPaintPrimary
                             drawContext.canvas.nativeCanvas.drawText(
                                 "$count",
                                 x + (barWidth / 2f),
