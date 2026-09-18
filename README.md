@@ -4,7 +4,21 @@ Aplicativo Android nativo de alta performance para preparação de concursos de 
 
 ---
 
-## 📱 Versão Atual: v1.4.1 (Code 6)
+## 📱 Versão Atual: v1.4.2 (Code 7)
+
+### 🚀 Principais Novidades da Versão 1.4.2:
+* **Tutor IA com 35 Sugestões Táticas para TCU / Controle (Item 3.4)**:
+  * **Expansão Pedagógica com +30 Novas Sugestões:** Adição de 30 novos tópicos estratégicos cobrindo jurisprudência recente do TCU (licitações e contratos, Lei 14.133/2021), AFO e LRF, contabilidade pública (PCASP/DCASP), auditoria de TI (COBIT/ITIL), controle de lapsos críticos do Anki SRS e elaboração de relatórios discursivos.
+* **Paleta Contígua de 50 Cores em Baralhos L1 e L2 (Itens 3.5 e 3.7)**:
+  * **Matriz Contígua 5x10 sem Espaçamento:** Nos diálogos de edição de Decks L1 e Matérias L2, a escolha de cor de destaque agora apresenta exatamente 50 cores cromáticas justapostas (0dp de espaçamento), quadradas (1:1) e sem nomes de cores.
+* **Upload de Imagem da Galeria para Capa L1 (Item 3.6)**:
+  * **Persistência Total no Armazenamento Local:** Adicionado botão de seleção de fotos da galeria do smartphone com cópia assíncrona para `context.filesDir/covers/`, garantindo funcionamento 100% offline e imune a revogações de permissão temporária do Android.
+* **Seletor Contíguo de 50 Ícones de Matérias L2 (Item 3.8)**:
+  * **Matriz 5x10 com 50 Ícones Especializados:** O seletor de ícones de disciplinas L2 foi expandido de 12 para 50 ícones temáticos (Tribunal, Justiça, Auditoria, Exatas, TI, Governança, Leitura, etc.), dispostos em grade contígua 5x10 sem textos, compactando o espaço vertical em mais de 60%.
+
+---
+
+## 📱 Versão Anterior: v1.4.1 (Code 6)
 
 ### 🚀 Principais Novidades da Versão 1.4.1:
 * **Gerenciamento de Dados Individualizado (Item 3.1)**:

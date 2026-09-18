@@ -57,6 +57,18 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.layout.ContentScale
+import android.net.Uri
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.material.icons.filled.AddPhotoAlternate
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.platform.LocalContext
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import java.io.File
+import java.io.FileOutputStream
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -100,6 +112,38 @@ fun EditL1DeckDialog(
         mutableStateOf(deck.cardColorHex ?: DisciplinePalette.getColorForDiscipline(deck.l1))
     }
     var coverUrlInput by remember { mutableStateOf(deck.coverUrl ?: "") }
+
+    val context = LocalContext.current
+    val coroutineScope = rememberCoroutineScope()
+    var isUploadingImage by remember { mutableStateOf(false) }
+
+    val galleryLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.GetContent()
+    ) { uri: Uri? ->
+        if (uri != null) {
+            isUploadingImage = true
+            coroutineScope.launch(Dispatchers.IO) {
+                try {
+                    val coversDir = File(context.filesDir, "covers").apply { if (!exists()) mkdirs() }
+                    val destFile = File(coversDir, "deck_l1_${System.currentTimeMillis()}.jpg")
+                    context.contentResolver.openInputStream(uri)?.use { input ->
+                        FileOutputStream(destFile).use { output ->
+                            input.copyTo(output)
+                        }
+                    }
+                    withContext(Dispatchers.Main) {
+                        coverUrlInput = destFile.absolutePath
+                        isUploadingImage = false
+                    }
+                } catch (_: Exception) {
+                    withContext(Dispatchers.Main) {
+                        coverUrlInput = uri.toString()
+                        isUploadingImage = false
+                    }
+                }
+            }
+        }
+    }
 
     val parsedColor = remember(selectedColorHex) { DisciplinePalette.parseColor(selectedColorHex) }
     val isCoverActive = coverUrlInput.isNotBlank()
@@ -329,7 +373,7 @@ fun EditL1DeckDialog(
                             .testTag("input_edit_l1_course")
                     )
 
-                    // 3. Card Accent Color Palette Picker
+                    // 3. Card Accent Color Palette Picker (50 Cores em Grade Contígua 5x10)
                     Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
                         Row(
                             verticalAlignment = Alignment.CenterVertically,
@@ -342,47 +386,54 @@ fun EditL1DeckDialog(
                                 modifier = Modifier.size(18.dp)
                             )
                             Text(
-                                text = "Cor de Destaque do Card:",
+                                text = "Cor de Destaque do Card (50 cores):",
                                 style = MaterialTheme.typography.labelLarge,
                                 fontWeight = FontWeight.Bold
                             )
                         }
 
-                        LazyRow(
-                            horizontalArrangement = Arrangement.spacedBy(10.dp),
-                            modifier = Modifier.fillMaxWidth()
+                        Column(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .clip(RoundedCornerShape(12.dp))
+                                .border(1.dp, MaterialTheme.colorScheme.outlineVariant, RoundedCornerShape(12.dp))
                         ) {
-                            items(PRESET_COLORS) { hex ->
-                                val color = DisciplinePalette.parseColor(hex)
-                                val isSelected = selectedColorHex.equals(hex, ignoreCase = true)
-
-                                Box(
-                                    modifier = Modifier
-                                        .size(38.dp)
-                                        .clip(CircleShape)
-                                        .background(color)
-                                        .border(
-                                            width = if (isSelected) 3.dp else 1.dp,
-                                            color = if (isSelected) MaterialTheme.colorScheme.onSurface else Color.Transparent,
-                                            shape = CircleShape
-                                        )
-                                        .clickable { selectedColorHex = hex },
-                                    contentAlignment = Alignment.Center
+                            DisciplinePalette.selectableColors.chunked(10).forEach { rowColors ->
+                                Row(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    horizontalArrangement = Arrangement.spacedBy(0.dp)
                                 ) {
-                                    if (isSelected) {
-                                        Icon(
-                                            imageVector = Icons.Default.Check,
-                                            contentDescription = null,
-                                            tint = Color.White,
-                                            modifier = Modifier.size(20.dp)
-                                        )
+                                    rowColors.forEach { hex ->
+                                        val color = DisciplinePalette.parseColor(hex)
+                                        val isSelected = selectedColorHex.equals(hex, ignoreCase = true)
+                                        Box(
+                                            modifier = Modifier
+                                                .weight(1f)
+                                                .aspectRatio(1f)
+                                                .background(color)
+                                                .border(
+                                                    width = if (isSelected) 2.5.dp else 0.dp,
+                                                    color = if (isSelected) MaterialTheme.colorScheme.onSurface else Color.Transparent
+                                                )
+                                                .clickable { selectedColorHex = hex },
+                                            contentAlignment = Alignment.Center
+                                        ) {
+                                            if (isSelected) {
+                                                Icon(
+                                                    imageVector = Icons.Default.Check,
+                                                    contentDescription = null,
+                                                    tint = Color.White,
+                                                    modifier = Modifier.size(16.dp)
+                                                )
+                                            }
+                                        }
                                     }
                                 }
                             }
                         }
                     }
 
-                    // 4. Cover Image Presets & Custom URL Input
+                    // 4. Cover Image Presets, Upload da Galeria & Custom URL Input
                     Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
                         Row(
                             modifier = Modifier.fillMaxWidth(),
@@ -418,9 +469,27 @@ fun EditL1DeckDialog(
                             }
                         }
 
+                        // Botão para Upload da Galeria do Smartphone (Item 3.6)
+                        OutlinedButton(
+                            onClick = { galleryLauncher.launch("image/*") },
+                            modifier = Modifier.fillMaxWidth(),
+                            shape = RoundedCornerShape(12.dp)
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.AddPhotoAlternate,
+                                contentDescription = null,
+                                modifier = Modifier.size(18.dp)
+                            )
+                            Spacer(modifier = Modifier.width(8.dp))
+                            Text(
+                                text = if (isUploadingImage) "Importando da galeria..." else "Escolher Imagem da Galeria do Smartphone",
+                                style = MaterialTheme.typography.labelMedium
+                            )
+                        }
+
                         // Presets Row
                         Text(
-                            text = "Selecione uma imagem de capa:",
+                            text = "Ou selecione uma imagem de capa pronta:",
                             style = MaterialTheme.typography.labelSmall,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
