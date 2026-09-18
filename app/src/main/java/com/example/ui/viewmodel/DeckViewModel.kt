@@ -85,6 +85,26 @@ class DeckViewModel(application: Application) : AndroidViewModel(application) {
         prefs.edit().putBoolean("smart_shuffle_enabled", enabled).apply()
     }
 
+    // SRS Algorithm: "FSRS" (FSRS-5 Moderno) or "SM2" (SM-2 Clássico)
+    private val _srsAlgorithm = MutableStateFlow(prefs.getString("srs_algorithm", "FSRS") ?: "FSRS")
+    val srsAlgorithm: StateFlow<String> = _srsAlgorithm.asStateFlow()
+
+    fun setSrsAlgorithm(algorithm: String) {
+        val safe = if (algorithm.equals("SM2", ignoreCase = true)) "SM2" else "FSRS"
+        _srsAlgorithm.value = safe
+        prefs.edit().putString("srs_algorithm", safe).apply()
+    }
+
+    // FSRS Target Retention: 0.85f (85%), 0.90f (90%), 0.95f (95%)
+    private val _targetRetention = MutableStateFlow(prefs.getFloat("fsrs_target_retention", 0.90f))
+    val targetRetention: StateFlow<Float> = _targetRetention.asStateFlow()
+
+    fun setTargetRetention(retention: Float) {
+        val safe = retention.coerceIn(0.70f, 0.98f)
+        _targetRetention.value = safe
+        prefs.edit().putFloat("fsrs_target_retention", safe).apply()
+    }
+
     // Today's Reviewed Cards Count (cards reviewed today from 00:00)
     val todayReviewedCount: StateFlow<Int> = repository.allCards.map { cards ->
         val cal = Calendar.getInstance()
@@ -410,8 +430,15 @@ class DeckViewModel(application: Application) : AndroidViewModel(application) {
         val index = _currentCardIndex.value
         if (index in cards.indices) {
             val card = cards[index]
+            val algorithm = _srsAlgorithm.value
+            val retention = _targetRetention.value.toDouble()
             viewModelScope.launch {
-                repository.recordReview(card, rating)
+                repository.recordReview(
+                    card = card,
+                    rating = rating,
+                    algorithm = algorithm,
+                    targetRetention = retention
+                )
             }
 
             // Track time spent per deck/discipline

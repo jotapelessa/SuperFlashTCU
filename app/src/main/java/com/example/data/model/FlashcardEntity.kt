@@ -35,5 +35,7 @@ data class FlashcardEntity(
     val masteryLevel: Int = 0, // 0 = Novo, 1 = Em Aprendizado, 2 = Dominado
     val dueTimestamp: Long = 0,
     val lastReviewedTimestamp: Long = 0,
+    val stability: Float = 0f,
+    val difficulty: Float = 0f,
     val createdAt: Long = System.currentTimeMillis()
 )

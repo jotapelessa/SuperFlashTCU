@@ -16,6 +16,7 @@ import com.example.data.model.DayStudyStat
 import com.example.data.model.DomainMasteryStat
 import com.example.data.model.StudyFilterMode
 import com.example.data.model.StudyProgressReport
+import com.example.data.srs.FsrsScheduler
 import com.example.ui.components.DisciplinePalette
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -372,50 +373,79 @@ class DeckRepository(private val dao: FlashcardDao) {
         return bytes.joinToString("") { "%02x".format(it) }
     }
 
-    suspend fun recordReview(card: FlashcardEntity, rating: Int) {
+    private data class ReviewMetrics(
+        val intervalDays: Int,
+        val easeFactor: Float,
+        val stability: Float,
+        val difficulty: Float
+    )
+
+    suspend fun recordReview(
+        card: FlashcardEntity,
+        rating: Int,
+        algorithm: String = "FSRS",
+        targetRetention: Double = 0.90
+    ) {
         // rating: 1 = Again (Errei), 2 = Hard (Difícil), 3 = Good (Bom), 4 = Easy (Fácil)
         val now = System.currentTimeMillis()
-        val oneDay = 24L * 3600L * 1000L
-
-        var newEase = card.easeFactor
-        var newInterval = card.intervalDays
-        var newLapses = card.lapses
         val newReps = card.reps + 1
+        val newLapses = if (rating == 1) card.lapses + 1 else card.lapses
 
-        when (rating) {
-            1 -> {
-                // Again
-                newInterval = 1
-                newLapses++
-                newEase = max(1.3f, newEase - 0.2f)
+        val metrics = if (algorithm.equals("FSRS", ignoreCase = true)) {
+            val fsrsRes = FsrsScheduler.schedule(
+                card = card,
+                rating = rating,
+                now = now,
+                targetRetention = targetRetention
+            )
+            ReviewMetrics(
+                intervalDays = fsrsRes.intervalDays,
+                easeFactor = card.easeFactor,
+                stability = fsrsRes.stability.toFloat(),
+                difficulty = fsrsRes.difficulty.toFloat()
+            )
+        } else {
+            // SM-2 Clássico (Anki 2.0)
+            var sm2Ease = card.easeFactor
+            var sm2Interval = card.intervalDays
+            when (rating) {
+                1 -> {
+                    sm2Interval = 1
+                    sm2Ease = max(1.3f, sm2Ease - 0.2f)
+                }
+                2 -> {
+                    sm2Interval = max(1, (sm2Interval * 1.2f).roundToInt())
+                    sm2Ease = max(1.3f, sm2Ease - 0.15f)
+                }
+                3 -> {
+                    sm2Interval = if (card.reps == 0) 1 else if (card.reps == 1) 3 else max(1, (sm2Interval * sm2Ease).roundToInt())
+                }
+                4 -> {
+                    sm2Interval = if (card.reps == 0) 3 else max(1, (sm2Interval * sm2Ease * 1.3f).roundToInt())
+                    sm2Ease += 0.15f
+                }
             }
-            2 -> {
-                // Hard
-                newInterval = max(1, (newInterval * 1.2f).roundToInt())
-                newEase = max(1.3f, newEase - 0.15f)
-            }
-            3 -> {
-                // Good
-                newInterval = if (card.reps == 0) 1 else if (card.reps == 1) 3 else max(1, (newInterval * newEase).roundToInt())
-            }
-            4 -> {
-                // Easy
-                newInterval = if (card.reps == 0) 3 else max(1, (newInterval * newEase * 1.3f).roundToInt())
-                newEase += 0.15f
-            }
+            ReviewMetrics(
+                intervalDays = sm2Interval,
+                easeFactor = sm2Ease,
+                stability = card.stability,
+                difficulty = card.difficulty
+            )
         }
 
         val masteryLevel = when {
-            newInterval >= 7 && newReps >= 3 -> 2 // Dominado
+            metrics.intervalDays >= 7 && newReps >= 3 -> 2 // Dominado
             newReps > 0 -> 1 // Em aprendizado
             else -> 0
         }
 
-        val nextDue = calculateNextDueDate(newInterval, now)
+        val nextDue = calculateNextDueDate(metrics.intervalDays, now)
 
         val updated = card.copy(
-            intervalDays = newInterval,
-            easeFactor = newEase,
+            intervalDays = metrics.intervalDays,
+            easeFactor = metrics.easeFactor,
+            stability = metrics.stability,
+            difficulty = metrics.difficulty,
             reps = newReps,
             lapses = newLapses,
             masteryLevel = masteryLevel,

@@ -66,6 +66,7 @@ import com.example.data.model.FlashcardEntity
 import com.example.data.model.PerCardTimeLimit
 import com.example.data.model.SessionLiveStats
 import com.example.data.model.StudyTimerConfig
+import com.example.data.srs.FsrsScheduler
 import com.example.ui.components.DisciplinePalette
 import com.example.ui.components.HtmlText
 import kotlinx.coroutines.delay
@@ -80,6 +81,8 @@ fun StudyScreen(
     isCompleted: Boolean,
     sessionStats: SessionLiveStats,
     timerConfig: StudyTimerConfig = StudyTimerConfig(),
+    srsAlgorithm: String = "FSRS",
+    targetRetention: Float = 0.90f,
     onRevealAnswer: () -> Unit,
     onRateCard: (Int, Long) -> Unit,
     onEditCard: (FlashcardEntity) -> Unit,
@@ -349,13 +352,27 @@ fun StudyScreen(
                     }
                 } else {
                     // Rating Buttons (Again, Hard, Good, Easy) with Review Status & Time Tracking
+                    val (againStr, hardStr, goodStr, easyStr) = remember(
+                        card.id, card.reps, card.stability, card.difficulty, card.intervalDays, card.easeFactor, srsAlgorithm, targetRetention
+                    ) {
+                        if (srsAlgorithm.equals("FSRS", ignoreCase = true)) {
+                            val preview = FsrsScheduler.previewIntervals(card, targetRetention.toDouble())
+                            listOf("${preview.againDays}d", "${preview.hardDays}d", "${preview.goodDays}d", "${preview.easyDays}d")
+                        } else {
+                            val hardDays = (card.intervalDays * 1.2).toInt().coerceAtLeast(1)
+                            val goodDays = if (card.intervalDays == 0) 1 else (card.intervalDays * card.easeFactor).roundToInt().coerceAtLeast(2)
+                            val easyDays = if (card.intervalDays == 0) 4 else (card.intervalDays * card.easeFactor * 1.3).roundToInt().coerceAtLeast(4)
+                            listOf("1d", "${hardDays}d", "${goodDays}d", "${easyDays}d")
+                        }
+                    }
+
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
                         RatingButton(
                             label = "Errei",
-                            interval = "1d",
+                            interval = againStr,
                             color = Color(0xFFEF4444),
                             onClick = {
                                 val now = SystemClock.elapsedRealtime()
@@ -367,7 +384,7 @@ fun StudyScreen(
                         )
                         RatingButton(
                             label = "Difícil",
-                            interval = "${(card.intervalDays * 1.2).toInt().coerceAtLeast(1)}d",
+                            interval = hardStr,
                             color = Color(0xFFF59E0B),
                             onClick = {
                                 val now = SystemClock.elapsedRealtime()
@@ -379,7 +396,7 @@ fun StudyScreen(
                         )
                         RatingButton(
                             label = "Bom",
-                            interval = "${(card.intervalDays * 2.5).toInt().coerceAtLeast(2)}d",
+                            interval = goodStr,
                             color = Color(0xFF3B82F6),
                             onClick = {
                                 val now = SystemClock.elapsedRealtime()
@@ -391,7 +408,7 @@ fun StudyScreen(
                         )
                         RatingButton(
                             label = "Fácil",
-                            interval = "${(card.intervalDays * 3.2).toInt().coerceAtLeast(4)}d",
+                            interval = easyStr,
                             color = Color(0xFF10B981),
                             onClick = {
                                 val now = SystemClock.elapsedRealtime()

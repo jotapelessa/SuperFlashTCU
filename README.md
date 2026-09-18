@@ -4,7 +4,21 @@ Aplicativo Android nativo de alta performance para preparação de concursos de 
 
 ---
 
-## 📱 Versão Atual: v1.4.4 (Code 9)
+## 📱 Versão Atual: v1.5.0 (Code 10)
+
+### 🚀 Principais Novidades da Versão 1.5.0:
+* **Integração Nativa do Algoritmo FSRS-5 (Open Spaced Repetition)**:
+  * **Motor FSRS-5 em Kotlin Puro (`FsrsScheduler.kt`):** Implementação completa do algoritmo moderno FSRS-5 baseado no modelo DSR (*Difficulty, Stability, Retrievability*) com os 19 parâmetros globais pré-treinados em milhões de repetições.
+  * **Redução de Carga de Estudos em 20% a 30%:** Diferente do SM-2 clássico (1987), que assume esquecimento puramente exponencial e fator de facilidade linear estático, o FSRS-5 calcula a probabilidade real de retenção $R(t, S) = (1 + 0.2345679 \cdot t / S)^{-0.5}$ e ajusta a estabilidade e a dificuldade de forma dinâmica e precisa.
+  * **Retenção Alvo Parametrizável (85%, 90%, 95%):** Permite ao candidato calibrar o equilíbrio ideal entre tempo gasto de estudo e taxa de retenção memorística na tela de Configurações, adaptando-se a fases de pré-edital ou pós-edital.
+  * **Prévia Dinâmica de Intervalos na Tela de Estudo (`StudyScreen`):** Os 4 botões de avaliação (*Errei*, *Difícil*, *Bom*, *Fácil*) calculam e exibem instantaneamente os dias futuros previstos com base no modelo ativo e na retenção alvo selecionada.
+  * **Compatibilidade e Transição Suave SM-2 ➔ FSRS-5:** Cartões legados sem estabilidade gravada têm seus intervalos e facilidades convertidos dinamicamente na primeira revisão, preservando integralmente o histórico de estudo do estudante.
+  * **Migração Segura Room v2 ➔ v3 (`MIGRATION_2_3`):** Adicionados os campos `stability REAL NOT NULL DEFAULT 0.0` e `difficulty REAL NOT NULL DEFAULT 0.0` na entidade `FlashcardEntity` com script SQL não-destrutivo.
+  * **Seletor de Algoritmo nas Configurações:** Suporte dual permitindo alternar livremente entre **FSRS-5 (Recomendado)** e **SM-2 Clássico (Anki)** com persistência em `SharedPreferences`.
+
+---
+
+## 📱 Versão Anterior: v1.4.4 (Code 9)
 
 ### 🚀 Principais Novidades da Versão 1.4.4:
 * **Correção do Alerta de Sessão Concluída & Relatório de Tempo por Baralho (Item 3.1)**:

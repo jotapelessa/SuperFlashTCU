@@ -112,6 +112,10 @@ fun SettingsScreen(
     onSetTimerConfig: (StudyTimerConfig) -> Unit,
     onSetThemeMode: (AppThemeMode) -> Unit,
     onSetAccentColor: (AccentColorOption) -> Unit,
+    srsAlgorithm: String = "FSRS",
+    targetRetention: Float = 0.90f,
+    onSetSrsAlgorithm: (String) -> Unit = {},
+    onSetTargetRetention: (Float) -> Unit = {},
     onSetGeminiApiKey: (String) -> Unit = {},
     onSetGeminiModelVersion: (String) -> Unit = {},
     geminiTelemetry: DeckViewModel.GeminiTelemetryState = DeckViewModel.GeminiTelemetryState(),
@@ -727,6 +731,153 @@ fun SettingsScreen(
                             Spacer(modifier = Modifier.width(6.dp))
                             Text("Salvar")
                         }
+                    }
+                }
+            }
+
+            // 3.1. Algoritmo de Repetição Espaçada (SRS: FSRS-5 vs SM-2)
+            item {
+                SettingsSectionCard(
+                    title = "Algoritmo de Repetição Espaçada (SRS)",
+                    icon = Icons.Default.Speed
+                ) {
+                    Text(
+                        text = "Escolha o motor mnemônico de agendamento dos flashcards e a taxa de retenção esperada:",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+
+                    Spacer(modifier = Modifier.height(14.dp))
+
+                    Text(
+                        text = "Motor de Agendamento:",
+                        style = MaterialTheme.typography.labelMedium,
+                        fontWeight = FontWeight.Bold
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        val algorithms = listOf(
+                            "FSRS" to "FSRS-5 (Recomendado ⚡)",
+                            "SM2" to "SM-2 Clássico (Anki 2.0)"
+                        )
+
+                        algorithms.forEach { (algoKey, algoLabel) ->
+                            val isSelected = srsAlgorithm.equals(algoKey, ignoreCase = true)
+                            Surface(
+                                modifier = Modifier
+                                    .weight(1f)
+                                    .clip(RoundedCornerShape(12.dp))
+                                    .clickable { onSetSrsAlgorithm(algoKey) }
+                                    .testTag("chip_srs_algo_${algoKey.lowercase()}"),
+                                shape = RoundedCornerShape(12.dp),
+                                color = if (isSelected) MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.surfaceContainer,
+                                border = if (isSelected) {
+                                    BorderStroke(2.dp, MaterialTheme.colorScheme.primary)
+                                } else {
+                                    BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f))
+                                }
+                            ) {
+                                Box(
+                                    modifier = Modifier
+                                        .padding(vertical = 12.dp, horizontal = 8.dp)
+                                        .fillMaxWidth(),
+                                    contentAlignment = Alignment.Center
+                                ) {
+                                    Text(
+                                        text = algoLabel,
+                                        style = MaterialTheme.typography.labelSmall,
+                                        fontWeight = if (isSelected) FontWeight.ExtraBold else FontWeight.Normal,
+                                        color = if (isSelected) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.onSurface,
+                                        textAlign = androidx.compose.ui.text.style.TextAlign.Center
+                                    )
+                                }
+                            }
+                        }
+                    }
+
+                    Spacer(modifier = Modifier.height(14.dp))
+
+                    if (srsAlgorithm.equals("FSRS", ignoreCase = true)) {
+                        Surface(
+                            shape = RoundedCornerShape(12.dp),
+                            color = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.25f),
+                            border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(alpha = 0.3f)),
+                            modifier = Modifier.fillMaxWidth()
+                        ) {
+                            Column(modifier = Modifier.padding(12.dp)) {
+                                Row(verticalAlignment = Alignment.CenterVertically) {
+                                    Icon(
+                                        imageVector = Icons.Default.AutoAwesome,
+                                        contentDescription = null,
+                                        tint = MaterialTheme.colorScheme.primary,
+                                        modifier = Modifier.size(16.dp)
+                                    )
+                                    Spacer(modifier = Modifier.width(6.dp))
+                                    Text(
+                                        text = "Ciência da Memória DSR (FSRS-5):",
+                                        style = MaterialTheme.typography.labelMedium,
+                                        fontWeight = FontWeight.Bold,
+                                        color = MaterialTheme.colorScheme.primary
+                                    )
+                                }
+                                Spacer(modifier = Modifier.height(4.dp))
+                                Text(
+                                    text = "O modelo DSR (Dificuldade, Estabilidade e Recuperação) reduz até 30% da carga diária de revisões e elimina o travamento de facilidade (Ease Hell).",
+                                    style = MaterialTheme.typography.bodySmall,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                                )
+                            }
+                        }
+
+                        Spacer(modifier = Modifier.height(14.dp))
+
+                        Text(
+                            text = "Taxa de Retenção Desejada (Target Retention):",
+                            style = MaterialTheme.typography.labelMedium,
+                            fontWeight = FontWeight.Bold
+                        )
+                        Spacer(modifier = Modifier.height(8.dp))
+
+                        val retentionOptions = listOf(
+                            0.85f to "85% (Equilibrado)",
+                            0.90f to "90% (Padrão Ouro)",
+                            0.95f to "95% (Reta Final TCU)"
+                        )
+
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.spacedBy(8.dp)
+                        ) {
+                            retentionOptions.forEach { (retVal, retLabel) ->
+                                val isSelected = kotlin.math.abs(targetRetention - retVal) < 0.02f
+                                FilterChip(
+                                    selected = isSelected,
+                                    onClick = { onSetTargetRetention(retVal) },
+                                    label = {
+                                        Text(
+                                            text = retLabel,
+                                            style = MaterialTheme.typography.labelSmall,
+                                            fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal
+                                        )
+                                    },
+                                    colors = FilterChipDefaults.filterChipColors(
+                                        selectedContainerColor = MaterialTheme.colorScheme.primaryContainer,
+                                        selectedLabelColor = MaterialTheme.colorScheme.onPrimaryContainer
+                                    ),
+                                    modifier = Modifier.weight(1f)
+                                )
+                            }
+                        }
+                    } else {
+                        Text(
+                            text = "O SM-2 clássico utiliza multiplicadores rígidos de facilidade (Ease Factor 1.3 a 2.5). Os intervalos crescem por fatores fixos.",
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
                     }
                 }
             }

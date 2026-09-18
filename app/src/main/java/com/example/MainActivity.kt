@@ -157,6 +157,8 @@ fun AnkiAppNavigation(viewModel: DeckViewModel) {
     val todayReviewedCount by viewModel.todayReviewedCount.collectAsStateWithLifecycle()
     val smartShuffleEnabled by viewModel.smartShuffleEnabled.collectAsStateWithLifecycle()
     val sessionTimerConfig by viewModel.sessionTimerConfig.collectAsStateWithLifecycle()
+    val srsAlgorithm by viewModel.srsAlgorithm.collectAsStateWithLifecycle()
+    val targetRetention by viewModel.targetRetention.collectAsStateWithLifecycle()
     val geminiApiKey by viewModel.geminiApiKey.collectAsStateWithLifecycle()
     val geminiModelVersion by viewModel.geminiModelVersion.collectAsStateWithLifecycle()
     val geminiTelemetry by viewModel.geminiTelemetry.collectAsStateWithLifecycle()
@@ -210,6 +212,8 @@ fun AnkiAppNavigation(viewModel: DeckViewModel) {
                         isCompleted = studyCompleted,
                         sessionStats = sessionStats,
                         timerConfig = sessionTimerConfig,
+                        srsAlgorithm = srsAlgorithm,
+                        targetRetention = targetRetention,
                         onRevealAnswer = { viewModel.revealAnswer() },
                         onRateCard = { rating, timeSpent -> viewModel.rateCurrentCard(rating, timeSpent) },
                         onEditCard = { card ->
@@ -379,6 +383,10 @@ fun AnkiAppNavigation(viewModel: DeckViewModel) {
                         totalDecksCount = l1Decks.size,
                         themeMode = themeMode,
                         accentColor = accentColor,
+                        srsAlgorithm = srsAlgorithm,
+                        targetRetention = targetRetention,
+                        onSetSrsAlgorithm = { viewModel.setSrsAlgorithm(it) },
+                        onSetTargetRetention = { viewModel.setTargetRetention(it) },
                         geminiApiKey = geminiApiKey,
                         geminiModelVersion = geminiModelVersion,
                         supabaseUrl = supabaseUrl,
