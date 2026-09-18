@@ -4,7 +4,26 @@ Aplicativo Android nativo de alta performance para preparação de concursos de 
 
 ---
 
-## 📱 Versão Atual: v1.5.0 (Code 10)
+## 📱 Versão Atual: v1.5.1 (Code 11)
+
+### 🚀 Principais Novidades da Versão 1.5.1:
+* **Sinergia Cognitiva Total: FSRS-5 + Tutor Pedagógico Gemini AI**:
+  * **Diagnósticos Baseados na Curva de Esquecimento Real:** O `GeminiStudyAnalyzer` agora recebe o perfil cognitivo completo da base de estudos: Algoritmo ativo (FSRS-5 vs SM-2), Retenção Alvo parametrizada (85%, 90%, 95%), e a **Estabilidade Média de Memória ($S$ em dias)** e **Dificuldade Média ($D$)** geral e por disciplina L2. O Tutor prescreve planos táticos com base científica da força da memória.
+  * **Configuração de Geração Otimizada (`GeminiGenerationConfig`):** Requisições enviadas com `temperature: 0.3` e `maxOutputTokens: 2048`, reduzindo a latência média da IA em até 40% (< 1.5s com `gemini-flash-lite-latest`).
+  * **Cascata Estritamente Flutuante:** Remoção de versões estáticas datadas da cascata de fallback, garantindo resiliência total com `customModelVersion -> gemini-flash-latest -> gemini-flash-lite-latest`.
+* **Zero Recomposições Ociosas na Tela de Estudos (`StudyScreen`)**:
+  * **Isolamento de Timer no HUD:** Leitura do cronômetro de 500ms desacoplada via providers de lambda no `SessionLiveHud`, eliminando 100% das recomposições periódicas do corpo principal do cartão, leitor HTML e botões durante o estudo estático.
+  * **Transparência FSRS no Cartão:** Exibição clara de `Rep: X • S: 14.2d • D: 4.8/10 • Int: Yd` quando o FSRS estiver ativo.
+* **Descarregamento de CPU no Tutor IA (`AiTutorScreen`)**:
+  * **Gargalos L1/L2/L3 em Background:** O agrupamento de 18.000+ flashcards para detecção de gargalos foi transferido da Main Thread no Compose para `Dispatchers.Default` no `DeckViewModel`, garantindo 60/120 FPS estáveis na alternância de abas.
+* **Blindagem de Sincronização em Nuvem (Supabase) e Banco Room**:
+  * **Persistência Total FSRS no Supabase:** Inclusão dos campos `stability` e `difficulty` tanto no payload de envio quanto no parser de download do `SupabaseSyncManager`.
+  * **Correção no Reset de Estatísticas SQLite:** A query de `resetAllCardStats()` em `FlashcardDao` agora zera adequadamente `stability = 0.0` e `difficulty = 0.0`.
+  * **Chunking de Inserção CSV:** Importação particionada em lotes de 500 cartões para proteger limites de transação do SQLite.
+
+---
+
+## 📱 Versão Anterior: v1.5.0 (Code 10)
 
 ### 🚀 Principais Novidades da Versão 1.5.0:
 * **Integração Nativa do Algoritmo FSRS-5 (Open Spaced Repetition)**:

@@ -184,12 +184,12 @@ fun StudyScreen(
                     .navigationBarsPadding()
                     .padding(horizontal = 16.dp, vertical = 8.dp)
             ) {
-                // Live In-Session Review Status Tracker HUD with Configurable Timer
+                // Live In-Session Review Status Tracker HUD with Configurable Timer (Isolated Recompositions)
                 SessionLiveHud(
                     stats = sessionStats,
                     remaining = (cards.size - currentIndex).coerceAtLeast(1),
-                    sessionElapsedSeconds = sessionElapsedSeconds,
-                    cardElapsedSeconds = cardElapsedSeconds,
+                    sessionElapsedSecondsProvider = { sessionElapsedSeconds },
+                    cardElapsedSecondsProvider = { cardElapsedSeconds },
                     perCardLimit = timerConfig.perCardLimit
                 )
 
@@ -260,8 +260,15 @@ fun StudyScreen(
                                 )
                             }
 
+                            val cardStatsText = remember(card.reps, card.intervalDays, card.easeFactor, card.stability, card.difficulty, srsAlgorithm) {
+                                if (srsAlgorithm.equals("FSRS", ignoreCase = true) && card.stability > 0f) {
+                                    "Rep: ${card.reps} • S: ${String.format("%.1f", card.stability)}d • D: ${String.format("%.1f", card.difficulty)}/10 • Int: ${card.intervalDays}d"
+                                } else {
+                                    "Rep: ${card.reps} • Int: ${card.intervalDays}d • Fator: ${String.format("%.1f", card.easeFactor)}"
+                                }
+                            }
                             Text(
-                                text = "Rep: ${card.reps} • Int: ${card.intervalDays}d • Fator: ${String.format("%.1f", card.easeFactor)}",
+                                text = cardStatsText,
                                 style = MaterialTheme.typography.labelSmall,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant
                             )
@@ -431,10 +438,12 @@ fun StudyScreen(
 private fun SessionLiveHud(
     stats: SessionLiveStats,
     remaining: Int,
-    sessionElapsedSeconds: Long,
-    cardElapsedSeconds: Long,
+    sessionElapsedSecondsProvider: () -> Long,
+    cardElapsedSecondsProvider: () -> Long,
     perCardLimit: PerCardTimeLimit
 ) {
+    val sessionElapsedSeconds = sessionElapsedSecondsProvider()
+    val cardElapsedSeconds = cardElapsedSecondsProvider()
     Surface(
         shape = RoundedCornerShape(10.dp),
         color = MaterialTheme.colorScheme.surfaceContainerLow,

@@ -106,6 +106,8 @@ class SupabaseSyncManager {
                         put("mastery_level", card.masteryLevel)
                         put("due_timestamp", card.dueTimestamp)
                         put("last_reviewed_timestamp", card.lastReviewedTimestamp)
+                        put("stability", card.stability)
+                        put("difficulty", card.difficulty)
                     }
                     chunkArray.put(obj)
                 }
@@ -141,6 +143,8 @@ class SupabaseSyncManager {
                         put("interval_days", card.intervalDays)
                         put("mastery_level", card.masteryLevel)
                         put("due_timestamp", card.dueTimestamp)
+                        put("stability", card.stability)
+                        put("difficulty", card.difficulty)
                     }
                     sampleArray.put(obj)
                 }
@@ -269,7 +273,9 @@ class SupabaseSyncManager {
                     lapses = obj.optInt("lapses", 0),
                     masteryLevel = obj.optInt("mastery_level", 0),
                     dueTimestamp = obj.optLong("due_timestamp", System.currentTimeMillis()),
-                    lastReviewedTimestamp = obj.optLong("last_reviewed_timestamp", 0L)
+                    lastReviewedTimestamp = obj.optLong("last_reviewed_timestamp", 0L),
+                    stability = obj.optDouble("stability", 0.0).toFloat(),
+                    difficulty = obj.optDouble("difficulty", 0.0).toFloat()
                 )
             )
         }

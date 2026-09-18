@@ -232,7 +232,9 @@ class DeckRepository(private val dao: FlashcardDao) {
         )
 
         if (validatedCardsToInsert.isNotEmpty()) {
-            dao.insertAll(validatedCardsToInsert)
+            validatedCardsToInsert.chunked(500).forEach { chunk ->
+                dao.insertAll(chunk)
+            }
         }
 
         return parseResult.copy(
@@ -433,8 +435,10 @@ class DeckRepository(private val dao: FlashcardDao) {
             )
         }
 
+        val isFsrs = algorithm.equals("FSRS", ignoreCase = true)
         val masteryLevel = when {
-            metrics.intervalDays >= 7 && newReps >= 3 -> 2 // Dominado
+            isFsrs && metrics.stability >= 21.0f -> 2 // Dominado no FSRS (estabilidade de 3+ semanas)
+            metrics.intervalDays >= 7 && newReps >= 3 -> 2 // Dominado no SM-2 (3+ repetições e 7+ dias)
             newReps > 0 -> 1 // Em aprendizado
             else -> 0
         }

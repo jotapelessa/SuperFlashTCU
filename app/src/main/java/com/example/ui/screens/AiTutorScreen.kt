@@ -72,6 +72,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.data.model.BottleneckItem
 import com.example.data.model.FlashcardEntity
 import com.example.data.model.L1DeckSummary
 import com.example.data.model.StudyProgressReport
@@ -93,6 +94,7 @@ fun AiTutorScreen(
     l1Decks: List<L1DeckSummary>,
     allCards: List<FlashcardEntity>,
     progressReport: StudyProgressReport,
+    criticalBottlenecks: List<BottleneckItem> = emptyList(),
     onAnalyze: (customQuestion: String?) -> Unit,
     onClearAnalysis: () -> Unit,
     onStudyCriticalCards: ((List<FlashcardEntity>) -> Unit)? = null,
@@ -141,28 +143,6 @@ fun AiTutorScreen(
             "🌐 Governança e Gestão de Riscos (COSO ERM) no setor público",
             "🏆 Simulação de banca: arguição rápida sobre Controle da Administração"
         )
-    }
-
-    // Identificação dos tópicos com maior número de cards vencidos ou menor domínio
-    val criticalBottlenecks by remember(allCards) {
-        derivedStateOf {
-            val now = System.currentTimeMillis()
-            allCards.groupBy { "${it.l1} > ${it.l2}" }
-                .map { (key, cards) ->
-                    val dueCount = cards.count { it.dueTimestamp <= now }
-                    val masteredCount = cards.count { it.masteryLevel >= 2 }
-                    val masteryRate = if (cards.isNotEmpty()) (masteredCount.toFloat() / cards.size) * 100f else 0f
-                    BottleneckItem(
-                        discipline = key,
-                        totalCards = cards.size,
-                        dueCards = dueCount,
-                        masteryRate = masteryRate,
-                        cards = cards
-                    )
-                }
-                .filter { it.dueCards > 0 || it.masteryRate < 50f }
-                .sortedWith(compareByDescending<BottleneckItem> { it.dueCards }.thenBy { it.masteryRate })
-        }
     }
 
     Scaffold(
@@ -813,6 +793,15 @@ fun AiTutorScreen(
                                                     style = MaterialTheme.typography.labelSmall,
                                                     color = MaterialTheme.colorScheme.onSurfaceVariant
                                                 )
+                                                if (item.avgStability > 0f) {
+                                                    Spacer(modifier = Modifier.width(10.dp))
+                                                    Text(
+                                                        text = "S: ${String.format("%.1f", item.avgStability)}d",
+                                                        style = MaterialTheme.typography.labelSmall,
+                                                        fontWeight = FontWeight.Bold,
+                                                        color = MaterialTheme.colorScheme.primary
+                                                    )
+                                                }
                                             }
                                         }
 
@@ -845,11 +834,3 @@ fun AiTutorScreen(
         }
     }
 }
-
-private data class BottleneckItem(
-    val discipline: String,
-    val totalCards: Int,
-    val dueCards: Int,
-    val masteryRate: Float,
-    val cards: List<FlashcardEntity>
-)

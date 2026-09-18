@@ -28,9 +28,16 @@ data class GeminiContent(
 )
 
 @JsonClass(generateAdapter = true)
+data class GeminiGenerationConfig(
+    val temperature: Double? = 0.3,
+    val maxOutputTokens: Int? = 2048
+)
+
+@JsonClass(generateAdapter = true)
 data class GeminiRequest(
     val contents: List<GeminiContent>,
-    val systemInstruction: GeminiContent? = null
+    val systemInstruction: GeminiContent? = null,
+    val generationConfig: GeminiGenerationConfig? = GeminiGenerationConfig()
 )
 
 @JsonClass(generateAdapter = true)
@@ -84,7 +91,9 @@ class GeminiStudyAnalyzer(
         dailyGoal: Int,
         customQuestion: String? = null,
         customApiKey: String? = null,
-        customModelVersion: String? = null
+        customModelVersion: String? = null,
+        srsAlgorithm: String = "FSRS",
+        targetRetention: Float = 0.90f
     ): Result<String> {
         return analyzeStudyDataWithMetadata(
             l1Decks = l1Decks,
@@ -94,7 +103,9 @@ class GeminiStudyAnalyzer(
             dailyGoal = dailyGoal,
             customQuestion = customQuestion,
             customApiKey = customApiKey,
-            customModelVersion = customModelVersion
+            customModelVersion = customModelVersion,
+            srsAlgorithm = srsAlgorithm,
+            targetRetention = targetRetention
         ).map { it.text }
     }
 
@@ -106,7 +117,9 @@ class GeminiStudyAnalyzer(
         dailyGoal: Int,
         customQuestion: String? = null,
         customApiKey: String? = null,
-        customModelVersion: String? = null
+        customModelVersion: String? = null,
+        srsAlgorithm: String = "FSRS",
+        targetRetention: Float = 0.90f
     ): Result<GeminiAnalysisResult> = withContext(Dispatchers.IO) {
         val resolvedDefault = defaultApiKeyProvider()
         val apiKey = if (!customApiKey.isNullOrBlank()) customApiKey.trim() else resolvedDefault
@@ -120,13 +133,23 @@ class GeminiStudyAnalyzer(
         val modelsToTry = listOf(
             requestedModel,
             "gemini-flash-latest",
-            "gemini-flash-lite-latest",
-            "gemini-2.0-flash"
+            "gemini-flash-lite-latest"
         ).distinct()
 
-        // 1. Build prompt context from L1/L2/L3 hierarchies and study stats
+        // 1. Build prompt context from L1/L2/L3 hierarchies, SRS parameters, and study stats
         val promptBuilder = StringBuilder()
-        promptBuilder.appendLine("## ESTATÍSTICAS E PROGRESSO DE ESTUDO (ANKI REPETIÇÃO ESPAÇADA)")
+        promptBuilder.appendLine("## ESTATÍSTICAS E PROGRESSO DE ESTUDO (REPETIÇÃO ESPAÇADA)")
+        promptBuilder.appendLine("- Algoritmo SRS Ativo: $srsAlgorithm")
+        if (srsAlgorithm.equals("FSRS", ignoreCase = true)) {
+            promptBuilder.appendLine("- Retenção Alvo Parametrizada: ${(targetRetention * 100).toInt()}%")
+            val cardsWithS = allCards.filter { it.stability > 0f }
+            if (cardsWithS.isNotEmpty()) {
+                val globalAvgS = cardsWithS.map { it.stability.toDouble() }.average()
+                val globalAvgD = cardsWithS.map { it.difficulty.toDouble() }.average()
+                promptBuilder.appendLine("- Estabilidade Média Global (S): ${String.format("%.1f", globalAvgS)} dias")
+                promptBuilder.appendLine("- Dificuldade Média Global (D): ${String.format("%.1f", globalAvgD)} / 10")
+            }
+        }
         promptBuilder.appendLine("- Meta Diária: $dailyGoal cards/dia")
         promptBuilder.appendLine("- Cards Revisados Hoje: $todayReviewed")
         promptBuilder.appendLine("- Dias Consecutivos (Streak): ${progressReport.currentStreakDays} dias")
@@ -155,7 +178,13 @@ class GeminiStudyAnalyzer(
                 l2Groups.forEach { (l2Name, l2Cards) ->
                     val l2Due = l2Cards.count { it.dueTimestamp <= nowTime }
                     val l2Mastered = l2Cards.count { it.masteryLevel >= 2 }
-                    promptBuilder.appendLine("    * [L2 Disciplina] $l2Name: ${l2Cards.size} cards (Vencidos: $l2Due, Dominados: $l2Mastered)")
+                    val l2WithS = l2Cards.filter { it.stability > 0f }
+                    val fsrsInfo = if (srsAlgorithm.equals("FSRS", ignoreCase = true) && l2WithS.isNotEmpty()) {
+                        val sAvg = l2WithS.map { it.stability.toDouble() }.average()
+                        val dAvg = l2WithS.map { it.difficulty.toDouble() }.average()
+                        ", Estabilidade Média S: ${String.format("%.1f", sAvg)}d, Dificuldade D: ${String.format("%.1f", dAvg)}/10"
+                    } else ""
+                    promptBuilder.appendLine("    * [L2 Disciplina] $l2Name: ${l2Cards.size} cards (Vencidos: $l2Due, Dominados: $l2Mastered$fsrsInfo)")
 
                     val l3Groups = l2Cards.groupBy { it.l3 }
                     val dueL3Groups = l3Groups.filter { (_, cards) -> cards.any { it.dueTimestamp <= nowTime } }
@@ -228,7 +257,10 @@ class GeminiStudyAnalyzer(
                         ?.filter { it.thought != true }
                         ?.mapNotNull { it.text?.takeIf { t -> t.isNotBlank() } }
 
-                    val fullText = textParts?.joinToString("\n\n")
+                    val rawText = textParts?.joinToString("\n\n")
+                    val fullText = rawText
+                        ?.replace(Regex("<thought>[\\s\\S]*?</thought>", RegexOption.IGNORE_CASE), "")
+                        ?.trim()
 
                     if (!fullText.isNullOrBlank()) {
                         val usage = parsedResponse.usageMetadata
@@ -280,8 +312,7 @@ class GeminiStudyAnalyzer(
         val modelsToTry = listOf(
             primary,
             "gemini-flash-latest",
-            "gemini-flash-lite-latest",
-            "gemini-2.0-flash"
+            "gemini-flash-lite-latest"
         ).distinct()
 
         val payload = GeminiRequest(

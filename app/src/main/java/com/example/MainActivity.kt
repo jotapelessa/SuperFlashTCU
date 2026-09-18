@@ -159,6 +159,7 @@ fun AnkiAppNavigation(viewModel: DeckViewModel) {
     val sessionTimerConfig by viewModel.sessionTimerConfig.collectAsStateWithLifecycle()
     val srsAlgorithm by viewModel.srsAlgorithm.collectAsStateWithLifecycle()
     val targetRetention by viewModel.targetRetention.collectAsStateWithLifecycle()
+    val criticalBottlenecks by viewModel.criticalBottlenecks.collectAsStateWithLifecycle()
     val geminiApiKey by viewModel.geminiApiKey.collectAsStateWithLifecycle()
     val geminiModelVersion by viewModel.geminiModelVersion.collectAsStateWithLifecycle()
     val geminiTelemetry by viewModel.geminiTelemetry.collectAsStateWithLifecycle()
@@ -343,6 +344,7 @@ fun AnkiAppNavigation(viewModel: DeckViewModel) {
                         l1Decks = l1Decks,
                         allCards = allCards,
                         progressReport = progressReport,
+                        criticalBottlenecks = criticalBottlenecks,
                         onAnalyze = { customQuestion ->
                             viewModel.runAiAnalysis(customQuestion)
                         },

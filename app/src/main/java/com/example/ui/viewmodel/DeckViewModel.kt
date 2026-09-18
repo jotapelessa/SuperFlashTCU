@@ -8,6 +8,7 @@ import com.example.data.importer.CsvParseResult
 import com.example.data.importer.SampleData
 import com.example.data.local.AppDatabase
 import com.example.data.local.HierarchyFolderTuple
+import com.example.data.model.BottleneckItem
 import com.example.data.model.DeckTimeSpent
 import com.example.data.model.DomainStats
 import com.example.data.model.FlashcardEntity
@@ -152,6 +153,36 @@ class DeckViewModel(application: Application) : AndroidViewModel(application) {
             started = SharingStarted.Eagerly,
             initialValue = emptyList()
         )
+
+    val criticalBottlenecks: StateFlow<List<BottleneckItem>> = repository.allCards.map { cards ->
+        val now = System.currentTimeMillis()
+        cards.groupBy { "${it.l1} > ${it.l2}" }
+            .map { (key, disciplineCards) ->
+                val dueCount = disciplineCards.count { it.dueTimestamp <= now }
+                val masteredCount = disciplineCards.count { it.masteryLevel >= 2 }
+                val masteryRate = if (disciplineCards.isNotEmpty()) (masteredCount.toFloat() / disciplineCards.size) * 100f else 0f
+                val cardsWithS = disciplineCards.filter { it.stability > 0f }
+                val avgS = if (cardsWithS.isNotEmpty()) cardsWithS.map { it.stability.toDouble() }.average().toFloat() else 0f
+                val avgD = if (cardsWithS.isNotEmpty()) cardsWithS.map { it.difficulty.toDouble() }.average().toFloat() else 0f
+                BottleneckItem(
+                    discipline = key,
+                    totalCards = disciplineCards.size,
+                    dueCards = dueCount,
+                    masteryRate = masteryRate,
+                    avgStability = avgS,
+                    avgDifficulty = avgD,
+                    cards = disciplineCards
+                )
+            }
+            .filter { it.dueCards > 0 || it.masteryRate < 50f || (it.avgStability in 0.1f..7.0f) }
+            .sortedWith(compareByDescending<BottleneckItem> { it.dueCards }.thenBy { it.masteryRate })
+    }
+    .flowOn(Dispatchers.Default)
+    .stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.Eagerly,
+        initialValue = emptyList()
+    )
 
     private val _customizationsTrigger = MutableStateFlow(System.currentTimeMillis())
 
@@ -902,7 +933,9 @@ class DeckViewModel(application: Application) : AndroidViewModel(application) {
                 dailyGoal = dailyStudyGoal.value,
                 customQuestion = customQuestion,
                 customApiKey = geminiApiKey.value,
-                customModelVersion = geminiModelVersion.value
+                customModelVersion = geminiModelVersion.value,
+                srsAlgorithm = _srsAlgorithm.value,
+                targetRetention = _targetRetention.value
             )
             result.onSuccess { meta ->
                 _aiAnalysisResult.value = meta.text

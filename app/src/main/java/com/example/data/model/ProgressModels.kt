@@ -127,3 +127,13 @@ data class SessionLiveStats(
     val successRate: Float
         get() = if (completedCards > 0) ((goodCount + easyCount).toFloat() / completedCards) * 100f else 0f
 }
+
+data class BottleneckItem(
+    val discipline: String,
+    val totalCards: Int,
+    val dueCards: Int,
+    val masteryRate: Float,
+    val avgStability: Float = 0f,
+    val avgDifficulty: Float = 0f,
+    val cards: List<FlashcardEntity>
+)
