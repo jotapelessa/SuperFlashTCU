@@ -4,7 +4,22 @@ Aplicativo Android nativo de alta performance para preparação de concursos de 
 
 ---
 
-## 📱 Versão Atual: v1.5.3 (Code 13)
+## 📱 Versão Atual: v1.5.4 (Code 14)
+
+### 🚀 Principais Novidades da Versão 1.5.4:
+* **Tabelas com Coluna Fixa Congelada (*Sticky Column*) & Alinhamento Rígido (`AiMarkdownContent.kt`)**:
+  * **Coluna Fixa de Matérias/Carreiras:** A primeira coluna com o nome da disciplina ou carreira permanece **congelada e sempre visível** à esquerda da tela, com divisor vertical semântico e indicador de status, enquanto apenas os dados numéricos e métricas complementares se movem horizontalmente.
+  * **Alinhamento Vertical Determinístico:** Cálculo memoizado de larguras de coluna com dimensionamento rígido e alturas sincronizadas (`44dp` cabeçalho, `50dp` linhas), eliminando 100% dos problemas de colunas desalinhadas nas tabelas geradas pelo Gemini AI.
+  * **Zebra Coordenada:** Alternância de cores de fundo (`surface` vs `surfaceContainerLowest`) aplicada em perfeita harmonia entre a célula fixa e as células roláveis.
+* **Dashboards Gráficos Expandidos L1 e L2 no Tutor AI (`AiTutorScreen.kt`)**:
+  * **Gráfico de Barras Empilhadas de Distribuição Cognitiva:** Cada carreira L1 agora conta com barra segmentada multipartite exibindo a proporção exata de cartões Dominados (Verde), Em Aprendizado (Âmbar), Novos (Azul) e Vencidos (Vermelho), com mini-legenda explicativa e quantitativos.
+  * **Tabela Comparativa Nativa de Carreiras:** Tabela M3 integrada para visualização tabular instantânea (0ms de rede) de todas as carreiras ativas com Total, Vencidos e % de Domínio.
+  * **Quadro Tático de Disciplinas L2 com 3 Modos:** Seletor por `FilterChip` entre *🏆 Top Retenção*, *⚠️ Maior Urgência* e *📊 Todas as Disciplinas*, com barras individuais de retenção e badges de estabilidade FSRS-5 ($S$ em dias).
+  * **Monitor de Saúde Cognitiva e Sobrecarga:** Novo card com cálculo da taxa de vencimentos do acervo (`% Vencidos`) acompanhado de semáforo preventivo (*🟢 Carga Equilibrada*, *🟡 Revisão Recomendada*, *🔴 Risco de Sobrecarga*).
+
+---
+
+## 📱 Versão Anterior: v1.5.3 (Code 13)
 
 ### 🚀 Principais Novidades da Versão 1.5.3:
 * **Controle Granular de Baralhos L1 na Análise do Tutor Gemini AI (Itens 1.1 e 3.1)**:

@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -25,6 +26,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.ui.draw.clip
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AutoAwesome
 import androidx.compose.material.icons.filled.BarChart
@@ -155,6 +157,10 @@ fun AiTutorScreen(
         l2PerformanceStats.sortedWith(compareByDescending<L2PerformanceItem> { it.due }.thenBy { it.masteryPercent }).take(5)
     }
 
+    val allSortedL2 = remember(l2PerformanceStats) {
+        l2PerformanceStats.sortedWith(compareByDescending<L2PerformanceItem> { it.due }.thenByDescending { it.total })
+    }
+
     val fsrsGlobalStats = remember(eligibleCards) {
         val cardsWithS = eligibleCards.filter { it.stability > 0f }
         if (cardsWithS.isNotEmpty()) {
@@ -162,6 +168,15 @@ fun AiTutorScreen(
             val avgD = cardsWithS.map { it.difficulty.toDouble() }.average()
             Triple(cardsWithS.size, avgS, avgD)
         } else null
+    }
+
+    val cognitiveHealthStats = remember(eligibleCards, progressReport) {
+        val total = eligibleCards.size
+        if (total > 0) {
+            val dueRate = (progressReport.dueNowCount.toFloat() / total * 100f).coerceIn(0f, 100f)
+            val masteredRate = (progressReport.masteredCount.toFloat() / total * 100f).coerceIn(0f, 100f)
+            Pair(dueRate, masteredRate)
+        } else Pair(0f, 0f)
     }
 
     val quickPrompts = remember {
@@ -490,73 +505,156 @@ fun AiTutorScreen(
 
                                         l1Decks.forEachIndexed { index, deck ->
                                             if (index > 0) {
-                                                Spacer(modifier = Modifier.height(12.dp))
+                                                Spacer(modifier = Modifier.height(14.dp))
                                             }
                                             val masteryRatio = (deck.masteryPercentage / 100f).coerceIn(0f, 1f)
                                             val progressColor = when {
-                                                deck.masteryPercentage >= 70f -> MaterialTheme.colorScheme.primary
-                                                deck.masteryPercentage >= 40f -> MaterialTheme.colorScheme.tertiary
-                                                else -> MaterialTheme.colorScheme.error
+                                                deck.masteryPercentage >= 70f -> Color(0xFF388E3C)
+                                                deck.masteryPercentage >= 40f -> Color(0xFFF57C00)
+                                                else -> Color(0xFFD32F2F)
                                             }
+                                            val statusTag = when {
+                                                deck.masteryPercentage >= 70f -> "🟢 Consolidado"
+                                                deck.masteryPercentage >= 40f -> "🟡 Em Alerta"
+                                                else -> "🔴 Crítico"
+                                            }
+
+                                            val totalC = deck.totalCards.coerceAtLeast(1)
+                                            val masteredW = (deck.masteredCards.toFloat() / totalC).coerceIn(0f, 1f)
+                                            val learningW = (deck.learningCards.toFloat() / totalC).coerceIn(0f, 1f)
+                                            val newC = (deck.totalCards - deck.masteredCards - deck.learningCards).coerceAtLeast(0)
+                                            val newW = (newC.toFloat() / totalC).coerceIn(0f, 1f)
+
                                             Column(modifier = Modifier.fillMaxWidth()) {
                                                 Row(
                                                     modifier = Modifier.fillMaxWidth(),
                                                     horizontalArrangement = Arrangement.SpaceBetween,
                                                     verticalAlignment = Alignment.CenterVertically
                                                 ) {
-                                                    Text(
-                                                        text = deck.l1,
-                                                        style = MaterialTheme.typography.bodyMedium,
-                                                        fontWeight = FontWeight.SemiBold,
-                                                        color = MaterialTheme.colorScheme.onSurface,
+                                                    Row(
+                                                        verticalAlignment = Alignment.CenterVertically,
                                                         modifier = Modifier.weight(1f)
-                                                    )
+                                                    ) {
+                                                        Text(
+                                                            text = deck.l1,
+                                                            style = MaterialTheme.typography.bodyMedium,
+                                                            fontWeight = FontWeight.Bold,
+                                                            color = MaterialTheme.colorScheme.onSurface
+                                                        )
+                                                        if (!deck.isAiAnalysisEnabled) {
+                                                            Spacer(modifier = Modifier.width(6.dp))
+                                                            Surface(
+                                                                shape = RoundedCornerShape(4.dp),
+                                                                color = MaterialTheme.colorScheme.errorContainer.copy(alpha = 0.6f)
+                                                            ) {
+                                                                Text(
+                                                                    text = "IA Pausada",
+                                                                    style = MaterialTheme.typography.labelSmall,
+                                                                    color = MaterialTheme.colorScheme.onErrorContainer,
+                                                                    modifier = Modifier.padding(horizontal = 4.dp, vertical = 1.dp)
+                                                                )
+                                                            }
+                                                        }
+                                                    }
                                                     Text(
-                                                        text = "${String.format("%.1f", deck.masteryPercentage)}% Domínio",
-                                                        style = MaterialTheme.typography.labelMedium,
-                                                        fontWeight = FontWeight.Bold,
-                                                        color = progressColor
+                                                        text = statusTag,
+                                                        style = MaterialTheme.typography.labelSmall,
+                                                        fontWeight = FontWeight.Bold
                                                     )
                                                 }
                                                 Spacer(modifier = Modifier.height(4.dp))
-                                                LinearProgressIndicator(
-                                                    progress = { masteryRatio },
+
+                                                // Barra Segmentada Empilhada (Stacked Bar de Distribuição Cognitiva)
+                                                Row(
                                                     modifier = Modifier
                                                         .fillMaxWidth()
-                                                        .height(8.dp),
-                                                    color = progressColor,
-                                                    trackColor = MaterialTheme.colorScheme.surfaceVariant
-                                                )
-                                                Spacer(modifier = Modifier.height(4.dp))
+                                                        .height(10.dp)
+                                                        .clip(RoundedCornerShape(5.dp))
+                                                        .background(MaterialTheme.colorScheme.surfaceVariant)
+                                                ) {
+                                                    if (masteredW > 0f) {
+                                                        Box(modifier = Modifier.weight(masteredW).fillMaxHeight().background(Color(0xFF388E3C)))
+                                                    }
+                                                    if (learningW > 0f) {
+                                                        Box(modifier = Modifier.weight(learningW).fillMaxHeight().background(Color(0xFFF57C00)))
+                                                    }
+                                                    if (newW > 0f) {
+                                                        Box(modifier = Modifier.weight(newW).fillMaxHeight().background(Color(0xFF1976D2)))
+                                                    }
+                                                }
+                                                Spacer(modifier = Modifier.height(6.dp))
+
+                                                // Mini-Legenda de Distribuição de Flashcards
                                                 Row(
                                                     modifier = Modifier.fillMaxWidth(),
-                                                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                                                    horizontalArrangement = Arrangement.SpaceBetween
                                                 ) {
                                                     Text(
-                                                        text = "Cards: ${deck.totalCards}",
+                                                        text = "🟢 Dom: ${deck.masteredCards} (${String.format("%.0f", deck.masteryPercentage)}%)",
                                                         style = MaterialTheme.typography.labelSmall,
                                                         color = MaterialTheme.colorScheme.onSurfaceVariant
                                                     )
                                                     Text(
-                                                        text = "•",
-                                                        style = MaterialTheme.typography.labelSmall,
-                                                        color = MaterialTheme.colorScheme.outline
-                                                    )
-                                                    Text(
-                                                        text = "Vencidos: ${deck.dueCards}",
-                                                        style = MaterialTheme.typography.labelSmall,
-                                                        color = if (deck.dueCards > 0) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.primary
-                                                    )
-                                                    Text(
-                                                        text = "•",
-                                                        style = MaterialTheme.typography.labelSmall,
-                                                        color = MaterialTheme.colorScheme.outline
-                                                    )
-                                                    Text(
-                                                        text = "Dominados: ${deck.masteredCards}",
+                                                        text = "🟠 Aprend: ${deck.learningCards}",
                                                         style = MaterialTheme.typography.labelSmall,
                                                         color = MaterialTheme.colorScheme.onSurfaceVariant
                                                     )
+                                                    Text(
+                                                        text = "🔵 Novos: $newC",
+                                                        style = MaterialTheme.typography.labelSmall,
+                                                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                                                    )
+                                                    Text(
+                                                        text = "🔴 Venc: ${deck.dueCards}",
+                                                        style = MaterialTheme.typography.labelSmall,
+                                                        fontWeight = if (deck.dueCards > 0) FontWeight.Bold else FontWeight.Normal,
+                                                        color = if (deck.dueCards > 0) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.outline
+                                                    )
+                                                }
+                                            }
+                                        }
+
+                                        // Tabela Comparativa Estruturada L1 Nativa
+                                        if (l1Decks.size > 1) {
+                                            Spacer(modifier = Modifier.height(14.dp))
+                                            Surface(
+                                                shape = RoundedCornerShape(10.dp),
+                                                color = MaterialTheme.colorScheme.surface,
+                                                border = androidx.compose.foundation.BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f)),
+                                                modifier = Modifier.fillMaxWidth()
+                                            ) {
+                                                Column(modifier = Modifier.fillMaxWidth()) {
+                                                    // Cabeçalho da Tabela
+                                                    Row(
+                                                        modifier = Modifier
+                                                            .fillMaxWidth()
+                                                            .background(MaterialTheme.colorScheme.surfaceContainerHighest)
+                                                            .padding(horizontal = 8.dp, vertical = 6.dp),
+                                                        horizontalArrangement = Arrangement.SpaceBetween,
+                                                        verticalAlignment = Alignment.CenterVertically
+                                                    ) {
+                                                        Text("Carreira", style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold, modifier = Modifier.weight(1.3f))
+                                                        Text("Cards", style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold, modifier = Modifier.weight(0.7f), textAlign = androidx.compose.ui.text.style.TextAlign.Center)
+                                                        Text("Vencidos", style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold, modifier = Modifier.weight(0.9f), textAlign = androidx.compose.ui.text.style.TextAlign.Center)
+                                                        Text("Domínio", style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold, modifier = Modifier.weight(0.9f), textAlign = androidx.compose.ui.text.style.TextAlign.End)
+                                                    }
+                                                    // Linhas da Tabela
+                                                    l1Decks.forEachIndexed { rIdx, d ->
+                                                        val bg = if (rIdx % 2 == 0) MaterialTheme.colorScheme.surface else MaterialTheme.colorScheme.surfaceContainerLowest
+                                                        Row(
+                                                            modifier = Modifier
+                                                                .fillMaxWidth()
+                                                                .background(bg)
+                                                                .padding(horizontal = 8.dp, vertical = 6.dp),
+                                                            horizontalArrangement = Arrangement.SpaceBetween,
+                                                            verticalAlignment = Alignment.CenterVertically
+                                                        ) {
+                                                            Text(d.l1, style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.SemiBold, maxLines = 1, overflow = androidx.compose.ui.text.style.TextOverflow.Ellipsis, modifier = Modifier.weight(1.3f))
+                                                            Text("${d.totalCards}", style = MaterialTheme.typography.labelSmall, modifier = Modifier.weight(0.7f), textAlign = androidx.compose.ui.text.style.TextAlign.Center)
+                                                            Text("${d.dueCards}", style = MaterialTheme.typography.labelSmall, fontWeight = if (d.dueCards > 0) FontWeight.Bold else FontWeight.Normal, color = if (d.dueCards > 0) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.outline, modifier = Modifier.weight(0.9f), textAlign = androidx.compose.ui.text.style.TextAlign.Center)
+                                                            Text("${String.format("%.1f", d.masteryPercentage)}%", style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold, color = if (d.masteryPercentage >= 70f) Color(0xFF388E3C) else MaterialTheme.colorScheme.onSurface, modifier = Modifier.weight(0.9f), textAlign = androidx.compose.ui.text.style.TextAlign.End)
+                                                        }
+                                                    }
                                                 }
                                             }
                                         }
@@ -583,9 +681,17 @@ fun AiTutorScreen(
                                         ) {
                                             Row(verticalAlignment = Alignment.CenterVertically) {
                                                 Icon(
-                                                    imageVector = if (l2RankingMode == 0) Icons.Default.TrendingUp else Icons.Default.TrendingDown,
+                                                    imageVector = when (l2RankingMode) {
+                                                        0 -> Icons.Default.TrendingUp
+                                                        1 -> Icons.Default.TrendingDown
+                                                        else -> Icons.Default.BarChart
+                                                    },
                                                     contentDescription = null,
-                                                    tint = if (l2RankingMode == 0) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.error,
+                                                    tint = when (l2RankingMode) {
+                                                        0 -> MaterialTheme.colorScheme.primary
+                                                        1 -> MaterialTheme.colorScheme.error
+                                                        else -> MaterialTheme.colorScheme.tertiary
+                                                    },
                                                     modifier = Modifier.size(20.dp)
                                                 )
                                                 Spacer(modifier = Modifier.width(8.dp))
@@ -612,44 +718,66 @@ fun AiTutorScreen(
                                                 onClick = { l2RankingMode = 1 },
                                                 label = { Text("⚠️ Maior Urgência", style = MaterialTheme.typography.labelSmall) }
                                             )
+                                            FilterChip(
+                                                selected = l2RankingMode == 2,
+                                                onClick = { l2RankingMode = 2 },
+                                                label = { Text("📊 Todas (${l2PerformanceStats.size})", style = MaterialTheme.typography.labelSmall) }
+                                            )
                                         }
                                         Spacer(modifier = Modifier.height(10.dp))
 
-                                        val currentList = if (l2RankingMode == 0) topMasteredL2 else topCriticalL2
+                                        val currentList = when (l2RankingMode) {
+                                            0 -> topMasteredL2
+                                            1 -> topCriticalL2
+                                            else -> allSortedL2
+                                        }
                                         currentList.forEachIndexed { idx, itemL2 ->
-                                            if (idx > 0) Spacer(modifier = Modifier.height(8.dp))
-                                            Row(
-                                                modifier = Modifier.fillMaxWidth(),
-                                                horizontalArrangement = Arrangement.SpaceBetween,
-                                                verticalAlignment = Alignment.CenterVertically
-                                            ) {
-                                                Column(modifier = Modifier.weight(1f)) {
-                                                    Text(
-                                                        text = itemL2.l2,
-                                                        style = MaterialTheme.typography.bodySmall,
-                                                        fontWeight = FontWeight.Bold,
-                                                        maxLines = 1,
-                                                        color = MaterialTheme.colorScheme.onSurface
-                                                    )
-                                                    val fsrsNote = if (itemL2.avgStability > 0) " • S: ${String.format("%.1f", itemL2.avgStability)}d" else ""
-                                                    Text(
-                                                        text = "${itemL2.total} cards • Vencidos: ${itemL2.due}$fsrsNote",
-                                                        style = MaterialTheme.typography.labelSmall,
-                                                        color = if (itemL2.due > 0) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.outline
-                                                    )
-                                                }
-                                                Surface(
-                                                    shape = RoundedCornerShape(8.dp),
-                                                    color = if (itemL2.masteryPercent >= 60f) MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.6f) else MaterialTheme.colorScheme.surfaceVariant
+                                            if (idx > 0) Spacer(modifier = Modifier.height(10.dp))
+                                            Column(modifier = Modifier.fillMaxWidth()) {
+                                                Row(
+                                                    modifier = Modifier.fillMaxWidth(),
+                                                    horizontalArrangement = Arrangement.SpaceBetween,
+                                                    verticalAlignment = Alignment.CenterVertically
                                                 ) {
-                                                    Text(
-                                                        text = "${String.format("%.0f", itemL2.masteryPercent)}%",
-                                                        style = MaterialTheme.typography.labelSmall,
-                                                        fontWeight = FontWeight.Bold,
-                                                        color = if (itemL2.masteryPercent >= 60f) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.onSurfaceVariant,
-                                                        modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
-                                                    )
+                                                    Column(modifier = Modifier.weight(1f)) {
+                                                        Text(
+                                                            text = itemL2.l2,
+                                                            style = MaterialTheme.typography.bodySmall,
+                                                            fontWeight = FontWeight.Bold,
+                                                            maxLines = 1,
+                                                            overflow = androidx.compose.ui.text.style.TextOverflow.Ellipsis,
+                                                            color = MaterialTheme.colorScheme.onSurface
+                                                        )
+                                                        val fsrsNote = if (itemL2.avgStability > 0) " • S: ${String.format("%.1f", itemL2.avgStability)}d" else ""
+                                                        Text(
+                                                            text = "${itemL2.total} cards • Vencidos: ${itemL2.due}$fsrsNote",
+                                                            style = MaterialTheme.typography.labelSmall,
+                                                            color = if (itemL2.due > 0) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.outline
+                                                        )
+                                                    }
+                                                    Surface(
+                                                        shape = RoundedCornerShape(8.dp),
+                                                        color = if (itemL2.masteryPercent >= 60f) MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.6f) else MaterialTheme.colorScheme.surfaceVariant
+                                                    ) {
+                                                        Text(
+                                                            text = "${String.format("%.0f", itemL2.masteryPercent)}%",
+                                                            style = MaterialTheme.typography.labelSmall,
+                                                            fontWeight = FontWeight.Bold,
+                                                            color = if (itemL2.masteryPercent >= 60f) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.onSurfaceVariant,
+                                                            modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
+                                                        )
+                                                    }
                                                 }
+                                                Spacer(modifier = Modifier.height(4.dp))
+                                                LinearProgressIndicator(
+                                                    progress = { (itemL2.masteryPercent / 100f).coerceIn(0f, 1f) },
+                                                    modifier = Modifier
+                                                        .fillMaxWidth()
+                                                        .height(6.dp)
+                                                        .clip(RoundedCornerShape(3.dp)),
+                                                    color = if (itemL2.masteryPercent >= 60f) Color(0xFF388E3C) else if (itemL2.masteryPercent >= 40f) Color(0xFFF57C00) else Color(0xFFD32F2F),
+                                                    trackColor = MaterialTheme.colorScheme.surfaceVariant
+                                                )
                                             }
                                         }
                                     }
@@ -657,7 +785,7 @@ fun AiTutorScreen(
                             }
                         }
 
-                        // 3. Indicadores de Memória FSRS-5
+                        // 3. Indicadores de Memória FSRS-5 & Saúde Cognitiva Global
                         if (fsrsGlobalStats != null) {
                             item {
                                 Card(
@@ -667,36 +795,60 @@ fun AiTutorScreen(
                                     ),
                                     modifier = Modifier.fillMaxWidth()
                                 ) {
-                                    Row(
-                                        modifier = Modifier.padding(14.dp),
-                                        horizontalArrangement = Arrangement.SpaceBetween,
-                                        verticalAlignment = Alignment.CenterVertically
-                                    ) {
-                                        Column {
-                                            Text(
-                                                text = "🧠 Motor FSRS-5 (Memória Global)",
-                                                style = MaterialTheme.typography.titleSmall,
-                                                fontWeight = FontWeight.Bold,
-                                                color = MaterialTheme.colorScheme.onSecondaryContainer
-                                            )
-                                            Text(
-                                                text = "${fsrsGlobalStats.first} flashcards modelados pelo algoritmo DSR",
-                                                style = MaterialTheme.typography.bodySmall,
-                                                color = MaterialTheme.colorScheme.onSecondaryContainer.copy(alpha = 0.8f)
-                                            )
+                                    Column(modifier = Modifier.padding(14.dp)) {
+                                        Row(
+                                            modifier = Modifier.fillMaxWidth(),
+                                            horizontalArrangement = Arrangement.SpaceBetween,
+                                            verticalAlignment = Alignment.CenterVertically
+                                        ) {
+                                            Column(modifier = Modifier.weight(1f)) {
+                                                Text(
+                                                    text = "🧠 Motor FSRS-5 (Memória Global)",
+                                                    style = MaterialTheme.typography.titleSmall,
+                                                    fontWeight = FontWeight.Bold,
+                                                    color = MaterialTheme.colorScheme.onSecondaryContainer
+                                                )
+                                                Text(
+                                                    text = "${fsrsGlobalStats.first} flashcards modelados pelo algoritmo DSR",
+                                                    style = MaterialTheme.typography.bodySmall,
+                                                    color = MaterialTheme.colorScheme.onSecondaryContainer.copy(alpha = 0.8f)
+                                                )
+                                            }
+                                            Column(horizontalAlignment = Alignment.End) {
+                                                Text(
+                                                    text = "S: ${String.format("%.1f", fsrsGlobalStats.second)}d",
+                                                    style = MaterialTheme.typography.labelMedium,
+                                                    fontWeight = FontWeight.Bold,
+                                                    color = MaterialTheme.colorScheme.primary
+                                                )
+                                                Text(
+                                                    text = "D: ${String.format("%.1f", fsrsGlobalStats.third)}/10",
+                                                    style = MaterialTheme.typography.labelSmall,
+                                                    color = MaterialTheme.colorScheme.outline
+                                                )
+                                            }
                                         }
-                                        Column(horizontalAlignment = Alignment.End) {
-                                            Text(
-                                                text = "S: ${String.format("%.1f", fsrsGlobalStats.second)}d",
-                                                style = MaterialTheme.typography.labelMedium,
-                                                fontWeight = FontWeight.Bold,
-                                                color = MaterialTheme.colorScheme.primary
-                                            )
-                                            Text(
-                                                text = "D: ${String.format("%.1f", fsrsGlobalStats.third)}/10",
-                                                style = MaterialTheme.typography.labelSmall,
-                                                color = MaterialTheme.colorScheme.outline
-                                            )
+
+                                        Spacer(modifier = Modifier.height(10.dp))
+                                        val dueRate = cognitiveHealthStats.first
+                                        val healthLabel = when {
+                                            dueRate < 15f -> "🟢 Carga Equilibrada (${String.format("%.1f", dueRate)}% Vencidos)"
+                                            dueRate < 30f -> "🟡 Revisão Recomendada (${String.format("%.1f", dueRate)}% Vencidos)"
+                                            else -> "🔴 Risco de Sobrecarga (${String.format("%.1f", dueRate)}% Vencidos)"
+                                        }
+                                        Surface(
+                                            shape = RoundedCornerShape(8.dp),
+                                            color = MaterialTheme.colorScheme.surface.copy(alpha = 0.7f),
+                                            modifier = Modifier.fillMaxWidth()
+                                        ) {
+                                            Row(
+                                                modifier = Modifier.padding(horizontal = 10.dp, vertical = 6.dp),
+                                                horizontalArrangement = Arrangement.SpaceBetween,
+                                                verticalAlignment = Alignment.CenterVertically
+                                            ) {
+                                                Text("Status do Acervo:", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                                                Text(healthLabel, style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold)
+                                            }
                                         }
                                     }
                                 }

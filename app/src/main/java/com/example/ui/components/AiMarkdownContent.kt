@@ -177,69 +177,167 @@ private fun ParagraphView(text: String) {
 private fun TableView(block: MarkdownBlock.Table) {
     if (block.headers.isEmpty()) return
 
+    // Cálculo memoizado de largura determinística por coluna
+    val columnWidths = remember(block) {
+        block.headers.indices.map { colIdx ->
+            val header = block.headers.getOrElse(colIdx) { "" }
+            val sampleValues = block.rows.mapNotNull { it.getOrNull(colIdx) }
+            val maxLen = maxOf(header.length, sampleValues.maxOfOrNull { it.length } ?: 0)
+            when {
+                colIdx == 0 -> 135.dp // Coluna fixa congelada (Matéria / Disciplina)
+                maxLen <= 5 -> 80.dp
+                maxLen <= 10 -> 95.dp
+                maxLen <= 16 -> 120.dp
+                maxLen <= 24 -> 140.dp
+                else -> 160.dp
+            }
+        }
+    }
+
+    val headerHeight = 44.dp
+    val rowHeight = 50.dp
+    val stickyWidth = columnWidths.getOrElse(0) { 135.dp }
+    val hasMultipleColumns = block.headers.size > 1
+
     Surface(
         shape = RoundedCornerShape(12.dp),
         color = MaterialTheme.colorScheme.surfaceContainerLow,
         border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f)),
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 4.dp)
+            .padding(vertical = 6.dp)
     ) {
-        val scrollState = rememberScrollState()
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .horizontalScroll(scrollState)
+        Row(
+            modifier = Modifier.fillMaxWidth()
         ) {
-            // Linha de Cabeçalho da Tabela
-            Row(
-                modifier = Modifier
-                    .background(MaterialTheme.colorScheme.surfaceContainerHighest)
-                    .padding(horizontal = 6.dp, vertical = 8.dp),
-                verticalAlignment = Alignment.CenterVertically
+            // 1. Coluna Fixa / Congelada (Coluna 0: Nome da Matéria / Carreira)
+            Column(
+                modifier = Modifier.width(stickyWidth)
             ) {
-                block.headers.forEach { header ->
+                // Cabeçalho da Coluna Fixa
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(headerHeight)
+                        .background(MaterialTheme.colorScheme.surfaceContainerHighest)
+                        .padding(horizontal = 8.dp),
+                    contentAlignment = Alignment.CenterStart
+                ) {
+                    Text(
+                        text = parseMarkdownInline(block.headers[0]),
+                        style = MaterialTheme.typography.labelMedium.copy(fontWeight = FontWeight.Bold),
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        maxLines = 2,
+                        overflow = androidx.compose.ui.text.style.TextOverflow.Ellipsis
+                    )
+                }
+
+                // Células de Dados da Coluna Fixa
+                block.rows.forEachIndexed { rowIndex, rowCells ->
+                    val rowBg = if (rowIndex % 2 == 0) {
+                        MaterialTheme.colorScheme.surface
+                    } else {
+                        MaterialTheme.colorScheme.surfaceContainerLowest
+                    }
+                    val cellText = rowCells.getOrNull(0) ?: ""
                     Box(
                         modifier = Modifier
-                            .widthIn(min = 90.dp, max = 220.dp)
-                            .padding(horizontal = 8.dp, vertical = 4.dp),
+                            .fillMaxWidth()
+                            .height(rowHeight)
+                            .background(rowBg)
+                            .padding(horizontal = 8.dp),
                         contentAlignment = Alignment.CenterStart
                     ) {
                         Text(
-                            text = parseMarkdownInline(header),
-                            style = MaterialTheme.typography.labelMedium.copy(fontWeight = FontWeight.Bold),
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                            text = parseMarkdownInline(cellText),
+                            style = MaterialTheme.typography.bodySmall.copy(fontWeight = FontWeight.SemiBold),
+                            color = MaterialTheme.colorScheme.onSurface,
+                            maxLines = 2,
+                            overflow = androidx.compose.ui.text.style.TextOverflow.Ellipsis
                         )
                     }
                 }
             }
 
-            // Linhas de Dados da Tabela com alternância sutil de fundo
-            block.rows.forEachIndexed { rowIndex, rowCells ->
-                val rowBg = if (rowIndex % 2 == 0) {
-                    MaterialTheme.colorScheme.surface
-                } else {
-                    MaterialTheme.colorScheme.surfaceContainerLowest
-                }
-                Row(
+            if (hasMultipleColumns) {
+                // Divisor Vertical Semântico separando a Coluna Fixa
+                Box(
                     modifier = Modifier
-                        .background(rowBg)
-                        .padding(horizontal = 6.dp, vertical = 8.dp),
-                    verticalAlignment = Alignment.CenterVertically
+                        .width(1.dp)
+                        .height(headerHeight + (rowHeight * block.rows.size))
+                        .background(MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.6f))
+                )
+
+                // 2. Colunas de Dados Roláveis (Colunas 1 .. N-1)
+                val scrollState = rememberScrollState()
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .horizontalScroll(scrollState)
                 ) {
-                    block.headers.indices.forEach { colIndex ->
-                        val cellText = rowCells.getOrNull(colIndex) ?: ""
-                        Box(
+                    // Linha de Cabeçalho Rolável
+                    Row(
+                        modifier = Modifier
+                            .height(headerHeight)
+                            .background(MaterialTheme.colorScheme.surfaceContainerHighest),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        block.headers.indices.drop(1).forEach { colIdx ->
+                            val colWidth = columnWidths.getOrElse(colIdx) { 100.dp }
+                            val isNumeric = colIdx in 1..3
+                            Box(
+                                modifier = Modifier
+                                    .width(colWidth)
+                                    .height(headerHeight)
+                                    .padding(horizontal = 8.dp),
+                                contentAlignment = if (isNumeric) Alignment.Center else Alignment.CenterStart
+                            ) {
+                                Text(
+                                    text = parseMarkdownInline(block.headers[colIdx]),
+                                    style = MaterialTheme.typography.labelMedium.copy(fontWeight = FontWeight.Bold),
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                    maxLines = 2,
+                                    overflow = androidx.compose.ui.text.style.TextOverflow.Ellipsis,
+                                    textAlign = if (isNumeric) androidx.compose.ui.text.style.TextAlign.Center else androidx.compose.ui.text.style.TextAlign.Start
+                                )
+                            }
+                        }
+                    }
+
+                    // Linhas de Dados Roláveis com alinhamento rigoroso
+                    block.rows.forEachIndexed { rowIndex, rowCells ->
+                        val rowBg = if (rowIndex % 2 == 0) {
+                            MaterialTheme.colorScheme.surface
+                        } else {
+                            MaterialTheme.colorScheme.surfaceContainerLowest
+                        }
+                        Row(
                             modifier = Modifier
-                                .widthIn(min = 90.dp, max = 220.dp)
-                                .padding(horizontal = 8.dp, vertical = 4.dp),
-                            contentAlignment = Alignment.CenterStart
+                                .height(rowHeight)
+                                .background(rowBg),
+                            verticalAlignment = Alignment.CenterVertically
                         ) {
-                            Text(
-                                text = parseMarkdownInline(cellText),
-                                style = MaterialTheme.typography.bodySmall,
-                                color = MaterialTheme.colorScheme.onSurface
-                            )
+                            block.headers.indices.drop(1).forEach { colIdx ->
+                                val colWidth = columnWidths.getOrElse(colIdx) { 100.dp }
+                                val cellText = rowCells.getOrNull(colIdx) ?: ""
+                                val isNumeric = colIdx in 1..3
+                                Box(
+                                    modifier = Modifier
+                                        .width(colWidth)
+                                        .height(rowHeight)
+                                        .padding(horizontal = 8.dp),
+                                    contentAlignment = if (isNumeric) Alignment.Center else Alignment.CenterStart
+                                ) {
+                                    Text(
+                                        text = parseMarkdownInline(cellText),
+                                        style = MaterialTheme.typography.bodySmall,
+                                        color = MaterialTheme.colorScheme.onSurface,
+                                        maxLines = 2,
+                                        overflow = androidx.compose.ui.text.style.TextOverflow.Ellipsis,
+                                        textAlign = if (isNumeric) androidx.compose.ui.text.style.TextAlign.Center else androidx.compose.ui.text.style.TextAlign.Start
+                                    )
+                                }
+                            }
                         }
                     }
                 }

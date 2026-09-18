@@ -217,13 +217,13 @@ class GeminiStudyAnalyzer(
             
             ## 1. 📊 Comparativo Geral de Carreiras (L1)
             Apresente uma TABELA MARKDOWN comparando os baralhos L1 cadastrados:
-            | Carreira (L1) | Total Cards | Vencidos | Domínio | Barra Visual | Status |
-            (Use barras textuais como `[████████░░] 80%` e status: `🟢 Consolidado`, `🟡 Em Alerta` ou `🔴 Crítico`).
+            | Carreira | Total | Vencidos | Domínio | Barra Visual | Status |
+            (Use barras textuais concisas como `[████████░░] 80%` e status: `🟢 Consolidado`, `🟡 Em Alerta` ou `🔴 Crítico`).
             
             ## 2. 📈 Matriz Diagnóstica de Disciplinas (L2)
             Apresente uma TABELA MARKDOWN comparativa das disciplinas L2 analisadas:
-            | Disciplina (L2) | Total | Vencidos | Domínio % | FSRS (Estabilidade) | Criticidade |
-            Destaque as disciplinas mais dominadas vs as disciplinas em maior risco de esquecimento.
+            | Disciplina | Total | Vencidos | Domínio | FSRS (S) | Status |
+            (A primeira coluna DEVE conter estritamente o nome da disciplina. Destaque as disciplinas mais dominadas vs as disciplinas em maior risco de esquecimento).
             
             ## 3. ⚠️ Diagnóstico de Gargalos e Tópicos Críticos (L3)
             Aponte em bullet points os tópicos específicos (L3) com maior urgência de revisão e cards vencidos acumulados.
@@ -234,7 +234,7 @@ class GeminiStudyAnalyzer(
             ## 5. 💡 Otimização de Repetição Espaçada (SRS / FSRS-5)
             Oriente sobre como lidar com cards difíceis (*leaches*), calibração da retenção alvo e consolidação da memória de longo prazo.
             
-            Mantenha as tabelas limpas, bem alinhadas, objetivas e use negritos estrategicamente para facilitar a leitura rápida.
+            Diretrizes Visuais para Tabelas: mantenha os cabeçalhos concisos, a primeira coluna limpa para congelamento no smartphone, e os dados estritamente em suas respectivas colunas para alinhamento geométrico perfeito.
         """.trimIndent()
 
         val requestPayload = GeminiRequest(
