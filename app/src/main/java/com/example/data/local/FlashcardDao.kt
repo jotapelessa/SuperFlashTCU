@@ -101,6 +101,9 @@ interface FlashcardDao {
     @Query("DELETE FROM flashcards WHERE l1 = :l1")
     suspend fun deleteDeckL1(l1: String)
 
+    @Query("UPDATE flashcards SET reps = 0, lapses = 0, masteryLevel = 0, intervalDays = 0, easeFactor = 2.5, dueTimestamp = 0, lastReviewedTimestamp = 0")
+    suspend fun resetAllCardStats()
+
     @Query("DELETE FROM flashcards")
     suspend fun clearAll()
 }

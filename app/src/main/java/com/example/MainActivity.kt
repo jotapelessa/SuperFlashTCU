@@ -397,6 +397,8 @@ fun AnkiAppNavigation(viewModel: DeckViewModel) {
                         onOpenImportCsv = { showImportDialog = true },
                         onOpenExportCsv = { showExportCsvDialog = true },
                         onResetData = { viewModel.resetToDefault() },
+                        onResetStudyStats = { viewModel.resetAllStudyStats() },
+                        onDeleteAllDecks = { viewModel.deleteAllDecksAndCards() },
                         onClearAllDataZero = { viewModel.clearAllDataAndResetZero() }
                     )
                 }

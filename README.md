@@ -4,7 +4,22 @@ Aplicativo Android nativo de alta performance para preparação de concursos de 
 
 ---
 
-## 📱 Versão Atual: v1.4.0 (Code 5)
+## 📱 Versão Atual: v1.4.1 (Code 6)
+
+### 🚀 Principais Novidades da Versão 1.4.1:
+* **Gerenciamento de Dados Individualizado (Item 3.1)**:
+  * **Separação de Ações de Limpeza:** Botão individual para "Zerar Apenas Estatísticas" (reinicia contadores de revisões, retenção e streaks via SQLite sem apagar os decks) e botão individual para "Apagar Apenas Baralhos e Cards" (exclui o acervo físico de cartões), cada um com seu próprio diálogo de confirmação explicativo e seguro.
+* **Correção e Persistência de Duração Customizada da Sessão (Item 3.2)**:
+  * **Persistência no SharedPreferences:** A meta de tempo da sessão (`targetSessionMinutes`) agora é gravada e recuperada permanentemente em `SharedPreferences`.
+  * **Feedback Visual Ativo:** Seletor com chip ativo customizado `"Ativo: X min"`, presets rápidos (incluindo `0 min / Sem limite`) e campo de entrada numérica com validação e botão Salvar funcional.
+* **Paleta Contígua de 50 Cores Material 3 (Item 3.3)**:
+  * **50 Cores Harmoniosas:** Expansão da paleta do sistema para 50 tonalidades cromáticas dispostas em grade estrita de 5 linhas x 10 colunas, com quadrados justapostos sem espaçamento (0dp) e sem rótulos textuais de nome, reduzindo o espaço vertical em mais de 70%.
+* **Menu Dropdown Retrátil de Sugestões no Tutor IA (Item 3.4)**:
+  * **Compactação de Espaço Útil:** Substituição da antiga grade de chips abertos por um `ExposedDropdownMenuBox` elegante de 48dp na sub-aba Consultoria, recolhendo-se automaticamente após a escolha e liberando mais de 115dp de altura para digitação confortável.
+
+---
+
+## 📱 Versão Anterior: v1.4.0 (Code 5)
 
 ### 🚀 Principais Novidades da Versão 1.4.0:
 * **Motor de IA Gemini Otimizado & Resiliência Avançada (`GeminiStudyAnalyzer`)**:

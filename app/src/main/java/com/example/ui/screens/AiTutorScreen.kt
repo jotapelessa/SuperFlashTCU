@@ -516,12 +516,14 @@ fun AiTutorScreen(
                 }
 
                 TutorTab.CONSULTATION -> {
-                    // Área Dedicada de Perguntas e Respostas Livres sem Competição Visual
+                    // Área Dedicada de Perguntas e Respostas Livres com Dropdown Retrátil
                     Column(
                         modifier = Modifier
                             .fillMaxSize()
                             .padding(16.dp)
                     ) {
+                        var expandedPromptMenu by remember { mutableStateOf(false) }
+
                         Text(
                             text = "Sugestões de Análise Rápida:",
                             style = MaterialTheme.typography.labelMedium,
@@ -529,37 +531,85 @@ fun AiTutorScreen(
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
 
-                        Spacer(modifier = Modifier.height(8.dp))
+                        Spacer(modifier = Modifier.height(6.dp))
 
-                        FlowRow(
-                            horizontalArrangement = Arrangement.spacedBy(8.dp),
-                            verticalArrangement = Arrangement.spacedBy(8.dp),
+                        androidx.compose.material3.ExposedDropdownMenuBox(
+                            expanded = expandedPromptMenu,
+                            onExpandedChange = { expandedPromptMenu = it },
                             modifier = Modifier.fillMaxWidth()
                         ) {
-                            quickPrompts.forEach { prompt ->
-                                AssistChip(
-                                    onClick = {
-                                        customQuery = prompt
-                                        onAnalyze(prompt)
-                                        selectedTabIndex = 0 // Muda para a aba de relatório para ver o resultado
-                                    },
-                                    label = { Text(prompt, style = MaterialTheme.typography.labelSmall) },
-                                    leadingIcon = {
-                                        Icon(
-                                            imageVector = Icons.Default.Psychology,
-                                            contentDescription = null,
-                                            modifier = Modifier.size(14.dp),
-                                            tint = MaterialTheme.colorScheme.primary
-                                        )
-                                    },
-                                    colors = AssistChipDefaults.assistChipColors(
-                                        containerColor = MaterialTheme.colorScheme.surfaceVariant
-                                    )
+                            androidx.compose.material3.OutlinedCard(
+                                onClick = { expandedPromptMenu = true },
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .menuAnchor(androidx.compose.material3.MenuAnchorType.PrimaryNotEditable, true)
+                                    .testTag("dropdown_quick_prompts"),
+                                shape = RoundedCornerShape(12.dp),
+                                border = androidx.compose.foundation.BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant),
+                                colors = CardDefaults.outlinedCardColors(
+                                    containerColor = MaterialTheme.colorScheme.surfaceContainerLow
                                 )
+                            ) {
+                                Row(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(horizontal = 14.dp, vertical = 12.dp),
+                                    verticalAlignment = Alignment.CenterVertically,
+                                    horizontalArrangement = Arrangement.SpaceBetween
+                                ) {
+                                    Row(
+                                        verticalAlignment = Alignment.CenterVertically,
+                                        modifier = Modifier.weight(1f)
+                                    ) {
+                                        Icon(
+                                            imageVector = Icons.Default.AutoAwesome,
+                                            contentDescription = null,
+                                            tint = MaterialTheme.colorScheme.primary,
+                                            modifier = Modifier.size(18.dp)
+                                        )
+                                        Spacer(modifier = Modifier.width(10.dp))
+                                        Text(
+                                            text = "Escolher análise rápida pronta...",
+                                            style = MaterialTheme.typography.bodyMedium,
+                                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                                        )
+                                    }
+                                    androidx.compose.material3.ExposedDropdownMenuDefaults.TrailingIcon(expanded = expandedPromptMenu)
+                                }
+                            }
+
+                            ExposedDropdownMenu(
+                                expanded = expandedPromptMenu,
+                                onDismissRequest = { expandedPromptMenu = false }
+                            ) {
+                                quickPrompts.forEach { prompt ->
+                                    androidx.compose.material3.DropdownMenuItem(
+                                        text = {
+                                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                                Icon(
+                                                    imageVector = Icons.Default.Psychology,
+                                                    contentDescription = null,
+                                                    tint = MaterialTheme.colorScheme.primary,
+                                                    modifier = Modifier.size(16.dp)
+                                                )
+                                                Spacer(modifier = Modifier.width(8.dp))
+                                                Text(
+                                                    text = prompt,
+                                                    style = MaterialTheme.typography.bodyMedium
+                                                )
+                                            }
+                                        },
+                                        onClick = {
+                                            customQuery = prompt
+                                            expandedPromptMenu = false
+                                        },
+                                        contentPadding = PaddingValues(horizontal = 16.dp, vertical = 10.dp)
+                                    )
+                                }
                             }
                         }
 
-                        Spacer(modifier = Modifier.height(20.dp))
+                        Spacer(modifier = Modifier.height(16.dp))
 
                         Text(
                             text = "Pergunta Personalizada ao Tutor:",

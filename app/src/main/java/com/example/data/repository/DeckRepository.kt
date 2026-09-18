@@ -834,6 +834,10 @@ class DeckRepository(private val dao: FlashcardDao) {
         dao.deleteL2Discipline(l1, l2)
     }
 
+    suspend fun resetAllCardStats() {
+        dao.resetAllCardStats()
+    }
+
     suspend fun clearAll() {
         dao.clearAll()
     }

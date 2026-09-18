@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -125,6 +126,8 @@ fun SettingsScreen(
     onOpenImportCsv: () -> Unit,
     onOpenExportCsv: () -> Unit = {},
     onResetData: () -> Unit,
+    onResetStudyStats: () -> Unit = {},
+    onDeleteAllDecks: () -> Unit = {},
     onClearAllDataZero: () -> Unit = {},
     modifier: Modifier = Modifier
 ) {
@@ -132,6 +135,9 @@ fun SettingsScreen(
     var expandedLimitMenu by remember { mutableStateOf(false) }
     var selectedLimit by remember(timerConfig.perCardLimit) { mutableStateOf(timerConfig.perCardLimit) }
     var targetMinutes by remember(timerConfig.targetSessionMinutes) { mutableIntStateOf(timerConfig.targetSessionMinutes) }
+    var customMinutesText by remember(timerConfig.targetSessionMinutes) {
+        mutableStateOf(if (timerConfig.targetSessionMinutes > 0) timerConfig.targetSessionMinutes.toString() else "")
+    }
 
     var apiKeyInput by remember(geminiApiKey) { mutableStateOf(geminiApiKey) }
     var showApiKey by remember { mutableStateOf(false) }
@@ -141,6 +147,8 @@ fun SettingsScreen(
     var showSupabaseKey by remember { mutableStateOf(false) }
 
     var expandedModelMenu by remember { mutableStateOf(false) }
+    var showResetStatsConfirmDialog by remember { mutableStateOf(false) }
+    var showDeleteDecksConfirmDialog by remember { mutableStateOf(false) }
     var showZeroConfirmDialog by remember { mutableStateOf(false) }
 
     val modelOptions = listOf(
@@ -335,7 +343,7 @@ fun SettingsScreen(
                         )
                         Spacer(modifier = Modifier.width(6.dp))
                         Text(
-                            text = "Cor de Destaque do Sistema (Paleta Quadrada - 22 Cores)",
+                            text = "Cor de Destaque do Sistema (50 Cores)",
                             style = MaterialTheme.typography.labelLarge,
                             fontWeight = FontWeight.Bold
                         )
@@ -343,52 +351,53 @@ fun SettingsScreen(
 
                     Spacer(modifier = Modifier.height(12.dp))
 
-                    FlowRow(
-                        horizontalArrangement = Arrangement.spacedBy(8.dp),
-                        verticalArrangement = Arrangement.spacedBy(10.dp),
-                        modifier = Modifier.fillMaxWidth()
+                    // Grade Contígua de 50 Cores (5 Linhas de 10 Quadrados Justapostos, Sem Espaços e Sem Nomes)
+                    Surface(
+                        shape = RoundedCornerShape(12.dp),
+                        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clip(RoundedCornerShape(12.dp))
                     ) {
-                        AccentColorOption.entries.forEach { option ->
-                            val isSelected = accentColor == option
-                            Column(
-                                horizontalAlignment = Alignment.CenterHorizontally,
-                                modifier = Modifier
-                                    .width(64.dp)
-                                    .clip(RoundedCornerShape(10.dp))
-                                    .clickable { onSetAccentColor(option) }
-                                    .padding(2.dp)
-                                    .testTag("color_option_${option.name.lowercase()}")
-                            ) {
-                                Surface(
-                                    shape = RoundedCornerShape(10.dp),
-                                    color = option.previewColor,
-                                    border = if (isSelected) {
-                                        BorderStroke(3.dp, MaterialTheme.colorScheme.onSurface)
-                                    } else {
-                                        BorderStroke(1.dp, Color.Black.copy(alpha = 0.15f))
-                                    },
-                                    modifier = Modifier.size(50.dp)
+                        Column(
+                            modifier = Modifier.fillMaxWidth()
+                        ) {
+                            val allColors = AccentColorOption.entries
+                            val rows = allColors.chunked(10)
+                            rows.forEach { rowColors ->
+                                Row(
+                                    modifier = Modifier.fillMaxWidth()
                                 ) {
-                                    Box(contentAlignment = Alignment.Center) {
-                                        if (isSelected) {
-                                            Icon(
-                                                imageVector = Icons.Default.Check,
-                                                contentDescription = null,
-                                                tint = Color.White,
-                                                modifier = Modifier.size(22.dp)
-                                            )
+                                    rowColors.forEach { option ->
+                                        val isSelected = accentColor == option
+                                        Box(
+                                            modifier = Modifier
+                                                .weight(1f)
+                                                .aspectRatio(1f)
+                                                .background(option.previewColor)
+                                                .clickable { onSetAccentColor(option) }
+                                                .testTag("color_option_${option.name.lowercase()}"),
+                                            contentAlignment = Alignment.Center
+                                        ) {
+                                            if (isSelected) {
+                                                Box(
+                                                    modifier = Modifier
+                                                        .size(16.dp)
+                                                        .clip(CircleShape)
+                                                        .background(Color.Black.copy(alpha = 0.5f)),
+                                                    contentAlignment = Alignment.Center
+                                                ) {
+                                                    Icon(
+                                                        imageVector = Icons.Default.Check,
+                                                        contentDescription = null,
+                                                        tint = Color.White,
+                                                        modifier = Modifier.size(12.dp)
+                                                    )
+                                                }
+                                            }
                                         }
                                     }
                                 }
-                                Spacer(modifier = Modifier.height(4.dp))
-                                Text(
-                                    text = option.title,
-                                    style = MaterialTheme.typography.labelSmall,
-                                    fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal,
-                                    color = if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant,
-                                    maxLines = 1,
-                                    fontSize = 10.sp
-                                )
                             }
                         }
                     }
@@ -599,24 +608,53 @@ fun SettingsScreen(
                     Spacer(modifier = Modifier.height(16.dp))
 
                     // Target Session Minutes Presets with FlowRow
-                    Text(
-                        text = "Duração Alvo da Sessão (Minutos)",
-                        style = MaterialTheme.typography.labelLarge,
-                        fontWeight = FontWeight.Bold
-                    )
-                    Spacer(modifier = Modifier.height(6.dp))
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            text = "Duração Alvo da Sessão",
+                            style = MaterialTheme.typography.labelLarge,
+                            fontWeight = FontWeight.Bold
+                        )
+                        if (targetMinutes > 0) {
+                            Surface(
+                                shape = RoundedCornerShape(6.dp),
+                                color = MaterialTheme.colorScheme.primaryContainer
+                            ) {
+                                Text(
+                                    text = "Ativo: $targetMinutes min",
+                                    style = MaterialTheme.typography.labelSmall,
+                                    fontWeight = FontWeight.Bold,
+                                    color = MaterialTheme.colorScheme.onPrimaryContainer,
+                                    modifier = Modifier.padding(horizontal = 8.dp, vertical = 3.dp)
+                                )
+                            }
+                        } else {
+                            Text(
+                                text = "Sem meta fixa",
+                                style = MaterialTheme.typography.bodySmall,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+                        }
+                    }
+                    Spacer(modifier = Modifier.height(8.dp))
 
+                    val standardPresets = listOf(0, 5, 10, 15, 20, 30, 45, 60)
                     FlowRow(
                         horizontalArrangement = Arrangement.spacedBy(8.dp),
                         verticalArrangement = Arrangement.spacedBy(8.dp),
                         modifier = Modifier.fillMaxWidth()
                     ) {
-                        listOf(5, 10, 15, 20, 30, 45, 60).forEach { mins ->
+                        standardPresets.forEach { mins ->
                             val isSelected = targetMinutes == mins
+                            val labelText = if (mins == 0) "Sem limite" else "$mins min"
                             FilterChip(
                                 selected = isSelected,
                                 onClick = {
                                     targetMinutes = mins
+                                    customMinutesText = if (mins == 0) "" else mins.toString()
                                     onSetTimerConfig(
                                         StudyTimerConfig(
                                             perCardLimit = selectedLimit,
@@ -624,7 +662,19 @@ fun SettingsScreen(
                                         )
                                     )
                                 },
-                                label = { Text("$mins min", fontWeight = FontWeight.SemiBold) },
+                                label = { Text(labelText, fontWeight = FontWeight.SemiBold) },
+                                colors = FilterChipDefaults.filterChipColors(
+                                    selectedContainerColor = MaterialTheme.colorScheme.primaryContainer,
+                                    selectedLabelColor = MaterialTheme.colorScheme.onPrimaryContainer
+                                )
+                            )
+                        }
+
+                        if (targetMinutes > 0 && targetMinutes !in standardPresets) {
+                            FilterChip(
+                                selected = true,
+                                onClick = {},
+                                label = { Text("$targetMinutes min (Personalizado)", fontWeight = FontWeight.Bold) },
                                 colors = FilterChipDefaults.filterChipColors(
                                     selectedContainerColor = MaterialTheme.colorScheme.primaryContainer,
                                     selectedLabelColor = MaterialTheme.colorScheme.onPrimaryContainer
@@ -635,7 +685,6 @@ fun SettingsScreen(
 
                     Spacer(modifier = Modifier.height(12.dp))
 
-                    var customMinutesText by remember(targetMinutes) { mutableStateOf(targetMinutes.toString()) }
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         verticalAlignment = Alignment.CenterVertically,
@@ -643,9 +692,12 @@ fun SettingsScreen(
                     ) {
                         OutlinedTextField(
                             value = customMinutesText,
-                            onValueChange = { customMinutesText = it.filter { char -> char.isDigit() } },
-                            label = { Text("Duração customizada") },
+                            onValueChange = { input ->
+                                customMinutesText = input.filter { it.isDigit() }.take(3)
+                            },
+                            label = { Text("Duração personalizada") },
                             suffix = { Text("minutos") },
+                            placeholder = { Text("Ex: 25") },
                             singleLine = true,
                             shape = RoundedCornerShape(12.dp),
                             modifier = Modifier
@@ -655,16 +707,14 @@ fun SettingsScreen(
 
                         Button(
                             onClick = {
-                                val parsed = customMinutesText.toIntOrNull() ?: targetMinutes
-                                if (parsed > 0) {
-                                    targetMinutes = parsed
-                                    onSetTimerConfig(
-                                        StudyTimerConfig(
-                                            perCardLimit = selectedLimit,
-                                            targetSessionMinutes = parsed
-                                        )
+                                val parsed = customMinutesText.toIntOrNull() ?: 0
+                                targetMinutes = parsed
+                                onSetTimerConfig(
+                                    StudyTimerConfig(
+                                        perCardLimit = selectedLimit,
+                                        targetSessionMinutes = parsed
                                     )
-                                }
+                                )
                             },
                             shape = RoundedCornerShape(12.dp),
                             modifier = Modifier.testTag("btn_save_settings_custom_minutes")
@@ -803,25 +853,52 @@ fun SettingsScreen(
 
                     Spacer(modifier = Modifier.height(8.dp))
 
-                    // Zero / Delete All
-                    Button(
-                        onClick = { showZeroConfirmDialog = true },
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .testTag("btn_settings_clear_all_zero"),
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = MaterialTheme.colorScheme.errorContainer,
-                            contentColor = MaterialTheme.colorScheme.onErrorContainer
-                        ),
-                        shape = RoundedCornerShape(12.dp)
+                    // Ações Individuais de Gerenciamento (Apagar Decks vs Zerar Estatísticas)
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(10.dp)
                     ) {
-                        Icon(
-                            imageVector = Icons.Default.DeleteForever,
-                            contentDescription = null,
-                            modifier = Modifier.size(18.dp)
-                        )
-                        Spacer(modifier = Modifier.width(8.dp))
-                        Text("Zerar Aplicação (Apagar Decks e Estatísticas)", fontWeight = FontWeight.Bold)
+                        // Botão 1: Zerar Apenas Estatísticas
+                        Button(
+                            onClick = { showResetStatsConfirmDialog = true },
+                            modifier = Modifier
+                                .weight(1f)
+                                .testTag("btn_settings_reset_stats_only"),
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = Color(0xFFF59E0B).copy(alpha = 0.2f),
+                                contentColor = Color(0xFFD97706)
+                            ),
+                            shape = RoundedCornerShape(12.dp)
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.Speed,
+                                contentDescription = null,
+                                modifier = Modifier.size(18.dp)
+                            )
+                            Spacer(modifier = Modifier.width(6.dp))
+                            Text("Zerar Estatísticas", fontWeight = FontWeight.Bold, fontSize = 12.sp)
+                        }
+
+                        // Botão 2: Apagar Apenas Decks
+                        Button(
+                            onClick = { showDeleteDecksConfirmDialog = true },
+                            modifier = Modifier
+                                .weight(1f)
+                                .testTag("btn_settings_delete_decks_only"),
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = MaterialTheme.colorScheme.errorContainer,
+                                contentColor = MaterialTheme.colorScheme.onErrorContainer
+                            ),
+                            shape = RoundedCornerShape(12.dp)
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.DeleteForever,
+                                contentDescription = null,
+                                modifier = Modifier.size(18.dp)
+                            )
+                            Spacer(modifier = Modifier.width(6.dp))
+                            Text("Apagar Decks", fontWeight = FontWeight.Bold, fontSize = 12.sp)
+                        }
                     }
                 }
             }
@@ -1381,9 +1458,57 @@ fun SettingsScreen(
         }
     }
 
-    if (showZeroConfirmDialog) {
+    if (showResetStatsConfirmDialog) {
         AlertDialog(
-            onDismissRequest = { showZeroConfirmDialog = false },
+            onDismissRequest = { showResetStatsConfirmDialog = false },
+            icon = {
+                Surface(
+                    shape = CircleShape,
+                    color = Color(0xFFF59E0B).copy(alpha = 0.2f),
+                    modifier = Modifier.size(48.dp)
+                ) {
+                    Box(contentAlignment = Alignment.Center) {
+                        Icon(
+                            imageVector = Icons.Default.Speed,
+                            contentDescription = null,
+                            tint = Color(0xFFD97706),
+                            modifier = Modifier.size(24.dp)
+                        )
+                    }
+                }
+            },
+            title = {
+                Text(
+                    text = "Zerar Estatísticas de Estudo?",
+                    fontWeight = FontWeight.Bold
+                )
+            },
+            text = {
+                Text("Esta ação irá zerar todas as revisões, retenção de aprendizagem, streaks e contagens de estudo.\n\n⚠️ SEUS BARALHOS E FLASHCARDS SERÃO 100% PRESERVADOS INTACTOS. Todos os cartões voltarão ao estado inicial de 'Novos'.")
+            },
+            confirmButton = {
+                Button(
+                    onClick = {
+                        showResetStatsConfirmDialog = false
+                        onResetStudyStats()
+                    },
+                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFD97706)),
+                    shape = RoundedCornerShape(10.dp)
+                ) {
+                    Text("Sim, Zerar Estatísticas")
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { showResetStatsConfirmDialog = false }) {
+                    Text("Cancelar")
+                }
+            }
+        )
+    }
+
+    if (showDeleteDecksConfirmDialog) {
+        AlertDialog(
+            onDismissRequest = { showDeleteDecksConfirmDialog = false },
             icon = {
                 Surface(
                     shape = CircleShape,
@@ -1392,7 +1517,7 @@ fun SettingsScreen(
                 ) {
                     Box(contentAlignment = Alignment.Center) {
                         Icon(
-                            imageVector = Icons.Default.Warning,
+                            imageVector = Icons.Default.DeleteForever,
                             contentDescription = null,
                             tint = MaterialTheme.colorScheme.error,
                             modifier = Modifier.size(24.dp)
@@ -1402,27 +1527,27 @@ fun SettingsScreen(
             },
             title = {
                 Text(
-                    text = "Apagar Todos os Dados?",
+                    text = "Apagar Todos os Baralhos?",
                     fontWeight = FontWeight.Bold
                 )
             },
             text = {
-                Text("Esta ação irá excluir permanentemente todos os decks, flashcards, histórico de revisões e estatísticas de progresso. O aplicativo ficará zerado e pronto para importar novos dados CSV.")
+                Text("Esta ação irá excluir permanentemente todos os flashcards e baralhos (L1, L2 e L3) cadastrados no dispositivo. Esta ação é irreversível.")
             },
             confirmButton = {
                 Button(
                     onClick = {
-                        showZeroConfirmDialog = false
-                        onClearAllDataZero()
+                        showDeleteDecksConfirmDialog = false
+                        onDeleteAllDecks()
                     },
                     colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error),
                     shape = RoundedCornerShape(10.dp)
                 ) {
-                    Text("Sim, Zerar Aplicação")
+                    Text("Sim, Apagar Baralhos")
                 }
             },
             dismissButton = {
-                TextButton(onClick = { showZeroConfirmDialog = false }) {
+                TextButton(onClick = { showDeleteDecksConfirmDialog = false }) {
                     Text("Cancelar")
                 }
             }

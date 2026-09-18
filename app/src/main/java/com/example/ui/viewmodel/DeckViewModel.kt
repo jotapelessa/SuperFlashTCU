@@ -19,6 +19,7 @@ import com.example.data.model.SessionTimeReport
 import com.example.data.model.StudyFilterMode
 import com.example.data.model.StudyProgressReport
 import com.example.data.model.StudyTimerConfig
+import com.example.data.model.PerCardTimeLimit
 import com.example.data.repository.DeckRepository
 import com.example.ui.theme.AccentColorOption
 import com.example.ui.theme.AppThemeMode
@@ -319,11 +320,26 @@ class DeckViewModel(application: Application) : AndroidViewModel(application) {
     private val _sessionStats = MutableStateFlow(SessionLiveStats())
     val sessionStats: StateFlow<SessionLiveStats> = _sessionStats.asStateFlow()
 
-    private val _sessionTimerConfig = MutableStateFlow(StudyTimerConfig())
+    private val _sessionTimerConfig = MutableStateFlow(
+        StudyTimerConfig(
+            perCardLimit = try {
+                PerCardTimeLimit.valueOf(
+                    prefs.getString("timer_per_card_limit", PerCardTimeLimit.UNLIMITED.name) ?: PerCardTimeLimit.UNLIMITED.name
+                )
+            } catch (e: Exception) {
+                PerCardTimeLimit.UNLIMITED
+            },
+            targetSessionMinutes = prefs.getInt("timer_target_session_minutes", 0)
+        )
+    )
     val sessionTimerConfig: StateFlow<StudyTimerConfig> = _sessionTimerConfig.asStateFlow()
 
     fun setSessionTimerConfig(config: StudyTimerConfig) {
         _sessionTimerConfig.value = config
+        prefs.edit()
+            .putString("timer_per_card_limit", config.perCardLimit.name)
+            .putInt("timer_target_session_minutes", config.targetSessionMinutes)
+            .apply()
     }
 
     private val sessionDeckTimes = mutableMapOf<String, Long>()
@@ -331,7 +347,7 @@ class DeckViewModel(application: Application) : AndroidViewModel(application) {
 
     fun startStudySession(
         cards: List<FlashcardEntity>,
-        timerConfig: StudyTimerConfig = StudyTimerConfig(),
+        timerConfig: StudyTimerConfig = _sessionTimerConfig.value,
         applySmartShuffle: Boolean = _smartShuffleEnabled.value
     ) {
         val preparedCards = if (applySmartShuffle) repository.applySmartShuffle(cards) else cards
@@ -357,7 +373,7 @@ class DeckViewModel(application: Application) : AndroidViewModel(application) {
         mode: StudyFilterMode = StudyFilterMode.DUE_ONLY,
         limit: Int = 20,
         smartShuffle: Boolean = _smartShuffleEnabled.value,
-        timerConfig: StudyTimerConfig = StudyTimerConfig()
+        timerConfig: StudyTimerConfig = _sessionTimerConfig.value
     ) {
         val selectedCards = repository.filterCardsForStudySession(
             cards = allCardsList,
@@ -922,6 +938,32 @@ class DeckViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
+    fun resetAllStudyStats() {
+        viewModelScope.launch {
+            repository.resetAllCardStats()
+            sessionDeckTimes.clear()
+            sessionDeckCounts.clear()
+            _sessionStats.value = SessionLiveStats()
+            _aiAnalysisResult.value = null
+            _aiErrorMessage.value = null
+        }
+    }
+
+    fun deleteAllDecksAndCards() {
+        viewModelScope.launch {
+            repository.clearAll()
+            _selectedL1.value = null
+            _selectedL2Filter.value = null
+            _selectedL3Filter.value = null
+            _studyCards.value = emptyList()
+            sessionDeckTimes.clear()
+            sessionDeckCounts.clear()
+            _sessionStats.value = SessionLiveStats()
+            _aiAnalysisResult.value = null
+            _aiErrorMessage.value = null
+        }
+    }
+
     fun clearAllDataAndResetZero() {
         viewModelScope.launch {
             repository.clearAll()
@@ -929,6 +971,9 @@ class DeckViewModel(application: Application) : AndroidViewModel(application) {
             _selectedL2Filter.value = null
             _selectedL3Filter.value = null
             _studyCards.value = emptyList()
+            sessionDeckTimes.clear()
+            sessionDeckCounts.clear()
+            _sessionStats.value = SessionLiveStats()
             _aiAnalysisResult.value = null
             _aiErrorMessage.value = null
         }
