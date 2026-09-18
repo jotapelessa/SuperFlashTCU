@@ -24,6 +24,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AutoAwesome
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.ColorLens
@@ -42,6 +43,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
+import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -103,7 +105,7 @@ val PRESET_COLORS = listOf(
 @Composable
 fun EditL1DeckDialog(
     deck: L1DeckSummary,
-    onConfirmSave: (oldL1Name: String, newL1Name: String, cardColorHex: String?, courseName: String?, coverUrl: String?) -> Unit,
+    onConfirmSave: (oldL1Name: String, newL1Name: String, cardColorHex: String?, courseName: String?, coverUrl: String?, isAiEnabled: Boolean) -> Unit,
     onDismiss: () -> Unit
 ) {
     var l1NameInput by remember { mutableStateOf(deck.l1) }
@@ -112,6 +114,7 @@ fun EditL1DeckDialog(
         mutableStateOf(deck.cardColorHex ?: DisciplinePalette.getColorForDiscipline(deck.l1))
     }
     var coverUrlInput by remember { mutableStateOf(deck.coverUrl ?: "") }
+    var isAiEnabledInput by remember { mutableStateOf(deck.isAiAnalysisEnabled) }
 
     val context = LocalContext.current
     val coroutineScope = rememberCoroutineScope()
@@ -557,6 +560,58 @@ fun EditL1DeckDialog(
                                 .fillMaxWidth()
                                 .testTag("input_edit_l1_cover_url")
                         )
+
+                        Spacer(modifier = Modifier.height(14.dp))
+
+                        // Seção de Ativação / Desativação da Análise da IA
+                        Card(
+                            modifier = Modifier.fillMaxWidth(),
+                            shape = RoundedCornerShape(16.dp),
+                            colors = CardDefaults.cardColors(
+                                containerColor = if (isAiEnabledInput) MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.35f) else MaterialTheme.colorScheme.surfaceContainerLow
+                            )
+                        ) {
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(16.dp),
+                                horizontalArrangement = Arrangement.SpaceBetween,
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Column(modifier = Modifier.weight(1f)) {
+                                    Row(verticalAlignment = Alignment.CenterVertically) {
+                                        Icon(
+                                            imageVector = Icons.Default.AutoAwesome,
+                                            contentDescription = null,
+                                            tint = if (isAiEnabledInput) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outline,
+                                            modifier = Modifier.size(20.dp)
+                                        )
+                                        Spacer(modifier = Modifier.width(8.dp))
+                                        Text(
+                                            text = "Análise do Tutor AI Gemini",
+                                            style = MaterialTheme.typography.titleSmall,
+                                            fontWeight = FontWeight.Bold,
+                                            color = MaterialTheme.colorScheme.onSurface
+                                        )
+                                    }
+                                    Spacer(modifier = Modifier.height(4.dp))
+                                    Text(
+                                        text = if (isAiEnabledInput)
+                                            "Ativo: O Gemini avaliará este baralho nos diagnósticos e planos de estudo."
+                                        else
+                                            "Pausado: As estatísticas deste baralho serão ignoradas pela IA.",
+                                        style = MaterialTheme.typography.bodySmall,
+                                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                                    )
+                                }
+                                Spacer(modifier = Modifier.width(12.dp))
+                                Switch(
+                                    checked = isAiEnabledInput,
+                                    onCheckedChange = { isAiEnabledInput = it },
+                                    modifier = Modifier.testTag("switch_l1_ai_analysis")
+                                )
+                            }
+                        }
                     }
                 }
 
@@ -587,7 +642,8 @@ fun EditL1DeckDialog(
                                     l1NameInput.trim(),
                                     selectedColorHex,
                                     courseNameInput.trim().ifBlank { null },
-                                    coverUrlInput.trim().ifBlank { null }
+                                    coverUrlInput.trim().ifBlank { null },
+                                    isAiEnabledInput
                                 )
                             }
                         },

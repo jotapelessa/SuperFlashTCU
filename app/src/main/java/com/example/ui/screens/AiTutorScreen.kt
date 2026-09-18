@@ -104,6 +104,7 @@ fun AiTutorScreen(
     onAnalyze: (customQuestion: String?) -> Unit,
     onClearAnalysis: () -> Unit,
     onStudyCriticalCards: ((List<FlashcardEntity>) -> Unit)? = null,
+    onToggleL1AiAnalysis: ((l1: String, enabled: Boolean) -> Unit)? = null,
     modifier: Modifier = Modifier
 ) {
     val context = LocalContext.current
@@ -112,11 +113,19 @@ fun AiTutorScreen(
     val listState = rememberLazyListState()
     var l2RankingMode by rememberSaveable { mutableIntStateOf(0) }
 
-    val l2PerformanceStats = remember(allCards) {
-        if (allCards.isEmpty()) emptyList<L2PerformanceItem>()
+    val permittedL1Names = remember(l1Decks) {
+        l1Decks.filter { it.isAiAnalysisEnabled }.map { it.l1 }.toSet()
+    }
+
+    val eligibleCards = remember(allCards, permittedL1Names) {
+        allCards.filter { it.l1 in permittedL1Names }
+    }
+
+    val l2PerformanceStats = remember(eligibleCards) {
+        if (eligibleCards.isEmpty()) emptyList<L2PerformanceItem>()
         else {
             val now = System.currentTimeMillis()
-            allCards.groupBy { it.l2 }
+            eligibleCards.groupBy { it.l2 }
                 .map { (l2Name, cards) ->
                     val total = cards.size
                     val due = cards.count { it.dueTimestamp <= now }
@@ -146,8 +155,8 @@ fun AiTutorScreen(
         l2PerformanceStats.sortedWith(compareByDescending<L2PerformanceItem> { it.due }.thenBy { it.masteryPercent }).take(5)
     }
 
-    val fsrsGlobalStats = remember(allCards) {
-        val cardsWithS = allCards.filter { it.stability > 0f }
+    val fsrsGlobalStats = remember(eligibleCards) {
+        val cardsWithS = eligibleCards.filter { it.stability > 0f }
         if (cardsWithS.isNotEmpty()) {
             val avgS = cardsWithS.map { it.stability.toDouble() }.average()
             val avgD = cardsWithS.map { it.difficulty.toDouble() }.average()
@@ -346,6 +355,103 @@ fun AiTutorScreen(
                                         )
                                         Spacer(modifier = Modifier.width(6.dp))
                                         Text("Analisar")
+                                    }
+                                }
+                            }
+                        }
+
+                        // 0. Seletor de Escopo de Baralhos L1 Permitidos na Análise
+                        if (l1Decks.isNotEmpty()) {
+                            item {
+                                Card(
+                                    shape = RoundedCornerShape(16.dp),
+                                    colors = CardDefaults.cardColors(
+                                        containerColor = MaterialTheme.colorScheme.surfaceContainerLow
+                                    ),
+                                    modifier = Modifier.fillMaxWidth()
+                                ) {
+                                    Column(modifier = Modifier.padding(16.dp)) {
+                                        Row(
+                                            modifier = Modifier.fillMaxWidth(),
+                                            horizontalArrangement = Arrangement.SpaceBetween,
+                                            verticalAlignment = Alignment.CenterVertically
+                                        ) {
+                                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                                Icon(
+                                                    imageVector = Icons.Default.AutoAwesome,
+                                                    contentDescription = null,
+                                                    tint = MaterialTheme.colorScheme.primary,
+                                                    modifier = Modifier.size(18.dp)
+                                                )
+                                                Spacer(modifier = Modifier.width(8.dp))
+                                                Text(
+                                                    text = "Escopo da IA: Baralhos Permitidos",
+                                                    style = MaterialTheme.typography.titleSmall,
+                                                    fontWeight = FontWeight.Bold,
+                                                    color = MaterialTheme.colorScheme.onSurface
+                                                )
+                                            }
+                                        }
+                                        Spacer(modifier = Modifier.height(4.dp))
+                                        Text(
+                                            text = "Toque para ativar ou pausar baralhos L1 na análise diagnóstica do Gemini:",
+                                            style = MaterialTheme.typography.bodySmall,
+                                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                                        )
+                                        Spacer(modifier = Modifier.height(10.dp))
+                                        FlowRow(
+                                            horizontalArrangement = Arrangement.spacedBy(8.dp),
+                                            verticalArrangement = Arrangement.spacedBy(6.dp),
+                                            modifier = Modifier.fillMaxWidth()
+                                        ) {
+                                            l1Decks.forEach { deck ->
+                                                FilterChip(
+                                                    selected = deck.isAiAnalysisEnabled,
+                                                    onClick = {
+                                                        onToggleL1AiAnalysis?.invoke(deck.l1, !deck.isAiAnalysisEnabled)
+                                                    },
+                                                    label = {
+                                                        Text(
+                                                            text = "${deck.l1} ${if (deck.isAiAnalysisEnabled) "✓" else "✕"}",
+                                                            style = MaterialTheme.typography.labelSmall,
+                                                            fontWeight = if (deck.isAiAnalysisEnabled) FontWeight.Bold else FontWeight.Normal
+                                                        )
+                                                    },
+                                                    colors = FilterChipDefaults.filterChipColors(
+                                                        selectedContainerColor = MaterialTheme.colorScheme.primaryContainer,
+                                                        selectedLabelColor = MaterialTheme.colorScheme.onPrimaryContainer
+                                                    )
+                                                )
+                                            }
+                                        }
+
+                                        val disabledCount = l1Decks.count { !it.isAiAnalysisEnabled }
+                                        if (disabledCount > 0) {
+                                            Spacer(modifier = Modifier.height(8.dp))
+                                            Surface(
+                                                shape = RoundedCornerShape(8.dp),
+                                                color = MaterialTheme.colorScheme.errorContainer.copy(alpha = 0.35f),
+                                                modifier = Modifier.fillMaxWidth()
+                                            ) {
+                                                Row(
+                                                    modifier = Modifier.padding(horizontal = 10.dp, vertical = 6.dp),
+                                                    verticalAlignment = Alignment.CenterVertically
+                                                ) {
+                                                    Icon(
+                                                        imageVector = Icons.Default.Warning,
+                                                        contentDescription = null,
+                                                        tint = MaterialTheme.colorScheme.error,
+                                                        modifier = Modifier.size(14.dp)
+                                                    )
+                                                    Spacer(modifier = Modifier.width(6.dp))
+                                                    Text(
+                                                        text = "$disabledCount baralho(s) pausado(s) e ignorado(s) da análise pedagógica.",
+                                                        style = MaterialTheme.typography.labelSmall,
+                                                        color = MaterialTheme.colorScheme.onErrorContainer
+                                                    )
+                                                }
+                                            }
+                                        }
                                     }
                                 }
                             }

@@ -155,6 +155,23 @@ fun DeckCard(
                             }
                         }
 
+                        // Badge de IA Pausada
+                        if (!deck.isAiAnalysisEnabled) {
+                            Surface(
+                                shape = RoundedCornerShape(6.dp),
+                                color = if (isCoverActive) Color.Black.copy(alpha = 0.55f) else MaterialTheme.colorScheme.surfaceVariant,
+                                border = if (isCoverActive) androidx.compose.foundation.BorderStroke(1.dp, Color.White.copy(alpha = 0.35f)) else null
+                            ) {
+                                Text(
+                                    text = "IA Pausada",
+                                    modifier = Modifier.padding(horizontal = 6.dp, vertical = 3.dp),
+                                    style = MaterialTheme.typography.labelSmall.copy(shadow = textShadow),
+                                    fontWeight = FontWeight.Bold,
+                                    color = if (isCoverActive) Color.White.copy(alpha = 0.85f) else MaterialTheme.colorScheme.onSurfaceVariant
+                                )
+                            }
+                        }
+
                         // Discipline color indicators
                         if (deck.disciplineColors.isNotEmpty() && !isCoverActive) {
                             Row(horizontalArrangement = Arrangement.spacedBy(4.dp)) {

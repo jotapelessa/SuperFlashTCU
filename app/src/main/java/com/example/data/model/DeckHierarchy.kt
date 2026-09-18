@@ -12,7 +12,8 @@ data class L1DeckSummary(
     val disciplineColors: List<String> = emptyList(),
     val cardColorHex: String? = null,
     val courseName: String? = null,
-    val coverUrl: String? = null
+    val coverUrl: String? = null,
+    val isAiAnalysisEnabled: Boolean = true
 ) {
     val masteryPercentage: Float
         get() = if (totalCards > 0) ((masteredCards * 1.0f + learningCards * 0.4f) / totalCards) * 100f else 0f

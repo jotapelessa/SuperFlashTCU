@@ -4,7 +4,19 @@ Aplicativo Android nativo de alta performance para preparação de concursos de 
 
 ---
 
-## 📱 Versão Atual: v1.5.2 (Code 12)
+## 📱 Versão Atual: v1.5.3 (Code 13)
+
+### 🚀 Principais Novidades da Versão 1.5.3:
+* **Controle Granular de Baralhos L1 na Análise do Tutor Gemini AI (Itens 1.1 e 3.1)**:
+  * **Isolamento de Escopo por Baralho L1:** O estudante agora pode ativar ou desativar individualmente a participação de qualquer baralho L1 nas análises estatísticas da IA. Isso impede que baralhos inativos, legados ou em pausa distorçam o diagnóstico geral com acúmulos falsos de cartões vencidos ou taxas de domínio incoerentes.
+  * **Configuração no Diálogo de Edição L1 (`EditL1DeckDialog.kt`):** Adicionado controle interativo com `Switch` M3 para ligar/desligar a "Análise do Tutor AI Gemini" com persistência atômica em `SharedPreferences`.
+  * **Seletor Rápido de Escopo no Tutor AI (`AiTutorScreen.kt`):** Painel superior com `FilterChip` interativo para cada Carreira L1, permitindo ligar e desligar o baralho diretamente na tela de diagnóstico sem precisar voltar à tela inicial. Conta também com contador de alerta indicando quantos baralhos estão em pausa.
+  * **Badge Visual Semântico no Card (`DeckCard.kt`):** Quando um baralho L1 tem a análise desativada, exibe uma tag visual `IA Pausada` sutil no cartão da tela inicial.
+  * **Filtragem Rígida de Métricas & Payload da IA (`DeckViewModel.kt`):** Todas as estatísticas globais, FSRS-5, gargalos críticos e lista de cartões passados ao `GeminiStudyAnalyzer` são recalculadas estritamente com base nos baralhos L1 permitidos. Caso nenhum baralho esteja ativado, a chamada da API é abortada imediatamente com orientação clara ao usuário, economizando tokens e tempo de rede.
+
+---
+
+## 📱 Versão Anterior: v1.5.2 (Code 12)
 
 ### 🚀 Principais Novidades da Versão 1.5.2:
 * **Tabelas Markdown Nativas no Tutor Pedagógico Gemini AI (Item 1.1)**:

@@ -17,8 +17,8 @@ android {
     applicationId = "com.aistudio.ankidecks.gacmif"
     minSdk = 24
     targetSdk = 36
-    versionCode = 12
-    versionName = "1.5.2"
+    versionCode = 13
+    versionName = "1.5.3"
 
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
   }

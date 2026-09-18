@@ -186,20 +186,29 @@ class DeckViewModel(application: Application) : AndroidViewModel(application) {
 
     private val _customizationsTrigger = MutableStateFlow(System.currentTimeMillis())
 
-    private fun getCustomizationForL1(l1: String): Triple<String?, String?, String?> {
+    private data class L1Customization(
+        val color: String?,
+        val course: String?,
+        val cover: String?,
+        val isAiEnabled: Boolean
+    )
+
+    private fun getCustomizationForL1(l1: String): L1Customization {
         val color = prefs.getString("l1_color_$l1", null)
         val course = prefs.getString("l1_course_$l1", null)
         val cover = prefs.getString("l1_cover_$l1", null)
-        return Triple(color, course, cover)
+        val isAiEnabled = prefs.getBoolean("l1_ai_enabled_$l1", true)
+        return L1Customization(color, course, cover, isAiEnabled)
     }
 
     val l1Decks: StateFlow<List<L1DeckSummary>> = combine(repository.l1DeckSummaries, _customizationsTrigger) { summaries, _ ->
         summaries.map { summary ->
-            val (color, course, cover) = getCustomizationForL1(summary.l1)
+            val custom = getCustomizationForL1(summary.l1)
             summary.copy(
-                cardColorHex = color,
-                courseName = course,
-                coverUrl = cover
+                cardColorHex = custom.color,
+                courseName = custom.course,
+                coverUrl = custom.cover,
+                isAiAnalysisEnabled = custom.isAiEnabled
             )
         }
     }
@@ -210,7 +219,14 @@ class DeckViewModel(application: Application) : AndroidViewModel(application) {
         initialValue = emptyList()
     )
 
-    fun updateL1Customization(oldL1: String, newName: String, cardColorHex: String?, courseName: String?, coverUrl: String?) {
+    fun updateL1Customization(
+        oldL1: String,
+        newName: String,
+        cardColorHex: String?,
+        courseName: String?,
+        coverUrl: String?,
+        isAiEnabled: Boolean = true
+    ) {
         viewModelScope.launch {
             var targetL1 = oldL1.trim()
             val cleanNewName = newName.trim()
@@ -221,6 +237,7 @@ class DeckViewModel(application: Application) : AndroidViewModel(application) {
                     remove("l1_color_$oldL1")
                     remove("l1_course_$oldL1")
                     remove("l1_cover_$oldL1")
+                    remove("l1_ai_enabled_$oldL1")
                 }.apply()
                 targetL1 = cleanNewName
             }
@@ -229,12 +246,20 @@ class DeckViewModel(application: Application) : AndroidViewModel(application) {
                 if (!cardColorHex.isNullOrBlank()) putString("l1_color_$targetL1", cardColorHex) else remove("l1_color_$targetL1")
                 if (!courseName.isNullOrBlank()) putString("l1_course_$targetL1", courseName) else remove("l1_course_$targetL1")
                 if (!coverUrl.isNullOrBlank()) putString("l1_cover_$targetL1", coverUrl) else remove("l1_cover_$targetL1")
+                putBoolean("l1_ai_enabled_$targetL1", isAiEnabled)
             }.apply()
 
             if (_selectedL1.value == oldL1) {
                 _selectedL1.value = targetL1
             }
 
+            _customizationsTrigger.value = System.currentTimeMillis()
+        }
+    }
+
+    fun toggleL1AiAnalysis(l1: String, enabled: Boolean) {
+        viewModelScope.launch {
+            prefs.edit().putBoolean("l1_ai_enabled_$l1", enabled).apply()
             _customizationsTrigger.value = System.currentTimeMillis()
         }
     }
@@ -925,10 +950,43 @@ class DeckViewModel(application: Application) : AndroidViewModel(application) {
         viewModelScope.launch {
             _aiLoading.value = true
             _aiErrorMessage.value = null
+
+            val permittedL1Decks = l1Decks.value.filter { it.isAiAnalysisEnabled }
+            if (permittedL1Decks.isEmpty()) {
+                _aiErrorMessage.value = "Nenhum baralho L1 habilitado para análise da IA. Ative a IA em ao menos um baralho nas configurações do deck."
+                _aiLoading.value = false
+                return@launch
+            }
+
+            val permittedL1Names = permittedL1Decks.map { it.l1 }.toSet()
+            val permittedCards = allCards.value.filter { it.l1 in permittedL1Names }
+
+            // Recalcula o progresso contextualizado estritamente para os baralhos permitidos
+            val now = System.currentTimeMillis()
+            val total = permittedCards.size
+            val due = permittedCards.count { it.dueTimestamp <= now }
+            val mastered = permittedCards.count { it.masteryLevel >= 2 }
+            val learning = permittedCards.count { it.masteryLevel == 1 }
+            val newCards = permittedCards.count { it.masteryLevel == 0 && it.reps == 0 }
+            val totalRevs = permittedCards.sumOf { it.reps }
+            val masteryPct = if (total > 0) ((mastered * 1.0f + learning * 0.4f) / total) * 100f else 0f
+
+            val baseReport = progressReport.value
+            val contextualizedReport = baseReport.copy(
+                totalCards = total,
+                totalReviews = totalRevs,
+                overallMasteryPercentage = masteryPct,
+                dueNowCount = due,
+                learningCount = learning,
+                masteredCount = mastered,
+                newCount = newCards,
+                domainMasteryList = baseReport.domainMasteryList.filter { it.domainName in permittedL1Names }
+            )
+
             val result = aiAnalyzer.analyzeStudyDataWithMetadata(
-                l1Decks = l1Decks.value,
-                allCards = allCards.value,
-                progressReport = progressReport.value,
+                l1Decks = permittedL1Decks,
+                allCards = permittedCards,
+                progressReport = contextualizedReport,
                 todayReviewed = todayReviewedCount.value,
                 dailyGoal = dailyStudyGoal.value,
                 customQuestion = customQuestion,

@@ -95,7 +95,7 @@ fun HomeScreen(
     onOpenCreateCard: () -> Unit = {},
     onOpenMoveL2ToL1: () -> Unit = {},
     onOpenCompareDecks: () -> Unit = {},
-    onUpdateL1Customization: (oldL1: String, newName: String, colorHex: String?, courseName: String?, coverUrl: String?) -> Unit = { _, _, _, _, _ -> },
+    onUpdateL1Customization: (oldL1: String, newName: String, colorHex: String?, courseName: String?, coverUrl: String?, isAiEnabled: Boolean) -> Unit = { _, _, _, _, _, _ -> },
     modifier: Modifier = Modifier
 ) {
     var searchQuery by remember { mutableStateOf("") }
@@ -271,8 +271,8 @@ fun HomeScreen(
     deckToEdit?.let { deck ->
         EditL1DeckDialog(
             deck = deck,
-            onConfirmSave = { oldL1, newL1, colorHex, courseName, coverUrl ->
-                onUpdateL1Customization(oldL1, newL1, colorHex, courseName, coverUrl)
+            onConfirmSave = { oldL1, newL1, colorHex, courseName, coverUrl, isAiEnabled ->
+                onUpdateL1Customization(oldL1, newL1, colorHex, courseName, coverUrl, isAiEnabled)
                 deckToEdit = null
             },
             onDismiss = { deckToEdit = null }

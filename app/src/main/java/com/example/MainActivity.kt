@@ -329,8 +329,8 @@ fun AnkiAppNavigation(viewModel: DeckViewModel) {
                         },
                         onOpenMoveL2ToL1 = { showMoveL2ToL1Dialog = true },
                         onOpenCompareDecks = { showCompareDecksDialog = true },
-                        onUpdateL1Customization = { oldL1, newName, colorHex, courseName, coverUrl ->
-                            viewModel.updateL1Customization(oldL1, newName, colorHex, courseName, coverUrl)
+                        onUpdateL1Customization = { oldL1, newName, colorHex, courseName, coverUrl, isAiEnabled ->
+                            viewModel.updateL1Customization(oldL1, newName, colorHex, courseName, coverUrl, isAiEnabled)
                         }
                     )
                 }
@@ -350,6 +350,9 @@ fun AnkiAppNavigation(viewModel: DeckViewModel) {
                         },
                         onClearAnalysis = {
                             viewModel.clearAiAnalysis()
+                        },
+                        onToggleL1AiAnalysis = { l1, enabled ->
+                            viewModel.toggleL1AiAnalysis(l1, enabled)
                         },
                         onStudyCriticalCards = { cards ->
                             if (cards.isNotEmpty()) {
