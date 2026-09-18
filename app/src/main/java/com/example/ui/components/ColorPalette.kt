@@ -163,6 +163,14 @@ object DisciplinePalette {
         }
     }
 
+    fun removeCustom(disciplineName: String) {
+        if (disciplineName.isNotBlank()) {
+            val key = disciplineName.trim().lowercase()
+            customColors.remove(key)
+            customIcons.remove(key)
+        }
+    }
+
     fun getIconKeyForDiscipline(disciplineName: String): String {
         val key = disciplineName.trim().lowercase()
         return customIcons[key] ?: "School"

@@ -4,7 +4,17 @@ Aplicativo Android nativo de alta performance para preparação de concursos de 
 
 ---
 
-## 📱 Versão Atual: v1.4.2 (Code 7)
+## 📱 Versão Atual: v1.4.3 (Code 8)
+
+### 🚀 Principais Novidades da Versão 1.4.3:
+* **Reatividade Imediata no Salvamento de Ícones e Cores L2 (Item 3.8)**:
+  * **Sinal Reativo sem I/O de Disco (`_paletteUpdateSignal`):** Resolução do problema em que a alteração de ícone ou cor de disciplinas L2 (sem renomeação) não era refletida instantaneamente na interface. Introdução de um canal reativo de sinalização atômico no `DeckRepository` combinado via `Flow.combine()` com as consultas do Room, garantindo reemissão imediata das listas L2 em 0ms e sem sobrecarga no SQLite.
+  * **Higienização de Chaves Antigas em Renomeações:** Ao renomear uma matéria L2, os metadados anteriores gravados em `SharedPreferences` e `DisciplinePalette` são expurgados com `removeCustom()`, evitando acúmulo de chaves órfãs.
+  * **Padronização Visual no Diálogo de Mover Tópicos L3 (`MoveL3ToL2Dialog`):** O seletor de ícones e cores ao criar/mover para um novo baralho L2 agora adota a mesma matriz contígua 5x10 (0dp de espaçamento, proporção 1:1 e sem rótulos textuais), unificando a identidade visual das telas de baralhos.
+
+---
+
+## 📱 Versão Anterior: v1.4.2 (Code 7)
 
 ### 🚀 Principais Novidades da Versão 1.4.2:
 * **Tutor IA com 35 Sugestões Táticas para TCU / Controle (Item 3.4)**:

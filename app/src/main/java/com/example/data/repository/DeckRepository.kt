@@ -19,6 +19,8 @@ import com.example.data.model.StudyProgressReport
 import com.example.ui.components.DisciplinePalette
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import java.security.MessageDigest
@@ -65,11 +67,18 @@ class DeckRepository(private val dao: FlashcardDao) {
             .sortedBy { it.l1 }
     }.flowOn(Dispatchers.Default)
 
+    private val _paletteUpdateSignal = MutableStateFlow(0L)
+
+    fun notifyPaletteChanged() {
+        _paletteUpdateSignal.value = System.currentTimeMillis()
+    }
+
     /**
      * Dedicated L2 & L3 sub-deck hierarchy for a selected L1 deck.
+     * Reavalia reativamente tanto por alterações no Room quanto por atualizações de paleta/ícone.
      */
     fun getL2DisciplinesForL1(l1: String): Flow<List<L2DisciplineSummary>> =
-        dao.getFlashcardsByL1(l1).map { cards ->
+        combine(dao.getFlashcardsByL1(l1), _paletteUpdateSignal) { cards, _ ->
             val now = System.currentTimeMillis()
             cards.groupBy { it.l2 }
                 .map { (l2, l2Cards) ->

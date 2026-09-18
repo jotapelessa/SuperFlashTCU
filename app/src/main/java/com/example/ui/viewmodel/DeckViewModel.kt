@@ -583,6 +583,7 @@ class DeckViewModel(application: Application) : AndroidViewModel(application) {
                 .apply()
 
             repository.moveL3TopicsToNewL2(l1, topicsToMove, cleanName)
+            repository.notifyPaletteChanged()
             onComplete?.invoke()
         }
     }
@@ -606,11 +607,18 @@ class DeckViewModel(application: Application) : AndroidViewModel(application) {
                 .apply()
 
             if (cleanName != oldL2Name) {
+                DisciplinePalette.removeCustom(oldL2Name)
+                prefs.edit()
+                    .remove("custom_color_$oldL2Name")
+                    .remove("custom_icon_$oldL2Name")
+                    .apply()
+
                 repository.renameL2Discipline(l1, oldL2Name, cleanName)
                 if (_selectedL2Filter.value == oldL2Name) {
                     _selectedL2Filter.value = cleanName
                 }
             }
+            repository.notifyPaletteChanged()
             onComplete?.invoke()
         }
     }
