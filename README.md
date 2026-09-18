@@ -4,7 +4,19 @@ Aplicativo Android nativo de alta performance para preparação de concursos de 
 
 ---
 
-## 📱 Versão Atual: v1.4.3 (Code 8)
+## 📱 Versão Atual: v1.4.4 (Code 9)
+
+### 🚀 Principais Novidades da Versão 1.4.4:
+* **Correção do Alerta de Sessão Concluída & Relatório de Tempo por Baralho (Item 3.1)**:
+  * **Eliminação da Condição de Corrida no Estudo Rápido L1:** Correção do fluxo na tela inicial onde o acionamento do estudo rápido utilizava `filteredCards` assíncrono ainda não propagado, gerando sessões com 0 cartões que disparavam imediatamente a tela de "Sessão Concluída!" zerada. O carregamento agora utiliza a coleção síncrona `allCards`, com guarda estrita contra listas vazias.
+  * **Cronometragem de Alta Precisão com `SystemClock.elapsedRealtime()`:** Substituição do contador de segundos baseado em `delay(1000L)` por marcações reais de timestamp de hardware. O tempo de resposta por cartão agora registra a latência real em milissegundos, sem perdas por atrasos de coroutines.
+  * **Coerência Total no Relatório de Tempo por Deck:** O tempo total exibido no resumo agora reflete o tempo real decorrido da sessão e se alinha perfeitamente à soma dos tempos por disciplina L2. Valores inferiores a 1 segundo são exibidos como `< 1s` em vez do confuso `0s`.
+  * **Limpeza e Isolamento de Ciclo de Vida da Sessão (`finishStudySession`):** Ao concluir os estudos ou retornar ao painel, todos os contadores ao vivo (`_sessionStats`), índices e mapeamentos de baralhos são redefinidos atomicamente no ViewModel, prevenindo dados órfãos em sessões subsequentes.
+  * **Tela Amigável de Baralho em Dia (`EmptyStudySessionView`):** Ao iniciar filtros sem nenhum cartão pendente, o app agora exibe uma tela informativa com ícone de aviso e botão direto para retornar ao painel, em vez de abrir um relatório de desempenho zerado.
+
+---
+
+## 📱 Versão Anterior: v1.4.3 (Code 8)
 
 ### 🚀 Principais Novidades da Versão 1.4.3:
 * **Reatividade Imediata no Salvamento de Ícones e Cores L2 (Item 3.8)**:

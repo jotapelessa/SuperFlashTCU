@@ -64,7 +64,12 @@ data class DeckTimeSpent(
             val totalSeconds = (timeMillis / 1000).toInt()
             val minutes = totalSeconds / 60
             val seconds = totalSeconds % 60
-            return if (minutes > 0) "${minutes}m ${seconds}s" else "${seconds}s"
+            return when {
+                minutes > 0 -> "${minutes}m ${seconds}s"
+                seconds > 0 -> "${seconds}s"
+                timeMillis > 0 -> "< 1s"
+                else -> "0s"
+            }
         }
 
     val avgSecondsPerCard: Float
@@ -81,7 +86,12 @@ data class SessionTimeReport(
             val totalSeconds = (totalTimeMillis / 1000).toInt()
             val minutes = totalSeconds / 60
             val seconds = totalSeconds % 60
-            return if (minutes > 0) "${minutes}m ${seconds}s" else "${seconds}s"
+            return when {
+                minutes > 0 -> "${minutes}m ${seconds}s"
+                seconds > 0 -> "${seconds}s"
+                totalTimeMillis > 0 -> "< 1s"
+                else -> "0s"
+            }
         }
 
     val paceLabel: String

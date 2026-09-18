@@ -344,6 +344,7 @@ class DeckViewModel(application: Application) : AndroidViewModel(application) {
 
     private val sessionDeckTimes = mutableMapOf<String, Long>()
     private val sessionDeckCounts = mutableMapOf<String, Int>()
+    private val sessionDeckL1 = mutableMapOf<String, String>()
 
     fun startStudySession(
         cards: List<FlashcardEntity>,
@@ -354,14 +355,26 @@ class DeckViewModel(application: Application) : AndroidViewModel(application) {
         _studyCards.value = preparedCards
         _currentCardIndex.value = 0
         _isAnswerRevealed.value = false
-        _studyCompleted.value = preparedCards.isEmpty()
+        _studyCompleted.value = false
         _sessionTimerConfig.value = timerConfig
         sessionDeckTimes.clear()
         sessionDeckCounts.clear()
+        sessionDeckL1.clear()
         _sessionStats.value = SessionLiveStats(
             totalSessionCards = preparedCards.size,
             timeReport = SessionTimeReport()
         )
+    }
+
+    fun finishStudySession() {
+        _studyCompleted.value = false
+        _studyCards.value = emptyList()
+        _currentCardIndex.value = 0
+        _isAnswerRevealed.value = false
+        sessionDeckTimes.clear()
+        sessionDeckCounts.clear()
+        sessionDeckL1.clear()
+        _sessionStats.value = SessionLiveStats()
     }
 
     fun startConfiguredStudySession(
@@ -407,6 +420,7 @@ class DeckViewModel(application: Application) : AndroidViewModel(application) {
                 card.l1.isNotBlank() -> card.l1
                 else -> "Geral"
             }
+            sessionDeckL1[deckName] = card.l1
             val prevTime = sessionDeckTimes.getOrDefault(deckName, 0L)
             sessionDeckTimes[deckName] = prevTime + timeSpentMillis
             sessionDeckCounts[deckName] = sessionDeckCounts.getOrDefault(deckName, 0) + 1
@@ -418,10 +432,11 @@ class DeckViewModel(application: Application) : AndroidViewModel(application) {
 
             val totalTime = sessionDeckTimes.values.sum()
             val deckBreakdown = sessionDeckTimes.map { (deck, millis) ->
+                val deckL1 = sessionDeckL1[deck] ?: card.l1
                 DeckTimeSpent(
                     deckName = deck,
-                    l1 = card.l1,
-                    l2 = if (deck != card.l1) deck else "",
+                    l1 = deckL1,
+                    l2 = if (deck != deckL1) deck else "",
                     timeMillis = millis,
                     cardsCount = sessionDeckCounts.getOrDefault(deck, 1),
                     colorHex = DisciplinePalette.getColorForDiscipline(deck)

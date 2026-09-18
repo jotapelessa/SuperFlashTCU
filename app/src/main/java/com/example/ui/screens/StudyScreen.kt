@@ -26,6 +26,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Edit
+import android.os.SystemClock
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Flip
 import androidx.compose.material.icons.filled.Schedule
 import androidx.compose.material.icons.filled.School
@@ -84,18 +86,22 @@ fun StudyScreen(
     onFinish: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val sessionStartTimestamp = remember { SystemClock.elapsedRealtime() }
+    var cardStartTimestamp by remember { mutableLongStateOf(SystemClock.elapsedRealtime()) }
     var sessionElapsedSeconds by remember { mutableLongStateOf(0L) }
     var cardElapsedSeconds by remember { mutableLongStateOf(0L) }
 
     LaunchedEffect(currentIndex) {
+        cardStartTimestamp = SystemClock.elapsedRealtime()
         cardElapsedSeconds = 0L
     }
 
     LaunchedEffect(isCompleted) {
         while (!isCompleted) {
-            delay(1000L)
-            sessionElapsedSeconds++
-            cardElapsedSeconds++
+            val now = SystemClock.elapsedRealtime()
+            sessionElapsedSeconds = (now - sessionStartTimestamp) / 1000L
+            cardElapsedSeconds = (now - cardStartTimestamp) / 1000L
+            delay(500L)
         }
     }
     Scaffold(
@@ -143,9 +149,17 @@ fun StudyScreen(
             )
         }
     ) { innerPadding ->
-        if (isCompleted || cards.isEmpty()) {
+        if (cards.isEmpty() && sessionStats.completedCards == 0) {
+            EmptyStudySessionView(
+                onFinish = onFinish,
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(innerPadding)
+                    .navigationBarsPadding()
+            )
+        } else if (isCompleted || cards.isEmpty()) {
             SessionCompletedView(
-                totalCards = cards.size,
+                totalCards = if (sessionStats.completedCards > 0) sessionStats.completedCards else cards.size,
                 stats = sessionStats,
                 totalSessionElapsedSeconds = sessionElapsedSeconds,
                 onFinish = onFinish,
@@ -335,7 +349,6 @@ fun StudyScreen(
                     }
                 } else {
                     // Rating Buttons (Again, Hard, Good, Easy) with Review Status & Time Tracking
-                    val cardDurationMillis = (cardElapsedSeconds * 1000L).coerceAtLeast(1000L)
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.spacedBy(8.dp)
@@ -344,7 +357,11 @@ fun StudyScreen(
                             label = "Errei",
                             interval = "1d",
                             color = Color(0xFFEF4444),
-                            onClick = { onRateCard(1, cardDurationMillis) },
+                            onClick = {
+                                val now = SystemClock.elapsedRealtime()
+                                val cardDurationMillis = (now - cardStartTimestamp).coerceAtLeast(300L)
+                                onRateCard(1, cardDurationMillis)
+                            },
                             testTag = "btn_rate_again",
                             modifier = Modifier.weight(1f)
                         )
@@ -352,7 +369,11 @@ fun StudyScreen(
                             label = "Difícil",
                             interval = "${(card.intervalDays * 1.2).toInt().coerceAtLeast(1)}d",
                             color = Color(0xFFF59E0B),
-                            onClick = { onRateCard(2, cardDurationMillis) },
+                            onClick = {
+                                val now = SystemClock.elapsedRealtime()
+                                val cardDurationMillis = (now - cardStartTimestamp).coerceAtLeast(300L)
+                                onRateCard(2, cardDurationMillis)
+                            },
                             testTag = "btn_rate_hard",
                             modifier = Modifier.weight(1f)
                         )
@@ -360,7 +381,11 @@ fun StudyScreen(
                             label = "Bom",
                             interval = "${(card.intervalDays * 2.5).toInt().coerceAtLeast(2)}d",
                             color = Color(0xFF3B82F6),
-                            onClick = { onRateCard(3, cardDurationMillis) },
+                            onClick = {
+                                val now = SystemClock.elapsedRealtime()
+                                val cardDurationMillis = (now - cardStartTimestamp).coerceAtLeast(300L)
+                                onRateCard(3, cardDurationMillis)
+                            },
                             testTag = "btn_rate_good",
                             modifier = Modifier.weight(1f)
                         )
@@ -368,7 +393,11 @@ fun StudyScreen(
                             label = "Fácil",
                             interval = "${(card.intervalDays * 3.2).toInt().coerceAtLeast(4)}d",
                             color = Color(0xFF10B981),
-                            onClick = { onRateCard(4, cardDurationMillis) },
+                            onClick = {
+                                val now = SystemClock.elapsedRealtime()
+                                val cardDurationMillis = (now - cardStartTimestamp).coerceAtLeast(300L)
+                                onRateCard(4, cardDurationMillis)
+                            },
                             testTag = "btn_rate_easy",
                             modifier = Modifier.weight(1f)
                         )
@@ -689,16 +718,18 @@ private fun SessionCompletedView(
         Spacer(modifier = Modifier.height(16.dp))
 
         // Time and Per-Deck Performance Summary Report
-        val effectiveTotalSeconds = if (stats.timeReport.totalTimeMillis > 0) {
-            stats.timeReport.totalTimeMillis / 1000L
+        val effectiveTotalSeconds = totalSessionElapsedSeconds.coerceAtLeast(stats.timeReport.totalTimeMillis / 1000L)
+        val formattedSessionTime = if (effectiveTotalSeconds > 0) {
+            String.format(
+                "%02dm %02ds",
+                effectiveTotalSeconds / 60,
+                effectiveTotalSeconds % 60
+            )
+        } else if (stats.timeReport.totalTimeMillis > 0) {
+            "< 1s"
         } else {
-            totalSessionElapsedSeconds
+            "00m 00s"
         }
-        val formattedSessionTime = String.format(
-            "%02dm %02ds",
-            effectiveTotalSeconds / 60,
-            effectiveTotalSeconds % 60
-        )
 
         Card(
             shape = RoundedCornerShape(16.dp),
@@ -908,5 +939,66 @@ private fun ResultStatColumn(label: String, count: Int, color: Color) {
             style = MaterialTheme.typography.labelSmall,
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )
+    }
+}
+
+@Composable
+private fun EmptyStudySessionView(
+    onFinish: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Column(
+        modifier = modifier
+            .padding(24.dp)
+            .verticalScroll(rememberScrollState()),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+    ) {
+        Surface(
+            shape = CircleShape,
+            color = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.5f),
+            modifier = Modifier.size(80.dp)
+        ) {
+            Box(contentAlignment = Alignment.Center) {
+                Icon(
+                    imageVector = Icons.Default.Info,
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.primary,
+                    modifier = Modifier.size(44.dp)
+                )
+            }
+        }
+
+        Spacer(modifier = Modifier.height(20.dp))
+
+        Text(
+            text = "Nenhum Flashcard Pendente",
+            style = MaterialTheme.typography.headlineSmall,
+            fontWeight = FontWeight.Bold,
+            color = MaterialTheme.colorScheme.onSurface,
+            textAlign = androidx.compose.ui.text.style.TextAlign.Center
+        )
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        Text(
+            text = "Não foram encontrados flashcards para o filtro selecionado ou todos já foram revisados e estão em dia com o ciclo de repetição espaçada.",
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            textAlign = androidx.compose.ui.text.style.TextAlign.Center
+        )
+
+        Spacer(modifier = Modifier.height(32.dp))
+
+        Button(
+            onClick = onFinish,
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(48.dp)
+                .testTag("btn_empty_study_back"),
+            shape = RoundedCornerShape(12.dp)
+        ) {
+            Text(text = "Voltar ao Painel", fontWeight = FontWeight.Bold)
+        }
     }
 }

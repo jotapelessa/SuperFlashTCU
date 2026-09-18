@@ -216,6 +216,7 @@ fun AnkiAppNavigation(viewModel: DeckViewModel) {
                             viewModel.openEditCard(card)
                         },
                         onFinish = {
+                            viewModel.finishStudySession()
                             subDestination = null
                         }
                     )
@@ -238,8 +239,10 @@ fun AnkiAppNavigation(viewModel: DeckViewModel) {
                                 subDestination = null
                             },
                             onStudyCards = { cards ->
-                                viewModel.startStudySession(cards, sessionTimerConfig)
-                                subDestination = AppDestination.STUDY
+                                if (cards.isNotEmpty()) {
+                                    viewModel.startStudySession(cards, sessionTimerConfig)
+                                    subDestination = AppDestination.STUDY
+                                }
                             },
                             onDeleteL1 = {
                                 viewModel.deleteDeck(l1)
@@ -302,10 +305,13 @@ fun AnkiAppNavigation(viewModel: DeckViewModel) {
                         },
                         onQuickStudyL1 = { l1 ->
                             viewModel.selectL1(l1)
-                            val cardsToStudy = filteredCards.filter { it.l1 == l1 }
-                            val dueCards = cardsToStudy.filter { it.dueTimestamp <= System.currentTimeMillis() }
-                            viewModel.startStudySession(if (dueCards.isNotEmpty()) dueCards else cardsToStudy, sessionTimerConfig)
-                            subDestination = AppDestination.STUDY
+                            val cardsToStudy = allCards.filter { it.l1 == l1 }
+                            if (cardsToStudy.isNotEmpty()) {
+                                val dueCards = cardsToStudy.filter { it.dueTimestamp <= System.currentTimeMillis() }
+                                val targetCards = if (dueCards.isNotEmpty()) dueCards else cardsToStudy
+                                viewModel.startStudySession(targetCards, sessionTimerConfig)
+                                subDestination = AppDestination.STUDY
+                            }
                         },
                         onOpenImport = { showImportDialog = true },
                         onResetData = { viewModel.resetToDefault() },
@@ -340,8 +346,10 @@ fun AnkiAppNavigation(viewModel: DeckViewModel) {
                             viewModel.clearAiAnalysis()
                         },
                         onStudyCriticalCards = { cards ->
-                            viewModel.startStudySession(cards, sessionTimerConfig)
-                            subDestination = AppDestination.STUDY
+                            if (cards.isNotEmpty()) {
+                                viewModel.startStudySession(cards, sessionTimerConfig)
+                                subDestination = AppDestination.STUDY
+                            }
                         }
                     )
                 }
@@ -472,10 +480,12 @@ fun AnkiAppNavigation(viewModel: DeckViewModel) {
             availableTags = allTags,
             initialTimerConfig = sessionTimerConfig,
             onStartSession = { selectedCards, timerConfig ->
-                viewModel.setSessionTimerConfig(timerConfig)
-                viewModel.startStudySession(selectedCards, timerConfig)
-                showStudyConfigDialog = false
-                subDestination = AppDestination.STUDY
+                if (selectedCards.isNotEmpty()) {
+                    viewModel.setSessionTimerConfig(timerConfig)
+                    viewModel.startStudySession(selectedCards, timerConfig)
+                    showStudyConfigDialog = false
+                    subDestination = AppDestination.STUDY
+                }
             },
             onDismiss = { showStudyConfigDialog = false }
         )
