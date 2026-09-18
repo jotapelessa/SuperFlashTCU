@@ -1,6 +1,8 @@
 package com.example.ui.components
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -11,6 +13,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -42,6 +46,7 @@ sealed class MarkdownBlock {
     data class Header(val level: Int, val text: String) : MarkdownBlock()
     data class ListItem(val bullet: String, val text: String) : MarkdownBlock()
     data class Paragraph(val text: String) : MarkdownBlock()
+    data class Table(val headers: List<String>, val rows: List<List<String>>) : MarkdownBlock()
     object Divider : MarkdownBlock()
 }
 
@@ -68,6 +73,9 @@ fun AiMarkdownContent(
                 }
                 is MarkdownBlock.Paragraph -> {
                     ParagraphView(text = block.text)
+                }
+                is MarkdownBlock.Table -> {
+                    TableView(block = block)
                 }
                 is MarkdownBlock.Divider -> {
                     Spacer(modifier = Modifier.height(6.dp))
@@ -165,6 +173,81 @@ private fun ParagraphView(text: String) {
     )
 }
 
+@Composable
+private fun TableView(block: MarkdownBlock.Table) {
+    if (block.headers.isEmpty()) return
+
+    Surface(
+        shape = RoundedCornerShape(12.dp),
+        color = MaterialTheme.colorScheme.surfaceContainerLow,
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f)),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 4.dp)
+    ) {
+        val scrollState = rememberScrollState()
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .horizontalScroll(scrollState)
+        ) {
+            // Linha de Cabeçalho da Tabela
+            Row(
+                modifier = Modifier
+                    .background(MaterialTheme.colorScheme.surfaceContainerHighest)
+                    .padding(horizontal = 6.dp, vertical = 8.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                block.headers.forEach { header ->
+                    Box(
+                        modifier = Modifier
+                            .widthIn(min = 90.dp, max = 220.dp)
+                            .padding(horizontal = 8.dp, vertical = 4.dp),
+                        contentAlignment = Alignment.CenterStart
+                    ) {
+                        Text(
+                            text = parseMarkdownInline(header),
+                            style = MaterialTheme.typography.labelMedium.copy(fontWeight = FontWeight.Bold),
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    }
+                }
+            }
+
+            // Linhas de Dados da Tabela com alternância sutil de fundo
+            block.rows.forEachIndexed { rowIndex, rowCells ->
+                val rowBg = if (rowIndex % 2 == 0) {
+                    MaterialTheme.colorScheme.surface
+                } else {
+                    MaterialTheme.colorScheme.surfaceContainerLowest
+                }
+                Row(
+                    modifier = Modifier
+                        .background(rowBg)
+                        .padding(horizontal = 6.dp, vertical = 8.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    block.headers.indices.forEach { colIndex ->
+                        val cellText = rowCells.getOrNull(colIndex) ?: ""
+                        Box(
+                            modifier = Modifier
+                                .widthIn(min = 90.dp, max = 220.dp)
+                                .padding(horizontal = 8.dp, vertical = 4.dp),
+                            contentAlignment = Alignment.CenterStart
+                        ) {
+                            Text(
+                                text = parseMarkdownInline(cellText),
+                                style = MaterialTheme.typography.bodySmall,
+                                color = MaterialTheme.colorScheme.onSurface
+                            )
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
 fun parseMarkdownToBlocks(content: String): List<MarkdownBlock> {
     val blocks = mutableListOf<MarkdownBlock>()
     val lines = content.lines()
@@ -176,6 +259,25 @@ fun parseMarkdownToBlocks(content: String): List<MarkdownBlock> {
         if (rawLine.isBlank()) {
             blocks.add(MarkdownBlock.Divider)
             i++
+            continue
+        }
+
+        // Detecção de Tabela Markdown (| Col1 | Col2 | ...)
+        if (rawLine.startsWith("|") && i + 1 < lines.size && isTableDelimiter(lines[i + 1])) {
+            val headers = splitTableRow(rawLine)
+            i += 2 // Pula linha de cabeçalho e divisor
+            val rows = mutableListOf<List<String>>()
+            while (i < lines.size && lines[i].trim().startsWith("|")) {
+                val candidateLine = lines[i].trim()
+                if (!isTableDelimiter(candidateLine)) {
+                    val row = splitTableRow(candidateLine)
+                    if (row.isNotEmpty()) {
+                        rows.add(row)
+                    }
+                }
+                i++
+            }
+            blocks.add(MarkdownBlock.Table(headers = headers, rows = rows))
             continue
         }
 
@@ -211,6 +313,18 @@ fun parseMarkdownToBlocks(content: String): List<MarkdownBlock> {
     }
 
     return blocks
+}
+
+private fun isTableDelimiter(line: String): Boolean {
+    val clean = line.trim()
+    return clean.startsWith("|") && clean.contains("-") && clean.all { it == '|' || it == '-' || it == ':' || it.isWhitespace() }
+}
+
+private fun splitTableRow(line: String): List<String> {
+    var text = line.trim()
+    if (text.startsWith("|")) text = text.removePrefix("|")
+    if (text.endsWith("|")) text = text.removeSuffix("|")
+    return text.split("|").map { it.trim() }
 }
 
 private fun cleanHeader(text: String): String {

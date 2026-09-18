@@ -27,12 +27,15 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AutoAwesome
+import androidx.compose.material.icons.filled.BarChart
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.ContentCopy
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Psychology
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Send
+import androidx.compose.material.icons.filled.TrendingDown
+import androidx.compose.material.icons.filled.TrendingUp
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.AssistChip
 import androidx.compose.material3.AssistChipDefaults
@@ -42,8 +45,11 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FilterChip
+import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
@@ -104,6 +110,50 @@ fun AiTutorScreen(
     var selectedTabIndex by rememberSaveable { mutableIntStateOf(0) }
     var customQuery by rememberSaveable { mutableStateOf("") }
     val listState = rememberLazyListState()
+    var l2RankingMode by rememberSaveable { mutableIntStateOf(0) }
+
+    val l2PerformanceStats = remember(allCards) {
+        if (allCards.isEmpty()) emptyList<L2PerformanceItem>()
+        else {
+            val now = System.currentTimeMillis()
+            allCards.groupBy { it.l2 }
+                .map { (l2Name, cards) ->
+                    val total = cards.size
+                    val due = cards.count { it.dueTimestamp <= now }
+                    val mastered = cards.count { it.masteryLevel >= 2 }
+                    val cardsWithS = cards.filter { it.stability > 0f }
+                    val avgS = if (cardsWithS.isNotEmpty()) cardsWithS.map { it.stability.toDouble() }.average() else 0.0
+                    val masteryPercent = if (total > 0) (mastered.toFloat() / total * 100f) else 0f
+                    val l1Parent = cards.firstOrNull()?.l1 ?: ""
+                    L2PerformanceItem(
+                        l2 = l2Name,
+                        l1 = l1Parent,
+                        total = total,
+                        due = due,
+                        mastered = mastered,
+                        masteryPercent = masteryPercent,
+                        avgStability = avgS
+                    )
+                }
+        }
+    }
+
+    val topMasteredL2 = remember(l2PerformanceStats) {
+        l2PerformanceStats.sortedByDescending { it.masteryPercent }.take(5)
+    }
+
+    val topCriticalL2 = remember(l2PerformanceStats) {
+        l2PerformanceStats.sortedWith(compareByDescending<L2PerformanceItem> { it.due }.thenBy { it.masteryPercent }).take(5)
+    }
+
+    val fsrsGlobalStats = remember(allCards) {
+        val cardsWithS = allCards.filter { it.stability > 0f }
+        if (cardsWithS.isNotEmpty()) {
+            val avgS = cardsWithS.map { it.stability.toDouble() }.average()
+            val avgD = cardsWithS.map { it.difficulty.toDouble() }.average()
+            Triple(cardsWithS.size, avgS, avgD)
+        } else null
+    }
 
     val quickPrompts = remember {
         listOf(
@@ -296,6 +346,252 @@ fun AiTutorScreen(
                                         )
                                         Spacer(modifier = Modifier.width(6.dp))
                                         Text("Analisar")
+                                    }
+                                }
+                            }
+                        }
+
+                        // 1. Painel Visual Comparativo L1 (Carreiras)
+                        if (l1Decks.isNotEmpty()) {
+                            item {
+                                Card(
+                                    shape = RoundedCornerShape(16.dp),
+                                    colors = CardDefaults.cardColors(
+                                        containerColor = MaterialTheme.colorScheme.surfaceContainerLow
+                                    ),
+                                    modifier = Modifier.fillMaxWidth()
+                                ) {
+                                    Column(modifier = Modifier.padding(16.dp)) {
+                                        Row(
+                                            verticalAlignment = Alignment.CenterVertically,
+                                            modifier = Modifier.fillMaxWidth()
+                                        ) {
+                                            Icon(
+                                                imageVector = Icons.Default.BarChart,
+                                                contentDescription = null,
+                                                tint = MaterialTheme.colorScheme.primary,
+                                                modifier = Modifier.size(20.dp)
+                                            )
+                                            Spacer(modifier = Modifier.width(8.dp))
+                                            Text(
+                                                text = "Comparativo de Carreiras (L1)",
+                                                style = MaterialTheme.typography.titleSmall,
+                                                fontWeight = FontWeight.Bold,
+                                                color = MaterialTheme.colorScheme.onSurface
+                                            )
+                                        }
+                                        Spacer(modifier = Modifier.height(12.dp))
+
+                                        l1Decks.forEachIndexed { index, deck ->
+                                            if (index > 0) {
+                                                Spacer(modifier = Modifier.height(12.dp))
+                                            }
+                                            val masteryRatio = (deck.masteryPercentage / 100f).coerceIn(0f, 1f)
+                                            val progressColor = when {
+                                                deck.masteryPercentage >= 70f -> MaterialTheme.colorScheme.primary
+                                                deck.masteryPercentage >= 40f -> MaterialTheme.colorScheme.tertiary
+                                                else -> MaterialTheme.colorScheme.error
+                                            }
+                                            Column(modifier = Modifier.fillMaxWidth()) {
+                                                Row(
+                                                    modifier = Modifier.fillMaxWidth(),
+                                                    horizontalArrangement = Arrangement.SpaceBetween,
+                                                    verticalAlignment = Alignment.CenterVertically
+                                                ) {
+                                                    Text(
+                                                        text = deck.l1,
+                                                        style = MaterialTheme.typography.bodyMedium,
+                                                        fontWeight = FontWeight.SemiBold,
+                                                        color = MaterialTheme.colorScheme.onSurface,
+                                                        modifier = Modifier.weight(1f)
+                                                    )
+                                                    Text(
+                                                        text = "${String.format("%.1f", deck.masteryPercentage)}% Domínio",
+                                                        style = MaterialTheme.typography.labelMedium,
+                                                        fontWeight = FontWeight.Bold,
+                                                        color = progressColor
+                                                    )
+                                                }
+                                                Spacer(modifier = Modifier.height(4.dp))
+                                                LinearProgressIndicator(
+                                                    progress = { masteryRatio },
+                                                    modifier = Modifier
+                                                        .fillMaxWidth()
+                                                        .height(8.dp),
+                                                    color = progressColor,
+                                                    trackColor = MaterialTheme.colorScheme.surfaceVariant
+                                                )
+                                                Spacer(modifier = Modifier.height(4.dp))
+                                                Row(
+                                                    modifier = Modifier.fillMaxWidth(),
+                                                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                                                ) {
+                                                    Text(
+                                                        text = "Cards: ${deck.totalCards}",
+                                                        style = MaterialTheme.typography.labelSmall,
+                                                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                                                    )
+                                                    Text(
+                                                        text = "•",
+                                                        style = MaterialTheme.typography.labelSmall,
+                                                        color = MaterialTheme.colorScheme.outline
+                                                    )
+                                                    Text(
+                                                        text = "Vencidos: ${deck.dueCards}",
+                                                        style = MaterialTheme.typography.labelSmall,
+                                                        color = if (deck.dueCards > 0) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.primary
+                                                    )
+                                                    Text(
+                                                        text = "•",
+                                                        style = MaterialTheme.typography.labelSmall,
+                                                        color = MaterialTheme.colorScheme.outline
+                                                    )
+                                                    Text(
+                                                        text = "Dominados: ${deck.masteredCards}",
+                                                        style = MaterialTheme.typography.labelSmall,
+                                                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                                                    )
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        // 2. Ranking e Desempenho de Disciplinas L2
+                        if (l2PerformanceStats.isNotEmpty()) {
+                            item {
+                                Card(
+                                    shape = RoundedCornerShape(16.dp),
+                                    colors = CardDefaults.cardColors(
+                                        containerColor = MaterialTheme.colorScheme.surfaceContainerLow
+                                    ),
+                                    modifier = Modifier.fillMaxWidth()
+                                ) {
+                                    Column(modifier = Modifier.padding(16.dp)) {
+                                        Row(
+                                            modifier = Modifier.fillMaxWidth(),
+                                            horizontalArrangement = Arrangement.SpaceBetween,
+                                            verticalAlignment = Alignment.CenterVertically
+                                        ) {
+                                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                                Icon(
+                                                    imageVector = if (l2RankingMode == 0) Icons.Default.TrendingUp else Icons.Default.TrendingDown,
+                                                    contentDescription = null,
+                                                    tint = if (l2RankingMode == 0) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.error,
+                                                    modifier = Modifier.size(20.dp)
+                                                )
+                                                Spacer(modifier = Modifier.width(8.dp))
+                                                Text(
+                                                    text = "Desempenho por Disciplina (L2)",
+                                                    style = MaterialTheme.typography.titleSmall,
+                                                    fontWeight = FontWeight.Bold,
+                                                    color = MaterialTheme.colorScheme.onSurface
+                                                )
+                                            }
+                                        }
+                                        Spacer(modifier = Modifier.height(8.dp))
+                                        Row(
+                                            horizontalArrangement = Arrangement.spacedBy(8.dp),
+                                            modifier = Modifier.fillMaxWidth()
+                                        ) {
+                                            FilterChip(
+                                                selected = l2RankingMode == 0,
+                                                onClick = { l2RankingMode = 0 },
+                                                label = { Text("🏆 Top Retenção", style = MaterialTheme.typography.labelSmall) }
+                                            )
+                                            FilterChip(
+                                                selected = l2RankingMode == 1,
+                                                onClick = { l2RankingMode = 1 },
+                                                label = { Text("⚠️ Maior Urgência", style = MaterialTheme.typography.labelSmall) }
+                                            )
+                                        }
+                                        Spacer(modifier = Modifier.height(10.dp))
+
+                                        val currentList = if (l2RankingMode == 0) topMasteredL2 else topCriticalL2
+                                        currentList.forEachIndexed { idx, itemL2 ->
+                                            if (idx > 0) Spacer(modifier = Modifier.height(8.dp))
+                                            Row(
+                                                modifier = Modifier.fillMaxWidth(),
+                                                horizontalArrangement = Arrangement.SpaceBetween,
+                                                verticalAlignment = Alignment.CenterVertically
+                                            ) {
+                                                Column(modifier = Modifier.weight(1f)) {
+                                                    Text(
+                                                        text = itemL2.l2,
+                                                        style = MaterialTheme.typography.bodySmall,
+                                                        fontWeight = FontWeight.Bold,
+                                                        maxLines = 1,
+                                                        color = MaterialTheme.colorScheme.onSurface
+                                                    )
+                                                    val fsrsNote = if (itemL2.avgStability > 0) " • S: ${String.format("%.1f", itemL2.avgStability)}d" else ""
+                                                    Text(
+                                                        text = "${itemL2.total} cards • Vencidos: ${itemL2.due}$fsrsNote",
+                                                        style = MaterialTheme.typography.labelSmall,
+                                                        color = if (itemL2.due > 0) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.outline
+                                                    )
+                                                }
+                                                Surface(
+                                                    shape = RoundedCornerShape(8.dp),
+                                                    color = if (itemL2.masteryPercent >= 60f) MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.6f) else MaterialTheme.colorScheme.surfaceVariant
+                                                ) {
+                                                    Text(
+                                                        text = "${String.format("%.0f", itemL2.masteryPercent)}%",
+                                                        style = MaterialTheme.typography.labelSmall,
+                                                        fontWeight = FontWeight.Bold,
+                                                        color = if (itemL2.masteryPercent >= 60f) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.onSurfaceVariant,
+                                                        modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
+                                                    )
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        // 3. Indicadores de Memória FSRS-5
+                        if (fsrsGlobalStats != null) {
+                            item {
+                                Card(
+                                    shape = RoundedCornerShape(16.dp),
+                                    colors = CardDefaults.cardColors(
+                                        containerColor = MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.25f)
+                                    ),
+                                    modifier = Modifier.fillMaxWidth()
+                                ) {
+                                    Row(
+                                        modifier = Modifier.padding(14.dp),
+                                        horizontalArrangement = Arrangement.SpaceBetween,
+                                        verticalAlignment = Alignment.CenterVertically
+                                    ) {
+                                        Column {
+                                            Text(
+                                                text = "🧠 Motor FSRS-5 (Memória Global)",
+                                                style = MaterialTheme.typography.titleSmall,
+                                                fontWeight = FontWeight.Bold,
+                                                color = MaterialTheme.colorScheme.onSecondaryContainer
+                                            )
+                                            Text(
+                                                text = "${fsrsGlobalStats.first} flashcards modelados pelo algoritmo DSR",
+                                                style = MaterialTheme.typography.bodySmall,
+                                                color = MaterialTheme.colorScheme.onSecondaryContainer.copy(alpha = 0.8f)
+                                            )
+                                        }
+                                        Column(horizontalAlignment = Alignment.End) {
+                                            Text(
+                                                text = "S: ${String.format("%.1f", fsrsGlobalStats.second)}d",
+                                                style = MaterialTheme.typography.labelMedium,
+                                                fontWeight = FontWeight.Bold,
+                                                color = MaterialTheme.colorScheme.primary
+                                            )
+                                            Text(
+                                                text = "D: ${String.format("%.1f", fsrsGlobalStats.third)}/10",
+                                                style = MaterialTheme.typography.labelSmall,
+                                                color = MaterialTheme.colorScheme.outline
+                                            )
+                                        }
                                     }
                                 }
                             }
@@ -834,3 +1130,13 @@ fun AiTutorScreen(
         }
     }
 }
+
+data class L2PerformanceItem(
+    val l2: String,
+    val l1: String,
+    val total: Int,
+    val due: Int,
+    val mastered: Int,
+    val masteryPercent: Float,
+    val avgStability: Double
+)

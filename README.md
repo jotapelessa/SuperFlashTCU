@@ -4,7 +4,20 @@ Aplicativo Android nativo de alta performance para preparação de concursos de 
 
 ---
 
-## 📱 Versão Atual: v1.5.1 (Code 11)
+## 📱 Versão Atual: v1.5.2 (Code 12)
+
+### 🚀 Principais Novidades da Versão 1.5.2:
+* **Tabelas Markdown Nativas no Tutor Pedagógico Gemini AI (Item 1.1)**:
+  * **Parser e Renderizador Compose de Alta Performance (`AiMarkdownContent.kt`):** Implementação de `MarkdownBlock.Table` com suporte nativo a tabelas Markdown (`| col1 | col2 |`), cabeçalho estilizado (`surfaceContainerHighest`), rolagem horizontal fluida (`horizontalScroll`) e alternância sutil de linhas com bordas elegantes, eliminando quebras de formatação no celular.
+  * **Matrizes Diagnósticas e Comparativas L1 e L2:** Instrução de sistema e prompt do Gemini aprimorados para gerar tabelas comparativas formais de Carreiras L1 e Matriz Diagnóstica L2 com barras visuais (`[████████░░] 80%`) e sinalizadores semânticos (`🟢 Consolidado`, `🟡 Em Alerta`, `🔴 Crítico`).
+* **Dashboard Visual de Desempenho L1 & L2 no Tutor AI (`AiTutorScreen.kt`)**:
+  * **Comparativo Gráfico de Carreiras (L1):** Cards nativos no topo da aba Diagnóstico com barras de progresso proporcionais (`LinearProgressIndicator`), badges de Total, Vencidos e Dominados com cores semânticas de acordo com o domínio.
+  * **Ranking de Disciplinas L2 (Top Retenção vs Maior Urgência):** Seletor rápido com `FilterChip` destacando as 5 matérias mais consolidadas vs as 5 matérias com maior carga de cartões vencidos acumulados.
+  * **Indicadores da Memória FSRS-5 em Tempo Real:** Painel com Estabilidade Média Global ($S$ em dias), Dificuldade Média ($D$ / 10) e total de flashcards modelados pelo algoritmo DSR.
+
+---
+
+## 📱 Versão Anterior: v1.5.1 (Code 11)
 
 ### 🚀 Principais Novidades da Versão 1.5.1:
 * **Sinergia Cognitiva Total: FSRS-5 + Tutor Pedagógico Gemini AI**:
