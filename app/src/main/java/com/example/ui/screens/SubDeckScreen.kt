@@ -129,6 +129,7 @@ fun SubDeckScreen(
     onOpenCompareDecks: () -> Unit = {},
     onDeleteL2Discipline: (l1: String, l2: String) -> Unit = { _, _ -> },
     onUpdateL2Discipline: (l1: String, oldL2: String, newL2: String, iconKey: String, colorHex: String) -> Unit = { _, _, _, _, _ -> },
+    srsAlgorithm: String = "FSRS",
     modifier: Modifier = Modifier
 ) {
     var selectedTab by rememberSaveable { mutableIntStateOf(0) }
@@ -187,7 +188,8 @@ fun SubDeckScreen(
                 onDeleteL2 = {
                     onDeleteL2Discipline(l1, currentDiscipline.l2)
                     selectedL2Detail = null
-                }
+                },
+                srsAlgorithm = srsAlgorithm
             )
 
             if (showMoveDialog && selectedL3Topics.isNotEmpty()) {
@@ -376,7 +378,8 @@ fun SubDeckScreen(
                             onStudyCards(if (dueCards.isNotEmpty()) dueCards else filteredCards)
                         },
                         onOpenStudyConfig = { onOpenStudyConfig(l1) },
-                        onEditCard = onEditCard
+                        onEditCard = onEditCard,
+                        srsAlgorithm = srsAlgorithm
                     )
                 }
                 2 -> {
@@ -779,7 +782,8 @@ private fun L2DedicatedDetailScreen(
     onOpenStudyConfig: (defaultL1: String) -> Unit,
     onEditCard: (FlashcardEntity) -> Unit,
     onEditL2Discipline: (newName: String, iconKey: String, colorHex: String) -> Unit,
-    onDeleteL2: () -> Unit
+    onDeleteL2: () -> Unit,
+    srsAlgorithm: String = "FSRS"
 ) {
     var showEditL2Dialog by remember { mutableStateOf(false) }
     var showDeleteL2Confirm by remember { mutableStateOf(false) }
@@ -954,7 +958,8 @@ private fun L2DedicatedDetailScreen(
                             onStudyCards(if (dueCards.isNotEmpty()) dueCards else l2Cards)
                         },
                         onOpenStudyConfig = { onOpenStudyConfig(l1) },
-                        onEditCard = onEditCard
+                        onEditCard = onEditCard,
+                        srsAlgorithm = srsAlgorithm
                     )
                 }
                 2 -> {
@@ -1748,7 +1753,8 @@ private fun ReviewTabContent(
     onSelectL3Filter: (String?) -> Unit,
     onStartReviewSession: () -> Unit,
     onOpenStudyConfig: () -> Unit = {},
-    onEditCard: (FlashcardEntity) -> Unit = {}
+    onEditCard: (FlashcardEntity) -> Unit = {},
+    srsAlgorithm: String = "FSRS"
 ) {
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
@@ -1777,7 +1783,7 @@ private fun ReviewTabContent(
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
                     Text(
-                        text = "Progresso de Revisão Espaçada (SM-2)",
+                        text = "Progresso de Revisão Espaçada (${if (srsAlgorithm.equals("FSRS", ignoreCase = true)) "FSRS-5" else "SM-2"})",
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.Bold
                     )
@@ -2180,79 +2186,38 @@ private fun CardPreviewItem(
             .fillMaxWidth()
             .clickable { expanded = !expanded }
     ) {
-        Column(modifier = Modifier.padding(12.dp)) {
+        Column(modifier = Modifier.padding(14.dp)) {
+            // Line 1: Breadcrumb L2 › L3
             Row(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                // Discipline and Topic Badges
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(6.dp)
-                ) {
-                    Box(
-                        modifier = Modifier
-                            .size(8.dp)
-                            .clip(CircleShape)
-                            .background(disciplineColor)
-                    )
-                    Text(
-                        text = card.l2,
-                        style = MaterialTheme.typography.labelSmall,
-                        fontWeight = FontWeight.SemiBold,
-                        color = disciplineColor
-                    )
-                    Text(
-                        text = "›",
-                        style = MaterialTheme.typography.labelSmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
-                    Text(
-                        text = card.l3,
-                        style = MaterialTheme.typography.labelSmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis,
-                        modifier = Modifier.widthIn(max = 140.dp)
-                    )
-                }
-
-                // Mastery Status Badge + Edit Action
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    val (badgeText, badgeColor) = when (card.masteryLevel) {
-                        2 -> "Dominado" to Color(0xFF059669)
-                        1 -> "Aprendendo" to Color(0xFFD97706)
-                        else -> "Novo" to Color(0xFF6B7280)
-                    }
-                    Surface(
-                        shape = RoundedCornerShape(6.dp),
-                        color = badgeColor.copy(alpha = 0.15f)
-                    ) {
-                        Text(
-                            text = badgeText,
-                            modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp),
-                            style = MaterialTheme.typography.labelSmall.copy(fontSize = 10.sp),
-                            fontWeight = FontWeight.Bold,
-                            color = badgeColor
-                        )
-                    }
-
-                    IconButton(
-                        onClick = onEdit,
-                        modifier = Modifier
-                            .size(32.dp)
-                            .padding(start = 4.dp)
-                            .testTag("btn_edit_card_${card.id}")
-                    ) {
-                        Icon(
-                            imageVector = Icons.Default.Edit,
-                            contentDescription = "Editar este Card",
-                            modifier = Modifier.size(16.dp),
-                            tint = MaterialTheme.colorScheme.primary
-                        )
-                    }
-                }
+                Box(
+                    modifier = Modifier
+                        .size(8.dp)
+                        .clip(CircleShape)
+                        .background(disciplineColor)
+                )
+                Spacer(modifier = Modifier.width(6.dp))
+                Text(
+                    text = card.l2,
+                    style = MaterialTheme.typography.labelSmall,
+                    fontWeight = FontWeight.SemiBold,
+                    color = disciplineColor
+                )
+                Text(
+                    text = " › ",
+                    style = MaterialTheme.typography.labelSmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+                Text(
+                    text = card.l3,
+                    style = MaterialTheme.typography.labelSmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                    modifier = Modifier.weight(1f)
+                )
             }
 
             Spacer(modifier = Modifier.height(8.dp))
@@ -2263,6 +2228,47 @@ private fun CardPreviewItem(
                 style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Medium),
                 color = MaterialTheme.colorScheme.onSurface
             )
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            // Line 2: Mastery Badge left + Edit Button right
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                val (badgeText, badgeColor) = when (card.masteryLevel) {
+                    2 -> "Dominado" to Color(0xFF059669)
+                    1 -> "Aprendendo" to Color(0xFFD97706)
+                    else -> "Novo" to Color(0xFF6B7280)
+                }
+                Surface(
+                    shape = RoundedCornerShape(6.dp),
+                    color = badgeColor.copy(alpha = 0.15f)
+                ) {
+                    Text(
+                        text = badgeText,
+                        modifier = Modifier.padding(horizontal = 8.dp, vertical = 3.dp),
+                        style = MaterialTheme.typography.labelSmall,
+                        fontWeight = FontWeight.Bold,
+                        color = badgeColor
+                    )
+                }
+
+                IconButton(
+                    onClick = onEdit,
+                    modifier = Modifier
+                        .size(32.dp)
+                        .testTag("btn_edit_card_${card.id}")
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Edit,
+                        contentDescription = "Editar este Card",
+                        modifier = Modifier.size(16.dp),
+                        tint = MaterialTheme.colorScheme.primary
+                    )
+                }
+            }
 
             // If tapped/expanded, show back answer with full HTML!
             AnimatedVisibility(visible = expanded) {

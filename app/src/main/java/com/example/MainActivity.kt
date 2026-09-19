@@ -282,7 +282,8 @@ fun AnkiAppNavigation(viewModel: DeckViewModel) {
                             onDeleteL2Discipline = { l1Target, l2Target -> viewModel.deleteL2Discipline(l1Target, l2Target) },
                             onUpdateL2Discipline = { l1Target, oldL2, newL2, iconKey, colorHex ->
                                 viewModel.updateL2Discipline(l1Target, oldL2, newL2, iconKey, colorHex)
-                            }
+                            },
+                            srsAlgorithm = srsAlgorithm
                         )
                     } ?: run {
                         subDestination = null

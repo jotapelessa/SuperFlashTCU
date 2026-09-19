@@ -6,7 +6,7 @@ import com.example.data.model.L1DeckSummary
 import com.example.data.model.StudyProgressReport
 import com.squareup.moshi.JsonClass
 import com.squareup.moshi.Moshi
-import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
+
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import okhttp3.MediaType.Companion.toMediaType
@@ -77,7 +77,6 @@ class GeminiStudyAnalyzer(
 ) {
 
     private val moshi = Moshi.Builder()
-        .add(KotlinJsonAdapterFactory())
         .build()
 
     private val requestAdapter = moshi.adapter(GeminiRequest::class.java)
@@ -251,57 +250,59 @@ class GeminiStudyAnalyzer(
         var lastException: Throwable? = null
 
         val jsonString = requestAdapter.toJson(requestPayload)
-        val body = jsonString.toRequestBody("application/json; charset=utf-8".toMediaType())
 
         for (modelName in modelsToTry) {
             val startTime = System.currentTimeMillis()
             try {
                 val url = "https://generativelanguage.googleapis.com/v1beta/models/$modelName:generateContent?key=$apiKey"
+                // Create a fresh RequestBody per iteration — OkHttp closes the body after execute()
+                val body = jsonString.toRequestBody("application/json; charset=utf-8".toMediaType())
                 val request = Request.Builder()
                     .url(url)
                     .post(body)
                     .build()
 
-                val response = client.newCall(request).execute()
-                val latency = System.currentTimeMillis() - startTime
-                val responseBody = response.body?.string()
+                client.newCall(request).execute().use { response ->
+                    val latency = System.currentTimeMillis() - startTime
+                    val responseBody = response.body?.string()
 
-                if (response.isSuccessful && !responseBody.isNullOrBlank()) {
-                    val parsedResponse = responseAdapter.fromJson(responseBody)
+                    if (response.isSuccessful && !responseBody.isNullOrBlank()) {
+                        val parsedResponse = responseAdapter.fromJson(responseBody)
 
-                    val textParts = parsedResponse?.candidates?.firstOrNull()?.content?.parts
-                        ?.filter { it.thought != true }
-                        ?.mapNotNull { it.text?.takeIf { t -> t.isNotBlank() } }
+                        val textParts = parsedResponse?.candidates?.firstOrNull()?.content?.parts
+                            ?.filter { it.thought != true }
+                            ?.mapNotNull { it.text?.takeIf { t -> t.isNotBlank() } }
 
-                    val rawText = textParts?.joinToString("\n\n")
-                    val fullText = rawText
-                        ?.replace(Regex("<thought>[\\s\\S]*?</thought>", RegexOption.IGNORE_CASE), "")
-                        ?.trim()
+                        val rawText = textParts?.joinToString("\n\n")
+                        val fullText = rawText
+                            ?.replace(Regex("<thought>[\\s\\S]*?</thought>", RegexOption.IGNORE_CASE), "")
+                            ?.trim()
 
-                    if (!fullText.isNullOrBlank()) {
-                        val usage = parsedResponse.usageMetadata
-                        val pTokens = usage?.promptTokenCount ?: (promptBuilder.length / 4)
-                        val cTokens = usage?.candidatesTokenCount ?: (fullText.length / 4)
-                        val tTokens = usage?.totalTokenCount ?: (pTokens + cTokens)
+                        if (!fullText.isNullOrBlank()) {
+                            val usage = parsedResponse.usageMetadata
+                            val pTokens = usage?.promptTokenCount ?: (promptBuilder.length / 4)
+                            val cTokens = usage?.candidatesTokenCount ?: (fullText.length / 4)
+                            val tTokens = usage?.totalTokenCount ?: (pTokens + cTokens)
 
-                        return@withContext Result.success(
-                            GeminiAnalysisResult(
-                                text = fullText,
-                                promptTokens = pTokens,
-                                candidatesTokens = cTokens,
-                                totalTokens = tTokens,
-                                latencyMs = latency,
-                                modelUsed = modelName
+                            return@withContext Result.success(
+                                GeminiAnalysisResult(
+                                    text = fullText,
+                                    promptTokens = pTokens,
+                                    candidatesTokens = cTokens,
+                                    totalTokens = tTokens,
+                                    latencyMs = latency,
+                                    modelUsed = modelName
+                                )
                             )
-                        )
+                        } else {
+                            lastException = Exception("O modelo $modelName não retornou texto utilizável.")
+                        }
                     } else {
-                        lastException = Exception("O modelo $modelName não retornou texto utilizável.")
+                        val code = response.code
+                        val msg = response.message
+                        lastException = Exception("Falha na chamada da API Gemini para o modelo $modelName (HTTP $code): $msg")
+                        android.util.Log.w("GeminiStudyAnalyzer", "Falha no modelo $modelName (HTTP $code). Tentando modelo alternativo se houver...")
                     }
-                } else {
-                    val code = response.code
-                    val msg = response.message
-                    lastException = Exception("Falha na chamada da API Gemini para o modelo $modelName (HTTP $code): $msg")
-                    android.util.Log.w("GeminiStudyAnalyzer", "Falha no modelo $modelName (HTTP $code). Tentando modelo alternativo se houver...")
                 }
             } catch (e: Exception) {
                 lastException = e
@@ -338,7 +339,7 @@ class GeminiStudyAnalyzer(
                 )
             )
         )
-        val body = requestAdapter.toJson(payload).toRequestBody("application/json; charset=utf-8".toMediaType())
+        val jsonString = requestAdapter.toJson(payload)
 
         var lastException: Exception? = null
 
@@ -346,15 +347,18 @@ class GeminiStudyAnalyzer(
             val startTime = System.currentTimeMillis()
             try {
                 val url = "https://generativelanguage.googleapis.com/v1beta/models/$m:generateContent?key=$apiKey"
+                // Create a fresh RequestBody per iteration — OkHttp closes the body after execute()
+                val body = jsonString.toRequestBody("application/json; charset=utf-8".toMediaType())
                 val request = Request.Builder().url(url).post(body).build()
-                val response = client.newCall(request).execute()
-                val latency = System.currentTimeMillis() - startTime
-                if (response.isSuccessful) {
-                    return@withContext Result.success(Pair(latency, m))
-                } else {
-                    val code = response.code
-                    lastException = Exception("HTTP $code ($m): ${response.message}")
-                    android.util.Log.w("GeminiStudyAnalyzer", "Falha de teste em $m (HTTP $code). Tentando fallback...")
+                client.newCall(request).execute().use { response ->
+                    val latency = System.currentTimeMillis() - startTime
+                    if (response.isSuccessful) {
+                        return@withContext Result.success(Pair(latency, m))
+                    } else {
+                        val code = response.code
+                        lastException = Exception("HTTP $code ($m): ${response.message}")
+                        android.util.Log.w("GeminiStudyAnalyzer", "Falha de teste em $m (HTTP $code). Tentando fallback...")
+                    }
                 }
             } catch (e: Exception) {
                 lastException = e
