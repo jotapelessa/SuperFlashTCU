@@ -166,11 +166,7 @@ fun StudyConfigDialog(
         }
     }
 
-    Dialog(
-        onDismissRequest = onDismiss,
-        properties = DialogProperties(usePlatformDefaultWidth = false)
-    ) {
-        Scaffold(
+    Scaffold(
             topBar = {
                 TopAppBar(
                     title = {
@@ -580,7 +576,6 @@ fun StudyConfigDialog(
                 Spacer(modifier = Modifier.height(16.dp))
             }
         }
-    }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)

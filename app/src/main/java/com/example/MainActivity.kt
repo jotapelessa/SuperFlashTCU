@@ -97,10 +97,11 @@ enum class AppTab(
 }
 
 enum class AppDestination {
-    HOME,       // Exclusively L1 Overview Cards
-    SUB_DECKS,  // Dedicated screen for L2 & L3 with list-based design & Dominio/Revisao
-    STUDY,      // Interactive study session with live status tracking
-    ANALYTICS   // Progress visualization: study frequency & domain mastery charts
+    HOME,          // Exclusively L1 Overview Cards
+    SUB_DECKS,     // Dedicated screen for L2 & L3 with list-based design & Dominio/Revisao
+    STUDY_CONFIG,  // Fullscreen configuration screen for study sessions
+    STUDY,         // Interactive study session with live status tracking
+    ANALYTICS      // Progress visualization: study frequency & domain mastery charts
 }
 
 @Composable
@@ -109,7 +110,6 @@ fun AnkiAppNavigation(viewModel: DeckViewModel) {
     var subDestination by rememberSaveable { mutableStateOf<AppDestination?>(null) }
 
     var showImportDialog by remember { mutableStateOf(false) }
-    var showStudyConfigDialog by remember { mutableStateOf(false) }
     var studyConfigInitialL1 by remember { mutableStateOf<String?>(null) }
     var studyConfigInitialL2 by remember { mutableStateOf<String?>(null) }
     var studyConfigInitialL3 by remember { mutableStateOf<String?>(null) }
@@ -170,7 +170,7 @@ fun AnkiAppNavigation(viewModel: DeckViewModel) {
         modifier = Modifier.fillMaxSize(),
         contentWindowInsets = WindowInsets(0, 0, 0, 0),
         bottomBar = {
-            if (subDestination != AppDestination.STUDY) {
+            if (subDestination != AppDestination.STUDY && subDestination != AppDestination.STUDY_CONFIG) {
                 NavigationBar(
                     modifier = Modifier.testTag("main_bottom_navigation")
                 ) {
@@ -207,6 +207,28 @@ fun AnkiAppNavigation(viewModel: DeckViewModel) {
                 .padding(bottom = innerPadding.calculateBottomPadding())
         ) {
             when {
+                subDestination == AppDestination.STUDY_CONFIG -> {
+                    StudyConfigDialog(
+                        allCards = allCards,
+                        existingFolders = allFolders,
+                        initialL1 = studyConfigInitialL1,
+                        initialL2 = studyConfigInitialL2,
+                        initialL3 = studyConfigInitialL3,
+                        availableTags = allTags,
+                        initialTimerConfig = sessionTimerConfig,
+                        onStartSession = { selectedCards, timerConfig ->
+                            if (selectedCards.isNotEmpty()) {
+                                viewModel.setSessionTimerConfig(timerConfig)
+                                viewModel.startStudySession(selectedCards, timerConfig)
+                                subDestination = AppDestination.STUDY
+                            }
+                        },
+                        onDismiss = {
+                            subDestination = if (selectedL1 != null) AppDestination.SUB_DECKS else null
+                        }
+                    )
+                }
+
                 subDestination == AppDestination.STUDY -> {
                     StudyScreen(
                         cards = studyCards,
@@ -270,7 +292,7 @@ fun AnkiAppNavigation(viewModel: DeckViewModel) {
                                 studyConfigInitialL1 = targetL1
                                 studyConfigInitialL2 = targetL2
                                 studyConfigInitialL3 = targetL3
-                                showStudyConfigDialog = true
+                                subDestination = AppDestination.STUDY_CONFIG
                             },
                             onMoveL3TopicsToNewL2 = { topicsToMove, newL2Name, iconKey, colorHex ->
                                 viewModel.moveL3TopicsToNewL2(
@@ -487,27 +509,6 @@ fun AnkiAppNavigation(viewModel: DeckViewModel) {
             onImportCsv = { csv -> viewModel.importCsv(csv) },
             onDismissResult = { viewModel.dismissImportResult() },
             onClose = { showImportDialog = false }
-        )
-    }
-
-    if (showStudyConfigDialog) {
-        StudyConfigDialog(
-            allCards = allCards,
-            existingFolders = allFolders,
-            initialL1 = studyConfigInitialL1,
-            initialL2 = studyConfigInitialL2,
-            initialL3 = studyConfigInitialL3,
-            availableTags = allTags,
-            initialTimerConfig = sessionTimerConfig,
-            onStartSession = { selectedCards, timerConfig ->
-                if (selectedCards.isNotEmpty()) {
-                    viewModel.setSessionTimerConfig(timerConfig)
-                    viewModel.startStudySession(selectedCards, timerConfig)
-                    showStudyConfigDialog = false
-                    subDestination = AppDestination.STUDY
-                }
-            },
-            onDismiss = { showStudyConfigDialog = false }
         )
     }
 

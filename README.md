@@ -4,18 +4,20 @@ Aplicativo Android nativo de alta performance para preparação de concursos de 
 
 ---
 
-## 📱 Versão Atual: v1.5.6 (Code 16)
+## 📱 Versão Atual: v1.5.7 (Code 17)
 
-### 🚀 Principais Novidades da Versão 1.5.6:
-* **Barra de Ação Fixa e Ergonomia em Tela Cheia no Diálogo de Estudo (`StudyConfigDialog.kt`)**:
-  * **BottomBar Acessível com Elevação:** O botão "Iniciar Estudo" e o contador dinâmico de cartões selecionados foram movidos para a `bottomBar` fixa do `Scaffold`, com elevação tonal e sombra (8dp) e `navigationBarsPadding()` com margens seguras. O botão fica **100% visível e imediatamente clicável**, sem necessidade de rolar a tela até o fim.
-  * **Reset em Cascata nos Menus Suspensos:** Ao alterar o Baralho L1, os campos de Disciplina L2 e Subtópico L3 são automaticamente limpos; ao alterar L2, L3 é limpo, eliminando seleções incoerentes e listas de estudo vazias.
-  * **Contextualização Direta de Escopo:** Ao abrir a configuração a partir de uma matéria L2 na `SubDeckScreen`, o app pré-seleciona a hierarquia correspondente diretamente.
-* **Redesenho e Padronização Geométrica de Flashcards (`SubDeckScreen.kt`)**:
-  * **CardPreviewItem de Alta Fidelidade:** Novo layout com `BorderStroke` sutil em `outlineVariant`, elevação de 1.5dp, e espaçamento harmônico entre breadcrumb `L2 › L3` e badge de domínio.
-  * **Pergunta Contida e Toque Intuitivo:** A pergunta principal no estado colapsado fica limitada a 3 linhas elegantes com reticências (`maxLines = 3, overflow = Ellipsis`), com indicação visual sutil de toque ("Toque para ver resposta"). Ao tocar, expande suavemente a resposta completa e fundamentação sem desalinhamento.
+### 🚀 Principais Novidades da Versão 1.5.7:
+* **Tela Cheia Nativa para Configurações de Estudo (`AppDestination.STUDY_CONFIG`)**:
+  * **Eliminação Definitiva do Wrapper `Dialog`:** A tela de configurações de estudo (`StudyConfigDialog.kt`) agora opera como um destino nativo em tela cheia (`AppDestination.STUDY_CONFIG`), eliminando janelas secundárias do Android que causavam conflitos com a `NavigationBar` do sistema operacional.
+  * **Ocultação Automática da Barra de Navegação Inferior:** Durante a configuração da sessão, a barra inferior de abas é ocultada, garantindo visibilidade total, alcance ergonômico imediato ao botão fixo de iniciar estudo e proteção estrita contra cortes no Moto G54 5G.
+  * **Reset em Cascata Rígido:** Seleção do Baralho L1 limpa Disciplina L2 e Tópico L3; alteração de L2 limpa L3, prevenindo escopos nulos ou listas vazias.
+* **Layout Reestruturado em Flashcards (`CardPreviewItem` em `SubDeckScreen.kt`)**:
+  * **Cabeçalho Anti-Prensamento em Duas Linhas:** Matéria (L2) à esquerda e Badge de Domínio à direita ocupam a primeira linha com espaçamento independente; o Tópico (L3) é renderizado em linha dedicada logo abaixo com marcador semântico (`›`), garantindo legibilidade perfeita para nomes longos de disciplinas e tópicos.
+  * **Tipografia e Alturas Padronizadas:** Pergunta colapsada elegante limitada a 3 linhas com reticências e expansão suave sob demanda preservando formatação HTML e fundamentação.
 
 ---
+
+## 📱 Versão Anterior: v1.5.6 (Code 16)
 
 ## 📱 Versão Anterior: v1.5.5 (Code 15)
 
