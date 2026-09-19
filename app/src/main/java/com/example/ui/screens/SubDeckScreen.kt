@@ -123,7 +123,7 @@ fun SubDeckScreen(
     onOpenAnalytics: () -> Unit = {},
     onOpenCreateCard: (defaultL1: String, defaultL2: String?) -> Unit = { _, _ -> },
     onEditCard: (FlashcardEntity) -> Unit = {},
-    onOpenStudyConfig: (defaultL1: String) -> Unit = {},
+    onOpenStudyConfig: (defaultL1: String, defaultL2: String?, defaultL3: String?) -> Unit = { _, _, _ -> },
     onMoveL3TopicsToNewL2: (topicsToMove: List<Pair<String, String>>, newL2Name: String, iconKey: String, colorHex: String) -> Unit = { _, _, _, _ -> },
     onOpenMoveL2ToL1: () -> Unit = {},
     onOpenCompareDecks: () -> Unit = {},
@@ -377,7 +377,7 @@ fun SubDeckScreen(
                             val dueCards = filteredCards.filter { it.dueTimestamp <= System.currentTimeMillis() }
                             onStudyCards(if (dueCards.isNotEmpty()) dueCards else filteredCards)
                         },
-                        onOpenStudyConfig = { onOpenStudyConfig(l1) },
+                        onOpenStudyConfig = { onOpenStudyConfig(l1, selectedL2Filter, selectedL3Filter) },
                         onEditCard = onEditCard,
                         srsAlgorithm = srsAlgorithm
                     )
@@ -779,7 +779,7 @@ private fun L2DedicatedDetailScreen(
     onOpenMoveDialog: () -> Unit,
     onStudyCards: (List<FlashcardEntity>) -> Unit,
     onOpenCreateCard: (defaultL1: String, defaultL2: String?) -> Unit,
-    onOpenStudyConfig: (defaultL1: String) -> Unit,
+    onOpenStudyConfig: (defaultL1: String, defaultL2: String?, defaultL3: String?) -> Unit,
     onEditCard: (FlashcardEntity) -> Unit,
     onEditL2Discipline: (newName: String, iconKey: String, colorHex: String) -> Unit,
     onDeleteL2: () -> Unit,
@@ -957,7 +957,7 @@ private fun L2DedicatedDetailScreen(
                             val dueCards = l2Cards.filter { it.dueTimestamp <= System.currentTimeMillis() }
                             onStudyCards(if (dueCards.isNotEmpty()) dueCards else l2Cards)
                         },
-                        onOpenStudyConfig = { onOpenStudyConfig(l1) },
+                        onOpenStudyConfig = { onOpenStudyConfig(l1, discipline.l2, null) },
                         onEditCard = onEditCard,
                         srsAlgorithm = srsAlgorithm
                     )
@@ -2178,65 +2178,66 @@ private fun CardPreviewItem(
     val disciplineColor = DisciplinePalette.parseColor(DisciplinePalette.getColorForDiscipline(card.l2))
 
     Card(
-        shape = RoundedCornerShape(12.dp),
+        shape = RoundedCornerShape(14.dp),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surfaceContainerLow
         ),
+        border = BorderStroke(
+            width = 1.dp,
+            color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f)
+        ),
+        elevation = CardDefaults.cardElevation(defaultElevation = 1.5.dp),
         modifier = Modifier
             .fillMaxWidth()
             .clickable { expanded = !expanded }
+            .testTag("card_preview_${card.id}")
     ) {
-        Column(modifier = Modifier.padding(14.dp)) {
-            // Line 1: Breadcrumb L2 › L3
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Box(
-                    modifier = Modifier
-                        .size(8.dp)
-                        .clip(CircleShape)
-                        .background(disciplineColor)
-                )
-                Spacer(modifier = Modifier.width(6.dp))
-                Text(
-                    text = card.l2,
-                    style = MaterialTheme.typography.labelSmall,
-                    fontWeight = FontWeight.SemiBold,
-                    color = disciplineColor
-                )
-                Text(
-                    text = " › ",
-                    style = MaterialTheme.typography.labelSmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
-                Text(
-                    text = card.l3,
-                    style = MaterialTheme.typography.labelSmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                    modifier = Modifier.weight(1f)
-                )
-            }
-
-            Spacer(modifier = Modifier.height(8.dp))
-
-            // Front question with HTML preservation
-            HtmlText(
-                html = card.frontHtml,
-                style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Medium),
-                color = MaterialTheme.colorScheme.onSurface
-            )
-
-            Spacer(modifier = Modifier.height(8.dp))
-
-            // Line 2: Mastery Badge left + Edit Button right
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp, vertical = 14.dp)
+        ) {
+            // Linha 1: Marcador da Matéria, Hierarquia L2 › L3 e Status de Domínio
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
+                Row(
+                    modifier = Modifier.weight(1f),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .size(10.dp)
+                            .clip(CircleShape)
+                            .background(disciplineColor)
+                    )
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text(
+                        text = card.l2,
+                        style = MaterialTheme.typography.labelMedium,
+                        fontWeight = FontWeight.Bold,
+                        color = disciplineColor,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                    Text(
+                        text = " › ",
+                        style = MaterialTheme.typography.labelSmall,
+                        color = MaterialTheme.colorScheme.outline
+                    )
+                    Text(
+                        text = card.l3,
+                        style = MaterialTheme.typography.labelSmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                }
+
+                Spacer(modifier = Modifier.width(8.dp))
+
                 val (badgeText, badgeColor) = when (card.masteryLevel) {
                     2 -> "Dominado" to Color(0xFF059669)
                     1 -> "Aprendendo" to Color(0xFFD97706)
@@ -2244,14 +2245,69 @@ private fun CardPreviewItem(
                 }
                 Surface(
                     shape = RoundedCornerShape(6.dp),
-                    color = badgeColor.copy(alpha = 0.15f)
+                    color = badgeColor.copy(alpha = 0.14f)
                 ) {
                     Text(
                         text = badgeText,
                         modifier = Modifier.padding(horizontal = 8.dp, vertical = 3.dp),
-                        style = MaterialTheme.typography.labelSmall,
+                        style = MaterialTheme.typography.labelSmall.copy(fontSize = 11.sp),
                         fontWeight = FontWeight.Bold,
                         color = badgeColor
+                    )
+                }
+            }
+
+            Spacer(modifier = Modifier.height(10.dp))
+
+            // Corpo da Pergunta (Limpo, harmonioso e limitado a 3 linhas quando colapsado)
+            if (expanded) {
+                HtmlText(
+                    html = card.frontHtml,
+                    style = MaterialTheme.typography.bodyMedium.copy(
+                        fontWeight = FontWeight.SemiBold,
+                        lineHeight = 22.sp
+                    ),
+                    color = MaterialTheme.colorScheme.onSurface
+                )
+            } else {
+                val plainQuestion = remember(card.frontHtml) {
+                    android.text.Html.fromHtml(card.frontHtml, android.text.Html.FROM_HTML_MODE_COMPACT).toString().trim()
+                }
+                Text(
+                    text = plainQuestion,
+                    style = MaterialTheme.typography.bodyMedium.copy(
+                        fontWeight = FontWeight.SemiBold,
+                        lineHeight = 22.sp
+                    ),
+                    color = MaterialTheme.colorScheme.onSurface,
+                    maxLines = 3,
+                    overflow = TextOverflow.Ellipsis
+                )
+            }
+
+            Spacer(modifier = Modifier.height(10.dp))
+
+            // Linha 3: Barra de Ação Inferior com Indicação de Toque e Botão Editar
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier.padding(start = 2.dp)
+                ) {
+                    Icon(
+                        imageVector = if (expanded) Icons.Default.ExpandLess else Icons.Default.ExpandMore,
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.outline,
+                        modifier = Modifier.size(16.dp)
+                    )
+                    Spacer(modifier = Modifier.width(4.dp))
+                    Text(
+                        text = if (expanded) "Recolher fundamentação" else "Toque para ver resposta",
+                        style = MaterialTheme.typography.labelSmall,
+                        color = MaterialTheme.colorScheme.outline
                     )
                 }
 
@@ -2270,7 +2326,7 @@ private fun CardPreviewItem(
                 }
             }
 
-            // If tapped/expanded, show back answer with full HTML!
+            // Resposta expandida com HTML preservado e tags
             AnimatedVisibility(visible = expanded) {
                 Column(
                     modifier = Modifier
@@ -2281,24 +2337,24 @@ private fun CardPreviewItem(
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(1.dp)
-                            .background(MaterialTheme.colorScheme.outlineVariant)
+                            .background(MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.7f))
                     )
-                    Spacer(modifier = Modifier.height(8.dp))
+                    Spacer(modifier = Modifier.height(10.dp))
                     Text(
                         text = "RESPOSTA & FUNDAMENTAÇÃO:",
                         style = MaterialTheme.typography.labelSmall,
                         fontWeight = FontWeight.Bold,
                         color = MaterialTheme.colorScheme.primary
                     )
-                    Spacer(modifier = Modifier.height(4.dp))
+                    Spacer(modifier = Modifier.height(6.dp))
                     HtmlText(
                         html = card.backHtml,
-                        style = MaterialTheme.typography.bodySmall,
+                        style = MaterialTheme.typography.bodySmall.copy(lineHeight = 20.sp),
                         color = MaterialTheme.colorScheme.onSurface
                     )
 
                     if (card.tags.isNotBlank()) {
-                        Spacer(modifier = Modifier.height(6.dp))
+                        Spacer(modifier = Modifier.height(8.dp))
                         Text(
                             text = "Tags: ${card.tags}",
                             style = MaterialTheme.typography.labelSmall.copy(fontSize = 10.sp),

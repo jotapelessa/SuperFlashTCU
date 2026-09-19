@@ -111,6 +111,8 @@ fun AnkiAppNavigation(viewModel: DeckViewModel) {
     var showImportDialog by remember { mutableStateOf(false) }
     var showStudyConfigDialog by remember { mutableStateOf(false) }
     var studyConfigInitialL1 by remember { mutableStateOf<String?>(null) }
+    var studyConfigInitialL2 by remember { mutableStateOf<String?>(null) }
+    var studyConfigInitialL3 by remember { mutableStateOf<String?>(null) }
     var showAiAnalysisSheet by remember { mutableStateOf(false) }
     var showMoveL2ToL1Dialog by remember { mutableStateOf(false) }
     var showCompareDecksDialog by remember { mutableStateOf(false) }
@@ -264,8 +266,10 @@ fun AnkiAppNavigation(viewModel: DeckViewModel) {
                             onEditCard = { card ->
                                 viewModel.openEditCard(card)
                             },
-                            onOpenStudyConfig = { targetL1 ->
+                            onOpenStudyConfig = { targetL1, targetL2, targetL3 ->
                                 studyConfigInitialL1 = targetL1
+                                studyConfigInitialL2 = targetL2
+                                studyConfigInitialL3 = targetL3
                                 showStudyConfigDialog = true
                             },
                             onMoveL3TopicsToNewL2 = { topicsToMove, newL2Name, iconKey, colorHex ->
@@ -491,6 +495,8 @@ fun AnkiAppNavigation(viewModel: DeckViewModel) {
             allCards = allCards,
             existingFolders = allFolders,
             initialL1 = studyConfigInitialL1,
+            initialL2 = studyConfigInitialL2,
+            initialL3 = studyConfigInitialL3,
             availableTags = allTags,
             initialTimerConfig = sessionTimerConfig,
             onStartSession = { selectedCards, timerConfig ->

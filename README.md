@@ -4,9 +4,33 @@ Aplicativo Android nativo de alta performance para preparação de concursos de 
 
 ---
 
-## 📱 Versão Atual: v1.5.4 (Code 14)
+## 📱 Versão Atual: v1.5.6 (Code 16)
 
-### 🚀 Principais Novidades da Versão 1.5.4:
+### 🚀 Principais Novidades da Versão 1.5.6:
+* **Barra de Ação Fixa e Ergonomia em Tela Cheia no Diálogo de Estudo (`StudyConfigDialog.kt`)**:
+  * **BottomBar Acessível com Elevação:** O botão "Iniciar Estudo" e o contador dinâmico de cartões selecionados foram movidos para a `bottomBar` fixa do `Scaffold`, com elevação tonal e sombra (8dp) e `navigationBarsPadding()` com margens seguras. O botão fica **100% visível e imediatamente clicável**, sem necessidade de rolar a tela até o fim.
+  * **Reset em Cascata nos Menus Suspensos:** Ao alterar o Baralho L1, os campos de Disciplina L2 e Subtópico L3 são automaticamente limpos; ao alterar L2, L3 é limpo, eliminando seleções incoerentes e listas de estudo vazias.
+  * **Contextualização Direta de Escopo:** Ao abrir a configuração a partir de uma matéria L2 na `SubDeckScreen`, o app pré-seleciona a hierarquia correspondente diretamente.
+* **Redesenho e Padronização Geométrica de Flashcards (`SubDeckScreen.kt`)**:
+  * **CardPreviewItem de Alta Fidelidade:** Novo layout com `BorderStroke` sutil em `outlineVariant`, elevação de 1.5dp, e espaçamento harmônico entre breadcrumb `L2 › L3` e badge de domínio.
+  * **Pergunta Contida e Toque Intuitivo:** A pergunta principal no estado colapsado fica limitada a 3 linhas elegantes com reticências (`maxLines = 3, overflow = Ellipsis`), com indicação visual sutil de toque ("Toque para ver resposta"). Ao tocar, expande suavemente a resposta completa e fundamentação sem desalinhamento.
+
+---
+
+## 📱 Versão Anterior: v1.5.5 (Code 15)
+
+### 🚀 Principais Novidades da Versão 1.5.5:
+* **Resiliência HTTP OkHttp na Cascata Gemini (`GeminiStudyAnalyzer.kt`)**:
+  * **Recriação do RequestBody por Tentativa:** Correção crítica onde o `RequestBody` era instanciado uma única vez fora do loop; com a recriação a cada iteração, as tentativas de fallback após erros transitórios (ex: 503) operam com stream fresco e intacto.
+  * **Fechamento Determinístico com `response.use {}`:** Todas as chamadas de rede do Gemini agora fecham conexões e sockets imediatamente.
+  * **Remoção de Reflexão do Moshi:** Eliminação do `KotlinJsonAdapterFactory`, confiando exclusivamente nos adaptadores KSP pré-compilados.
+  * **Limpeza Rigorosa de Pensamentos (`<thought>`):** Expressão regular case-insensitive para remoção de blocos de raciocínio intermediário do Gemini 2.0 Flash Thinking.
+* **Título Dinâmico no Card SRS (`SubDeckScreen.kt` e `MainActivity.kt`)**:
+  * Exibição reativa de `Progresso de Revisão Espaçada (FSRS-5)` ou `(SM-2)` conforme o algoritmo configurado pelo usuário.
+
+---
+
+## 📱 Versão Anterior: v1.5.4 (Code 14)
 * **Tabelas com Coluna Fixa Congelada (*Sticky Column*) & Alinhamento Rígido (`AiMarkdownContent.kt`)**:
   * **Coluna Fixa de Matérias/Carreiras:** A primeira coluna com o nome da disciplina ou carreira permanece **congelada e sempre visível** à esquerda da tela, com divisor vertical semântico e indicador de status, enquanto apenas os dados numéricos e métricas complementares se movem horizontalmente.
   * **Alinhamento Vertical Determinístico:** Cálculo memoizado de larguras de coluna com dimensionamento rígido e alturas sincronizadas (`44dp` cabeçalho, `50dp` linhas), eliminando 100% dos problemas de colunas desalinhadas nas tabelas geradas pelo Gemini AI.

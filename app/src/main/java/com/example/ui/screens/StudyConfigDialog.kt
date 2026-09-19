@@ -55,6 +55,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -200,6 +202,64 @@ fun StudyConfigDialog(
                     )
                 )
             },
+            bottomBar = {
+                Surface(
+                    modifier = Modifier.fillMaxWidth(),
+                    color = MaterialTheme.colorScheme.surface,
+                    tonalElevation = 8.dp,
+                    shadowElevation = 8.dp
+                ) {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .navigationBarsPadding()
+                            .padding(horizontal = 20.dp, vertical = 12.dp),
+                        verticalArrangement = Arrangement.spacedBy(10.dp)
+                    ) {
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Column {
+                                Text(
+                                    text = "${matchingCards.size} cards selecionados",
+                                    style = MaterialTheme.typography.titleMedium,
+                                    fontWeight = FontWeight.Bold,
+                                    color = MaterialTheme.colorScheme.primary
+                                )
+                                Text(
+                                    text = if (smartShuffleEnabled) "Smart Shuffle ativado" else "Ordem padrão",
+                                    style = MaterialTheme.typography.bodySmall,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                                )
+                            }
+                        }
+
+                        Button(
+                            onClick = {
+                                if (matchingCards.isNotEmpty()) {
+                                    val timerConfig = StudyTimerConfig(
+                                        perCardLimit = selectedPerCardLimit,
+                                        targetSessionMinutes = selectedTargetMinutes
+                                    )
+                                    onStartSession(matchingCards, timerConfig)
+                                }
+                            },
+                            enabled = matchingCards.isNotEmpty(),
+                            shape = RoundedCornerShape(12.dp),
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(50.dp)
+                                .testTag("btn_start_filtered_study")
+                        ) {
+                            Icon(Icons.Default.PlayArrow, contentDescription = null, modifier = Modifier.size(20.dp))
+                            Spacer(modifier = Modifier.width(8.dp))
+                            Text("Iniciar Estudo", style = MaterialTheme.typography.titleSmall, fontWeight = FontWeight.Bold)
+                        }
+                    }
+                }
+            },
             modifier = Modifier
                 .fillMaxSize()
                 .testTag("study_config_dialog")
@@ -243,7 +303,14 @@ fun StudyConfigDialog(
                             label = "L1 Baralho",
                             currentValue = selectedL1.ifBlank { "Todos os Baralhos" },
                             options = listOf("Todos os Baralhos") + l1List,
-                            onSelect = { selectedL1 = if (it == "Todos os Baralhos") "" else it }
+                            onSelect = {
+                                val newL1 = if (it == "Todos os Baralhos") "" else it
+                                if (newL1 != selectedL1) {
+                                    selectedL1 = newL1
+                                    selectedL2 = ""
+                                    selectedL3 = ""
+                                }
+                            }
                         )
 
                         Spacer(modifier = Modifier.height(8.dp))
@@ -253,7 +320,13 @@ fun StudyConfigDialog(
                             label = "L2 Matéria / Disciplina",
                             currentValue = selectedL2.ifBlank { "Todas as Matérias" },
                             options = listOf("Todas as Matérias") + l2List,
-                            onSelect = { selectedL2 = if (it == "Todas as Matérias") "" else it }
+                            onSelect = {
+                                val newL2 = if (it == "Todas as Matérias") "" else it
+                                if (newL2 != selectedL2) {
+                                    selectedL2 = newL2
+                                    selectedL3 = ""
+                                }
+                            }
                         )
 
                         Spacer(modifier = Modifier.height(8.dp))
@@ -504,67 +577,7 @@ fun StudyConfigDialog(
                     }
                 }
 
-                Spacer(modifier = Modifier.height(20.dp))
-
-                // Matching preview & Launch Button (Padronizado e sem overflow)
-                Card(
-                    shape = RoundedCornerShape(16.dp),
-                    colors = CardDefaults.cardColors(
-                        containerColor = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.45f)
-                    ),
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    Column(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(14.dp),
-                        verticalArrangement = Arrangement.spacedBy(12.dp)
-                    ) {
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.SpaceBetween,
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Column {
-                                Text(
-                                    text = "${matchingCards.size} cards selecionados",
-                                    style = MaterialTheme.typography.titleMedium,
-                                    fontWeight = FontWeight.Bold,
-                                    color = MaterialTheme.colorScheme.primary
-                                )
-                                Text(
-                                    text = if (smartShuffleEnabled) "Smart Shuffle ativado" else "Ordem padrão",
-                                    style = MaterialTheme.typography.bodySmall,
-                                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                                )
-                            }
-                        }
-
-                        Button(
-                            onClick = {
-                                if (matchingCards.isNotEmpty()) {
-                                    val timerConfig = StudyTimerConfig(
-                                        perCardLimit = selectedPerCardLimit,
-                                        targetSessionMinutes = selectedTargetMinutes
-                                    )
-                                    onStartSession(matchingCards, timerConfig)
-                                }
-                            },
-                            enabled = matchingCards.isNotEmpty(),
-                            shape = RoundedCornerShape(12.dp),
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .height(48.dp)
-                                .testTag("btn_start_filtered_study")
-                        ) {
-                            Icon(Icons.Default.PlayArrow, contentDescription = null, modifier = Modifier.size(20.dp))
-                            Spacer(modifier = Modifier.width(8.dp))
-                            Text("Iniciar Estudo", style = MaterialTheme.typography.titleSmall, fontWeight = FontWeight.Bold)
-                        }
-                    }
-                }
-
-                Spacer(modifier = Modifier.height(20.dp))
+                Spacer(modifier = Modifier.height(16.dp))
             }
         }
     }
