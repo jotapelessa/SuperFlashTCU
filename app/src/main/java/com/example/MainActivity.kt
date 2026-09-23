@@ -219,7 +219,7 @@ fun AnkiAppNavigation(viewModel: DeckViewModel) {
                         onStartSession = { selectedCards, timerConfig ->
                             if (selectedCards.isNotEmpty()) {
                                 viewModel.setSessionTimerConfig(timerConfig)
-                                viewModel.startStudySession(selectedCards, timerConfig)
+                                viewModel.startStudySession(selectedCards, timerConfig, applySmartShuffle = false)
                                 subDestination = AppDestination.STUDY
                             }
                         },
@@ -356,6 +356,12 @@ fun AnkiAppNavigation(viewModel: DeckViewModel) {
                         },
                         onOpenMoveL2ToL1 = { showMoveL2ToL1Dialog = true },
                         onOpenCompareDecks = { showCompareDecksDialog = true },
+                        onOpenStudyConfig = { targetL1 ->
+                            studyConfigInitialL1 = targetL1
+                            studyConfigInitialL2 = null
+                            studyConfigInitialL3 = null
+                            subDestination = AppDestination.STUDY_CONFIG
+                        },
                         onUpdateL1Customization = { oldL1, newName, colorHex, courseName, coverUrl, isAiEnabled ->
                             viewModel.updateL1Customization(oldL1, newName, colorHex, courseName, coverUrl, isAiEnabled)
                         }

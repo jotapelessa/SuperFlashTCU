@@ -25,6 +25,7 @@ import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Folder
 import androidx.compose.material.icons.filled.School
+import androidx.compose.material.icons.filled.Tune
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.FilledTonalButton
@@ -58,6 +59,7 @@ fun DeckCard(
     onClick: () -> Unit,
     onQuickStudy: () -> Unit,
     onEditDeck: ((L1DeckSummary) -> Unit)? = null,
+    onOpenStudyConfig: ((String) -> Unit)? = null,
     modifier: Modifier = Modifier
 ) {
     val primaryColor = when {
@@ -352,22 +354,43 @@ fun DeckCard(
                         )
                     }
 
-                    FilledTonalButton(
-                        onClick = onQuickStudy,
-                        shape = RoundedCornerShape(10.dp),
-                        modifier = Modifier.testTag("quick_study_${deck.l1}")
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(6.dp)
                     ) {
-                        Icon(
-                            imageVector = Icons.Default.School,
-                            contentDescription = null,
-                            modifier = Modifier.size(16.dp)
-                        )
-                        Spacer(modifier = Modifier.width(6.dp))
-                        Text(
-                            text = if (deck.dueCards > 0) "Revisar (${deck.dueCards})" else "Estudar",
-                            style = MaterialTheme.typography.labelMedium,
-                            fontWeight = FontWeight.Bold
-                        )
+                        if (onOpenStudyConfig != null) {
+                            IconButton(
+                                onClick = { onOpenStudyConfig(deck.l1) },
+                                modifier = Modifier
+                                    .size(36.dp)
+                                    .testTag("btn_config_study_${deck.l1}")
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Default.Tune,
+                                    contentDescription = "Configurar Estudo",
+                                    tint = if (isCoverActive) Color.White else MaterialTheme.colorScheme.primary,
+                                    modifier = Modifier.size(20.dp)
+                                )
+                            }
+                        }
+
+                        FilledTonalButton(
+                            onClick = onQuickStudy,
+                            shape = RoundedCornerShape(10.dp),
+                            modifier = Modifier.testTag("quick_study_${deck.l1}")
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.School,
+                                contentDescription = null,
+                                modifier = Modifier.size(16.dp)
+                            )
+                            Spacer(modifier = Modifier.width(6.dp))
+                            Text(
+                                text = if (deck.dueCards > 0) "Revisar (${deck.dueCards})" else "Estudar",
+                                style = MaterialTheme.typography.labelMedium,
+                                fontWeight = FontWeight.Bold
+                            )
+                        }
                     }
                 }
             }

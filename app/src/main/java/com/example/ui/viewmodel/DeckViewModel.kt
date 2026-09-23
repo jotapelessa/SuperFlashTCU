@@ -119,7 +119,7 @@ class DeckViewModel(application: Application) : AndroidViewModel(application) {
     .flowOn(Dispatchers.Default)
     .stateIn(
         scope = viewModelScope,
-        started = SharingStarted.Eagerly,
+        started = SharingStarted.WhileSubscribed(5000),
         initialValue = 0
     )
 
@@ -130,7 +130,7 @@ class DeckViewModel(application: Application) : AndroidViewModel(application) {
     .flowOn(Dispatchers.Default)
     .stateIn(
         scope = viewModelScope,
-        started = SharingStarted.Eagerly,
+        started = SharingStarted.WhileSubscribed(5000),
         initialValue = emptyList()
     )
     val allTags: StateFlow<List<String>> = allDistinctTags
@@ -150,7 +150,7 @@ class DeckViewModel(application: Application) : AndroidViewModel(application) {
     val allCards: StateFlow<List<FlashcardEntity>> = repository.allCards
         .stateIn(
             scope = viewModelScope,
-            started = SharingStarted.Eagerly,
+            started = SharingStarted.WhileSubscribed(5000),
             initialValue = emptyList()
         )
 
@@ -180,7 +180,7 @@ class DeckViewModel(application: Application) : AndroidViewModel(application) {
     .flowOn(Dispatchers.Default)
     .stateIn(
         scope = viewModelScope,
-        started = SharingStarted.Eagerly,
+        started = SharingStarted.WhileSubscribed(5000),
         initialValue = emptyList()
     )
 
@@ -215,7 +215,7 @@ class DeckViewModel(application: Application) : AndroidViewModel(application) {
     .flowOn(Dispatchers.Default)
     .stateIn(
         scope = viewModelScope,
-        started = SharingStarted.Eagerly,
+        started = SharingStarted.WhileSubscribed(5000),
         initialValue = emptyList()
     )
 
@@ -298,7 +298,7 @@ class DeckViewModel(application: Application) : AndroidViewModel(application) {
         .flowOn(Dispatchers.Default)
         .stateIn(
             scope = viewModelScope,
-            started = SharingStarted.Eagerly,
+            started = SharingStarted.WhileSubscribed(5000),
             initialValue = emptyList()
         )
 
@@ -335,7 +335,7 @@ class DeckViewModel(application: Application) : AndroidViewModel(application) {
         .flowOn(Dispatchers.Default)
         .stateIn(
             scope = viewModelScope,
-            started = SharingStarted.Eagerly,
+            started = SharingStarted.WhileSubscribed(5000),
             initialValue = emptyList()
         )
 
@@ -347,7 +347,7 @@ class DeckViewModel(application: Application) : AndroidViewModel(application) {
         .flowOn(Dispatchers.Default)
         .stateIn(
             scope = viewModelScope,
-            started = SharingStarted.Eagerly,
+            started = SharingStarted.WhileSubscribed(5000),
             initialValue = DomainStats()
         )
 
@@ -359,7 +359,7 @@ class DeckViewModel(application: Application) : AndroidViewModel(application) {
         .flowOn(Dispatchers.Default)
         .stateIn(
             scope = viewModelScope,
-            started = SharingStarted.Eagerly,
+            started = SharingStarted.WhileSubscribed(5000),
             initialValue = ReviewStats()
         )
 
@@ -376,7 +376,7 @@ class DeckViewModel(application: Application) : AndroidViewModel(application) {
         .flowOn(Dispatchers.Default)
         .stateIn(
             scope = viewModelScope,
-            started = SharingStarted.Eagerly,
+            started = SharingStarted.WhileSubscribed(5000),
             initialValue = StudyProgressReport()
         )
 

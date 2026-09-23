@@ -1,10 +1,13 @@
 package com.example.ui.screens
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.slideInVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -190,7 +193,8 @@ fun StudyScreen(
                     remaining = (cards.size - currentIndex).coerceAtLeast(1),
                     sessionElapsedSecondsProvider = { sessionElapsedSeconds },
                     cardElapsedSecondsProvider = { cardElapsedSeconds },
-                    perCardLimit = timerConfig.perCardLimit
+                    perCardLimit = timerConfig.perCardLimit,
+                    targetSessionMinutes = timerConfig.targetSessionMinutes
                 )
 
                 Spacer(modifier = Modifier.height(8.dp))
@@ -218,11 +222,22 @@ fun StudyScreen(
 
                 Spacer(modifier = Modifier.height(10.dp))
 
+                // Card Flip Animation (Smooth 3D Y-rotation transition on answer reveal)
+                val cardRotationY by animateFloatAsState(
+                    targetValue = if (isAnswerRevealed) 180f else 0f,
+                    animationSpec = tween(durationMillis = 350),
+                    label = "card_flip_rotation"
+                )
+
                 // Main Flashcard View
                 Card(
                     modifier = Modifier
                         .fillMaxWidth()
                         .weight(1f)
+                        .graphicsLayer {
+                            rotationY = if (cardRotationY > 90f) 0f else cardRotationY
+                            cameraDistance = 12f * density
+                        }
                         .testTag("study_flashcard"),
                     shape = RoundedCornerShape(20.dp),
                     colors = CardDefaults.cardColors(
@@ -440,7 +455,8 @@ private fun SessionLiveHud(
     remaining: Int,
     sessionElapsedSecondsProvider: () -> Long,
     cardElapsedSecondsProvider: () -> Long,
-    perCardLimit: PerCardTimeLimit
+    perCardLimit: PerCardTimeLimit,
+    targetSessionMinutes: Int = 0
 ) {
     val sessionElapsedSeconds = sessionElapsedSecondsProvider()
     val cardElapsedSeconds = cardElapsedSecondsProvider()
@@ -496,22 +512,29 @@ private fun SessionLiveHud(
                     }
                 }
 
-                // Session elapsed stopwatch
+                // Session elapsed stopwatch & target indicator
+                val mins = sessionElapsedSeconds / 60
+                val secs = sessionElapsedSeconds % 60
+                val isTargetReached = targetSessionMinutes > 0 && mins >= targetSessionMinutes
+                val stopwatchColor = if (isTargetReached) Color(0xFF10B981) else MaterialTheme.colorScheme.primary
+
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Icon(
                         imageVector = Icons.Default.Timer,
                         contentDescription = "Tempo de Estudo",
-                        tint = MaterialTheme.colorScheme.primary,
+                        tint = stopwatchColor,
                         modifier = Modifier.size(14.dp)
                     )
                     Spacer(modifier = Modifier.width(3.dp))
-                    val mins = sessionElapsedSeconds / 60
-                    val secs = sessionElapsedSeconds % 60
                     Text(
-                        text = String.format("%02d:%02d", mins, secs),
+                        text = if (targetSessionMinutes > 0) {
+                            String.format("%02d:%02d / %02d:00", mins, secs, targetSessionMinutes)
+                        } else {
+                            String.format("%02d:%02d", mins, secs)
+                        },
                         style = MaterialTheme.typography.labelSmall,
                         fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.primary
+                        color = stopwatchColor
                     )
                 }
             }

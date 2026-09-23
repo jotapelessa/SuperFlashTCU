@@ -92,21 +92,31 @@ fun StudyConfigDialog(
     var selectedPerCardLimit by remember { mutableStateOf(initialTimerConfig.perCardLimit) }
     var selectedTargetMinutes by remember { mutableIntStateOf(initialTimerConfig.targetSessionMinutes) }
 
-    val l1List = remember(existingFolders) {
-        existingFolders.map { it.l1 }.distinct().sorted()
-    }
-    val l2List = remember(existingFolders, selectedL1) {
-        if (selectedL1.isBlank()) {
-            existingFolders.map { it.l2 }.distinct().sorted()
+    val effectiveFolders = remember(existingFolders, allCards) {
+        if (existingFolders.isNotEmpty()) {
+            existingFolders
         } else {
-            existingFolders.filter { it.l1 == selectedL1 }.map { it.l2 }.distinct().sorted()
+            allCards.map { card: FlashcardEntity ->
+                HierarchyFolderTuple(card.l1, card.l2, card.l3)
+            }.distinct()
         }
     }
-    val l3List = remember(existingFolders, selectedL1, selectedL2) {
-        existingFolders.filter {
+
+    val l1List = remember(effectiveFolders) {
+        effectiveFolders.map { it.l1 }.filter { it.isNotBlank() }.distinct().sorted()
+    }
+    val l2List = remember(effectiveFolders, selectedL1) {
+        if (selectedL1.isBlank()) {
+            effectiveFolders.map { it.l2 }.filter { it.isNotBlank() }.distinct().sorted()
+        } else {
+            effectiveFolders.filter { it.l1 == selectedL1 }.map { it.l2 }.filter { it.isNotBlank() }.distinct().sorted()
+        }
+    }
+    val l3List = remember(effectiveFolders, selectedL1, selectedL2) {
+        effectiveFolders.filter {
             (selectedL1.isBlank() || it.l1 == selectedL1) &&
             (selectedL2.isBlank() || it.l2 == selectedL2)
-        }.map { it.l3 }.distinct().sorted()
+        }.map { it.l3 }.filter { it.isNotBlank() }.distinct().sorted()
     }
 
     // Live preview of matching cards with Tag filter and Smart Shuffle

@@ -14,7 +14,8 @@ import androidx.room.PrimaryKey
         Index(value = ["dueTimestamp"]),
         Index(value = ["l1", "dueTimestamp"]),
         Index(value = ["l1", "masteryLevel"]),
-        Index(value = ["l1", "l2", "dueTimestamp"])
+        Index(value = ["l1", "l2", "dueTimestamp"]),
+        Index(value = ["l1", "l2", "l3", "dueTimestamp"])
     ]
 )
 data class FlashcardEntity(

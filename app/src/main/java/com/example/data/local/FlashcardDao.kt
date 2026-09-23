@@ -74,8 +74,24 @@ interface FlashcardDao {
     @Query("UPDATE flashcards SET l2 = :newL2, deckRaw = l1 || ' :: ' || :newL2 || ' :: ' || l3 WHERE l1 = :l1 AND l2 = :oldL2 AND l3 = :l3")
     suspend fun moveL3TopicToNewL2(l1: String, oldL2: String, l3: String, newL2: String)
 
+    @androidx.room.Transaction
+    suspend fun moveMultipleL3Topics(l1: String, topicsToMove: List<Pair<String, String>>, newL2: String) {
+        val cleanNewL2 = newL2.trim().ifBlank { "Novo Baralho L2" }
+        for ((oldL2, l3) in topicsToMove) {
+            moveL3TopicToNewL2(l1 = l1, oldL2 = oldL2, l3 = l3, newL2 = cleanNewL2)
+        }
+    }
+
     @Query("UPDATE flashcards SET l1 = :newL1, deckRaw = :newL1 || ' :: ' || l2 || ' :: ' || l3 WHERE l1 = :oldL1 AND l2 = :l2")
     suspend fun moveL2ToL1(oldL1: String, l2: String, newL1: String)
+
+    @androidx.room.Transaction
+    suspend fun moveMultipleL2ToL1(itemsToMove: List<Pair<String, String>>, newL1: String) {
+        val cleanNewL1 = newL1.trim().ifBlank { "Novo Baralho L1" }
+        for ((oldL1, l2) in itemsToMove) {
+            moveL2ToL1(oldL1 = oldL1, l2 = l2, newL1 = cleanNewL1)
+        }
+    }
 
     @Query("SELECT * FROM flashcards WHERE l1 = :l1 AND l2 = :l2 ORDER BY l3 ASC, id ASC")
     suspend fun getCardsByL1AndL2Sync(l1: String, l2: String): List<FlashcardEntity>

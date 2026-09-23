@@ -264,7 +264,8 @@ class DeckRepository(private val dao: FlashcardDao) {
         }
 
         // 1. Fetch current database state
-        val existingHashes = dao.getAllContentHashes().toSet()
+        val hashList = dao.getAllContentHashes()
+        val existingHashes = HashSet<String>(hashList.size * 2).apply { addAll(hashList) }
         val existingFolders = dao.getAllDistinctFolders()
 
         // 2. Build canonical folder lookups from existing DB records
@@ -801,25 +802,14 @@ class DeckRepository(private val dao: FlashcardDao) {
         topicsToMove: List<Pair<String, String>>,
         newL2: String
     ) {
-        val cleanNewL2 = newL2.trim().ifBlank { "Novo Baralho L2" }
-        for ((oldL2, l3) in topicsToMove) {
-            dao.moveL3TopicToNewL2(
-                l1 = l1,
-                oldL2 = oldL2,
-                l3 = l3,
-                newL2 = cleanNewL2
-            )
-        }
+        dao.moveMultipleL3Topics(l1, topicsToMove, newL2)
     }
 
     suspend fun moveMultipleL2ToL1(
         itemsToMove: List<Pair<String, String>>, // list of (sourceL1, l2)
         newL1: String
     ) {
-        val cleanNewL1 = newL1.trim().ifBlank { "Novo Baralho L1" }
-        for ((oldL1, l2) in itemsToMove) {
-            dao.moveL2ToL1(oldL1 = oldL1, l2 = l2, newL1 = cleanNewL1)
-        }
+        dao.moveMultipleL2ToL1(itemsToMove, newL1)
     }
 
     suspend fun exportL1ToCsv(l1Target: String? = null): String {
@@ -829,7 +819,7 @@ class DeckRepository(private val dao: FlashcardDao) {
             dao.getCardsByL1Sync(l1Target)
         }
 
-        val sb = StringBuilder()
+        val sb = StringBuilder(cards.size * 200) // ~200 chars per card estimated
         // Standard Anki CSV Header
         sb.append("Deck,Tipo de Nota,Frente,Verso,Etiquetas\n")
 
@@ -900,8 +890,11 @@ class DeckRepository(private val dao: FlashcardDao) {
             return parseCardTags(card.tags).any { it.trim().lowercase() == norm }
         }
 
+        /**
+         * Static convenience for Compose screens that need SmartShuffle without a repository instance.
+         * Delegates to the same 4-tier priority algorithm as the instance method.
+         */
         fun applySmartShuffle(cards: List<FlashcardEntity>, now: Long = System.currentTimeMillis()): List<FlashcardEntity> {
-            // Tier 1: Overdue cards (dueTimestamp <= now && reps > 0)
             val overdueCards = cards.filter { it.dueTimestamp <= now && it.reps > 0 }
                 .sortedWith(
                     compareBy<FlashcardEntity> { it.masteryLevel }
@@ -909,26 +902,20 @@ class DeckRepository(private val dao: FlashcardDao) {
                         .thenBy { it.easeFactor }
                         .thenBy { it.dueTimestamp }
                 )
-
             val overdueIds = overdueCards.map { it.id }.toSet()
 
-            // Tier 2: Lower mastery level cards (learning or prone to lapses)
             val lowMasteryCards = cards.filter { !overdueIds.contains(it.id) && (it.masteryLevel == 1 || (it.reps > 0 && it.masteryLevel < 2)) }
                 .sortedWith(
                     compareBy<FlashcardEntity> { it.masteryLevel }
                         .thenByDescending { it.lapses }
                         .thenBy { it.easeFactor }
                 )
-
             val lowMasteryIds = lowMasteryCards.map { it.id }.toSet()
 
-            // Tier 3: New cards (never reviewed, reps == 0)
             val newCards = cards.filter { !overdueIds.contains(it.id) && !lowMasteryIds.contains(it.id) && it.reps == 0 && it.masteryLevel == 0 }
                 .shuffled()
-
             val handledIds = overdueIds + lowMasteryIds + newCards.map { it.id }.toSet()
 
-            // Tier 4: Mastered / mature cards
             val masteredCards = cards.filter { !handledIds.contains(it.id) }
                 .sortedBy { it.dueTimestamp }
 

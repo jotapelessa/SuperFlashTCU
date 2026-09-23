@@ -95,6 +95,7 @@ fun HomeScreen(
     onOpenCreateCard: () -> Unit = {},
     onOpenMoveL2ToL1: () -> Unit = {},
     onOpenCompareDecks: () -> Unit = {},
+    onOpenStudyConfig: ((String) -> Unit)? = null,
     onUpdateL1Customization: (oldL1: String, newName: String, colorHex: String?, courseName: String?, coverUrl: String?, isAiEnabled: Boolean) -> Unit = { _, _, _, _, _, _ -> },
     modifier: Modifier = Modifier
 ) {
@@ -215,7 +216,8 @@ fun HomeScreen(
                         deck = deck,
                         onClick = { onSelectL1(deck.l1) },
                         onQuickStudy = { onQuickStudyL1(deck.l1) },
-                        onEditDeck = { deckToEdit = it }
+                        onEditDeck = { deckToEdit = it },
+                        onOpenStudyConfig = onOpenStudyConfig
                     )
                 }
             }

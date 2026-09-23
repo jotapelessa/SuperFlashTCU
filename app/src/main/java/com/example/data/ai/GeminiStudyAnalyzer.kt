@@ -72,9 +72,15 @@ class GeminiStudyAnalyzer(
         .connectTimeout(60, TimeUnit.SECONDS)
         .readTimeout(60, TimeUnit.SECONDS)
         .writeTimeout(60, TimeUnit.SECONDS)
+        .connectionPool(okhttp3.ConnectionPool(5, 5, TimeUnit.MINUTES))
+        .retryOnConnectionFailure(true)
         .build(),
     private val defaultApiKeyProvider: () -> String = { BuildConfig.GEMINI_API_KEY }
 ) {
+
+    companion object {
+        private val THOUGHT_TAG_REGEX = Regex("<thought>[\\s\\S]*?</thought>", RegexOption.IGNORE_CASE)
+    }
 
     private val moshi = Moshi.Builder()
         .build()
@@ -132,7 +138,8 @@ class GeminiStudyAnalyzer(
         val modelsToTry = listOf(
             requestedModel,
             "gemini-flash-latest",
-            "gemini-flash-lite-latest"
+            "gemini-flash-lite-latest",
+            "gemini-2.0-flash"
         ).distinct()
 
         // 1. Build prompt context from L1/L2/L3 hierarchies, SRS parameters, and study stats
@@ -275,7 +282,7 @@ class GeminiStudyAnalyzer(
 
                         val rawText = textParts?.joinToString("\n\n")
                         val fullText = rawText
-                            ?.replace(Regex("<thought>[\\s\\S]*?</thought>", RegexOption.IGNORE_CASE), "")
+                            ?.replace(THOUGHT_TAG_REGEX, "")
                             ?.trim()
 
                         if (!fullText.isNullOrBlank()) {
@@ -329,7 +336,8 @@ class GeminiStudyAnalyzer(
         val modelsToTry = listOf(
             primary,
             "gemini-flash-latest",
-            "gemini-flash-lite-latest"
+            "gemini-flash-lite-latest",
+            "gemini-2.0-flash"
         ).distinct()
 
         val payload = GeminiRequest(

@@ -17,8 +17,8 @@ android {
     applicationId = "com.aistudio.ankidecks.gacmif"
     minSdk = 24
     targetSdk = 36
-    versionCode = 17
-    versionName = "1.5.7"
+    versionCode = 18
+    versionName = "1.5.8"
 
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
   }
@@ -42,7 +42,8 @@ android {
   buildTypes {
     release {
       isCrunchPngs = false
-      isMinifyEnabled = false
+      isMinifyEnabled = true
+      isShrinkResources = true
       proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
       signingConfig = signingConfigs.getByName("release")
     }

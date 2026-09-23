@@ -138,22 +138,57 @@ object FsrsScheduler {
     /**
      * Previews the next intervals in days for all 4 ratings (Again, Hard, Good, Easy)
      * to display on the study screen review buttons.
+     *
+     * Optimized to factor out common base computations (currentS, currentD, elapsedDays, retrievability)
+     * rather than recalculating the baseline 4 separate times.
      */
     fun previewIntervals(
         card: FlashcardEntity,
         targetRetention: Double = 0.90,
         now: Long = System.currentTimeMillis()
     ): IntervalPreview {
-        val againRes = schedule(card, rating = 1, now = now, targetRetention = targetRetention)
-        val hardRes = schedule(card, rating = 2, now = now, targetRetention = targetRetention)
-        val goodRes = schedule(card, rating = 3, now = now, targetRetention = targetRetention)
-        val easyRes = schedule(card, rating = 4, now = now, targetRetention = targetRetention)
+        val isNew = card.reps == 0 || (card.stability == 0f && card.intervalDays == 0)
+
+        if (isNew) {
+            return IntervalPreview(
+                againDays = nextInterval(initialStability(1), targetRetention),
+                hardDays = nextInterval(initialStability(2), targetRetention),
+                goodDays = nextInterval(initialStability(3), targetRetention),
+                easyDays = nextInterval(initialStability(4), targetRetention)
+            )
+        }
+
+        val currentS = if (card.stability > 0f) {
+            card.stability.toDouble()
+        } else {
+            card.intervalDays.toDouble().coerceAtLeast(1.0)
+        }
+
+        val currentD = if (card.difficulty > 0f) {
+            card.difficulty.toDouble()
+        } else {
+            (11.0 - (card.easeFactor * 3.0)).coerceIn(1.0, 10.0)
+        }
+
+        val lastReviewed = if (card.lastReviewedTimestamp > 0L) card.lastReviewedTimestamp else (now - 24L * 3600L * 1000L)
+        val elapsedDays = max(0.0, (now - lastReviewed).toDouble() / (24.0 * 3600.0 * 1000.0))
+        val r = retrievability(elapsedDays, currentS)
+
+        fun computeIntervalForRating(rating: Int): Int {
+            val newD = nextDifficulty(currentD, rating)
+            val newS = if (rating == 1) {
+                nextForgetStability(newD, currentS, r)
+            } else {
+                nextRecallStability(newD, currentS, r, rating)
+            }
+            return nextInterval(newS, targetRetention)
+        }
 
         return IntervalPreview(
-            againDays = againRes.intervalDays,
-            hardDays = hardRes.intervalDays,
-            goodDays = goodRes.intervalDays,
-            easyDays = easyRes.intervalDays
+            againDays = computeIntervalForRating(1),
+            hardDays = computeIntervalForRating(2),
+            goodDays = computeIntervalForRating(3),
+            easyDays = computeIntervalForRating(4)
         )
     }
 }
