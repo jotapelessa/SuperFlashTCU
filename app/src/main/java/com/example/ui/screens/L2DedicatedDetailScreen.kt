@@ -1,8 +1,10 @@
 package com.example.ui.screens
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -26,6 +28,7 @@ import androidx.compose.material.icons.automirrored.filled.DriveFileMove
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.material.icons.filled.CheckCircle
+import androidx.compose.material.icons.filled.Checklist
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.DriveFileMove
@@ -45,10 +48,13 @@ import androidx.compose.material3.Checkbox
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.FilterChip
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
+import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.PrimaryTabRow
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
@@ -102,7 +108,9 @@ fun L2DedicatedDetailScreen(
     onDeleteL2: () -> Unit,
     onUpdateDailyGoalPercentage: (Float) -> Unit = {},
     srsAlgorithm: String = "FSRS",
-    activeL3Topic: String? = null
+    activeL3Topic: String? = null,
+    onRenameL3Topic: ((oldL3: String, newL3: String) -> Unit)? = null,
+    onDeleteL3Topic: ((l3: String) -> Unit)? = null
 ) {
     var showEditL2Dialog by remember { mutableStateOf(false) }
     var showDeleteL2Confirm by remember { mutableStateOf(false) }
@@ -270,7 +278,9 @@ fun L2DedicatedDetailScreen(
                         onOpenMoveDialog = onOpenMoveDialog,
                         onStudyCards = onStudyCards,
                         onUpdateDailyGoalPercentage = onUpdateDailyGoalPercentage,
-                        activeL3Topic = activeL3Topic
+                        activeL3Topic = activeL3Topic,
+                        onRenameL3Topic = onRenameL3Topic,
+                        onDeleteL3Topic = onDeleteL3Topic
                     )
                 }
                 1 -> {
@@ -361,9 +371,16 @@ fun L2TopicsTabContent(
     onOpenMoveDialog: () -> Unit,
     onStudyCards: (List<FlashcardEntity>) -> Unit,
     onUpdateDailyGoalPercentage: (Float) -> Unit = {},
-    activeL3Topic: String? = null
+    activeL3Topic: String? = null,
+    onRenameL3Topic: ((oldL3: String, newL3: String) -> Unit)? = null,
+    onDeleteL3Topic: ((l3: String) -> Unit)? = null
 ) {
     val disciplineColor = DisciplinePalette.parseColor(discipline.colorHex)
+    val isSelectionMode = selectedL3Topics.isNotEmpty()
+
+    var contextTopicForMenu by remember { mutableStateOf<L3TopicSummary?>(null) }
+    var topicToRename by remember { mutableStateOf<L3TopicSummary?>(null) }
+    var topicToDelete by remember { mutableStateOf<L3TopicSummary?>(null) }
 
     Box(modifier = Modifier.fillMaxSize()) {
         LazyColumn(
@@ -374,7 +391,7 @@ fun L2TopicsTabContent(
             item {
                 Card(
                     colors = CardDefaults.cardColors(
-                        containerColor = MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.4f)
+                        containerColor = MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.35f)
                     ),
                     shape = RoundedCornerShape(16.dp),
                     modifier = Modifier.fillMaxWidth()
@@ -385,48 +402,77 @@ fun L2TopicsTabContent(
                             .padding(16.dp),
                         verticalArrangement = Arrangement.spacedBy(12.dp)
                     ) {
+                        // 1. TÍTULO COMPLETO (Largura total, nunca mais quebra letras)
+                        Text(
+                            text = discipline.l2,
+                            style = MaterialTheme.typography.titleLarge,
+                            fontWeight = FontWeight.Bold,
+                            color = MaterialTheme.colorScheme.onSurface,
+                            modifier = Modifier.fillMaxWidth()
+                        )
+
+                        // 2. METADADOS E CHIPS ELEGANTES
                         Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.SpaceBetween,
-                            verticalAlignment = Alignment.CenterVertically
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.spacedBy(8.dp)
                         ) {
-                            Column(modifier = Modifier.weight(1f)) {
+                            Surface(
+                                shape = RoundedCornerShape(6.dp),
+                                color = MaterialTheme.colorScheme.surfaceVariant
+                            ) {
                                 Text(
-                                    text = discipline.l2,
-                                    style = MaterialTheme.typography.titleMedium,
-                                    fontWeight = FontWeight.Bold
-                                )
-                                Text(
-                                    text = "${discipline.totalCards} cards • ${discipline.topics.size} tópicos (L3)",
-                                    style = MaterialTheme.typography.bodySmall,
+                                    text = "${discipline.totalCards} cards",
+                                    modifier = Modifier.padding(horizontal = 8.dp, vertical = 3.dp),
+                                    style = MaterialTheme.typography.labelSmall,
                                     color = MaterialTheme.colorScheme.onSurfaceVariant
                                 )
                             }
+                            Surface(
+                                shape = RoundedCornerShape(6.dp),
+                                color = MaterialTheme.colorScheme.surfaceVariant
+                            ) {
+                                Text(
+                                    text = "${discipline.topics.size} tópicos (L3)",
+                                    modifier = Modifier.padding(horizontal = 8.dp, vertical = 3.dp),
+                                    style = MaterialTheme.typography.labelSmall,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                                )
+                            }
+                        }
 
-                            Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
-                                Button(
-                                    onClick = { onStudyCards(l2Cards) },
-                                    shape = RoundedCornerShape(10.dp),
-                                    modifier = Modifier.testTag("btn_study_l2_all")
+                        // 3. BOTÕES DE AÇÃO EXPANDIDOS E BALANCEADOS
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.spacedBy(8.dp)
+                        ) {
+                            Button(
+                                onClick = { onStudyCards(l2Cards) },
+                                shape = RoundedCornerShape(12.dp),
+                                modifier = Modifier
+                                    .weight(1f)
+                                    .height(46.dp)
+                                    .testTag("btn_study_l2_all")
+                            ) {
+                                Icon(Icons.Default.PlayArrow, contentDescription = null, modifier = Modifier.size(18.dp))
+                                Spacer(modifier = Modifier.width(6.dp))
+                                Text("Estudar Tudo", fontWeight = FontWeight.Bold, maxLines = 1, fontSize = 13.sp)
+                            }
+
+                            if (!activeL3Topic.isNullOrBlank()) {
+                                FilledTonalButton(
+                                    onClick = {
+                                        val topicCards = l2Cards.filter { it.l3 == activeL3Topic }
+                                        onStudyCards(if (topicCards.isNotEmpty()) topicCards else l2Cards)
+                                    },
+                                    shape = RoundedCornerShape(12.dp),
+                                    modifier = Modifier
+                                        .weight(1.2f)
+                                        .height(46.dp)
+                                        .testTag("btn_study_active_l3")
                                 ) {
-                                    Icon(Icons.Default.PlayArrow, contentDescription = null, modifier = Modifier.size(16.dp))
-                                    Spacer(modifier = Modifier.width(4.dp))
-                                    Text("Estudar Tudo", fontSize = 12.sp)
-                                }
-
-                                if (!activeL3Topic.isNullOrBlank()) {
-                                    FilledTonalButton(
-                                        onClick = {
-                                            val topicCards = l2Cards.filter { it.l3 == activeL3Topic }
-                                            onStudyCards(if (topicCards.isNotEmpty()) topicCards else l2Cards)
-                                        },
-                                        shape = RoundedCornerShape(10.dp),
-                                        modifier = Modifier.testTag("btn_study_active_l3")
-                                    ) {
-                                        Icon(Icons.Default.PlayArrow, contentDescription = null, modifier = Modifier.size(16.dp))
-                                        Spacer(modifier = Modifier.width(4.dp))
-                                        Text("Subtópico da Vez", maxLines = 1, fontSize = 12.sp, fontWeight = FontWeight.Bold)
-                                    }
+                                    Icon(Icons.Default.PlayArrow, contentDescription = null, modifier = Modifier.size(18.dp))
+                                    Spacer(modifier = Modifier.width(6.dp))
+                                    Text("Subtópico da Vez", fontWeight = FontWeight.Bold, maxLines = 1, fontSize = 13.sp)
                                 }
                             }
                         }
@@ -569,12 +615,24 @@ fun L2TopicsTabContent(
             }
 
             item {
-                Text(
-                    text = "Tópicos de Estudo (L3)",
-                    style = MaterialTheme.typography.titleSmall,
-                    fontWeight = FontWeight.Bold,
-                    modifier = Modifier.padding(start = 4.dp)
-                )
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 4.dp),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = "Tópicos de Estudo (L3)",
+                        style = MaterialTheme.typography.titleSmall,
+                        fontWeight = FontWeight.Bold
+                    )
+                    Text(
+                        text = "Toque longo para opções",
+                        style = MaterialTheme.typography.labelSmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
             }
 
             if (discipline.topics.isEmpty()) {
@@ -594,11 +652,15 @@ fun L2TopicsTabContent(
                         topic = topic,
                         disciplineColor = disciplineColor,
                         isSelected = isSelected,
+                        isSelectionMode = isSelectionMode,
                         isActive = isActive,
                         onToggleSelect = { onToggleSelectL3(discipline.l2, topic.l3) },
                         onStudy = {
                             val topicCards = l2Cards.filter { it.l3 == topic.l3 }
                             onStudyCards(if (topicCards.isNotEmpty()) topicCards else l2Cards)
+                        },
+                        onLongClick = {
+                            contextTopicForMenu = topic
                         }
                     )
                 }
@@ -655,24 +717,82 @@ fun L2TopicsTabContent(
                 }
             }
         }
+
+        contextTopicForMenu?.let { topic ->
+            TopicContextMenuDialog(
+                topic = topic,
+                onDismiss = { contextTopicForMenu = null },
+                onStudy = {
+                    val topicCards = l2Cards.filter { it.l3 == topic.l3 }
+                    onStudyCards(if (topicCards.isNotEmpty()) topicCards else l2Cards)
+                },
+                onRename = {
+                    topicToRename = topic
+                },
+                onMove = {
+                    onToggleSelectL3(discipline.l2, topic.l3)
+                    onOpenMoveDialog()
+                },
+                onDelete = {
+                    topicToDelete = topic
+                },
+                onSelectMultiple = {
+                    onToggleSelectL3(discipline.l2, topic.l3)
+                }
+            )
+        }
+
+        topicToRename?.let { topic ->
+            RenameL3TopicDialog(
+                currentL3Name = topic.l3,
+                onDismiss = { topicToRename = null },
+                onConfirm = { newName ->
+                    topicToRename = null
+                    onRenameL3Topic?.invoke(topic.l3, newName)
+                }
+            )
+        }
+
+        topicToDelete?.let { topic ->
+            DeleteL3ConfirmDialog(
+                topic = topic,
+                onDismiss = { topicToDelete = null },
+                onConfirm = {
+                    topicToDelete = null
+                    onDeleteL3Topic?.invoke(topic.l3)
+                }
+            )
+        }
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun L3TopicRow(
     topic: L3TopicSummary,
     disciplineColor: Color,
     isSelected: Boolean,
+    isSelectionMode: Boolean = false,
     isActive: Boolean = false,
     onToggleSelect: () -> Unit,
-    onStudy: () -> Unit
+    onStudy: () -> Unit,
+    onLongClick: () -> Unit
 ) {
     Surface(
         modifier = Modifier
             .fillMaxWidth()
-            .clickable { onToggleSelect() }
+            .combinedClickable(
+                onClick = {
+                    if (isSelectionMode) {
+                        onToggleSelect()
+                    } else {
+                        onStudy()
+                    }
+                },
+                onLongClick = onLongClick
+            )
             .testTag("l3_row_${topic.l3}"),
-        shape = RoundedCornerShape(10.dp),
+        shape = RoundedCornerShape(12.dp),
         color = if (isSelected) {
             MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.35f)
         } else if (isActive) {
@@ -694,17 +814,18 @@ fun L3TopicRow(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(12.dp),
+                .padding(horizontal = 14.dp, vertical = 12.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            Checkbox(
-                checked = isSelected,
-                onCheckedChange = { onToggleSelect() },
-                modifier = Modifier.size(24.dp)
-            )
-
-            Spacer(modifier = Modifier.width(10.dp))
+            if (isSelectionMode) {
+                Checkbox(
+                    checked = isSelected,
+                    onCheckedChange = { onToggleSelect() },
+                    modifier = Modifier.size(24.dp)
+                )
+                Spacer(modifier = Modifier.width(10.dp))
+            }
 
             Column(modifier = Modifier.weight(1f)) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
@@ -823,4 +944,145 @@ fun L3TopicRow(
             }
         }
     }
+}
+
+@Composable
+fun TopicContextMenuDialog(
+    topic: L3TopicSummary,
+    onDismiss: () -> Unit,
+    onStudy: () -> Unit,
+    onRename: () -> Unit,
+    onMove: () -> Unit,
+    onDelete: () -> Unit,
+    onSelectMultiple: () -> Unit
+) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = {
+            Column {
+                Text(
+                    text = topic.l3,
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.Bold,
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis
+                )
+                Text(
+                    text = "${topic.totalCards} flashcards no subtópico",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            }
+        },
+        text = {
+            Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                ListItem(
+                    headlineContent = { Text("Estudar este Subtópico", fontWeight = FontWeight.SemiBold) },
+                    leadingContent = { Icon(Icons.Default.School, contentDescription = null, tint = MaterialTheme.colorScheme.primary) },
+                    modifier = Modifier.clickable { onDismiss(); onStudy() }
+                )
+                ListItem(
+                    headlineContent = { Text("Renomear Subtópico") },
+                    leadingContent = { Icon(Icons.Default.Edit, contentDescription = null) },
+                    modifier = Modifier.clickable { onDismiss(); onRename() }
+                )
+                ListItem(
+                    headlineContent = { Text("Mover para outra Matéria (L2)") },
+                    leadingContent = { Icon(Icons.AutoMirrored.Filled.DriveFileMove, contentDescription = null) },
+                    modifier = Modifier.clickable { onDismiss(); onMove() }
+                )
+                ListItem(
+                    headlineContent = { Text("Selecionar Múltiplos (Lote)") },
+                    leadingContent = { Icon(Icons.Default.Checklist, contentDescription = null) },
+                    modifier = Modifier.clickable { onDismiss(); onSelectMultiple() }
+                )
+                HorizontalDivider(modifier = Modifier.padding(vertical = 4.dp))
+                ListItem(
+                    headlineContent = { Text("Excluir Subtópico", color = MaterialTheme.colorScheme.error, fontWeight = FontWeight.SemiBold) },
+                    leadingContent = { Icon(Icons.Default.Delete, contentDescription = null, tint = MaterialTheme.colorScheme.error) },
+                    modifier = Modifier.clickable { onDismiss(); onDelete() }
+                )
+            }
+        },
+        confirmButton = {},
+        dismissButton = {
+            TextButton(onClick = onDismiss) {
+                Text("Fechar")
+            }
+        }
+    )
+}
+
+@Composable
+fun RenameL3TopicDialog(
+    currentL3Name: String,
+    onDismiss: () -> Unit,
+    onConfirm: (String) -> Unit
+) {
+    var newName by remember { mutableStateOf(currentL3Name) }
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text("Renomear Subtópico L3") },
+        text = {
+            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                Text(
+                    text = "Altere o nome deste subtópico para todos os seus flashcards:",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+                OutlinedTextField(
+                    value = newName,
+                    onValueChange = { newName = it },
+                    label = { Text("Nome do Subtópico L3") },
+                    singleLine = true,
+                    modifier = Modifier.fillMaxWidth()
+                )
+            }
+        },
+        confirmButton = {
+            Button(
+                onClick = {
+                    if (newName.isNotBlank()) {
+                        onConfirm(newName.trim())
+                    }
+                },
+                enabled = newName.isNotBlank() && newName.trim() != currentL3Name
+            ) {
+                Text("Salvar")
+            }
+        },
+        dismissButton = {
+            TextButton(onClick = onDismiss) {
+                Text("Cancelar")
+            }
+        }
+    )
+}
+
+@Composable
+fun DeleteL3ConfirmDialog(
+    topic: L3TopicSummary,
+    onDismiss: () -> Unit,
+    onConfirm: () -> Unit
+) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text("Excluir Subtópico L3?") },
+        text = {
+            Text("Esta ação removerá o subtópico '${topic.l3}' e todos os seus ${topic.totalCards} cards associados.")
+        },
+        confirmButton = {
+            Button(
+                onClick = onConfirm,
+                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error)
+            ) {
+                Text("Excluir")
+            }
+        },
+        dismissButton = {
+            TextButton(onClick = onDismiss) {
+                Text("Cancelar")
+            }
+        }
+    )
 }

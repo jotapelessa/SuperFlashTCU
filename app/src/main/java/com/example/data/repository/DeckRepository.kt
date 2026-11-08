@@ -935,6 +935,15 @@ class DeckRepository(
         dao.moveMultipleL3Topics(l1, topicsToMove, newL2)
     }
 
+    suspend fun renameL3Topic(l1: String, l2: String, oldL3: String, newL3: String) {
+        val cleanNewL3 = newL3.trim().ifBlank { oldL3 }
+        dao.renameL3Topic(l1, l2, oldL3, cleanNewL3)
+    }
+
+    suspend fun deleteL3Topic(l1: String, l2: String, l3: String) {
+        dao.deleteL3Topic(l1, l2, l3)
+    }
+
     suspend fun moveMultipleL2ToL1(
         itemsToMove: List<Pair<String, String>>, // list of (sourceL1, l2)
         newL1: String

@@ -250,10 +250,10 @@ fun StudyScreen(
 
                 Spacer(modifier = Modifier.height(10.dp))
 
-                // Card Flip Animation (Smooth 3D Y-rotation transition on answer reveal)
+                // Card Flip Animation (Smooth 3D Y-rotation transition on answer reveal - Continuous 120Hz)
                 val cardRotationY by animateFloatAsState(
                     targetValue = if (isAnswerRevealed) 180f else 0f,
-                    animationSpec = tween(durationMillis = 350),
+                    animationSpec = tween(durationMillis = 320, easing = androidx.compose.animation.core.FastOutSlowInEasing),
                     label = "card_flip_rotation"
                 )
 
@@ -263,8 +263,8 @@ fun StudyScreen(
                         .fillMaxWidth()
                         .weight(1f)
                         .graphicsLayer {
-                            rotationY = if (cardRotationY > 90f) 0f else cardRotationY
-                            cameraDistance = 12f * density
+                            rotationY = cardRotationY
+                            cameraDistance = 14f * density
                         }
                         .testTag("study_flashcard"),
                     shape = RoundedCornerShape(20.dp),
@@ -276,6 +276,11 @@ fun StudyScreen(
                     Column(
                         modifier = Modifier
                             .fillMaxSize()
+                            .graphicsLayer {
+                                if (cardRotationY > 90f) {
+                                    rotationY = 180f
+                                }
+                            }
                             .verticalScroll(rememberScrollState())
                             .padding(18.dp)
                     ) {
@@ -329,7 +334,7 @@ fun StudyScreen(
                         // If Answer Revealed -> Show Back HTML Answer & Justification
                         AnimatedVisibility(
                             visible = isAnswerRevealed,
-                            enter = fadeIn() + slideInVertically()
+                            enter = fadeIn(animationSpec = tween(150))
                         ) {
                             Column(
                                 modifier = Modifier

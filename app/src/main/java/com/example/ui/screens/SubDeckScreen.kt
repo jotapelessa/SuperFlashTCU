@@ -138,6 +138,8 @@ fun SubDeckScreen(
     onUpdateDailyGoalPercentage: (l1: String, l2: String, percentage: Float) -> Unit = { _, _, _ -> },
     srsAlgorithm: String = "FSRS",
     getActiveL3Topic: ((l1: String, l2: String) -> String?)? = null,
+    onRenameL3Topic: ((l1: String, l2: String, oldL3: String, newL3: String) -> Unit)? = null,
+    onDeleteL3Topic: ((l1: String, l2: String, l3: String) -> Unit)? = null,
     modifier: Modifier = Modifier
 ) {
     var selectedTab by rememberSaveable { mutableIntStateOf(0) }
@@ -201,7 +203,13 @@ fun SubDeckScreen(
                     onUpdateDailyGoalPercentage(l1, currentDiscipline.l2, pct)
                 },
                 srsAlgorithm = srsAlgorithm,
-                activeL3Topic = getActiveL3Topic?.invoke(l1, currentDiscipline.l2)
+                activeL3Topic = getActiveL3Topic?.invoke(l1, currentDiscipline.l2),
+                onRenameL3Topic = { oldL3, newL3 ->
+                    onRenameL3Topic?.invoke(l1, currentDiscipline.l2, oldL3, newL3)
+                },
+                onDeleteL3Topic = { l3 ->
+                    onDeleteL3Topic?.invoke(l1, currentDiscipline.l2, l3)
+                }
             )
 
             if (showMoveDialog && selectedL3Topics.isNotEmpty()) {

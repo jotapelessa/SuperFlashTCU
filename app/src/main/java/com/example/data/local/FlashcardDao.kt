@@ -74,6 +74,12 @@ interface FlashcardDao {
     @Query("UPDATE flashcards SET l2 = :newL2, deckRaw = l1 || ' :: ' || :newL2 || ' :: ' || l3 WHERE l1 = :l1 AND l2 = :oldL2 AND l3 = :l3")
     suspend fun moveL3TopicToNewL2(l1: String, oldL2: String, l3: String, newL2: String)
 
+    @Query("UPDATE flashcards SET l3 = :newL3, deckRaw = l1 || ' :: ' || l2 || ' :: ' || :newL3 WHERE l1 = :l1 AND l2 = :l2 AND l3 = :oldL3")
+    suspend fun renameL3Topic(l1: String, l2: String, oldL3: String, newL3: String)
+
+    @Query("DELETE FROM flashcards WHERE l1 = :l1 AND l2 = :l2 AND l3 = :l3")
+    suspend fun deleteL3Topic(l1: String, l2: String, l3: String)
+
     @androidx.room.Transaction
     suspend fun moveMultipleL3Topics(l1: String, topicsToMove: List<Pair<String, String>>, newL2: String) {
         val cleanNewL2 = newL2.trim().ifBlank { "Novo Baralho L2" }

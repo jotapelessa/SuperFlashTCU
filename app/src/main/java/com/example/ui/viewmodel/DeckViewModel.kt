@@ -870,6 +870,38 @@ class DeckViewModel(
         }
     }
 
+    fun renameL3Topic(
+        l1: String,
+        l2: String,
+        oldL3: String,
+        newL3: String,
+        onComplete: (() -> Unit)? = null
+    ) {
+        viewModelScope.launch {
+            val cleanL3 = newL3.trim().ifBlank { oldL3 }
+            repository.renameL3Topic(l1, l2, oldL3, cleanL3)
+            if (getActiveL3Topic(l1, l2) == oldL3) {
+                setActiveL3Topic(l1, l2, cleanL3)
+            }
+            onComplete?.invoke()
+        }
+    }
+
+    fun deleteL3Topic(
+        l1: String,
+        l2: String,
+        l3: String,
+        onComplete: (() -> Unit)? = null
+    ) {
+        viewModelScope.launch {
+            repository.deleteL3Topic(l1, l2, l3)
+            if (getActiveL3Topic(l1, l2) == l3) {
+                setActiveL3Topic(l1, l2, "")
+            }
+            onComplete?.invoke()
+        }
+    }
+
     fun updateL2Discipline(
         l1: String,
         oldL2Name: String,
