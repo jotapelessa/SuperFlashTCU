@@ -115,6 +115,8 @@ fun StudyScreen(
 
     val celebratedL3s = remember { mutableStateListOf<String>() }
     var celebrationTopicData by remember { mutableStateOf<CelebrationModalData?>(null) }
+    val sessionReviewedCardIds = remember { mutableSetOf<Long>() }
+    val sessionTopicReviewedCounts = remember { mutableMapOf<String, Int>() }
 
     LaunchedEffect(currentIndex) {
         cardStartTimestamp = SystemClock.elapsedRealtime()
@@ -182,7 +184,7 @@ fun StudyScreen(
                     .padding(innerPadding)
                     .navigationBarsPadding()
             )
-        } else if (isCompleted || cards.isEmpty()) {
+        } else if ((isCompleted || cards.isEmpty()) && celebrationTopicData == null) {
             SessionCompletedView(
                 totalCards = if (sessionStats.completedCards > 0) sessionStats.completedCards else cards.size,
                 stats = sessionStats,
@@ -192,6 +194,13 @@ fun StudyScreen(
                     .fillMaxSize()
                     .padding(innerPadding)
                     .navigationBarsPadding()
+            )
+        } else if (isCompleted || cards.isEmpty()) {
+            // Meta L3 atingida no último card da sessão: mantém tela limpa enquanto GoalCelebrationDialog está ativo
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(innerPadding)
             )
         } else {
             val card = cards[currentIndex]
@@ -414,22 +423,19 @@ fun StudyScreen(
                         val topicKey = if (currentCard != null) "${currentCard.l1}::${currentCard.l2}::${currentCard.l3}" else ""
                         if (currentCard != null && getL3GoalProgress != null && topicKey.isNotBlank()) {
                             val progress = getL3GoalProgress(currentCard.l1, currentCard.l2, currentCard.l3)
-                            val nowWall = System.currentTimeMillis()
-                            val ankiDayStart = java.util.Calendar.getInstance().apply {
-                                timeInMillis = nowWall
-                                if (get(java.util.Calendar.HOUR_OF_DAY) < 4) {
-                                    add(java.util.Calendar.DAY_OF_YEAR, -1)
-                                }
-                                set(java.util.Calendar.HOUR_OF_DAY, 4)
-                                set(java.util.Calendar.MINUTE, 0)
-                                set(java.util.Calendar.SECOND, 0)
-                                set(java.util.Calendar.MILLISECOND, 0)
-                            }.timeInMillis
-                            val wasAlreadyReviewedToday = currentCard.lastReviewedTimestamp >= ankiDayStart
-                            val newReviewed = if (wasAlreadyReviewedToday) progress.reviewedToday else progress.reviewedToday + 1
+
+                            // Rastreamento intra-sessão síncrono para imunidade total a delays de IO do Room SQLite
+                            if (!sessionReviewedCardIds.contains(currentCard.id)) {
+                                sessionReviewedCardIds.add(currentCard.id)
+                                val currentCount = sessionTopicReviewedCounts.getOrDefault(topicKey, 0) + 1
+                                sessionTopicReviewedCounts[topicKey] = currentCount
+                            }
+                            val inSessionReviewed = sessionTopicReviewedCounts.getOrDefault(topicKey, 0)
+                            val effectiveReviewedToday = progress.reviewedToday.coerceAtLeast(inSessionReviewed)
+
                             val shouldCelebrate = onCheckShouldCelebrateTopic?.invoke(
-                                currentCard.l1, currentCard.l2, currentCard.l3, newReviewed, progress.targetCards
-                            ) ?: (!celebratedL3s.contains(topicKey) && newReviewed >= progress.targetCards && progress.targetCards > 0)
+                                currentCard.l1, currentCard.l2, currentCard.l3, effectiveReviewedToday, progress.targetCards
+                            ) ?: (!celebratedL3s.contains(topicKey) && effectiveReviewedToday >= progress.targetCards && progress.targetCards > 0)
 
                             if (shouldCelebrate) {
                                 celebratedL3s.add(topicKey)
@@ -437,7 +443,7 @@ fun StudyScreen(
                                     l1 = currentCard.l1,
                                     l2 = currentCard.l2,
                                     l3 = currentCard.l3,
-                                    reviewedToday = newReviewed,
+                                    reviewedToday = effectiveReviewedToday,
                                     targetCards = progress.targetCards,
                                     percentage = progress.goalPercentage,
                                     hasNextTopic = progress.hasNextTopic && onNextL3Topic != null

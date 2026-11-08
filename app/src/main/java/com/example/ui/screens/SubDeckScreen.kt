@@ -137,6 +137,7 @@ fun SubDeckScreen(
     onUpdateL2Discipline: (l1: String, oldL2: String, newL2: String, iconKey: String, colorHex: String) -> Unit = { _, _, _, _, _ -> },
     onUpdateDailyGoalPercentage: (l1: String, l2: String, percentage: Float) -> Unit = { _, _, _ -> },
     srsAlgorithm: String = "FSRS",
+    getActiveL3Topic: ((l1: String, l2: String) -> String?)? = null,
     modifier: Modifier = Modifier
 ) {
     var selectedTab by rememberSaveable { mutableIntStateOf(0) }
@@ -199,7 +200,8 @@ fun SubDeckScreen(
                 onUpdateDailyGoalPercentage = { pct ->
                     onUpdateDailyGoalPercentage(l1, currentDiscipline.l2, pct)
                 },
-                srsAlgorithm = srsAlgorithm
+                srsAlgorithm = srsAlgorithm,
+                activeL3Topic = getActiveL3Topic?.invoke(l1, currentDiscipline.l2)
             )
 
             if (showMoveDialog && selectedL3Topics.isNotEmpty()) {

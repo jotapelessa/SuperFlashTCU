@@ -42,16 +42,19 @@ import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import java.util.Calendar
 
-class DeckViewModel(application: Application) : AndroidViewModel(application) {
+class DeckViewModel(
+    application: Application,
+    repositoryInjection: DeckRepository? = null
+) : AndroidViewModel(application) {
 
-    private val repository: DeckRepository
+    private val repository: DeckRepository = repositoryInjection ?: run {
+        val db = AppDatabase.getDatabase(application)
+        DeckRepository(db.flashcardDao(), db.reviewLogDao())
+    }
 
     private val prefs = application.getSharedPreferences("anki_user_prefs", Context.MODE_PRIVATE)
 
     init {
-        val db = AppDatabase.getDatabase(application)
-        repository = DeckRepository(db.flashcardDao(), db.reviewLogDao())
-
         // Load custom deck colors and icons from prefs
         prefs.all.forEach { (key, value) ->
             if (key.startsWith("custom_color_") && value is String) {
@@ -112,9 +115,23 @@ class DeckViewModel(application: Application) : AndroidViewModel(application) {
         val hasNextTopic: Boolean
     )
 
+    fun getActiveL3Topic(l1: String, l2: String): String? {
+        val saved = prefs.getString("active_l3_${l1}::${l2}", null)
+        val allCardsList = if (allCards.value.isNotEmpty()) allCards.value else _studyCards.value
+        val l2Cards = allCardsList.filter { it.l1 == l1 && it.l2 == l2 }
+        val distinctL3s = l2Cards.map { it.l3 }.distinct().sorted()
+        if (distinctL3s.isEmpty()) return saved
+        return if (saved != null && distinctL3s.contains(saved)) saved else distinctL3s.first()
+    }
+
+    fun setActiveL3Topic(l1: String, l2: String, l3: String) {
+        prefs.edit().putString("active_l3_${l1}::${l2}", l3).apply()
+        _customizationsTrigger.value = System.currentTimeMillis()
+    }
+
     fun getL3GoalProgress(l1: String, l2: String, l3: String): L3GoalProgress {
         val dayStart = repository.getAnkiDayStart()
-        val allCardsList = allCards.value
+        val allCardsList = if (allCards.value.isNotEmpty()) allCards.value else _studyCards.value
         val l2Cards = allCardsList.filter { it.l1 == l1 && it.l2 == l2 }
         val l3Cards = l2Cards.filter { it.l3 == l3 }
         val reviewedToday = l3Cards.count { it.lastReviewedTimestamp >= dayStart }
@@ -122,8 +139,7 @@ class DeckViewModel(application: Application) : AndroidViewModel(application) {
         val target = if (l3Cards.isNotEmpty()) kotlin.math.max(1, kotlin.math.ceil(l3Cards.size * (goalPct / 100f)).toInt()) else 0
 
         val distinctL3s = l2Cards.map { it.l3 }.distinct().sorted()
-        val currentIndex = distinctL3s.indexOf(l3)
-        val hasNext = currentIndex != -1 && currentIndex + 1 < distinctL3s.size
+        val hasNext = distinctL3s.size > 1
 
         return L3GoalProgress(
             reviewedToday = reviewedToday,
@@ -150,15 +166,20 @@ class DeckViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     fun getNextL3TopicCards(l1: String, currentL2: String, currentL3: String): List<FlashcardEntity>? {
-        val allCardsList = allCards.value
+        val allCardsList = if (allCards.value.isNotEmpty()) allCards.value else _studyCards.value
         val l2Cards = allCardsList.filter { it.l1 == l1 && it.l2 == currentL2 }
         val distinctL3s = l2Cards.map { it.l3 }.distinct().sorted()
+        if (distinctL3s.isEmpty()) return null
         val currentIndex = distinctL3s.indexOf(currentL3)
-        if (currentIndex != -1 && currentIndex + 1 < distinctL3s.size) {
-            val nextL3 = distinctL3s[currentIndex + 1]
-            return l2Cards.filter { it.l3 == nextL3 }
+        // Se for o último subtópico da matéria, rotaciona e retorna ao primeiro subtópico (índice 0)!
+        val nextL3 = if (currentIndex != -1 && currentIndex + 1 < distinctL3s.size) {
+            distinctL3s[currentIndex + 1]
+        } else {
+            distinctL3s.first()
         }
-        return null
+        // Persiste o novo subtópico ativo para os dias posteriores
+        setActiveL3Topic(l1, currentL2, nextL3)
+        return l2Cards.filter { it.l3 == nextL3 }
     }
 
     // Daily Study Goal Percentage Feature (5% to 15%)

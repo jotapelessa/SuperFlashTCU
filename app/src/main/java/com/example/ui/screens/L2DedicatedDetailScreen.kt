@@ -101,7 +101,8 @@ fun L2DedicatedDetailScreen(
     onEditL2Discipline: (newName: String, iconKey: String, colorHex: String) -> Unit,
     onDeleteL2: () -> Unit,
     onUpdateDailyGoalPercentage: (Float) -> Unit = {},
-    srsAlgorithm: String = "FSRS"
+    srsAlgorithm: String = "FSRS",
+    activeL3Topic: String? = null
 ) {
     var showEditL2Dialog by remember { mutableStateOf(false) }
     var showDeleteL2Confirm by remember { mutableStateOf(false) }
@@ -268,7 +269,8 @@ fun L2DedicatedDetailScreen(
                         onClearL3Selection = onClearL3Selection,
                         onOpenMoveDialog = onOpenMoveDialog,
                         onStudyCards = onStudyCards,
-                        onUpdateDailyGoalPercentage = onUpdateDailyGoalPercentage
+                        onUpdateDailyGoalPercentage = onUpdateDailyGoalPercentage,
+                        activeL3Topic = activeL3Topic
                     )
                 }
                 1 -> {
@@ -358,7 +360,8 @@ fun L2TopicsTabContent(
     onClearL3Selection: () -> Unit,
     onOpenMoveDialog: () -> Unit,
     onStudyCards: (List<FlashcardEntity>) -> Unit,
-    onUpdateDailyGoalPercentage: (Float) -> Unit = {}
+    onUpdateDailyGoalPercentage: (Float) -> Unit = {},
+    activeL3Topic: String? = null
 ) {
     val disciplineColor = DisciplinePalette.parseColor(discipline.colorHex)
 
@@ -400,14 +403,31 @@ fun L2TopicsTabContent(
                                 )
                             }
 
-                            Button(
-                                onClick = { onStudyCards(l2Cards) },
-                                shape = RoundedCornerShape(10.dp),
-                                modifier = Modifier.testTag("btn_study_l2_all")
-                            ) {
-                                Icon(Icons.Default.PlayArrow, contentDescription = null, modifier = Modifier.size(16.dp))
-                                Spacer(modifier = Modifier.width(4.dp))
-                                Text("Estudar Matéria")
+                            Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+                                Button(
+                                    onClick = { onStudyCards(l2Cards) },
+                                    shape = RoundedCornerShape(10.dp),
+                                    modifier = Modifier.testTag("btn_study_l2_all")
+                                ) {
+                                    Icon(Icons.Default.PlayArrow, contentDescription = null, modifier = Modifier.size(16.dp))
+                                    Spacer(modifier = Modifier.width(4.dp))
+                                    Text("Estudar Tudo", fontSize = 12.sp)
+                                }
+
+                                if (!activeL3Topic.isNullOrBlank()) {
+                                    FilledTonalButton(
+                                        onClick = {
+                                            val topicCards = l2Cards.filter { it.l3 == activeL3Topic }
+                                            onStudyCards(if (topicCards.isNotEmpty()) topicCards else l2Cards)
+                                        },
+                                        shape = RoundedCornerShape(10.dp),
+                                        modifier = Modifier.testTag("btn_study_active_l3")
+                                    ) {
+                                        Icon(Icons.Default.PlayArrow, contentDescription = null, modifier = Modifier.size(16.dp))
+                                        Spacer(modifier = Modifier.width(4.dp))
+                                        Text("Subtópico da Vez", maxLines = 1, fontSize = 12.sp, fontWeight = FontWeight.Bold)
+                                    }
+                                }
                             }
                         }
 
@@ -569,10 +589,12 @@ fun L2TopicsTabContent(
             } else {
                 items(discipline.topics, key = { it.l3 }) { topic ->
                     val isSelected = selectedL3Topics.contains(Pair(discipline.l2, topic.l3))
+                    val isActive = (topic.l3 == activeL3Topic)
                     L3TopicRow(
                         topic = topic,
                         disciplineColor = disciplineColor,
                         isSelected = isSelected,
+                        isActive = isActive,
                         onToggleSelect = { onToggleSelectL3(discipline.l2, topic.l3) },
                         onStudy = {
                             val topicCards = l2Cards.filter { it.l3 == topic.l3 }
@@ -641,6 +663,7 @@ fun L3TopicRow(
     topic: L3TopicSummary,
     disciplineColor: Color,
     isSelected: Boolean,
+    isActive: Boolean = false,
     onToggleSelect: () -> Unit,
     onStudy: () -> Unit
 ) {
@@ -650,10 +673,22 @@ fun L3TopicRow(
             .clickable { onToggleSelect() }
             .testTag("l3_row_${topic.l3}"),
         shape = RoundedCornerShape(10.dp),
-        color = if (isSelected) MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.35f) else MaterialTheme.colorScheme.surfaceContainerLow,
+        color = if (isSelected) {
+            MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.35f)
+        } else if (isActive) {
+            MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.25f)
+        } else {
+            MaterialTheme.colorScheme.surfaceContainerLow
+        },
         border = BorderStroke(
-            width = if (isSelected) 2.dp else 1.dp,
-            color = if (isSelected) MaterialTheme.colorScheme.primary else disciplineColor.copy(alpha = 0.25f)
+            width = if (isSelected) 2.dp else if (isActive) 1.5.dp else 1.dp,
+            color = if (isSelected) {
+                MaterialTheme.colorScheme.primary
+            } else if (isActive) {
+                MaterialTheme.colorScheme.primary.copy(alpha = 0.7f)
+            } else {
+                disciplineColor.copy(alpha = 0.25f)
+            }
         )
     ) {
         Row(
@@ -673,6 +708,22 @@ fun L3TopicRow(
 
             Column(modifier = Modifier.weight(1f)) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
+                    if (isActive) {
+                        Surface(
+                            shape = RoundedCornerShape(4.dp),
+                            color = MaterialTheme.colorScheme.primary
+                        ) {
+                            Text(
+                                text = "🎯 DA VEZ",
+                                modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp),
+                                style = MaterialTheme.typography.labelSmall.copy(fontSize = 9.sp),
+                                fontWeight = FontWeight.Bold,
+                                color = MaterialTheme.colorScheme.onPrimary
+                            )
+                        }
+                        Spacer(modifier = Modifier.width(6.dp))
+                    }
+
                     Surface(
                         shape = RoundedCornerShape(4.dp),
                         color = MaterialTheme.colorScheme.surfaceContainerHighest

@@ -326,7 +326,8 @@ fun AnkiAppNavigation(viewModel: DeckViewModel) {
                             onUpdateDailyGoalPercentage = { l1Target, l2Target, pct ->
                                 viewModel.setL2DailyGoalPercentage(l1Target, l2Target, pct)
                             },
-                            srsAlgorithm = srsAlgorithm
+                            srsAlgorithm = srsAlgorithm,
+                            getActiveL3Topic = { targetL1, targetL2 -> viewModel.getActiveL3Topic(targetL1, targetL2) }
                         )
                     } ?: run {
                         subDestination = null
