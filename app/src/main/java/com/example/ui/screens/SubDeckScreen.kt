@@ -496,7 +496,7 @@ private fun calculateL2ReviewStats(cards: List<FlashcardEntity>): ReviewStats {
     val retention = if (totalReviews > 0) {
         kotlin.math.max(0f, (1f - (totalLapses.toFloat() / totalReviews)) * 100f)
     } else {
-        0f
+        100f
     }
     val avgInterval = if (reviewed.isNotEmpty()) {
         reviewed.map { it.intervalDays }.average().toFloat()

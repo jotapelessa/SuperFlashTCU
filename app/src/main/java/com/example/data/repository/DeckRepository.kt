@@ -239,9 +239,9 @@ class DeckRepository(
     fun calculateReviewStats(cards: List<FlashcardEntity>): ReviewStats {
         if (cards.isEmpty()) return ReviewStats()
         val now = System.currentTimeMillis()
-        val oneDay = 24L * 3600L * 1000L
+        val ankiTomorrowCutoff = getAnkiDayStart(now) + (24L * 3600L * 1000L)
         val dueNow = cards.count { it.reps > 0 && it.dueTimestamp <= now }
-        val dueToday = cards.count { it.reps > 0 && it.dueTimestamp <= (now + oneDay) }
+        val dueToday = cards.count { it.reps > 0 && it.dueTimestamp <= ankiTomorrowCutoff }
         val reviewed = cards.filter { it.reps > 0 }
         val totalReviews = reviewed.sumOf { it.reps }
         val totalLapses = reviewed.sumOf { it.lapses }
@@ -894,16 +894,13 @@ class DeckRepository(
         filtered = when (mode) {
             StudyFilterMode.ALL -> filtered
             StudyFilterMode.DUE_ONLY -> {
-                val due = filtered.filter { it.reps > 0 && it.dueTimestamp <= now }
-                if (due.isNotEmpty()) due else filtered
+                filtered.filter { it.reps > 0 && it.dueTimestamp <= now }
             }
             StudyFilterMode.NEW_AND_LEARNING -> {
-                val candidate = filtered.filter { it.masteryLevel < 2 || it.reps == 0 }
-                if (candidate.isNotEmpty()) candidate else filtered
+                filtered.filter { it.masteryLevel < 2 || it.reps == 0 }
             }
             StudyFilterMode.DIFFICULT_ONLY -> {
-                val hard = filtered.filter { it.lapses > 0 || it.easeFactor < 2.4f }
-                if (hard.isNotEmpty()) hard else filtered
+                filtered.filter { it.lapses > 0 || it.easeFactor < 2.4f }
             }
         }
 

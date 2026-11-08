@@ -352,7 +352,7 @@ private fun StudyFrequencyChartCard(frequencyList: List<DayStudyStat>) {
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
-                        text = "Frequência de Estudos (7 dias)",
+                        text = "Frequência Semanal (Seg a Dom)",
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.Bold
                     )

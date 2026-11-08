@@ -210,7 +210,7 @@ fun ProgressScreen(
                             )
                             Spacer(modifier = Modifier.width(8.dp))
                             Text(
-                                text = "Frequência dos Últimos 7 Dias",
+                                text = "Frequência Semanal (Seg a Dom)",
                                 style = MaterialTheme.typography.titleMedium,
                                 fontWeight = FontWeight.Bold
                             )

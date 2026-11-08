@@ -46,6 +46,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -58,6 +59,9 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.example.data.importer.CsvParseResult
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import com.example.data.importer.SampleData
 import java.io.BufferedReader
 import java.io.InputStreamReader
@@ -71,6 +75,7 @@ fun ImportDialog(
     onClose: () -> Unit
 ) {
     val context = LocalContext.current
+    val coroutineScope = rememberCoroutineScope()
     var csvText by remember { mutableStateOf("") }
     var showPasteField by remember { mutableStateOf(false) }
 
@@ -82,15 +87,19 @@ fun ImportDialog(
     val filePickerLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetContent()
     ) { uri: Uri? ->
-        uri?.let {
-            try {
-                context.contentResolver.openInputStream(it)?.use { stream ->
-                    val reader = BufferedReader(InputStreamReader(stream, Charsets.UTF_8))
-                    val content = reader.readText()
-                    onImportCsv(content)
+        uri?.let { pickedUri ->
+            coroutineScope.launch(Dispatchers.IO) {
+                try {
+                    context.contentResolver.openInputStream(pickedUri)?.use { stream ->
+                        val reader = BufferedReader(InputStreamReader(stream, Charsets.UTF_8))
+                        val content = reader.readText()
+                        withContext(Dispatchers.Main) {
+                            onImportCsv(content)
+                        }
+                    }
+                } catch (e: Exception) {
+                    // Handled in ViewModel
                 }
-            } catch (e: Exception) {
-                // Handled in ViewModel
             }
         }
     }
@@ -98,28 +107,38 @@ fun ImportDialog(
     val table1PickerLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetContent()
     ) { uri: Uri? ->
-        uri?.let {
-            try {
-                context.contentResolver.openInputStream(it)?.use { stream ->
-                    val reader = BufferedReader(InputStreamReader(stream, Charsets.UTF_8))
-                    table1Text = reader.readText()
-                    mergeValidationResult = null
-                }
-            } catch (_: Exception) {}
+        uri?.let { pickedUri ->
+            coroutineScope.launch(Dispatchers.IO) {
+                try {
+                    context.contentResolver.openInputStream(pickedUri)?.use { stream ->
+                        val reader = BufferedReader(InputStreamReader(stream, Charsets.UTF_8))
+                        val content = reader.readText()
+                        withContext(Dispatchers.Main) {
+                            table1Text = content
+                            mergeValidationResult = null
+                        }
+                    }
+                } catch (_: Exception) {}
+            }
         }
     }
 
     val table2PickerLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetContent()
     ) { uri: Uri? ->
-        uri?.let {
-            try {
-                context.contentResolver.openInputStream(it)?.use { stream ->
-                    val reader = BufferedReader(InputStreamReader(stream, Charsets.UTF_8))
-                    table2Text = reader.readText()
-                    mergeValidationResult = null
-                }
-            } catch (_: Exception) {}
+        uri?.let { pickedUri ->
+            coroutineScope.launch(Dispatchers.IO) {
+                try {
+                    context.contentResolver.openInputStream(pickedUri)?.use { stream ->
+                        val reader = BufferedReader(InputStreamReader(stream, Charsets.UTF_8))
+                        val content = reader.readText()
+                        withContext(Dispatchers.Main) {
+                            table2Text = content
+                            mergeValidationResult = null
+                        }
+                    }
+                } catch (_: Exception) {}
+            }
         }
     }
 
