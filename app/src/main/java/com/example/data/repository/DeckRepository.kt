@@ -32,6 +32,13 @@ import java.util.Locale
 import kotlin.math.max
 import kotlin.math.roundToInt
 
+data class FullBackupRestoreResult(
+    val cardsCount: Int,
+    val logsCount: Int,
+    val preferences: Map<String, Any> = emptyMap(),
+    val metadata: Map<String, Any> = emptyMap()
+)
+
 class DeckRepository(
     private val dao: FlashcardDao,
     private val reviewLogDao: com.example.data.local.ReviewLogDao? = null
@@ -1047,8 +1054,13 @@ class DeckRepository(
     /**
      * Exporta o backup completo FSRS via streaming direto (JsonWriter), eliminando risco de
      * OutOfMemoryError em coleções massivas (>13.000 cards e >100.000 logs históricos).
+     * Agora inclui metadados do app e preferências do usuário (SharedPreferences completas).
      */
-    suspend fun exportFullBackupJsonToStream(outputStream: java.io.OutputStream) = kotlinx.coroutines.withContext(Dispatchers.IO) {
+    suspend fun exportFullBackupJsonToStream(
+        outputStream: java.io.OutputStream,
+        preferences: Map<String, *> = emptyMap<String, Any>(),
+        metadata: Map<String, *> = emptyMap<String, Any>()
+    ) = kotlinx.coroutines.withContext(Dispatchers.IO) {
         val cards = dao.getAllFlashcardsSync()
         val logs = getAllReviewLogsSync()
         val writer = android.util.JsonWriter(outputStream.bufferedWriter(Charsets.UTF_8))
@@ -1058,6 +1070,71 @@ class DeckRepository(
         writer.name("timestamp").value(System.currentTimeMillis())
         writer.name("cards_count").value(cards.size.toLong())
         writer.name("logs_count").value(logs.size.toLong())
+
+        // 1. Metadados do Ecossistema
+        writer.name("metadata")
+        writer.beginObject()
+        metadata.forEach { (k, v) ->
+            if (v != null) {
+                writer.name(k)
+                when (v) {
+                    is Boolean -> writer.value(v)
+                    is Number -> writer.value(v)
+                    is String -> writer.value(v)
+                    else -> writer.value(v.toString())
+                }
+            }
+        }
+        writer.endObject()
+
+        // 2. Preferências do Usuário (SharedPreferences tipadas)
+        writer.name("preferences")
+        writer.beginArray()
+        preferences.forEach { (key, value) ->
+            if (value != null) {
+                writer.beginObject()
+                writer.name("key").value(key)
+                when (value) {
+                    is Boolean -> {
+                        writer.name("type").value("boolean")
+                        writer.name("val").value(value)
+                    }
+                    is Int -> {
+                        writer.name("type").value("int")
+                        writer.name("val").value(value.toLong())
+                    }
+                    is Long -> {
+                        writer.name("type").value("long")
+                        writer.name("val").value(value)
+                    }
+                    is Float -> {
+                        writer.name("type").value("float")
+                        writer.name("val").value(value.toDouble())
+                    }
+                    is Double -> {
+                        writer.name("type").value("float")
+                        writer.name("val").value(value)
+                    }
+                    is String -> {
+                        writer.name("type").value("string")
+                        writer.name("val").value(value)
+                    }
+                    is Set<*> -> {
+                        writer.name("type").value("string_set")
+                        writer.name("val")
+                        writer.beginArray()
+                        value.forEach { item -> writer.value(item?.toString().orEmpty()) }
+                        writer.endArray()
+                    }
+                    else -> {
+                        writer.name("type").value("string")
+                        writer.name("val").value(value.toString())
+                    }
+                }
+                writer.endObject()
+            }
+        }
+        writer.endArray()
 
         writer.name("cards")
         writer.beginArray()
@@ -1109,11 +1186,14 @@ class DeckRepository(
     /**
      * Importa o backup completo FSRS via streaming (JsonReader) diretamente do InputStream,
      * persistindo em lotes particionados de 500 registros sem criar árvore JSONObject no heap.
+     * Retorna contagens de cards, logs, preferências e metadados recuperados.
      */
-    suspend fun importFullBackupJsonFromStream(inputStream: java.io.InputStream): Pair<Int, Int> = kotlinx.coroutines.withContext(Dispatchers.IO) {
+    suspend fun importFullBackupJsonFromStream(inputStream: java.io.InputStream): FullBackupRestoreResult = kotlinx.coroutines.withContext(Dispatchers.IO) {
         val reader = android.util.JsonReader(inputStream.bufferedReader(Charsets.UTF_8))
         var totalCards = 0
         var totalLogs = 0
+        val restoredPreferences = mutableMapOf<String, Any>()
+        val restoredMetadata = mutableMapOf<String, Any>()
         val cardsBuffer = mutableListOf<FlashcardEntity>()
         val logsBuffer = mutableListOf<com.example.data.model.ReviewLogEntity>()
 
@@ -1121,6 +1201,95 @@ class DeckRepository(
         while (reader.hasNext()) {
             val name = reader.nextName()
             when (name) {
+                "metadata" -> {
+                    if (reader.peek() == android.util.JsonToken.BEGIN_OBJECT) {
+                        reader.beginObject()
+                        while (reader.hasNext()) {
+                            val k = reader.nextName()
+                            when (reader.peek()) {
+                                android.util.JsonToken.BOOLEAN -> restoredMetadata[k] = reader.nextBoolean()
+                                android.util.JsonToken.NUMBER -> {
+                                    val str = reader.nextString()
+                                    restoredMetadata[k] = str.toLongOrNull() ?: (str.toDoubleOrNull() ?: str)
+                                }
+                                android.util.JsonToken.STRING -> restoredMetadata[k] = reader.nextString()
+                                android.util.JsonToken.NULL -> reader.nextNull()
+                                else -> reader.skipValue()
+                            }
+                        }
+                        reader.endObject()
+                    } else {
+                        reader.skipValue()
+                    }
+                }
+                "preferences" -> {
+                    val token = reader.peek()
+                    if (token == android.util.JsonToken.BEGIN_ARRAY) {
+                        reader.beginArray()
+                        while (reader.hasNext()) {
+                            reader.beginObject()
+                            var pKey: String? = null
+                            var pType: String = "string"
+                            var pVal: Any? = null
+                            while (reader.hasNext()) {
+                                when (reader.nextName()) {
+                                    "key" -> pKey = reader.nextString()
+                                    "type" -> pType = reader.nextString()
+                                    "val" -> {
+                                        when (reader.peek()) {
+                                            android.util.JsonToken.BOOLEAN -> pVal = reader.nextBoolean()
+                                            android.util.JsonToken.NUMBER -> {
+                                                val numStr = reader.nextString()
+                                                pVal = when (pType) {
+                                                    "int" -> numStr.toIntOrNull() ?: (numStr.toLongOrNull()?.toInt() ?: 0)
+                                                    "long" -> numStr.toLongOrNull() ?: 0L
+                                                    "float" -> numStr.toFloatOrNull() ?: 0f
+                                                    else -> numStr.toLongOrNull() ?: (numStr.toDoubleOrNull() ?: numStr)
+                                                }
+                                            }
+                                            android.util.JsonToken.STRING -> pVal = reader.nextString()
+                                            android.util.JsonToken.BEGIN_ARRAY -> {
+                                                val strSet = mutableSetOf<String>()
+                                                reader.beginArray()
+                                                while (reader.hasNext()) {
+                                                    strSet.add(reader.nextString())
+                                                }
+                                                reader.endArray()
+                                                pVal = strSet
+                                            }
+                                            android.util.JsonToken.NULL -> reader.nextNull()
+                                            else -> reader.skipValue()
+                                        }
+                                    }
+                                    else -> reader.skipValue()
+                                }
+                            }
+                            reader.endObject()
+                            if (pKey != null && pVal != null) {
+                                restoredPreferences[pKey] = pVal
+                            }
+                        }
+                        reader.endArray()
+                    } else if (token == android.util.JsonToken.BEGIN_OBJECT) {
+                        reader.beginObject()
+                        while (reader.hasNext()) {
+                            val k = reader.nextName()
+                            when (reader.peek()) {
+                                android.util.JsonToken.BOOLEAN -> restoredPreferences[k] = reader.nextBoolean()
+                                android.util.JsonToken.NUMBER -> {
+                                    val str = reader.nextString()
+                                    restoredPreferences[k] = str.toLongOrNull() ?: (str.toDoubleOrNull() ?: str)
+                                }
+                                android.util.JsonToken.STRING -> restoredPreferences[k] = reader.nextString()
+                                android.util.JsonToken.NULL -> reader.nextNull()
+                                else -> reader.skipValue()
+                            }
+                        }
+                        reader.endObject()
+                    } else {
+                        reader.skipValue()
+                    }
+                }
                 "cards" -> {
                     reader.beginArray()
                     while (reader.hasNext()) {
@@ -1266,11 +1435,17 @@ class DeckRepository(
         reader.endObject()
         reader.close()
 
-        Pair(totalCards, totalLogs)
+        FullBackupRestoreResult(
+            cardsCount = totalCards,
+            logsCount = totalLogs,
+            preferences = restoredPreferences,
+            metadata = restoredMetadata
+        )
     }
 
     suspend fun importFullBackupJson(jsonStr: String): Pair<Int, Int> {
-        return importFullBackupJsonFromStream(jsonStr.byteInputStream(Charsets.UTF_8))
+        val res = importFullBackupJsonFromStream(jsonStr.byteInputStream(Charsets.UTF_8))
+        return Pair(res.cardsCount, res.logsCount)
     }
 
     suspend fun getAllFlashcardsSync(): List<FlashcardEntity> {

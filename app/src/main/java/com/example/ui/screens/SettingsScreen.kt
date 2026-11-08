@@ -1186,7 +1186,7 @@ fun SettingsScreen(
 
                     Spacer(modifier = Modifier.height(8.dp))
 
-                    // Full FSRS-5 Offline Backup & Restore Row
+                    // Master Backup & Restore Row (Cards + Revisões + Configurações + Metas)
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.spacedBy(8.dp)
@@ -1194,7 +1194,7 @@ fun SettingsScreen(
                         Button(
                             onClick = {
                                 val df = SimpleDateFormat("yyyyMMdd_HHmm", Locale.getDefault())
-                                val fileName = "superflash_backup_fsrs_${df.format(Date())}.json"
+                                val fileName = "superflash_master_backup_${df.format(Date())}.json"
                                 if (onExportFullBackupJsonStream != null) {
                                     fullBackupSaveLauncher.launch(fileName)
                                 } else if (onExportFullBackupJson != null) {
@@ -1215,7 +1215,7 @@ fun SettingsScreen(
                                 modifier = Modifier.size(18.dp)
                             )
                             Spacer(modifier = Modifier.width(6.dp))
-                            Text("Backup FSRS (.json)", fontWeight = FontWeight.SemiBold, fontSize = 12.sp)
+                            Text("Master Backup (.json)", fontWeight = FontWeight.SemiBold, fontSize = 12.sp)
                         }
 
                         OutlinedButton(
@@ -1233,9 +1233,17 @@ fun SettingsScreen(
                                 modifier = Modifier.size(18.dp)
                             )
                             Spacer(modifier = Modifier.width(6.dp))
-                            Text("Restaurar (.json)", fontWeight = FontWeight.SemiBold, fontSize = 12.sp)
+                            Text("Restaurar Master (.json)", fontWeight = FontWeight.SemiBold, fontSize = 12.sp)
                         }
                     }
+
+                    Text(
+                        text = "O Master Backup preserva 100% do ecossistema: flashcards, estabilidade FSRS, histórico de revisões, metas por disciplina L2, preferências de algoritmo, tema e timer.",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.8f),
+                        fontSize = 11.sp,
+                        modifier = Modifier.padding(horizontal = 4.dp, vertical = 2.dp)
+                    )
 
                     Spacer(modifier = Modifier.height(8.dp))
 

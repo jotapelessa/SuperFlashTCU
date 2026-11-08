@@ -19,6 +19,7 @@ android {
     targetSdk = 36
     versionCode = 18
     versionName = "1.5.8"
+    manifestPlaceholders["appLabel"] = "SuperFlash TCU"
 
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
   }
@@ -46,8 +47,14 @@ android {
       isShrinkResources = true
       proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
       signingConfig = signingConfigs.getByName("release")
+      manifestPlaceholders["appLabel"] = "SuperFlash TCU"
     }
-    debug { signingConfig = signingConfigs.getByName("debugConfig") }
+    debug {
+      signingConfig = signingConfigs.getByName("debugConfig")
+      applicationIdSuffix = ".test"
+      versionNameSuffix = "-test"
+      manifestPlaceholders["appLabel"] = "SuperFlash TCU (Teste)"
+    }
   }
   compileOptions {
     sourceCompatibility = JavaVersion.VERSION_11

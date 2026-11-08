@@ -1408,12 +1408,22 @@ class DeckViewModel(application: Application) : AndroidViewModel(application) {
 
     /**
      * Exporta o backup completo FSRS via streaming direto para OutputStream (Zero OOM em bases massivas).
+     * Inclui cards Room, logs de revisão, configurações completas do app (SharedPreferences) e metas L2.
      */
     fun exportFullBackupJsonToStream(outputStream: java.io.OutputStream, onFinished: (Boolean, String) -> Unit) {
         viewModelScope.launch {
             try {
-                repository.exportFullBackupJsonToStream(outputStream)
-                onFinished(true, "Backup Completo FSRS (.json) exportado com sucesso!")
+                val metadata = mapOf(
+                    "exported_at" to System.currentTimeMillis(),
+                    "app_name" to "SuperFlash TCU",
+                    "backup_type" to "master_bundle_fsrs_and_settings"
+                )
+                repository.exportFullBackupJsonToStream(
+                    outputStream = outputStream,
+                    preferences = prefs.all,
+                    metadata = metadata
+                )
+                onFinished(true, "Master Backup (.json) exportado com sucesso! (Cards, Histórico e Configurações preservados)")
             } catch (e: Exception) {
                 onFinished(false, "Erro ao exportar backup: ${e.localizedMessage}")
             }
@@ -1425,36 +1435,62 @@ class DeckViewModel(application: Application) : AndroidViewModel(application) {
      * Recarrega os StateFlows e caches reativos do repositório imediatamente.
      */
     fun importFullBackupJson(jsonStr: String, onResult: (Boolean, String) -> Unit) {
-        viewModelScope.launch {
-            try {
-                val (cardsCount, logsCount) = repository.importFullBackupJson(jsonStr)
-                repository.reloadPreferencesCache(prefs)
-                _smartShuffleEnabled.value = prefs.getBoolean("smart_shuffle_enabled", true)
-                _dailyGoalPercentage.value = prefs.getFloat("daily_goal_percentage", 10f).coerceIn(5f, 15f)
-                _srsAlgorithm.value = prefs.getString("srs_algorithm", "FSRS-5") ?: "FSRS-5"
-                _targetRetention.value = prefs.getFloat("target_retention", 0.90f)
-                _customizationsTrigger.value = System.currentTimeMillis()
-                onResult(true, "Restaurados com sucesso: $cardsCount cartões e $logsCount logs de histórico!")
-            } catch (e: Exception) {
-                onResult(false, "Erro ao restaurar backup: ${e.localizedMessage ?: "Formato inválido"}")
-            }
-        }
+        importFullBackupJsonStream(jsonStr.byteInputStream(Charsets.UTF_8), onResult)
     }
 
     /**
      * Importa o backup completo FSRS via streaming (JsonReader) diretamente de um InputStream.
+     * Restaura cards, logs históricos e 100% das preferências/metas sem perdas.
      */
     fun importFullBackupJsonStream(inputStream: java.io.InputStream, onResult: (Boolean, String) -> Unit) {
         viewModelScope.launch {
             try {
-                val (cardsCount, logsCount) = repository.importFullBackupJsonFromStream(inputStream)
+                val result = repository.importFullBackupJsonFromStream(inputStream)
+
+                if (result.preferences.isNotEmpty()) {
+                    val editor = prefs.edit()
+                    result.preferences.forEach { (key, value) ->
+                        when (value) {
+                            is Boolean -> editor.putBoolean(key, value)
+                            is Int -> editor.putInt(key, value)
+                            is Long -> {
+                                if (key == "daily_study_goal" || key == "timer_per_card_limit" || key == "timer_target_session_minutes") {
+                                    editor.putInt(key, value.toInt())
+                                } else {
+                                    editor.putLong(key, value)
+                                }
+                            }
+                            is Float -> editor.putFloat(key, value)
+                            is Double -> editor.putFloat(key, value.toFloat())
+                            is String -> editor.putString(key, value)
+                            is Set<*> -> {
+                                @Suppress("UNCHECKED_CAST")
+                                editor.putStringSet(key, value as? Set<String> ?: value.map { it.toString() }.toSet())
+                            }
+                        }
+                    }
+                    editor.apply()
+                }
+
                 repository.reloadPreferencesCache(prefs)
                 _smartShuffleEnabled.value = prefs.getBoolean("smart_shuffle_enabled", true)
                 _dailyGoalPercentage.value = prefs.getFloat("daily_goal_percentage", 10f).coerceIn(5f, 15f)
-                _srsAlgorithm.value = prefs.getString("srs_algorithm", "FSRS-5") ?: "FSRS-5"
-                _targetRetention.value = prefs.getFloat("target_retention", 0.90f)
+                _srsAlgorithm.value = prefs.getString("srs_algorithm", "FSRS") ?: "FSRS"
+                _targetRetention.value = prefs.getFloat("fsrs_target_retention", prefs.getFloat("target_retention", 0.90f))
+                _themeMode.value = try {
+                    AppThemeMode.valueOf(prefs.getString("app_theme_mode", AppThemeMode.SYSTEM.name) ?: AppThemeMode.SYSTEM.name)
+                } catch (e: Exception) {
+                    AppThemeMode.SYSTEM
+                }
+                _accentColor.value = try {
+                    AccentColorOption.valueOf(prefs.getString("app_accent_color", AccentColorOption.EMERALD.name) ?: AccentColorOption.EMERALD.name)
+                } catch (e: Exception) {
+                    AccentColorOption.EMERALD
+                }
                 _customizationsTrigger.value = System.currentTimeMillis()
-                onResult(true, "Restaurados com sucesso: $cardsCount cartões e $logsCount logs de histórico!")
+
+                val configMsg = if (result.preferences.isNotEmpty()) " e ${result.preferences.size} configurações" else ""
+                onResult(true, "Master Backup restaurado com sucesso: ${result.cardsCount} cartões, ${result.logsCount} logs$configMsg!")
             } catch (e: Exception) {
                 onResult(false, "Erro ao restaurar backup via streaming: ${e.localizedMessage ?: "Formato inválido"}")
             }
