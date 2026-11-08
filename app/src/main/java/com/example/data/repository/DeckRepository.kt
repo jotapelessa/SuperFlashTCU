@@ -759,7 +759,8 @@ class DeckRepository(
             }
 
             var checkOffset = 0
-            while (checkOffset < 365) {
+            val maxPossibleOffset = (reviewedDayOffsets.maxOrNull() ?: 0) + 1
+            while (checkOffset <= maxPossibleOffset) {
                 if (reviewedDayOffsets.contains(checkOffset)) {
                     streak++
                     checkOffset++
@@ -977,9 +978,13 @@ class DeckRepository(
         cards: List<FlashcardEntity>,
         logs: List<com.example.data.model.ReviewLogEntity> = emptyList()
     ) {
-        dao.insertOrReplaceAll(cards)
+        cards.chunked(500).forEach { batch ->
+            dao.insertOrReplaceAll(batch)
+        }
         if (logs.isNotEmpty()) {
-            reviewLogDao?.insertAll(logs)
+            logs.chunked(500).forEach { batch ->
+                reviewLogDao?.insertAll(batch)
+            }
         }
     }
 
@@ -1101,60 +1106,171 @@ class DeckRepository(
         writer.flush()
     }
 
+    /**
+     * Importa o backup completo FSRS via streaming (JsonReader) diretamente do InputStream,
+     * persistindo em lotes particionados de 500 registros sem criar árvore JSONObject no heap.
+     */
+    suspend fun importFullBackupJsonFromStream(inputStream: java.io.InputStream): Pair<Int, Int> = kotlinx.coroutines.withContext(Dispatchers.IO) {
+        val reader = android.util.JsonReader(inputStream.bufferedReader(Charsets.UTF_8))
+        var totalCards = 0
+        var totalLogs = 0
+        val cardsBuffer = mutableListOf<FlashcardEntity>()
+        val logsBuffer = mutableListOf<com.example.data.model.ReviewLogEntity>()
+
+        reader.beginObject()
+        while (reader.hasNext()) {
+            val name = reader.nextName()
+            when (name) {
+                "cards" -> {
+                    reader.beginArray()
+                    while (reader.hasNext()) {
+                        reader.beginObject()
+                        var id = 0L
+                        var deckRaw = ""
+                        var l1 = "Geral"
+                        var l2 = "Geral"
+                        var l3 = "Geral"
+                        var noteType = "Básico+"
+                        var frontHtml = ""
+                        var backHtml = ""
+                        var tags = ""
+                        var contentHash = ""
+                        var intervalDays = 0
+                        var easeFactor = 2.5f
+                        var reps = 0
+                        var lapses = 0
+                        var masteryLevel = 0
+                        var dueTimestamp = 0L
+                        var lastReviewedTimestamp = 0L
+                        var stability = 0f
+                        var difficulty = 0f
+
+                        while (reader.hasNext()) {
+                            when (reader.nextName()) {
+                                "id" -> id = reader.nextLong()
+                                "deck_raw" -> deckRaw = reader.nextString()
+                                "l1" -> l1 = reader.nextString()
+                                "l2" -> l2 = reader.nextString()
+                                "l3" -> l3 = reader.nextString()
+                                "note_type" -> noteType = reader.nextString()
+                                "front_html" -> frontHtml = reader.nextString()
+                                "back_html" -> backHtml = reader.nextString()
+                                "tags" -> tags = reader.nextString()
+                                "content_hash" -> contentHash = reader.nextString()
+                                "interval_days" -> intervalDays = reader.nextInt()
+                                "ease_factor" -> easeFactor = reader.nextDouble().toFloat()
+                                "reps" -> reps = reader.nextInt()
+                                "lapses" -> lapses = reader.nextInt()
+                                "mastery_level" -> masteryLevel = reader.nextInt()
+                                "due_timestamp" -> dueTimestamp = reader.nextLong()
+                                "last_reviewed_timestamp" -> lastReviewedTimestamp = reader.nextLong()
+                                "stability" -> stability = reader.nextDouble().toFloat()
+                                "difficulty" -> difficulty = reader.nextDouble().toFloat()
+                                else -> reader.skipValue()
+                            }
+                        }
+                        reader.endObject()
+
+                        cardsBuffer.add(
+                            FlashcardEntity(
+                                id = id,
+                                deckRaw = deckRaw,
+                                l1 = l1,
+                                l2 = l2,
+                                l3 = l3,
+                                noteType = noteType,
+                                frontHtml = frontHtml,
+                                backHtml = backHtml,
+                                tags = tags,
+                                contentHash = contentHash,
+                                intervalDays = intervalDays,
+                                easeFactor = easeFactor,
+                                reps = reps,
+                                lapses = lapses,
+                                masteryLevel = masteryLevel,
+                                dueTimestamp = dueTimestamp,
+                                lastReviewedTimestamp = lastReviewedTimestamp,
+                                stability = stability,
+                                difficulty = difficulty
+                            )
+                        )
+                        totalCards++
+
+                        if (cardsBuffer.size >= 500) {
+                            dao.insertOrReplaceAll(cardsBuffer.toList())
+                            cardsBuffer.clear()
+                        }
+                    }
+                    reader.endArray()
+                    if (cardsBuffer.isNotEmpty()) {
+                        dao.insertOrReplaceAll(cardsBuffer.toList())
+                        cardsBuffer.clear()
+                    }
+                }
+                "logs" -> {
+                    reader.beginArray()
+                    while (reader.hasNext()) {
+                        reader.beginObject()
+                        var id = 0L
+                        var cardId = 0L
+                        var l1 = "Geral"
+                        var l2 = "Geral"
+                        var l3 = "Geral"
+                        var rating = 3
+                        var durationMs = 0L
+                        var timestamp = System.currentTimeMillis()
+
+                        while (reader.hasNext()) {
+                            when (reader.nextName()) {
+                                "id" -> id = reader.nextLong()
+                                "card_id" -> cardId = reader.nextLong()
+                                "l1" -> l1 = reader.nextString()
+                                "l2" -> l2 = reader.nextString()
+                                "l3" -> l3 = reader.nextString()
+                                "rating" -> rating = reader.nextInt()
+                                "duration_ms" -> durationMs = reader.nextLong()
+                                "timestamp" -> timestamp = reader.nextLong()
+                                else -> reader.skipValue()
+                            }
+                        }
+                        reader.endObject()
+
+                        logsBuffer.add(
+                            com.example.data.model.ReviewLogEntity(
+                                id = id,
+                                cardId = cardId,
+                                l1 = l1,
+                                l2 = l2,
+                                l3 = l3,
+                                rating = rating,
+                                reviewDurationMs = durationMs,
+                                timestamp = timestamp
+                            )
+                        )
+                        totalLogs++
+
+                        if (logsBuffer.size >= 500) {
+                            reviewLogDao?.insertAll(logsBuffer.toList())
+                            logsBuffer.clear()
+                        }
+                    }
+                    reader.endArray()
+                    if (logsBuffer.isNotEmpty()) {
+                        reviewLogDao?.insertAll(logsBuffer.toList())
+                        logsBuffer.clear()
+                    }
+                }
+                else -> reader.skipValue()
+            }
+        }
+        reader.endObject()
+        reader.close()
+
+        Pair(totalCards, totalLogs)
+    }
+
     suspend fun importFullBackupJson(jsonStr: String): Pair<Int, Int> {
-        val root = org.json.JSONObject(jsonStr)
-        val cardsArray = root.optJSONArray("cards") ?: org.json.JSONArray()
-        val cardsList = mutableListOf<FlashcardEntity>()
-        for (i in 0 until cardsArray.length()) {
-            val obj = cardsArray.getJSONObject(i)
-            cardsList.add(
-                FlashcardEntity(
-                    id = obj.optLong("id", 0L),
-                    deckRaw = obj.optString("deck_raw", ""),
-                    l1 = obj.optString("l1", "Geral"),
-                    l2 = obj.optString("l2", "Geral"),
-                    l3 = obj.optString("l3", "Geral"),
-                    noteType = obj.optString("note_type", "Básico+"),
-                    frontHtml = obj.optString("front_html", ""),
-                    backHtml = obj.optString("back_html", ""),
-                    tags = obj.optString("tags", ""),
-                    contentHash = obj.optString("content_hash", ""),
-                    intervalDays = obj.optInt("interval_days", 0),
-                    easeFactor = obj.optDouble("ease_factor", 2.5).toFloat(),
-                    reps = obj.optInt("reps", 0),
-                    lapses = obj.optInt("lapses", 0),
-                    masteryLevel = obj.optInt("mastery_level", 0),
-                    dueTimestamp = obj.optLong("due_timestamp", 0L),
-                    lastReviewedTimestamp = obj.optLong("last_reviewed_timestamp", 0L),
-                    stability = obj.optDouble("stability", 0.0).toFloat(),
-                    difficulty = obj.optDouble("difficulty", 0.0).toFloat()
-                )
-            )
-        }
-
-        val logsArray = root.optJSONArray("logs") ?: org.json.JSONArray()
-        val logsList = mutableListOf<com.example.data.model.ReviewLogEntity>()
-        for (i in 0 until logsArray.length()) {
-            val obj = logsArray.getJSONObject(i)
-            logsList.add(
-                com.example.data.model.ReviewLogEntity(
-                    id = obj.optLong("id", 0L),
-                    cardId = obj.optLong("card_id", 0L),
-                    l1 = obj.optString("l1", "Geral"),
-                    l2 = obj.optString("l2", "Geral"),
-                    l3 = obj.optString("l3", "Geral"),
-                    rating = obj.optInt("rating", 3),
-                    reviewDurationMs = obj.optLong("duration_ms", 0L),
-                    timestamp = obj.optLong("timestamp", System.currentTimeMillis())
-                )
-            )
-        }
-
-        if (cardsList.isNotEmpty()) {
-            restoreDatabaseSnapshot(cardsList, logsList)
-        }
-
-        return Pair(cardsList.size, logsList.size)
+        return importFullBackupJsonFromStream(jsonStr.byteInputStream(Charsets.UTF_8))
     }
 
     suspend fun getAllFlashcardsSync(): List<FlashcardEntity> {

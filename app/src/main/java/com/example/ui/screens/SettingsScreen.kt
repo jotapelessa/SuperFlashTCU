@@ -151,6 +151,7 @@ fun SettingsScreen(
     onExportFullBackupJson: ((onJsonReady: (String) -> Unit) -> Unit)? = null,
     onExportFullBackupJsonStream: ((outputStream: java.io.OutputStream, onFinished: (Boolean, String) -> Unit) -> Unit)? = null,
     onImportFullBackupJson: ((jsonStr: String, onFinished: (Boolean, String) -> Unit) -> Unit)? = null,
+    onImportFullBackupJsonStream: ((inputStream: java.io.InputStream, onFinished: (Boolean, String) -> Unit) -> Unit)? = null,
     onResetData: () -> Unit,
     onResetStudyStats: () -> Unit = {},
     onDeleteAllDecks: () -> Unit = {},
@@ -215,19 +216,24 @@ fun SettingsScreen(
         if (uri != null) {
             coroutineScope.launch(Dispatchers.IO) {
                 try {
-                    val jsonContent = context.contentResolver.openInputStream(uri)?.use { stream ->
-                        stream.bufferedReader(Charsets.UTF_8).readText()
-                    }.orEmpty()
-
-                    if (jsonContent.isNotBlank() && onImportFullBackupJson != null) {
-                        withContext(Dispatchers.Main) {
-                            onImportFullBackupJson(jsonContent) { _, message ->
+                    context.contentResolver.openInputStream(uri)?.use { stream ->
+                        if (onImportFullBackupJsonStream != null) {
+                            onImportFullBackupJsonStream(stream) { _, message ->
                                 Toast.makeText(context, message, Toast.LENGTH_LONG).show()
                             }
-                        }
-                    } else {
-                        withContext(Dispatchers.Main) {
-                            Toast.makeText(context, "Arquivo JSON vazio ou inválido.", Toast.LENGTH_SHORT).show()
+                        } else if (onImportFullBackupJson != null) {
+                            val jsonContent = stream.bufferedReader(Charsets.UTF_8).readText()
+                            if (jsonContent.isNotBlank()) {
+                                withContext(Dispatchers.Main) {
+                                    onImportFullBackupJson(jsonContent) { _, message ->
+                                        Toast.makeText(context, message, Toast.LENGTH_LONG).show()
+                                    }
+                                }
+                            } else {
+                                withContext(Dispatchers.Main) {
+                                    Toast.makeText(context, "Arquivo JSON vazio ou inválido.", Toast.LENGTH_SHORT).show()
+                                }
+                            }
                         }
                     }
                 } catch (e: Exception) {

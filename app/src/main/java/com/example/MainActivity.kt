@@ -357,7 +357,12 @@ fun AnkiAppNavigation(viewModel: DeckViewModel) {
                             val cardsToStudy = allCards.filter { it.l1 == l1 }
                             if (cardsToStudy.isNotEmpty()) {
                                 val dueCards = cardsToStudy.filter { it.isDueForReview() }
-                                val targetCards = if (dueCards.isNotEmpty()) dueCards else cardsToStudy
+                                val newOrLearning = cardsToStudy.filter { it.masteryLevel < 2 || it.reps == 0 }
+                                val targetCards = when {
+                                    dueCards.isNotEmpty() -> dueCards
+                                    newOrLearning.isNotEmpty() -> newOrLearning
+                                    else -> cardsToStudy
+                                }
                                 viewModel.startStudySession(targetCards, sessionTimerConfig)
                                 subDestination = AppDestination.STUDY
                             }
@@ -473,6 +478,7 @@ fun AnkiAppNavigation(viewModel: DeckViewModel) {
                         onExportFullBackupJson = { viewModel.exportFullBackupJson(it) },
                         onExportFullBackupJsonStream = { stream, cb -> viewModel.exportFullBackupJsonToStream(stream, cb) },
                         onImportFullBackupJson = { json, cb -> viewModel.importFullBackupJson(json, cb) },
+                        onImportFullBackupJsonStream = { stream, cb -> viewModel.importFullBackupJsonStream(stream, cb) },
                         onResetData = { viewModel.resetToDefault() },
                         onResetStudyStats = { viewModel.resetAllStudyStats() },
                         onDeleteAllDecks = { viewModel.deleteAllDecksAndCards() },

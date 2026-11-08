@@ -1430,4 +1430,24 @@ class DeckViewModel(application: Application) : AndroidViewModel(application) {
             }
         }
     }
+
+    /**
+     * Importa o backup completo FSRS via streaming (JsonReader) diretamente de um InputStream.
+     */
+    fun importFullBackupJsonStream(inputStream: java.io.InputStream, onResult: (Boolean, String) -> Unit) {
+        viewModelScope.launch {
+            try {
+                val (cardsCount, logsCount) = repository.importFullBackupJsonFromStream(inputStream)
+                repository.reloadPreferencesCache(prefs)
+                _smartShuffleEnabled.value = prefs.getBoolean("smart_shuffle_enabled", true)
+                _dailyGoalPercentage.value = prefs.getFloat("daily_goal_percentage", 10f).coerceIn(5f, 15f)
+                _srsAlgorithm.value = prefs.getString("srs_algorithm", "FSRS-5") ?: "FSRS-5"
+                _targetRetention.value = prefs.getFloat("target_retention", 0.90f)
+                _customizationsTrigger.value = System.currentTimeMillis()
+                onResult(true, "Restaurados com sucesso: $cardsCount cartões e $logsCount logs de histórico!")
+            } catch (e: Exception) {
+                onResult(false, "Erro ao restaurar backup via streaming: ${e.localizedMessage ?: "Formato inválido"}")
+            }
+        }
+    }
 }

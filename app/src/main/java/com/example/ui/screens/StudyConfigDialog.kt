@@ -153,16 +153,13 @@ fun StudyConfigDialog(
             filtered = when (selectedMode) {
                 StudyFilterMode.ALL -> filtered
                 StudyFilterMode.DUE_ONLY -> {
-                    val due = filtered.filter { it.isDueForReview(now) }
-                    if (due.isNotEmpty()) due else filtered
+                    filtered.filter { it.isDueForReview(now) }
                 }
                 StudyFilterMode.NEW_AND_LEARNING -> {
-                    val candidate = filtered.filter { it.masteryLevel < 2 || it.reps == 0 }
-                    if (candidate.isNotEmpty()) candidate else filtered
+                    filtered.filter { it.masteryLevel < 2 || it.reps == 0 }
                 }
                 StudyFilterMode.DIFFICULT_ONLY -> {
-                    val hard = filtered.filter { it.lapses > 0 || it.easeFactor < 2.4f }
-                    if (hard.isNotEmpty()) hard else filtered
+                    filtered.filter { it.lapses > 0 || it.easeFactor < 2.4f }
                 }
             }
 
