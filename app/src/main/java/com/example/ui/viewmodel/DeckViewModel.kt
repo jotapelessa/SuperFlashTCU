@@ -44,8 +44,10 @@ import java.util.Calendar
 
 class DeckViewModel(
     application: Application,
-    repositoryInjection: DeckRepository? = null
+    repositoryInjection: DeckRepository?
 ) : AndroidViewModel(application) {
+
+    constructor(application: Application) : this(application, null)
 
     private val repository: DeckRepository = repositoryInjection ?: run {
         val db = AppDatabase.getDatabase(application)
