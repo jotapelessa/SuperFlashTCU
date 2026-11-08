@@ -38,4 +38,7 @@ interface ReviewLogDao {
 
     @Query("DELETE FROM review_logs")
     suspend fun clearAll()
+
+    @Query("DELETE FROM review_logs WHERE l1 = :l1")
+    suspend fun deleteLogsByL1(l1: String)
 }

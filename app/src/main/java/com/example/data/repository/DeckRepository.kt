@@ -956,6 +956,7 @@ class DeckRepository(
 
     suspend fun deleteDeck(l1: String) {
         dao.deleteDeckL1(l1)
+        reviewLogDao?.deleteLogsByL1(l1)
     }
 
     suspend fun renameL1Deck(oldL1: String, newL1: String) {
@@ -972,10 +973,12 @@ class DeckRepository(
 
     suspend fun resetAllCardStats() {
         dao.resetAllCardStats()
+        reviewLogDao?.clearAll()
     }
 
     suspend fun clearAll() {
         dao.clearAll()
+        reviewLogDao?.clearAll()
     }
 
     companion object {

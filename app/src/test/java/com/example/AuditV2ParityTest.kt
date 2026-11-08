@@ -334,4 +334,36 @@ class AuditV2ParityTest {
         // Às 02:00 AM, a revisão pertence ao dia Anki corrente, resultando em streak ativo >= 1
         assertTrue("Streak deve ser >= 1 mesmo para estudos na madrugada", report.currentStreakDays >= 1)
     }
+
+    @Test
+    fun testResetAllCardStatsClearsReviewLogs() = runTest {
+        val now = System.currentTimeMillis()
+        val card = createCard(id = 1L, reps = 3)
+        db.flashcardDao().insertAll(listOf(card))
+
+        val log = com.example.data.model.ReviewLogEntity(1L, 1L, "TCU", "CEX", "Aula 01", 3, 2000L, now)
+        db.reviewLogDao().insertReviewLog(log)
+
+        assertEquals("Deve ter 1 log antes do reset", 1, repository.getAllReviewLogsSync().size)
+
+        repository.resetAllCardStats()
+
+        assertEquals("Tabela de review_logs DEVE ser zerada após resetAllCardStats", 0, repository.getAllReviewLogsSync().size)
+    }
+
+    @Test
+    fun testDeleteDeckCascadesToReviewLogs() = runTest {
+        val now = System.currentTimeMillis()
+        val logTcu = com.example.data.model.ReviewLogEntity(1L, 1L, "TCU", "CEX", "Aula 01", 3, 2000L, now)
+        val logOab = com.example.data.model.ReviewLogEntity(2L, 2L, "OAB", "Ética", "Aula 01", 4, 3000L, now)
+        db.reviewLogDao().insertAll(listOf(logTcu, logOab))
+
+        assertEquals(2, repository.getAllReviewLogsSync().size)
+
+        repository.deleteDeck("TCU")
+
+        val remaining = repository.getAllReviewLogsSync()
+        assertEquals("Deve restar apenas o log do baralho OAB", 1, remaining.size)
+        assertEquals("OAB", remaining[0].l1)
+    }
 }
