@@ -940,11 +940,37 @@ class DeckViewModel(application: Application) : AndroidViewModel(application) {
             val cards = allCards.value
             val progress = progressReport.value
             val reviewLogs = repository.getAllReviewLogsSync()
+
+            val allCustomPrefs = org.json.JSONObject()
+            prefs.all.forEach { (key, value) ->
+                if (key.startsWith("goal_l2_") ||
+                    key.startsWith("discipline_color_") ||
+                    key.startsWith("discipline_icon_") ||
+                    key == "srs_algorithm" ||
+                    key == "target_retention" ||
+                    key == "app_theme_mode" ||
+                    key == "app_accent_color" ||
+                    key == "daily_study_goal" ||
+                    key == "smart_shuffle_enabled"
+                ) {
+                    when (value) {
+                        is Boolean -> allCustomPrefs.put(key, value)
+                        is Int -> allCustomPrefs.put(key, value)
+                        is Long -> allCustomPrefs.put(key, value)
+                        is Float -> allCustomPrefs.put(key, value.toDouble())
+                        is String -> allCustomPrefs.put(key, value)
+                    }
+                }
+            }
+
             val settingsJson = org.json.JSONObject().apply {
                 put("dailyGoal", dailyStudyGoal.value)
                 put("smartShuffle", smartShuffleEnabled.value)
                 put("themeMode", themeMode.value.name)
                 put("accentColor", accentColor.value.name)
+                put("srsAlgorithm", _srsAlgorithm.value)
+                put("targetRetention", _targetRetention.value.toDouble())
+                put("customPrefs", allCustomPrefs)
             }.toString()
 
             val result = supabaseSyncManager.uploadFullData(
@@ -984,8 +1010,47 @@ class DeckViewModel(application: Application) : AndroidViewModel(application) {
                 if (restoreData.logs.isNotEmpty()) {
                     repository.restoreReviewLogs(restoreData.logs)
                 }
+
+                // Restore preferences, L2 proportional goals and SRS parameters
+                if (!restoreData.settingsJson.isNullOrBlank()) {
+                    try {
+                        val setObj = org.json.JSONObject(restoreData.settingsJson)
+                        val editor = prefs.edit()
+                        if (setObj.has("customPrefs")) {
+                            val custom = setObj.getJSONObject("customPrefs")
+                            val keys = custom.keys()
+                            while (keys.hasNext()) {
+                                val k = keys.next()
+                                when (val v = custom.get(k)) {
+                                    is Boolean -> editor.putBoolean(k, v)
+                                    is Int -> editor.putInt(k, v)
+                                    is Long -> editor.putLong(k, v)
+                                    is Double -> editor.putFloat(k, v.toFloat())
+                                    is String -> editor.putString(k, v)
+                                }
+                            }
+                        }
+                        if (setObj.has("srsAlgorithm")) {
+                            val alg = setObj.getString("srsAlgorithm")
+                            _srsAlgorithm.value = alg
+                            editor.putString("srs_algorithm", alg)
+                        }
+                        if (setObj.has("targetRetention")) {
+                            val ret = setObj.getDouble("targetRetention").toFloat()
+                            _targetRetention.value = ret
+                            editor.putFloat("target_retention", ret)
+                        }
+                        if (setObj.has("dailyGoal")) {
+                            val goal = setObj.getInt("dailyGoal")
+                            editor.putInt("daily_study_goal", goal)
+                        }
+                        editor.apply()
+                        _customizationsTrigger.value = System.currentTimeMillis()
+                    } catch (_: Exception) {}
+                }
+
                 val logMsg = if (restoreData.logs.isNotEmpty()) " e ${restoreData.logs.size} eventos de histórico" else ""
-                _supabaseSyncState.value = "🟢 Sucesso! ${restoreData.cards.size} flashcards$logMsg restaurados da nuvem."
+                _supabaseSyncState.value = "🟢 Sucesso! ${restoreData.cards.size} flashcards$logMsg e configurações restauradas da nuvem."
             } else {
                 _supabaseSyncState.value = "🔴 ${error ?: "Nenhum dado encontrado no Supabase para restaurar."}"
             }

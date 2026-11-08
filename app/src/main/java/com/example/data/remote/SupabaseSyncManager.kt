@@ -21,7 +21,8 @@ sealed class SupabaseSyncResult {
 
 data class CloudRestoreData(
     val cards: List<FlashcardEntity>,
-    val logs: List<ReviewLogEntity> = emptyList()
+    val logs: List<ReviewLogEntity> = emptyList(),
+    val settingsJson: String? = null
 )
 
 class SupabaseSyncManager {
@@ -163,10 +164,18 @@ class SupabaseSyncManager {
                         put("l1", card.l1)
                         put("l2", card.l2)
                         put("l3", card.l3)
+                        put("note_type", card.noteType)
+                        put("front_html", card.frontHtml)
+                        put("back_html", card.backHtml)
+                        put("tags", card.tags)
                         put("content_hash", card.contentHash)
                         put("interval_days", card.intervalDays)
+                        put("ease_factor", card.easeFactor)
+                        put("reps", card.reps)
+                        put("lapses", card.lapses)
                         put("mastery_level", card.masteryLevel)
                         put("due_timestamp", card.dueTimestamp)
+                        put("last_reviewed_timestamp", card.lastReviewedTimestamp)
                         put("stability", card.stability)
                         put("difficulty", card.difficulty)
                     }
@@ -177,10 +186,10 @@ class SupabaseSyncManager {
                 ""
             }
 
-            // Preserva até 5.000 logs atômicos de revisão no snapshot de backup
+            // Preserva até 20.000 logs atômicos de revisão no snapshot de backup
             val logsJsonForBackup = if (reviewLogs.isNotEmpty()) {
                 val logsArray = JSONArray()
-                reviewLogs.takeLast(5000).forEach { log ->
+                reviewLogs.takeLast(20000).forEach { log ->
                     val obj = JSONObject().apply {
                         put("id", log.id)
                         put("card_id", log.cardId)
@@ -249,34 +258,42 @@ class SupabaseSyncManager {
         }
 
         try {
-            // First check backup payload in app_sync_backups
-            val backupReq = Request.Builder()
-                .url("$cleanUrl/rest/v1/app_sync_backups?key=eq.master_backup&select=*&limit=1")
-                .addHeader("apikey", supabaseKey.trim())
-                .addHeader("Authorization", "Bearer ${supabaseKey.trim()}")
-                .get()
-                .build()
+            var logsList = emptyList<ReviewLogEntity>()
+            var settingsJsonStr: String? = null
+            var backupCards = emptyList<FlashcardEntity>()
 
-            client.newCall(backupReq).execute().use { resp ->
-                if (resp.isSuccessful) {
-                    val bodyStr = resp.body?.string().orEmpty()
-                    val array = JSONArray(bodyStr)
-                    if (array.length() > 0) {
-                        val obj = array.getJSONObject(0)
-                        val cardsJsonStr = obj.optString("cards_json", "")
-                        val logsJsonStr = obj.optString("logs_json", "")
-                        if (cardsJsonStr.isNotBlank()) {
-                            val cardsList = parseCardsFromJsonArrayStr(cardsJsonStr)
-                            val logsList = parseLogsFromJsonArrayStr(logsJsonStr)
-                            if (cardsList.isNotEmpty()) {
-                                return@withContext Pair(CloudRestoreData(cardsList, logsList), null)
+            // 1. Fetch metadata payload from app_sync_backups (logs, settings, and fallback cards)
+            try {
+                val backupReq = Request.Builder()
+                    .url("$cleanUrl/rest/v1/app_sync_backups?key=eq.master_backup&select=*&limit=1")
+                    .addHeader("apikey", supabaseKey.trim())
+                    .addHeader("Authorization", "Bearer ${supabaseKey.trim()}")
+                    .get()
+                    .build()
+
+                client.newCall(backupReq).execute().use { resp ->
+                    if (resp.isSuccessful) {
+                        val bodyStr = resp.body?.string().orEmpty()
+                        val array = JSONArray(bodyStr)
+                        if (array.length() > 0) {
+                            val obj = array.getJSONObject(0)
+                            val cardsJsonStr = obj.optString("cards_json", "")
+                            val logsJsonStr = obj.optString("logs_json", "")
+                            settingsJsonStr = obj.optString("settings_json", "").ifBlank { null }
+                            if (logsJsonStr.isNotBlank()) {
+                                logsList = parseLogsFromJsonArrayStr(logsJsonStr)
+                            }
+                            if (cardsJsonStr.isNotBlank()) {
+                                backupCards = parseCardsFromJsonArrayStr(cardsJsonStr)
                             }
                         }
                     }
                 }
+            } catch (_: Exception) {
+                // Ignore backup metadata fetch failure and continue to app_flashcards table
             }
 
-            // Fallback: fetch directly from app_flashcards with pagination (up to 50k cards)
+            // 2. Fetch full flashcards with complete HTML & metrics from app_flashcards with pagination (up to 50k cards)
             val pageSize = 1000
             var offset = 0
             val allFetchedCards = mutableListOf<FlashcardEntity>()
@@ -298,7 +315,11 @@ class SupabaseSyncManager {
                         val bodyStr = resp.body?.string().orEmpty()
                         parseCardsFromJsonArrayStr(bodyStr)
                     } else {
-                        return@withContext Pair(null, "Erro HTTP ${resp.code} ao baixar dados do Supabase na página $pageIndex.")
+                        if (allFetchedCards.isEmpty() && backupCards.isNotEmpty()) {
+                            emptyList()
+                        } else {
+                            return@withContext Pair(null, "Erro HTTP ${resp.code} ao baixar dados do Supabase na página $pageIndex.")
+                        }
                     }
                 }
 
@@ -314,7 +335,12 @@ class SupabaseSyncManager {
                 }
             }
 
-            return@withContext Pair(CloudRestoreData(allFetchedCards, emptyList()), null)
+            val finalCards = if (allFetchedCards.isNotEmpty()) allFetchedCards else backupCards
+            if (finalCards.isEmpty()) {
+                return@withContext Pair(null, "Nenhum flashcard encontrado no Supabase para restaurar.")
+            }
+
+            return@withContext Pair(CloudRestoreData(cards = finalCards, logs = logsList, settingsJson = settingsJsonStr), null)
         } catch (e: Exception) {
             Pair(null, "Erro ao restaurar do Supabase: ${e.localizedMessage}")
         }

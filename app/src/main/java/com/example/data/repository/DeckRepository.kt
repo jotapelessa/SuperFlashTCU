@@ -697,12 +697,7 @@ class DeckRepository(
         var streak = 0
         if (totalReviews > 0 && cards.isNotEmpty()) {
             val cal = Calendar.getInstance()
-            cal.timeInMillis = now
-            cal.set(Calendar.HOUR_OF_DAY, 0)
-            cal.set(Calendar.MINUTE, 0)
-            cal.set(Calendar.SECOND, 0)
-            cal.set(Calendar.MILLISECOND, 0)
-            val todayStartMs = cal.timeInMillis
+            val todayStartMs = getAnkiDayStart(now)
             val dayMs = 24L * 3600L * 1000L
 
             val reviewedDayOffsets = if (reviewLogs.isNotEmpty()) {

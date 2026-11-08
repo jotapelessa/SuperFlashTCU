@@ -284,4 +284,54 @@ class AuditV2ParityTest {
             assertNotEquals("Sigla $acronym não deve receber o ícone genérico School", "School", iconKey)
         }
     }
+
+    @Test
+    fun testCloudRestoreDataSupportsSettingsAndLogs() {
+        val card = createCard(id = 101L, reps = 5)
+        val log = com.example.data.model.ReviewLogEntity(1L, 101L, "TCU", "CEX", "Aula 01", 3, 4000L, 1729000000000L)
+        val settings = """{"dailyGoal":50,"srsAlgorithm":"FSRS","customPrefs":{"goal_l2_TCU::CEX":10.0}}"""
+
+        val restoreData = com.example.data.remote.CloudRestoreData(
+            cards = listOf(card),
+            logs = listOf(log),
+            settingsJson = settings
+        )
+
+        assertEquals("Cards devem ser preservados", 1, restoreData.cards.size)
+        assertEquals("Logs devem ser preservados", 1, restoreData.logs.size)
+        assertEquals(settings, restoreData.settingsJson)
+        assertTrue(restoreData.settingsJson!!.contains("goal_l2_TCU::CEX"))
+    }
+
+    @Test
+    fun testStreakUsesAnkiDayStartForLateNightReviews() {
+        // Terça-feira, 20 de Outubro de 2026 às 02:00 AM da madrugada
+        val cal = Calendar.getInstance().apply {
+            set(2026, Calendar.OCTOBER, 20, 2, 0, 0)
+            set(Calendar.MILLISECOND, 0)
+        }
+        val lateNightTimestamp = cal.timeInMillis
+
+        // Cria log de revisão nessa madrugada
+        val log = com.example.data.model.ReviewLogEntity(
+            id = 50L,
+            cardId = 1L,
+            l1 = "TCU",
+            l2 = "CEX",
+            l3 = "Aula 01",
+            rating = 3,
+            reviewDurationMs = 4000L,
+            timestamp = lateNightTimestamp
+        )
+
+        val card = createCard(id = 1L, reps = 1, lastReviewedTimestamp = lateNightTimestamp)
+        val report = repository.calculateProgressReport(
+            cards = listOf(card),
+            reviewLogs = listOf(log),
+            now = lateNightTimestamp
+        )
+
+        // Às 02:00 AM, a revisão pertence ao dia Anki corrente, resultando em streak ativo >= 1
+        assertTrue("Streak deve ser >= 1 mesmo para estudos na madrugada", report.currentStreakDays >= 1)
+    }
 }
