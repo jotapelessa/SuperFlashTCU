@@ -179,7 +179,7 @@ class GeminiStudyAnalyzer(
                 promptBuilder.appendLine("  - Taxa de Domínio: ${String.format("%.1f", l1.masteryPercentage)}%")
 
                 // Group cards under this L1 by L2 and L3 with smart compacting for 18k+ card bases
-                val cardsInL1 = allCards.filter { it.l1 == l1.l1 }
+                val cardsInL1 = allCards.filter { it.l1.trim().equals(l1.l1.trim(), ignoreCase = true) }
                 val l2Groups = cardsInL1.groupBy { it.l2 }
                 l2Groups.forEach { (l2Name, l2Cards) ->
                     val l2Due = l2Cards.count { it.reps > 0 && it.dueTimestamp <= nowTime }

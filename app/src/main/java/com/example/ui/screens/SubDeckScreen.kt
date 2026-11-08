@@ -475,16 +475,28 @@ private fun calculateL2DomainStats(cards: List<FlashcardEntity>): DomainStats {
 private fun calculateL2ReviewStats(cards: List<FlashcardEntity>): ReviewStats {
     if (cards.isEmpty()) return ReviewStats()
     val now = System.currentTimeMillis()
-    val oneDay = 24L * 3600L * 1000L
     val dueNow = cards.count { it.reps > 0 && it.dueTimestamp <= now }
-    val dueToday = cards.count { it.reps > 0 && it.dueTimestamp <= (now + oneDay) }
+    // Vencidos hoje alinhados rigorosamente com o corte Anki (04:00 AM do próximo ciclo)
+    val cal = java.util.Calendar.getInstance().apply {
+        timeInMillis = now
+        if (get(java.util.Calendar.HOUR_OF_DAY) < 4) {
+            add(java.util.Calendar.DAY_OF_YEAR, -1)
+        }
+        set(java.util.Calendar.HOUR_OF_DAY, 4)
+        set(java.util.Calendar.MINUTE, 0)
+        set(java.util.Calendar.SECOND, 0)
+        set(java.util.Calendar.MILLISECOND, 0)
+        add(java.util.Calendar.DAY_OF_YEAR, 1)
+    }
+    val todayCutoff = cal.timeInMillis
+    val dueToday = cards.count { it.reps > 0 && it.dueTimestamp <= todayCutoff }
     val reviewed = cards.filter { it.reps > 0 }
     val totalReviews = reviewed.sumOf { it.reps }
     val totalLapses = reviewed.sumOf { it.lapses }
     val retention = if (totalReviews > 0) {
         kotlin.math.max(0f, (1f - (totalLapses.toFloat() / totalReviews)) * 100f)
     } else {
-        100f
+        0f
     }
     val avgInterval = if (reviewed.isNotEmpty()) {
         reviewed.map { it.intervalDays }.average().toFloat()

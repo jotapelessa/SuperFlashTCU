@@ -110,6 +110,23 @@ class DeckRepository(
         _paletteUpdateSignal.value = System.currentTimeMillis()
     }
 
+    fun reloadPreferencesCache(prefs: android.content.SharedPreferences) {
+        val newMap = mutableMapOf<String, Float>()
+        prefs.all.forEach { (key, value) ->
+            if (key.startsWith("l2_goal_pct_") && (value is Float || value is Number)) {
+                val raw = key.removePrefix("l2_goal_pct_")
+                val parts = raw.split("::", limit = 2)
+                if (parts.size == 2) {
+                    val pct = (value as Number).toFloat().coerceIn(1f, 100f)
+                    newMap["${parts[0]}::${parts[1]}"] = pct
+                }
+            }
+        }
+        _l2GoalPercentages.value = newMap
+        val savedL1GoalPct = prefs.getFloat("daily_goal_percentage", 10f).coerceIn(5f, 15f)
+        setDailyGoalPercentage(savedL1GoalPct)
+    }
+
     fun setL2GoalPercentage(l1: String, l2: String, percentage: Float) {
         val key = "$l1::$l2"
         _l2GoalPercentages.value = _l2GoalPercentages.value + (key to percentage.coerceIn(1f, 100f))
@@ -549,7 +566,7 @@ class DeckRepository(
         applyFuzz: Boolean = true
     ): Long {
         if (intervalDays <= 0) return now
-        val fuzzedInterval = if (applyFuzz && intervalDays >= 3) {
+        val fuzzedInterval = if (applyFuzz && intervalDays >= 7) {
             val delta = kotlin.math.max(1, (intervalDays * 0.05).roundToInt())
             val fuzzOffset = kotlin.random.Random.nextInt(-delta, delta + 1)
             kotlin.math.max(1, intervalDays + fuzzOffset)
@@ -776,7 +793,7 @@ class DeckRepository(
 
     fun parseCardTags(rawTags: String): List<String> {
         if (rawTags.isBlank()) return emptyList()
-        return rawTags.split(Regex("[,\\s]+"))
+        return rawTags.split(Regex("[,;\\s]+"))
             .map { it.trim().removePrefix("#") }
             .filter { it.isNotBlank() }
             .distinct()
@@ -961,14 +978,17 @@ class DeckRepository(
 
     suspend fun renameL1Deck(oldL1: String, newL1: String) {
         dao.renameL1Deck(oldL1, newL1)
+        reviewLogDao?.renameL1Logs(oldL1, newL1)
     }
 
     suspend fun renameL2Discipline(l1: String, oldL2: String, newL2: String) {
         dao.renameL2Discipline(l1, oldL2, newL2)
+        reviewLogDao?.renameL2Logs(l1, oldL2, newL2)
     }
 
     suspend fun deleteL2Discipline(l1: String, l2: String) {
         dao.deleteL2Discipline(l1, l2)
+        reviewLogDao?.deleteLogsByL1AndL2(l1, l2)
     }
 
     suspend fun resetAllCardStats() {
@@ -984,7 +1004,7 @@ class DeckRepository(
     companion object {
         fun parseCardTags(rawTags: String): List<String> {
             if (rawTags.isBlank()) return emptyList()
-            return rawTags.split(Regex("[,\\s]+"))
+            return rawTags.split(Regex("[,;\\s]+"))
                 .map { it.trim().removePrefix("#") }
                 .filter { it.isNotBlank() }
                 .distinct()

@@ -175,9 +175,24 @@ object AnkiCsvImporter {
         }
     }
 
+    private val HTML_ENTITY_REGEX = Regex("&[a-zA-Z0-9#]+;")
+    private val CSS_STYLE_REGEX = Regex("style\\s*=\\s*\"[^\"]*\"")
+
     private fun detectDelimiter(content: String): Char {
-        // Sample lines outside of quotes
-        val sample = content.lineSequence().take(15).joinToString("\n")
+        // 1. Inspeciona a primeira linha não vazia (cabeçalho) com sanitização de entidades
+        val firstLine = content.lineSequence().firstOrNull { it.isNotBlank() }.orEmpty()
+        val cleanFirstLine = firstLine.replace(HTML_ENTITY_REGEX, "").replace(CSS_STYLE_REGEX, "")
+        val firstLineCommas = cleanFirstLine.count { it == ',' }
+        val firstLineSemicolons = cleanFirstLine.count { it == ';' }
+        val firstLineTabs = cleanFirstLine.count { it == '\t' }
+
+        if (firstLineTabs > firstLineCommas && firstLineTabs > firstLineSemicolons) return '\t'
+        if (firstLineCommas >= 2 && firstLineCommas >= firstLineSemicolons) return ','
+        if (firstLineSemicolons >= 2 && firstLineSemicolons > firstLineCommas) return ';'
+
+        // 2. Amostra até 15 linhas expurgando entidades HTML (&nbsp;, &quot;) e estilos CSS inline (style="...")
+        val rawSample = content.lineSequence().take(15).joinToString("\n")
+        val sample = rawSample.replace(HTML_ENTITY_REGEX, " ").replace(CSS_STYLE_REGEX, " ")
         var inQuotes = false
         var commas = 0
         var semicolons = 0
@@ -194,7 +209,7 @@ object AnkiCsvImporter {
 
         return when {
             tabs > commas && tabs > semicolons -> '\t'
-            semicolons >= commas -> ';'
+            semicolons > commas -> ';'
             else -> ','
         }
     }

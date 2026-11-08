@@ -41,4 +41,13 @@ interface ReviewLogDao {
 
     @Query("DELETE FROM review_logs WHERE l1 = :l1")
     suspend fun deleteLogsByL1(l1: String)
+
+    @Query("DELETE FROM review_logs WHERE l1 = :l1 AND l2 = :l2")
+    suspend fun deleteLogsByL1AndL2(l1: String, l2: String)
+
+    @Query("UPDATE review_logs SET l1 = :newL1 WHERE l1 = :oldL1")
+    suspend fun renameL1Logs(oldL1: String, newL1: String)
+
+    @Query("UPDATE review_logs SET l2 = :newL2 WHERE l1 = :l1 AND l2 = :oldL2")
+    suspend fun renameL2Logs(l1: String, oldL2: String, newL2: String)
 }

@@ -684,7 +684,14 @@ class DeckViewModel(application: Application) : AndroidViewModel(application) {
                 timeReport = timeReport
             )
 
-            if (index + 1 < cards.size) {
+            var currentCards = cards
+            if (rating == 1) {
+                // Re-enfileira cartão falhado ao fim da sessão para reforço intra-sessão imediato
+                currentCards = cards + card
+                _studyCards.value = currentCards
+            }
+
+            if (index + 1 < currentCards.size) {
                 _currentCardIndex.value = index + 1
                 _isAnswerRevealed.value = false
             } else {
@@ -943,7 +950,8 @@ class DeckViewModel(application: Application) : AndroidViewModel(application) {
 
             val allCustomPrefs = org.json.JSONObject()
             prefs.all.forEach { (key, value) ->
-                if (key.startsWith("goal_l2_") ||
+                if (key.startsWith("l2_goal_pct_") ||
+                    key.startsWith("goal_l2_") ||
                     key.startsWith("discipline_color_") ||
                     key.startsWith("discipline_icon_") ||
                     key == "srs_algorithm" ||
@@ -951,7 +959,10 @@ class DeckViewModel(application: Application) : AndroidViewModel(application) {
                     key == "app_theme_mode" ||
                     key == "app_accent_color" ||
                     key == "daily_study_goal" ||
-                    key == "smart_shuffle_enabled"
+                    key == "daily_goal_percentage" ||
+                    key == "smart_shuffle_enabled" ||
+                    key == "timer_per_card_limit" ||
+                    key == "timer_target_session_minutes"
                 ) {
                     when (value) {
                         is Boolean -> allCustomPrefs.put(key, value)
@@ -1045,6 +1056,36 @@ class DeckViewModel(application: Application) : AndroidViewModel(application) {
                             editor.putInt("daily_study_goal", goal)
                         }
                         editor.apply()
+
+                        // Recarrega síncrona e imediatamente os caches do Repository e StateFlows em memória da UI
+                        repository.reloadPreferencesCache(prefs)
+                        _smartShuffleEnabled.value = prefs.getBoolean("smart_shuffle_enabled", true)
+                        _dailyGoalPercentage.value = prefs.getFloat("daily_goal_percentage", 10f).coerceIn(5f, 15f)
+                        _sessionTimerConfig.value = StudyTimerConfig(
+                            perCardLimit = try {
+                                PerCardTimeLimit.valueOf(
+                                    prefs.getString("timer_per_card_limit", PerCardTimeLimit.UNLIMITED.name) ?: PerCardTimeLimit.UNLIMITED.name
+                                )
+                            } catch (_: Exception) {
+                                PerCardTimeLimit.UNLIMITED
+                            },
+                            targetSessionMinutes = prefs.getInt("timer_target_session_minutes", 0)
+                        )
+                        _themeMode.value = try {
+                            com.example.ui.theme.AppThemeMode.valueOf(
+                                prefs.getString("app_theme_mode", com.example.ui.theme.AppThemeMode.SYSTEM.name) ?: com.example.ui.theme.AppThemeMode.SYSTEM.name
+                            )
+                        } catch (_: Exception) {
+                            com.example.ui.theme.AppThemeMode.SYSTEM
+                        }
+                        _accentColor.value = try {
+                            com.example.ui.theme.AccentColorOption.valueOf(
+                                prefs.getString("app_accent_color", com.example.ui.theme.AccentColorOption.EMERALD.name) ?: com.example.ui.theme.AccentColorOption.EMERALD.name
+                            )
+                        } catch (_: Exception) {
+                            com.example.ui.theme.AccentColorOption.EMERALD
+                        }
+
                         _customizationsTrigger.value = System.currentTimeMillis()
                     } catch (_: Exception) {}
                 }

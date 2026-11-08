@@ -74,19 +74,22 @@ import androidx.compose.ui.window.DialogProperties
 import com.example.data.model.FlashcardEntity
 import com.example.ui.components.DisciplinePalette
 
+private val HTML_TAG_REGEX = Regex("<[^>]*>")
+private val WHITESPACE_REGEX = Regex("\\s+")
+
 /**
  * Normalizes text by removing HTML tags, entities, and whitespace noise
  * to accurately detect identical flashcard contents across different decks.
  */
 private fun normalizeContent(text: String): String {
     return text
-        .replace(Regex("<[^>]*>"), " ")
+        .replace(HTML_TAG_REGEX, " ")
         .replace("&nbsp;", " ")
         .replace("&quot;", "\"")
         .replace("&amp;", "&")
         .replace("&lt;", "<")
         .replace("&gt;", ">")
-        .replace(Regex("\\s+"), " ")
+        .replace(WHITESPACE_REGEX, " ")
         .trim()
         .lowercase()
 }

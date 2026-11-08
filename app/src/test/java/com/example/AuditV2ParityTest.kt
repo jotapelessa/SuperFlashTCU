@@ -366,4 +366,62 @@ class AuditV2ParityTest {
         assertEquals("Deve restar apenas o log do baralho OAB", 1, remaining.size)
         assertEquals("OAB", remaining[0].l1)
     }
+
+    @Test
+    fun testAnkiCsvImporterDelimiterRobustAgainstHtmlAndCss() {
+        // CSV com muitas entidades HTML e estilos CSS inline que terminam com ';'
+        val csvWithHtml = """
+            Deck,Tipo de Nota,Frente,Verso,Etiquetas
+            "TCU :: Controle :: Art. 71","Básico","O que diz o art. 71?","<span style=""color:#2563eb; font-weight:bold;"">O TCU possui competência para:&nbsp; julgar contas;&nbsp; apreciar contas;&nbsp; fiscalizar recursos;</span>","tcu,art71"
+            "TCU :: Controle :: Art. 70","Básico","Quem presta contas?","Qualquer pessoa física ou jurídica que utilize bens públicos.&nbsp;&quot;Princípio da Indisponibilidade&quot;;","tcu,art70"
+        """.trimIndent()
+
+        val result = com.example.data.importer.AnkiCsvImporter.parseAnkiCsv(csvWithHtml)
+        assertEquals("Delimitador deve ser vírgula e 2 cartões devem ser parseados com sucesso", 2, result.validCards.size)
+        assertEquals(0, result.errors.size)
+        assertEquals("TCU", result.validCards[0].l1)
+        assertEquals("Controle", result.validCards[0].l2)
+        assertEquals("Art. 71", result.validCards[0].l3)
+    }
+
+    @Test
+    fun testDeleteL2DisciplineCascadesToReviewLogs() = runTest {
+        val now = System.currentTimeMillis()
+        val logCex = com.example.data.model.ReviewLogEntity(1L, 1L, "TCU", "Controle Externo", "Tópico 1", 3, 2000L, now)
+        val logAfo = com.example.data.model.ReviewLogEntity(2L, 2L, "TCU", "AFO", "Tópico 2", 4, 3000L, now)
+        db.reviewLogDao().insertAll(listOf(logCex, logAfo))
+
+        assertEquals(2, repository.getAllReviewLogsSync().size)
+
+        repository.deleteL2Discipline("TCU", "Controle Externo")
+
+        val remaining = repository.getAllReviewLogsSync()
+        assertEquals("Apenas os logs de AFO devem restar", 1, remaining.size)
+        assertEquals("AFO", remaining[0].l2)
+    }
+
+    @Test
+    fun testRenameL1AndL2CascadesToReviewLogs() = runTest {
+        val now = System.currentTimeMillis()
+        val log = com.example.data.model.ReviewLogEntity(1L, 1L, "TCU", "CEX", "Aula 01", 3, 2000L, now)
+        db.reviewLogDao().insertReviewLog(log)
+
+        repository.renameL1Deck("TCU", "TCU-Auditor")
+        var logs = repository.getAllReviewLogsSync()
+        assertEquals("TCU-Auditor", logs[0].l1)
+
+        repository.renameL2Discipline("TCU-Auditor", "CEX", "Controle-Externo")
+        logs = repository.getAllReviewLogsSync()
+        assertEquals("Controle-Externo", logs[0].l2)
+    }
+
+    @Test
+    fun testFuzzingOnlyAppliesToSevenDaysOrMore() {
+        val now = System.currentTimeMillis()
+        // Para intervalos curtos (< 7 dias), calculateNextDueDate não deve sofrer jitter aleatório
+        val dueShort = repository.calculateNextDueDate(intervalDays = 3, now = now, applyFuzz = true)
+        val dueWithoutFuzz = repository.calculateNextDueDate(intervalDays = 3, now = now, applyFuzz = false)
+
+        assertEquals("Intervalo de 3 dias NÃO deve sofrer fuzzing aleatório para manter paridade com botão FSRS", dueWithoutFuzz, dueShort)
+    }
 }
