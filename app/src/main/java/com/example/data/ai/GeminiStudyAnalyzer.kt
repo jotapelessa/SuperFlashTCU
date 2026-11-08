@@ -193,15 +193,18 @@ class GeminiStudyAnalyzer(
                     promptBuilder.appendLine("    * [L2 Disciplina] $l2Name: ${l2Cards.size} cards (Vencidos: $l2Due, Dominados: $l2Mastered$fsrsInfo)")
 
                     val l3Groups = l2Cards.groupBy { it.l3 }
-                    val dueL3Groups = l3Groups.filter { (_, cards) -> cards.any { it.reps > 0 && it.dueTimestamp <= nowTime } }
-                    val topicsToShow = dueL3Groups.entries.take(6)
+                    val criticalL3Groups = l3Groups.filter { (_, cards) ->
+                        cards.any { (it.reps > 0 && it.dueTimestamp <= nowTime) || it.lapses >= 2 }
+                    }
+                    val topicsToShow = criticalL3Groups.entries.take(3)
                     topicsToShow.forEach { (l3Name, l3Cards) ->
                         val l3Due = l3Cards.count { it.reps > 0 && it.dueTimestamp <= nowTime }
-                        promptBuilder.appendLine("      - [L3 Tópico Crítico] $l3Name: ${l3Cards.size} cards (Vencidos: $l3Due)")
+                        val l3Lapses = l3Cards.sumOf { it.lapses }
+                        promptBuilder.appendLine("      - [L3 Crítico] $l3Name: ${l3Cards.size} cards (Vencidos: $l3Due, Lapsos: $l3Lapses)")
                     }
-                    val remainingDue = dueL3Groups.size - topicsToShow.size
-                    if (remainingDue > 0) {
-                        promptBuilder.appendLine("      - (+ $remainingDue outros tópicos com cards vencidos)")
+                    val remainingCritical = criticalL3Groups.size - topicsToShow.size
+                    if (remainingCritical > 0) {
+                        promptBuilder.appendLine("      - (+ $remainingCritical outros subtópicos L3)")
                     }
                 }
                 promptBuilder.appendLine()

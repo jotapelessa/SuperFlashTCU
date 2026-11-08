@@ -1397,6 +1397,20 @@ class DeckViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     /**
+     * Exporta o backup completo FSRS via streaming direto para OutputStream (Zero OOM em bases massivas).
+     */
+    fun exportFullBackupJsonToStream(outputStream: java.io.OutputStream, onFinished: (Boolean, String) -> Unit) {
+        viewModelScope.launch {
+            try {
+                repository.exportFullBackupJsonToStream(outputStream)
+                onFinished(true, "Backup Completo FSRS (.json) exportado com sucesso!")
+            } catch (e: Exception) {
+                onFinished(false, "Erro ao exportar backup: ${e.localizedMessage}")
+            }
+        }
+    }
+
+    /**
      * Restaura integralmente o banco SQLite e preferências a partir de um JSON de backup completo.
      * Recarrega os StateFlows e caches reativos do repositório imediatamente.
      */

@@ -186,10 +186,10 @@ class SupabaseSyncManager {
                 ""
             }
 
-            // Preserva até 20.000 logs atômicos de revisão no snapshot de backup
+            // Preserva o histórico integral de revisão no snapshot de backup (comprimido via GZIP se > 10.000 logs)
             val logsJsonForBackup = if (reviewLogs.isNotEmpty()) {
                 val logsArray = JSONArray()
-                reviewLogs.takeLast(20000).forEach { log ->
+                reviewLogs.forEach { log ->
                     val obj = JSONObject().apply {
                         put("id", log.id)
                         put("card_id", log.cardId)
@@ -202,7 +202,20 @@ class SupabaseSyncManager {
                     }
                     logsArray.put(obj)
                 }
-                logsArray.toString()
+                val rawJsonStr = logsArray.toString()
+                if (reviewLogs.size > 10000 || rawJsonStr.length > 500_000) {
+                    try {
+                        val baos = java.io.ByteArrayOutputStream()
+                        java.util.zip.GZIPOutputStream(baos).use { gzip ->
+                            gzip.write(rawJsonStr.toByteArray(Charsets.UTF_8))
+                        }
+                        "GZIP:" + android.util.Base64.encodeToString(baos.toByteArray(), android.util.Base64.NO_WRAP)
+                    } catch (_: Exception) {
+                        rawJsonStr
+                    }
+                } else {
+                    rawJsonStr
+                }
             } else {
                 ""
             }
@@ -288,7 +301,18 @@ class SupabaseSyncManager {
                             val logsJsonStr = obj.optString("logs_json", "")
                             settingsJsonStr = obj.optString("settings_json", "").ifBlank { null }
                             if (logsJsonStr.isNotBlank()) {
-                                logsList = parseLogsFromJsonArrayStr(logsJsonStr)
+                                val decompressedLogsStr = if (logsJsonStr.startsWith("GZIP:")) {
+                                    try {
+                                        val b64 = logsJsonStr.removePrefix("GZIP:")
+                                        val compressedBytes = android.util.Base64.decode(b64, android.util.Base64.NO_WRAP)
+                                        java.util.zip.GZIPInputStream(compressedBytes.inputStream()).bufferedReader(Charsets.UTF_8).use { it.readText() }
+                                    } catch (_: Exception) {
+                                        logsJsonStr
+                                    }
+                                } else {
+                                    logsJsonStr
+                                }
+                                logsList = parseLogsFromJsonArrayStr(decompressedLogsStr)
                             }
                             if (cardsJsonStr.isNotBlank()) {
                                 backupCards = parseCardsFromJsonArrayStr(cardsJsonStr)

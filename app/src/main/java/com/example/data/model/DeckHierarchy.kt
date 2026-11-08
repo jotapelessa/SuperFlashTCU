@@ -15,13 +15,14 @@ data class L1DeckSummary(
     val coverUrl: String? = null,
     val isAiAnalysisEnabled: Boolean = true,
     val reviewedToday: Int = 0,
-    val dailyGoalPercentage: Float = 10f
+    val dailyGoalPercentage: Float = 10f,
+    val customDailyTarget: Int? = null
 ) {
     val masteryPercentage: Float
         get() = if (totalCards > 0) ((masteredCards * 1.0f + learningCards * 0.4f) / totalCards) * 100f else 0f
 
     val dailyTargetCards: Int
-        get() = if (totalCards > 0) {
+        get() = customDailyTarget ?: if (totalCards > 0) {
             kotlin.math.max(1, kotlin.math.ceil(totalCards * (dailyGoalPercentage / 100f)).toInt())
         } else 0
 

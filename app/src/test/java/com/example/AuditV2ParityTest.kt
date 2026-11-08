@@ -504,4 +504,40 @@ class AuditV2ParityTest {
         assertEquals(2, repository.getAllFlashcardsSync().size)
         assertEquals(1, repository.getAllReviewLogsSync().size)
     }
+
+    @Test
+    fun testStreamingExportFullBackupJson() = runTest {
+        val card = createCard(id = 999L, reps = 3, stability = 14.5f)
+        db.flashcardDao().insertFlashcard(card)
+        val log = com.example.data.model.ReviewLogEntity(888L, 999L, "TCU", "CEX", "A1", 4, 1500L, System.currentTimeMillis())
+        db.reviewLogDao().insertReviewLog(log)
+
+        val baos = java.io.ByteArrayOutputStream()
+        repository.exportFullBackupJsonToStream(baos)
+        val exported = baos.toString(Charsets.UTF_8.name())
+
+        assertTrue("Streaming JSON deve conter versão 5", exported.contains("\"version\":5"))
+        assertTrue("Streaming JSON deve conter cards_count 1", exported.contains("\"cards_count\":1"))
+        assertTrue("Streaming JSON deve conter stability", exported.contains("\"stability\":14.5"))
+    }
+
+    @Test
+    fun testL1DailyTargetHarmonizesWithSumOfL2Disciplines() = runTest {
+        // Simula L1 com 2 disciplinas L2 e múltiplos tópicos L3
+        val cardCex1 = createCard(id = 1L, reps = 1).copy(l2 = "CEX", l3 = "Tópico 1")
+        val cardCex2 = createCard(id = 2L, reps = 1).copy(l2 = "CEX", l3 = "Tópico 2")
+        val cardAfo1 = createCard(id = 3L, reps = 1).copy(l2 = "AFO", l3 = "Orçamento")
+        db.flashcardDao().insertAll(listOf(cardCex1, cardCex2, cardAfo1))
+
+        repository.setDailyGoalPercentage(10f)
+
+        val l1List = repository.l1DeckSummaries.first()
+        assertEquals(1, l1List.size)
+        val tcu = l1List[0]
+
+        // CEX tem 2 tópicos L3: cada um com 1 card -> meta ceil(1 * 0.10) = 1 card cada -> total CEX = 2
+        // AFO tem 1 tópico L3 com 1 card -> meta ceil(1 * 0.10) = 1 card
+        // Soma esperada das metas das disciplinas L2: 2 + 1 = 3
+        assertEquals("A meta diária de L1 deve ser exatamente a soma dos alvos de suas disciplinas filhas L2", 3, tcu.dailyTargetCards)
+    }
 }

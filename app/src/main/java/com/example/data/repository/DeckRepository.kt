@@ -41,6 +41,8 @@ class DeckRepository(
     val allReviewLogs: Flow<List<com.example.data.model.ReviewLogEntity>> = reviewLogDao?.getAllReviewLogs() ?: kotlinx.coroutines.flow.flowOf(emptyList())
 
     private val _dailyGoalPercentage = MutableStateFlow(10f)
+    private val _l2GoalPercentages = MutableStateFlow<Map<String, Float>>(emptyMap())
+    private val _paletteUpdateSignal = MutableStateFlow(0L)
 
     fun setDailyGoalPercentage(percentage: Float) {
         _dailyGoalPercentage.value = percentage.coerceIn(5f, 15f)
@@ -70,7 +72,7 @@ class DeckRepository(
      * Strictly distinguish between L1, L2, and L3 levels during synchronization.
      * Only L1 decks are surfaced in the primary deck list.
      */
-    val l1DeckSummaries: Flow<List<L1DeckSummary>> = combine(allCards, _dailyGoalPercentage) { cards, goalPct ->
+    val l1DeckSummaries: Flow<List<L1DeckSummary>> = combine(allCards, _dailyGoalPercentage, _l2GoalPercentages) { cards, goalPct, l2GoalMap ->
         val now = System.currentTimeMillis()
         val dayStart = getAnkiDayStart(now)
 
@@ -86,6 +88,21 @@ class DeckRepository(
 
                 val colors = l2Groups.keys.map { DisciplinePalette.getColorForDiscipline(it) }.distinct()
 
+                // Harmonização exata: soma os alvos diários de cada disciplina L2 (e seus tópicos L3)
+                val sumL2Targets = l2Groups.entries.sumOf { (l2, l2Cards) ->
+                    val l2Pct = l2GoalMap["$l1::$l2"] ?: 5f
+                    val l3Groups = l2Cards.groupBy { it.l3 }
+                    if (l3Groups.isNotEmpty()) {
+                        l3Groups.values.sumOf { l3Cards ->
+                            if (l3Cards.isNotEmpty()) {
+                                kotlin.math.max(1, kotlin.math.ceil(l3Cards.size * (l2Pct / 100f)).toInt())
+                            } else 0
+                        }
+                    } else if (l2Cards.isNotEmpty()) {
+                        kotlin.math.max(1, kotlin.math.ceil(l2Cards.size * (l2Pct / 100f)).toInt())
+                    } else 0
+                }
+
                 L1DeckSummary(
                     l1 = l1,
                     totalCards = l1Cards.size,
@@ -97,14 +114,12 @@ class DeckRepository(
                     l3Count = l3Set.size,
                     disciplineColors = colors,
                     reviewedToday = reviewedToday,
-                    dailyGoalPercentage = goalPct
+                    dailyGoalPercentage = goalPct,
+                    customDailyTarget = if (sumL2Targets > 0) sumL2Targets else null
                 )
             }
             .sortedBy { it.l1 }
     }.flowOn(Dispatchers.Default)
-
-    private val _paletteUpdateSignal = MutableStateFlow(0L)
-    private val _l2GoalPercentages = MutableStateFlow<Map<String, Float>>(emptyMap())
 
     fun notifyPaletteChanged() {
         _paletteUpdateSignal.value = System.currentTimeMillis()
@@ -1025,6 +1040,68 @@ class DeckRepository(
         root.put("logs", logsArray)
 
         return root.toString()
+    }
+
+    /**
+     * Exporta o backup completo FSRS via streaming direto (JsonWriter), eliminando risco de
+     * OutOfMemoryError em coleções massivas (>13.000 cards e >100.000 logs históricos).
+     */
+    suspend fun exportFullBackupJsonToStream(outputStream: java.io.OutputStream) = kotlinx.coroutines.withContext(Dispatchers.IO) {
+        val cards = dao.getAllFlashcardsSync()
+        val logs = getAllReviewLogsSync()
+        val writer = android.util.JsonWriter(outputStream.bufferedWriter(Charsets.UTF_8))
+        writer.beginObject()
+        writer.name("version").value(5)
+        writer.name("app").value("SuperFlash TCU")
+        writer.name("timestamp").value(System.currentTimeMillis())
+        writer.name("cards_count").value(cards.size.toLong())
+        writer.name("logs_count").value(logs.size.toLong())
+
+        writer.name("cards")
+        writer.beginArray()
+        cards.forEach { card ->
+            writer.beginObject()
+            writer.name("id").value(card.id)
+            writer.name("deck_raw").value(card.deckRaw)
+            writer.name("l1").value(card.l1)
+            writer.name("l2").value(card.l2)
+            writer.name("l3").value(card.l3)
+            writer.name("note_type").value(card.noteType)
+            writer.name("front_html").value(card.frontHtml)
+            writer.name("back_html").value(card.backHtml)
+            writer.name("tags").value(card.tags)
+            writer.name("content_hash").value(card.contentHash)
+            writer.name("interval_days").value(card.intervalDays.toLong())
+            writer.name("ease_factor").value(card.easeFactor.toDouble())
+            writer.name("reps").value(card.reps.toLong())
+            writer.name("lapses").value(card.lapses.toLong())
+            writer.name("mastery_level").value(card.masteryLevel.toLong())
+            writer.name("due_timestamp").value(card.dueTimestamp)
+            writer.name("last_reviewed_timestamp").value(card.lastReviewedTimestamp)
+            writer.name("stability").value(card.stability.toDouble())
+            writer.name("difficulty").value(card.difficulty.toDouble())
+            writer.endObject()
+        }
+        writer.endArray()
+
+        writer.name("logs")
+        writer.beginArray()
+        logs.forEach { log ->
+            writer.beginObject()
+            writer.name("id").value(log.id)
+            writer.name("card_id").value(log.cardId)
+            writer.name("l1").value(log.l1)
+            writer.name("l2").value(log.l2)
+            writer.name("l3").value(log.l3)
+            writer.name("rating").value(log.rating.toLong())
+            writer.name("duration_ms").value(log.reviewDurationMs)
+            writer.name("timestamp").value(log.timestamp)
+            writer.endObject()
+        }
+        writer.endArray()
+
+        writer.endObject()
+        writer.flush()
     }
 
     suspend fun importFullBackupJson(jsonStr: String): Pair<Int, Int> {

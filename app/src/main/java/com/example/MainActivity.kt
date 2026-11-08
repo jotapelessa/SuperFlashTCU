@@ -471,6 +471,7 @@ fun AnkiAppNavigation(viewModel: DeckViewModel) {
                         onOpenImportCsv = { showImportDialog = true },
                         onOpenExportCsv = { showExportCsvDialog = true },
                         onExportFullBackupJson = { viewModel.exportFullBackupJson(it) },
+                        onExportFullBackupJsonStream = { stream, cb -> viewModel.exportFullBackupJsonToStream(stream, cb) },
                         onImportFullBackupJson = { json, cb -> viewModel.importFullBackupJson(json, cb) },
                         onResetData = { viewModel.resetToDefault() },
                         onResetStudyStats = { viewModel.resetAllStudyStats() },

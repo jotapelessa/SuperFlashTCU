@@ -149,6 +149,7 @@ fun SettingsScreen(
     onOpenImportCsv: () -> Unit,
     onOpenExportCsv: () -> Unit = {},
     onExportFullBackupJson: ((onJsonReady: (String) -> Unit) -> Unit)? = null,
+    onExportFullBackupJsonStream: ((outputStream: java.io.OutputStream, onFinished: (Boolean, String) -> Unit) -> Unit)? = null,
     onImportFullBackupJson: ((jsonStr: String, onFinished: (Boolean, String) -> Unit) -> Unit)? = null,
     onResetData: () -> Unit,
     onResetStudyStats: () -> Unit = {},
@@ -184,14 +185,20 @@ fun SettingsScreen(
     val fullBackupSaveLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.CreateDocument("application/json")
     ) { uri ->
-        if (uri != null && fullBackupJsonData.isNotBlank()) {
+        if (uri != null) {
             coroutineScope.launch(Dispatchers.IO) {
                 try {
                     context.contentResolver.openOutputStream(uri)?.use { stream ->
-                        stream.write(fullBackupJsonData.toByteArray(Charsets.UTF_8))
-                    }
-                    withContext(Dispatchers.Main) {
-                        Toast.makeText(context, "Backup Completo FSRS (.json) exportado com sucesso!", Toast.LENGTH_LONG).show()
+                        if (onExportFullBackupJsonStream != null) {
+                            onExportFullBackupJsonStream(stream) { _, message ->
+                                Toast.makeText(context, message, Toast.LENGTH_LONG).show()
+                            }
+                        } else if (fullBackupJsonData.isNotBlank()) {
+                            stream.write(fullBackupJsonData.toByteArray(Charsets.UTF_8))
+                            withContext(Dispatchers.Main) {
+                                Toast.makeText(context, "Backup Completo FSRS (.json) exportado com sucesso!", Toast.LENGTH_LONG).show()
+                            }
+                        }
                     }
                 } catch (e: Exception) {
                     withContext(Dispatchers.Main) {
@@ -1180,11 +1187,14 @@ fun SettingsScreen(
                     ) {
                         Button(
                             onClick = {
-                                if (onExportFullBackupJson != null) {
+                                val df = SimpleDateFormat("yyyyMMdd_HHmm", Locale.getDefault())
+                                val fileName = "superflash_backup_fsrs_${df.format(Date())}.json"
+                                if (onExportFullBackupJsonStream != null) {
+                                    fullBackupSaveLauncher.launch(fileName)
+                                } else if (onExportFullBackupJson != null) {
                                     onExportFullBackupJson { json ->
                                         fullBackupJsonData = json
-                                        val df = SimpleDateFormat("yyyyMMdd_HHmm", Locale.getDefault())
-                                        fullBackupSaveLauncher.launch("superflash_backup_fsrs_${df.format(Date())}.json")
+                                        fullBackupSaveLauncher.launch(fileName)
                                     }
                                 }
                             },
