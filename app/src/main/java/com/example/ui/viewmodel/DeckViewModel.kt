@@ -624,20 +624,6 @@ class DeckViewModel(application: Application) : AndroidViewModel(application) {
             val card = cards[index]
             val algorithm = _srsAlgorithm.value
             val retention = _targetRetention.value.toDouble()
-            viewModelScope.launch {
-                val updatedCard = repository.recordReview(
-                    card = card,
-                    rating = rating,
-                    algorithm = algorithm,
-                    targetRetention = retention,
-                    reviewDurationMs = timeSpentMillis
-                )
-                if (card.masteryLevel < 2 && updatedCard.masteryLevel >= 2) {
-                    _sessionStats.value = _sessionStats.value.copy(
-                        graduatedToMasteredCount = _sessionStats.value.graduatedToMasteredCount + 1
-                    )
-                }
-            }
 
             // Track time spent per deck/discipline
             val deckName = when {
@@ -698,6 +684,30 @@ class DeckViewModel(application: Application) : AndroidViewModel(application) {
                 _studyCompleted.value = true
                 if (_supabaseAutoSync.value && _supabaseUrl.value.isNotBlank() && _supabaseKey.value.isNotBlank()) {
                     syncToSupabase()
+                }
+            }
+
+            viewModelScope.launch {
+                val updatedCard = repository.recordReview(
+                    card = card,
+                    rating = rating,
+                    algorithm = algorithm,
+                    targetRetention = retention,
+                    reviewDurationMs = timeSpentMillis
+                )
+                if (card.masteryLevel < 2 && updatedCard.masteryLevel >= 2) {
+                    _sessionStats.value = _sessionStats.value.copy(
+                        graduatedToMasteredCount = _sessionStats.value.graduatedToMasteredCount + 1
+                    )
+                }
+                if (rating == 1) {
+                    // Atualiza a entidade no fim da fila com a cópia pós-revisão (com lapses e estabilidade FSRS corretos)
+                    val list = _studyCards.value.toMutableList()
+                    val lastIdx = list.lastIndexOf(card)
+                    if (lastIdx != -1) {
+                        list[lastIdx] = updatedCard
+                        _studyCards.value = list
+                    }
                 }
             }
         }

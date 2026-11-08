@@ -366,7 +366,13 @@ class SupabaseSyncManager {
                 }
             }
 
-            val finalCards = if (allFetchedCards.isNotEmpty()) allFetchedCards else backupCards
+            val finalCards = if (backupCards.isNotEmpty()) {
+                backupCards
+            } else if (allFetchedCards.isNotEmpty()) {
+                allFetchedCards
+            } else {
+                emptyList()
+            }
             if (finalCards.isEmpty()) {
                 return@withContext Pair(null, "Nenhum flashcard encontrado no Supabase para restaurar.")
             }

@@ -414,7 +414,19 @@ fun StudyScreen(
                         val topicKey = if (currentCard != null) "${currentCard.l1}::${currentCard.l2}::${currentCard.l3}" else ""
                         if (currentCard != null && getL3GoalProgress != null && topicKey.isNotBlank()) {
                             val progress = getL3GoalProgress(currentCard.l1, currentCard.l2, currentCard.l3)
-                            val newReviewed = progress.reviewedToday + 1
+                            val nowWall = System.currentTimeMillis()
+                            val ankiDayStart = java.util.Calendar.getInstance().apply {
+                                timeInMillis = nowWall
+                                if (get(java.util.Calendar.HOUR_OF_DAY) < 4) {
+                                    add(java.util.Calendar.DAY_OF_YEAR, -1)
+                                }
+                                set(java.util.Calendar.HOUR_OF_DAY, 4)
+                                set(java.util.Calendar.MINUTE, 0)
+                                set(java.util.Calendar.SECOND, 0)
+                                set(java.util.Calendar.MILLISECOND, 0)
+                            }.timeInMillis
+                            val wasAlreadyReviewedToday = currentCard.lastReviewedTimestamp >= ankiDayStart
+                            val newReviewed = if (wasAlreadyReviewedToday) progress.reviewedToday else progress.reviewedToday + 1
                             val shouldCelebrate = onCheckShouldCelebrateTopic?.invoke(
                                 currentCard.l1, currentCard.l2, currentCard.l3, newReviewed, progress.targetCards
                             ) ?: (!celebratedL3s.contains(topicKey) && newReviewed >= progress.targetCards && progress.targetCards > 0)

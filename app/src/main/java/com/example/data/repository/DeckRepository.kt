@@ -90,7 +90,7 @@ class DeckRepository(
 
                 // Harmonização exata: soma os alvos diários de cada disciplina L2 (e seus tópicos L3)
                 val sumL2Targets = l2Groups.entries.sumOf { (l2, l2Cards) ->
-                    val l2Pct = l2GoalMap["$l1::$l2"] ?: 5f
+                    val l2Pct = l2GoalMap["$l1::$l2"] ?: goalPct
                     val l3Groups = l2Cards.groupBy { it.l3 }
                     if (l3Groups.isNotEmpty()) {
                         l3Groups.values.sumOf { l3Cards ->
@@ -148,7 +148,7 @@ class DeckRepository(
     }
 
     fun getL2GoalPercentage(l1: String, l2: String): Float {
-        return _l2GoalPercentages.value["$l1::$l2"] ?: 5f
+        return _l2GoalPercentages.value["$l1::$l2"] ?: _dailyGoalPercentage.value
     }
 
     /**
@@ -156,7 +156,7 @@ class DeckRepository(
      * Reavalia reativamente tanto por alterações no Room quanto por atualizações de paleta/ícone e metas diárias.
      */
     fun getL2DisciplinesForL1(l1: String): Flow<List<L2DisciplineSummary>> =
-        combine(dao.getFlashcardsByL1(l1), _paletteUpdateSignal, _l2GoalPercentages) { cards, _, goalPercentages ->
+        combine(dao.getFlashcardsByL1(l1), _paletteUpdateSignal, _l2GoalPercentages, _dailyGoalPercentage) { cards, _, goalPercentages, globalGoalPct ->
             val now = System.currentTimeMillis()
             val dayStart = getAnkiDayStart(now)
 
@@ -164,7 +164,7 @@ class DeckRepository(
                 .map { (l2, l2Cards) ->
                     val colorHex = DisciplinePalette.getColorForDiscipline(l2)
                     val iconKey = DisciplinePalette.getIconKeyForDiscipline(l2)
-                    val goalPct = goalPercentages["$l1::$l2"] ?: 5f
+                    val goalPct = goalPercentages["$l1::$l2"] ?: globalGoalPct
 
                     val l3Topics = l2Cards.groupBy { it.l3 }
                         .map { (l3, l3Cards) ->
