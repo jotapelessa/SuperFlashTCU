@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+  <title>SuperFlash TCU - Frosted Glass 03: Floating Zero-G</title>
+  <defs>
+    <linearGradient id="f3_card1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38BDF8" stop-opacity="0.3"/>
+      <stop offset="100%" stop-color="#1E3A8A" stop-opacity="0.8"/>
+    </linearGradient>
+    <linearGradient id="f3_card2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#60A5FA" stop-opacity="0.5"/>
+      <stop offset="100%" stop-color="#2563EB" stop-opacity="0.9"/>
+    </linearGradient>
+    <linearGradient id="f3_stroke" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.9"/>
+      <stop offset="100%" stop-color="#38BDF8" stop-opacity="0.2"/>
+    </linearGradient>
+    <linearGradient id="f3_bolt" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FEF08A"/>
+      <stop offset="40%" stop-color="#F59E0B"/>
+      <stop offset="100%" stop-color="#EA580C"/>
+    </linearGradient>
+    <radialGradient id="f3_glow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#38BDF8" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="#030712" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <rect x="36" y="36" width="440" height="440" rx="96" fill="#030712"/>
+
+  <!-- Ethereal Glow Bed -->
+  <ellipse cx="256" cy="380" rx="140" ry="40" fill="url(#f3_glow)"/>
+
+  <!-- Lower Suspended Card -->
+  <path d="M130 320 L256 250 L382 320 L256 390 Z" fill="url(#f3_card1)" stroke="url(#f3_stroke)" stroke-width="2.5"/>
+  <path d="M130 320 L256 390 L256 405 L130 335 Z" fill="#090D16" opacity="0.8"/>
+  <path d="M256 390 L382 320 L382 335 L256 405 Z" fill="#0F172A" opacity="0.8"/>
+
+  <!-- Upper Floating Card (Zero-G Offset) -->
+  <path d="M90 200 L256 105 L422 200 L256 295 Z" fill="url(#f3_card2)" stroke="url(#f3_stroke)" stroke-width="3.5"/>
+  <path d="M90 200 L256 295 L256 312 L90 217 Z" fill="#1E3A8A" opacity="0.7"/>
+  <path d="M256 295 L422 200 L422 217 L256 312 Z" fill="#1D4ED8" opacity="0.7"/>
+
+  <!-- Text Preview Shimmer -->
+  <line x1="140" y1="205" x2="256" y2="138" stroke="#FFFFFF" stroke-width="6" stroke-linecap="round" opacity="0.6"/>
+  <line x1="150" y1="230" x2="235" y2="180" stroke="#BAE6FD" stroke-width="5" stroke-linecap="round" opacity="0.5"/>
+
+  <!-- Piercing Energy Bolt Cutting Cleanly -->
+  <polygon points="280,45 185,225 255,225 205,435 340,215 270,215 305,45" fill="url(#f3_bolt)"/>
+  <polygon points="280,45 250,215 270,215 205,435 185,225" fill="#D97706" opacity="0.4"/>
+</svg>

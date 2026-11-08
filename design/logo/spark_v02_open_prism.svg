@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+  <title>SuperFlash TCU - Open Prism Portal</title>
+  <defs>
+    <linearGradient id="v2_leftWing" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#3B82F6"/>
+      <stop offset="100%" stop-color="#1E3A8A"/>
+    </linearGradient>
+    <linearGradient id="v2_rightWing" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#60A5FA"/>
+      <stop offset="100%" stop-color="#2563EB"/>
+    </linearGradient>
+    <linearGradient id="v2_bolt" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFFBEB"/>
+      <stop offset="35%" stop-color="#FBBF24"/>
+      <stop offset="100%" stop-color="#EA580C"/>
+    </linearGradient>
+    <linearGradient id="v2_glow" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#0284C7"/>
+      <stop offset="100%" stop-color="#38BDF8"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Left Open Card Wing (Face L2/L3) -->
+  <path d="M246 140 L90 220 L90 370 L246 290 Z" fill="url(#v2_leftWing)"/>
+  <path d="M246 290 L90 370 L90 395 L246 315 Z" fill="#0F172A"/>
+
+  <!-- Right Open Card Wing (Face Front/Back) -->
+  <path d="M266 140 L422 220 L422 370 L266 290 Z" fill="url(#v2_rightWing)"/>
+  <path d="M266 290 L422 370 L422 395 L266 315 Z" fill="#1E40AF"/>
+
+  <!-- Flashcard text mock lines (detalhes ópticos) -->
+  <line x1="120" y1="260" x2="216" y2="210" stroke="#93C5FD" stroke-width="6" stroke-linecap="round" opacity="0.4"/>
+  <line x1="120" y1="290" x2="196" y2="250" stroke="#93C5FD" stroke-width="6" stroke-linecap="round" opacity="0.4"/>
+  <line x1="296" y1="210" x2="392" y2="260" stroke="#BFDBFE" stroke-width="6" stroke-linecap="round" opacity="0.4"/>
+  <line x1="316" y1="250" x2="392" y2="290" stroke="#BFDBFE" stroke-width="6" stroke-linecap="round" opacity="0.4"/>
+
+  <!-- Central Prism Glow -->
+  <polygon points="256,120 286,280 256,330 226,280" fill="url(#v2_glow)" opacity="0.35"/>
+
+  <!-- Projecting Hyper Lightning Bolt -->
+  <polygon points="280,50 180,240 250,240 200,430 345,210 270,210 310,50" fill="url(#v2_bolt)"/>
+  <polygon points="280,50 250,210 270,210 200,430 180,240" fill="#F59E0B" opacity="0.5"/>
+
+  <!-- Gemini AI Sparkle Crown -->
+  <polygon points="256,20 262,35 277,41 262,47 256,62 250,47 235,41 250,35" fill="#FDE047"/>
+</svg>

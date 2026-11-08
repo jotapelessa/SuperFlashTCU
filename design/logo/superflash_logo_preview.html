@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SuperFlash TCU — Coleção Frosted Glass Layers (Glassmorphism & Lâmina de Ouro)</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #070B14;
+      --card-bg: #0F172A;
+      --card-border: #1E293B;
+      --text-main: #F8FAFC;
+      --text-muted: #94A3B8;
+      --primary: #38BDF8;
+      --accent: #F59E0B;
+      --badge-rec: #10B981;
+      --badge-glass: #38BDF8;
+      --badge-gold: #F59E0B;
+    }
+
+    [data-theme="light"] {
+      --bg: #F8FAFC;
+      --card-bg: #FFFFFF;
+      --card-border: #E2E8F0;
+      --text-main: #0F172A;
+      --text-muted: #64748B;
+      --primary: #0284C7;
+      --accent: #D97706;
+      --badge-rec: #059669;
+      --badge-glass: #0284C7;
+      --badge-gold: #D97706;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text-main);
+      padding: 40px 24px;
+      transition: background 0.3s ease, color 0.3s ease;
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 32px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid var(--card-border);
+    }
+
+    .title-group h1 {
+      font-size: 28px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .title-group p {
+      color: var(--text-muted);
+      font-size: 15px;
+      margin-top: 6px;
+    }
+
+    .theme-toggle-btn {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      color: var(--text-main);
+      padding: 10px 18px;
+      border-radius: 9999px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s ease;
+    }
+    .theme-toggle-btn:hover {
+      border-color: var(--primary);
+    }
+
+    .overview-banner {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 24px;
+      padding: 32px;
+      margin-bottom: 40px;
+    }
+
+    .overview-banner h2 {
+      font-size: 20px;
+      font-weight: 800;
+      margin-bottom: 8px;
+    }
+
+    .overview-banner p {
+      color: var(--text-muted);
+      font-size: 14px;
+      margin-bottom: 24px;
+    }
+
+    .overview-banner img {
+      width: 100%;
+      border-radius: 12px;
+      border: 1px solid var(--card-border);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    }
+
+    .section-header {
+      margin: 40px 0 24px 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+    }
+    .section-header h2 {
+      font-size: 22px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .section-header span {
+      color: var(--text-muted);
+      font-size: 14px;
+    }
+
+    .concepts-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 24px;
+      margin-bottom: 48px;
+    }
+
+    .concept-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .concept-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--primary);
+      box-shadow: 0 12px 30px rgba(0,0,0,0.25);
+    }
+
+    .card-badge {
+      position: absolute;
+      top: 18px;
+      right: 18px;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      padding: 4px 10px;
+      border-radius: 9999px;
+    }
+
+    .badge-rec {
+      background: rgba(16, 185, 129, 0.15);
+      color: var(--badge-rec);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+    }
+
+    .badge-glass {
+      background: rgba(56, 189, 248, 0.15);
+      color: var(--badge-glass);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+    }
+
+    .badge-gold {
+      background: rgba(245, 158, 11, 0.15);
+      color: var(--badge-gold);
+      border: 1px solid rgba(245, 158, 11, 0.3);
+    }
+
+    .logo-hero-box {
+      background: rgba(0,0,0,0.3);
+      border-radius: 14px;
+      padding: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 18px;
+      min-height: 200px;
+      border: 1px solid rgba(255,255,255,0.04);
+    }
+
+    [data-theme="light"] .logo-hero-box {
+      background: #F1F5F9;
+      border: 1px solid rgba(0,0,0,0.06);
+    }
+
+    .logo-hero-box img {
+      max-width: 155px;
+      max-height: 155px;
+      filter: drop-shadow(0 8px 16px rgba(0,0,0,0.3));
+    }
+
+    .concept-info {
+      flex: 1;
+      margin-bottom: 20px;
+    }
+
+    .concept-info h3 {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: var(--text-main);
+    }
+
+    .concept-info p {
+      color: var(--text-muted);
+      font-size: 13.5px;
+      line-height: 1.55;
+    }
+
+    .scale-test-row {
+      display: flex;
+      align-items: flex-end;
+      gap: 16px;
+      padding-top: 14px;
+      border-top: 1px solid var(--card-border);
+    }
+
+    .scale-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .scale-item span {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      color: var(--text-muted);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="title-group">
+        <h1>✨ Coleção Frosted Glass Layers (10 Variações)</h1>
+        <p>Desdobramentos aprofundados do modelo <strong>spark_v08_frost_layers.svg</strong>: cartões translúcidos, bordas ciano vivas e raio em lâmina de ouro.</p>
+      </div>
+      <button class="theme-toggle-btn" onclick="toggleTheme()">
+        <span id="themeIcon">☀️</span> <span id="themeLabel">Modo Claro</span>
+      </button>
+    </header>
+
+    <!-- Overview Banner with Concept Sheet -->
+    <div class="overview-banner">
+      <h2>Prancha Oficial Comparativa (Exportada via logo-design-skill / concept_sheet.py)</h2>
+      <p>Exibição honesta em alta fidelidade com checagem simultânea de escala em 512px, 64px, 32px e 16px:</p>
+      <img src="frost_variations_sheet.png" alt="Concept Sheet 10 Variações Frosted Glass">
+    </div>
+
+    <div class="section-header">
+      <h2>🧊 As 10 Variações Vetoriais Detalhadas</h2>
+      <span>Clique ou inspecione para testar em escala real</span>
+    </div>
+
+    <div class="concepts-grid">
+      <!-- Frost V01 -->
+      <div class="concept-card">
+        <span class="card-badge badge-rec">★ Destaque</span>
+        <div class="logo-hero-box">
+          <img src="frost_v01_triple_stack.svg" alt="Frost 01: Triple Tier Stack">
+        </div>
+        <div class="concept-info">
+          <h3>01. Frost Triple Tier Stack</h3>
+          <p>Três lâminas de vidro fosco translúcido escalonadas (L1 Concurso, L2 Matéria, L3 Tópico) com bordas ciano de alto reflexo, perfuradas verticalmente pela lâmina de ouro.</p>
+        </div>
+        <div class="scale-test-row">
+          <div class="scale-item"><img src="frost_v01_triple_stack.svg" width="64" height="64" alt="64px"><span>64px</span></div>
+          <div class="scale-item"><img src="frost_v01_triple_stack.svg" width="32" height="32" alt="32px"><span>32px</span></div>
+          <div class="scale-item"><img src="frost_v01_triple_stack.svg" width="16" height="16" alt="16px"><span>16px</span></div>
+        </div>
+      </div>
+
+      <!-- Frost V02 -->
+      <div class="concept-card">
+        <span class="card-badge badge-glass">Prisma V</span>
+        <div class="logo-hero-box">
+          <img src="frost_v02_dual_prism.svg" alt="Frost 02: Dual Glass Prism">
+        </div>
+        <div class="concept-info">
+          <h3>02. Dual Glass Prism</h3>
+          <p>Dois cards de vidro em ângulo de livro aberto/prisma óptico gerando refração translúcida e feixe de raio ascendente no centro. Simboliza clareza e revelação de conteúdo.</p>
+        </div>
+        <div class="scale-test-row">
+          <div class="scale-item"><img src="frost_v02_dual_prism.svg" width="64" height="64" alt="64px"><span>64px</span></div>
+          <div class="scale-item"><img src="frost_v02_dual_prism.svg" width="32" height="32" alt="32px"><span>32px</span></div>
+          <div class="scale-item"><img src="frost_v02_dual_prism.svg" width="16" height="16" alt="16px"><span>16px</span></div>
+        </div>
+      </div>
+
+      <!-- Frost V03 -->
+      <div class="concept-card">
+        <span class="card-badge badge-gold">Zero-G</span>
+        <div class="logo-hero-box">
+          <img src="frost_v03_floating_hover.svg" alt="Frost 03: Floating Zero-G">
+        </div>
+        <div class="concept-info">
+          <h3>03. Floating Zero-G</h3>
+          <p>Plataformas de vidro translúcido suspensas no ar com halo de luz no piso escuro e corte preciso de raio. Transmite leveza, fluidez e estudo sem fricção.</p>
+        </div>
+        <div class="scale-test-row">
+          <div class="scale-item"><img src="frost_v03_floating_hover.svg" width="64" height="64" alt="64px"><span>64px</span></div>
+          <div class="scale-item"><img src="frost_v03_floating_hover.svg" width="32" height="32" alt="32px"><span>32px</span></div>
+          <div class="scale-item"><img src="frost_v03_floating_hover.svg" width="16" height="16" alt="16px"><span>16px</span></div>
+        </div>
+      </div>
+
+      <!-- Frost V04 -->
+      <div class="concept-card">
+        <span class="card-badge badge-glass">Lapidado</span>
+        <div class="logo-hero-box">
+          <img src="frost_v04_chamfered_crystal.svg" alt="Frost 04: Chamfered Crystal">
+        </div>
+        <div class="concept-info">
+          <h3>04. Chamfered Crystal</h3>
+          <p>Cartões chanfrados lapidados com formato hexagonal como pedras preciosas/cristal e reflexos especulares em degradê branco-ciano. Sensação de preciosidade e maestria.</p>
+        </div>
+        <div class="scale-test-row">
+          <div class="scale-item"><img src="frost_v04_chamfered_crystal.svg" width="64" height="64" alt="64px"><span>64px</span></div>
+          <div class="scale-item"><img src="frost_v04_chamfered_crystal.svg" width="32" height="32" alt="32px"><span>32px</span></div>
+          <div class="scale-item"><img src="frost_v04_chamfered_crystal.svg" width="16" height="16" alt="16px"><span>16px</span></div>
+        </div>
+      </div>
+
+      <!-- Frost V05 -->
+      <div class="concept-card">
+        <span class="card-badge badge-rec">★ Aurora</span>
+        <div class="logo-hero-box">
+          <img src="frost_v05_aurora_core.svg" alt="Frost 05: Aurora Core">
+        </div>
+        <div class="concept-info">
+          <h3>05. Aurora Borealis Core</h3>
+          <p>O corpo do vidro reflete um gradiente esmeralda, ciano e índigo inspirado na aurora boreal, contrastado dramaticamente pela lâmina pura de ouro 24k.</p>
+        </div>
+        <div class="scale-test-row">
+          <div class="scale-item"><img src="frost_v05_aurora_core.svg" width="64" height="64" alt="64px"><span>64px</span></div>
+          <div class="scale-item"><img src="frost_v05_aurora_core.svg" width="32" height="32" alt="32px"><span>32px</span></div>
+          <div class="scale-item"><img src="frost_v05_aurora_core.svg" width="16" height="16" alt="16px"><span>16px</span></div>
+        </div>
+      </div>
+
+      <!-- Frost V06 -->
+      <div class="concept-card">
+        <span class="card-badge badge-glass">Cyber AI</span>
+        <div class="logo-hero-box">
+          <img src="frost_v06_cyber_etched.svg" alt="Frost 06: Cyber Circuit Etched">
+        </div>
+        <div class="concept-info">
+          <h3>06. Cyber Circuit Etched</h3>
+          <p>Trilhas de circuitos neurais gravadas a laser sobre o vidro fosco, com pontos de conexão luminosos. Evoca a inteligência artificial Gemini processando as dúvidas do concurso.</p>
+        </div>
+        <div class="scale-test-row">
+          <div class="scale-item"><img src="frost_v06_cyber_etched.svg" width="64" height="64" alt="64px"><span>64px</span></div>
+          <div class="scale-item"><img src="frost_v06_cyber_etched.svg" width="32" height="32" alt="32px"><span>32px</span></div>
+          <div class="scale-item"><img src="frost_v06_cyber_etched.svg" width="16" height="16" alt="16px"><span>16px</span></div>
+        </div>
+      </div>
+
+      <!-- Frost V07 -->
+      <div class="concept-card">
+        <span class="card-badge badge-glass">VisionOS</span>
+        <div class="logo-hero-box">
+          <img src="frost_v07_liquid_capsule.svg" alt="Frost 07: Liquid Vision Capsule">
+        </div>
+        <div class="concept-info">
+          <h3>07. Liquid Vision Capsule</h3>
+          <p>Lâminas de vidro líquido arredondadas em formato de pílula orgânica (estilo Apple VisionOS), com reflexos especulares horizontais de alta pureza.</p>
+        </div>
+        <div class="scale-test-row">
+          <div class="scale-item"><img src="frost_v07_liquid_capsule.svg" width="64" height="64" alt="64px"><span>64px</span></div>
+          <div class="scale-item"><img src="frost_v07_liquid_capsule.svg" width="32" height="32" alt="32px"><span>32px</span></div>
+          <div class="scale-item"><img src="frost_v07_liquid_capsule.svg" width="16" height="16" alt="16px"><span>16px</span></div>
+        </div>
+      </div>
+
+      <!-- Frost V08 -->
+      <div class="concept-card">
+        <span class="card-badge badge-gold">Monólito</span>
+        <div class="logo-hero-box">
+          <img src="frost_v08_monolith_pillar.svg" alt="Frost 08: Monolith Pillar">
+        </div>
+        <div class="concept-info">
+          <h3>08. Monolith Pillar</h3>
+          <p>Coluna monolítica tridimensional de cristal fosco seccionada diagonalmente pela lâmina de energia, revelando o núcleo radiante interno.</p>
+        </div>
+        <div class="scale-test-row">
+          <div class="scale-item"><img src="frost_v08_monolith_pillar.svg" width="64" height="64" alt="64px"><span>64px</span></div>
+          <div class="scale-item"><img src="frost_v08_monolith_pillar.svg" width="32" height="32" alt="32px"><span>32px</span></div>
+          <div class="scale-item"><img src="frost_v08_monolith_pillar.svg" width="16" height="16" alt="16px"><span>16px</span></div>
+        </div>
+      </div>
+
+      <!-- Frost V09 -->
+      <div class="concept-card">
+        <span class="card-badge badge-glass">Portal</span>
+        <div class="logo-hero-box">
+          <img src="frost_v09_concentric_portal.svg" alt="Frost 09: Concentric Portal">
+        </div>
+        <div class="concept-info">
+          <h3>09. Concentric Depth Portal</h3>
+          <p>Molduras concêntricas de vidro fosco que criam um túnel tridimensional de profundidade infinita, por onde irrompe a centelha de aprendizado acelerado.</p>
+        </div>
+        <div class="scale-test-row">
+          <div class="scale-item"><img src="frost_v09_concentric_portal.svg" width="64" height="64" alt="64px"><span>64px</span></div>
+          <div class="scale-item"><img src="frost_v09_concentric_portal.svg" width="32" height="32" alt="32px"><span>32px</span></div>
+          <div class="scale-item"><img src="frost_v09_concentric_portal.svg" width="16" height="16" alt="16px"><span>16px</span></div>
+        </div>
+      </div>
+
+      <!-- Frost V10 -->
+      <div class="concept-card">
+        <span class="card-badge badge-rec">★ Frameless</span>
+        <div class="logo-hero-box">
+          <img src="frost_v10_pure_frameless.svg" alt="Frost 10: Pure Frameless">
+        </div>
+        <div class="concept-info">
+          <h3>10. Pure Frameless Glass</h3>
+          <p>Versão sem container quadrado externo (fundo transparente), com foco 100% nas duas lâminas de vidro sobrepostas e na lâmina dourada. Ideal para adaptive icons do Android.</p>
+        </div>
+        <div class="scale-test-row">
+          <div class="scale-item"><img src="frost_v10_pure_frameless.svg" width="64" height="64" alt="64px"><span>64px</span></div>
+          <div class="scale-item"><img src="frost_v10_pure_frameless.svg" width="32" height="32" alt="32px"><span>32px</span></div>
+          <div class="scale-item"><img src="frost_v10_pure_frameless.svg" width="16" height="16" alt="16px"><span>16px</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function toggleTheme() {
+      const current = document.documentElement.getAttribute('data-theme');
+      const next = current === 'light' ? 'dark' : 'light';
+      document.documentElement.setAttribute('data-theme', next);
+      document.getElementById('themeIcon').textContent = next === 'light' ? '🌙' : '☀️';
+      document.getElementById('themeLabel').textContent = next === 'light' ? 'Modo Escuro' : 'Modo Claro';
+    }
+  </script>
+</body>
+</html>

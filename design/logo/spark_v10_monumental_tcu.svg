@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+  <title>SuperFlash TCU - Monumental TCU Column Bolt</title>
+  <defs>
+    <linearGradient id="v10_col1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1E3A8A"/>
+      <stop offset="100%" stop-color="#0F172A"/>
+    </linearGradient>
+    <linearGradient id="v10_col2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#2563EB"/>
+      <stop offset="100%" stop-color="#1E3A8A"/>
+    </linearGradient>
+    <linearGradient id="v10_col3" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#3B82F6"/>
+      <stop offset="100%" stop-color="#1D4ED8"/>
+    </linearGradient>
+    <linearGradient id="v10_bolt" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FEF08A"/>
+      <stop offset="35%" stop-color="#FBBF24"/>
+      <stop offset="100%" stop-color="#EA580C"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Column 1 (Left: Pilar Legal / Auditoria) -->
+  <path d="M100 230 L170 190 L170 380 L100 420 Z" fill="url(#v10_col1)"/>
+  <path d="M170 190 L220 220 L220 410 L170 380 Z" fill="#090D16"/>
+  <path d="M100 230 L150 200 L220 220 L170 250 Z" fill="#1E40AF"/>
+
+  <!-- Column 2 (Center High: Plenário / Inteligência) -->
+  <path d="M220 160 L290 120 L290 350 L220 390 Z" fill="url(#v10_col2)"/>
+  <path d="M290 120 L340 150 L340 380 L290 350 Z" fill="#0F172A"/>
+  <path d="M220 160 L270 130 L340 150 L290 180 Z" fill="#2563EB"/>
+
+  <!-- Column 3 (Right: Domínio Pleno / Controle) -->
+  <path d="M340 210 L410 170 L410 370 L340 410 Z" fill="url(#v10_col3)"/>
+  <path d="M410 170 L460 200 L460 400 L410 370 Z" fill="#1E293B"/>
+  <path d="M340 210 L390 180 L460 200 L410 230 Z" fill="#60A5FA"/>
+
+  <!-- Grounding Isometric Shadow -->
+  <path d="M80 430 L256 490 L480 410 L304 350 Z" fill="#020617" opacity="0.3"/>
+
+  <!-- Sovereign Gold Lightning Bolt -->
+  <polygon points="280,40 180,240 250,240 195,445 355,220 275,220 320,40" fill="url(#v10_bolt)"/>
+  <polygon points="280,40 250,220 275,220 195,445 180,240" fill="#D97706" opacity="0.45"/>
+
+  <!-- Star of Excellence at Zenith -->
+  <polygon points="280,22 284,32 295,36 284,40 280,50 276,40 265,36 276,32" fill="#FEF08A"/>
+</svg>

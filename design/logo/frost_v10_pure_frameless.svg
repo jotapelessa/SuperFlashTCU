@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+  <title>SuperFlash TCU - Frosted Glass 10: Pure Frameless</title>
+  <defs>
+    <linearGradient id="f10_glass1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38BDF8" stop-opacity="0.4"/>
+      <stop offset="100%" stop-color="#1E3A8A" stop-opacity="0.85"/>
+    </linearGradient>
+    <linearGradient id="f10_glass2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#60A5FA" stop-opacity="0.6"/>
+      <stop offset="100%" stop-color="#2563EB" stop-opacity="0.95"/>
+    </linearGradient>
+    <linearGradient id="f10_stroke" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.95"/>
+      <stop offset="100%" stop-color="#38BDF8" stop-opacity="0.3"/>
+    </linearGradient>
+    <linearGradient id="f10_bolt" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FEF08A"/>
+      <stop offset="40%" stop-color="#F59E0B"/>
+      <stop offset="100%" stop-color="#EA580C"/>
+    </linearGradient>
+    <filter id="f10_shadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="12" stdDeviation="16" flood-color="#020617" flood-opacity="0.6"/>
+    </filter>
+  </defs>
+
+  <g filter="url(#f10_shadow)">
+    <!-- Back Translucent Glass Card -->
+    <path d="M100 210 L256 120 L412 210 L256 300 Z" fill="url(#f10_glass1)" stroke="url(#f10_stroke)" stroke-width="3.5"/>
+    <path d="M100 210 L256 300 L256 325 L100 235 Z" fill="#0B132B" opacity="0.75"/>
+    <path d="M256 300 L412 210 L412 235 L256 325 Z" fill="#1C2541" opacity="0.75"/>
+
+    <!-- Front Frosted Card with Specular Edges -->
+    <path d="M75 285 L256 185 L437 285 L256 385 Z" fill="url(#f10_glass2)" stroke="url(#f10_stroke)" stroke-width="4.5"/>
+    <path d="M75 285 L256 385 L256 412 L75 312 Z" fill="#1E3A8A" opacity="0.85"/>
+    <path d="M256 385 L437 285 L437 312 L256 412 Z" fill="#1D4ED8" opacity="0.85"/>
+
+    <!-- Glowing Frosted Study Lines -->
+    <line x1="120" y1="285" x2="256" y2="210" stroke="#FFFFFF" stroke-width="7" stroke-linecap="round" opacity="0.7"/>
+    <line x1="135" y1="315" x2="225" y2="265" stroke="#BAE6FD" stroke-width="6" stroke-linecap="round" opacity="0.55"/>
+
+    <!-- The Razor-Sharp Golden Lightning Blade -->
+    <polygon points="285,35 165,245 250,245 190,465 365,225 275,225 325,35" fill="url(#f10_bolt)"/>
+    <polygon points="285,35 245,225 275,225 190,465 165,245" fill="#D97706" opacity="0.45"/>
+  </g>
+</svg>

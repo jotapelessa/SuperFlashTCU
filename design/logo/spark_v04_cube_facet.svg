@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+  <title>SuperFlash TCU - Cube Fold Facet</title>
+  <defs>
+    <linearGradient id="v4_top" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#3B82F6"/>
+      <stop offset="100%" stop-color="#1D4ED8"/>
+    </linearGradient>
+    <linearGradient id="v4_left" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1E3A8A"/>
+      <stop offset="100%" stop-color="#0F172A"/>
+    </linearGradient>
+    <linearGradient id="v4_right" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#2563EB"/>
+      <stop offset="100%" stop-color="#1E40AF"/>
+    </linearGradient>
+    <linearGradient id="v4_gold" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FEF08A"/>
+      <stop offset="50%" stop-color="#F59E0B"/>
+      <stop offset="100%" stop-color="#D97706"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Isometric Cube: Top Face (Front of Flashcard) -->
+  <path d="M256 90 L396 170 L256 250 L116 170 Z" fill="url(#v4_top)"/>
+
+  <!-- Left Face (SRS History / Back of Flashcard) -->
+  <path d="M116 170 L256 250 L256 410 L116 330 Z" fill="url(#v4_left)"/>
+
+  <!-- Right Face (Mastery Level / FSRS Metrics) -->
+  <path d="M256 250 L396 170 L396 330 L256 410 Z" fill="url(#v4_right)"/>
+
+  <!-- Embossed Geometric Bolt Running Across Faces -->
+  <polygon points="275,50 175,230 250,230 195,430 350,210 275,210 315,50" fill="url(#v4_gold)"/>
+  <polygon points="275,50 250,210 275,210 195,430 175,230" fill="#B45309" opacity="0.35"/>
+
+  <!-- Minimal Card Header Detail -->
+  <circle cx="256" cy="140" r="10" fill="#93C5FD" opacity="0.8"/>
+  <line x1="200" y1="165" x2="312" y2="165" stroke="#BFDBFE" stroke-width="6" stroke-linecap="round" opacity="0.5"/>
+</svg>

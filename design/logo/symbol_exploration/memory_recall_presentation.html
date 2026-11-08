@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SuperFlash — Símbolos de Marca: O Momento da Recuperação da Memória</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #090D16;
+      --card-bg: #0F172A;
+      --card-border: #1E293B;
+      --text-main: #F8FAFC;
+      --text-muted: #94A3B8;
+      --primary: #38BDF8;
+      --accent: #F59E0B;
+      --badge-rec: #10B981;
+      --badge-alt: #6366F1;
+    }
+
+    [data-theme="light"] {
+      --bg: #F8FAFC;
+      --card-bg: #FFFFFF;
+      --card-border: #E2E8F0;
+      --text-main: #0F172A;
+      --text-muted: #64748B;
+      --primary: #0284C7;
+      --accent: #D97706;
+      --badge-rec: #059669;
+      --badge-alt: #4F46E5;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text-main);
+      padding: 40px 24px;
+      transition: background 0.3s ease, color 0.3s ease;
+    }
+
+    .container {
+      max-width: 1360px;
+      margin: 0 auto;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 32px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid var(--card-border);
+    }
+
+    .title-group h1 {
+      font-size: 28px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .title-group p {
+      color: var(--text-muted);
+      font-size: 15px;
+      margin-top: 6px;
+    }
+
+    .theme-toggle-btn {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      color: var(--text-main);
+      padding: 10px 18px;
+      border-radius: 9999px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s ease;
+    }
+    .theme-toggle-btn:hover {
+      border-color: var(--primary);
+    }
+
+    .hero-banner {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 24px;
+      padding: 32px;
+      margin-bottom: 40px;
+    }
+
+    .hero-banner h2 {
+      font-size: 22px;
+      font-weight: 800;
+      margin-bottom: 10px;
+    }
+
+    .hero-banner p {
+      color: var(--text-muted);
+      font-size: 14.5px;
+      line-height: 1.6;
+      margin-bottom: 24px;
+    }
+
+    .hero-banner img {
+      width: 100%;
+      border-radius: 12px;
+      border: 1px solid var(--card-border);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    }
+
+    .section-title {
+      font-size: 22px;
+      font-weight: 800;
+      margin: 40px 0 20px 0;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .concepts-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+      gap: 28px;
+      margin-bottom: 48px;
+    }
+
+    .concept-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 24px;
+      padding: 28px;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .concept-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--primary);
+      box-shadow: 0 12px 30px rgba(0,0,0,0.25);
+    }
+
+    .card-badge {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      padding: 4px 12px;
+      border-radius: 9999px;
+    }
+
+    .badge-rec {
+      background: rgba(16, 185, 129, 0.15);
+      color: var(--badge-rec);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+    }
+
+    .badge-alt {
+      background: rgba(99, 102, 241, 0.15);
+      color: var(--badge-alt);
+      border: 1px solid rgba(99, 102, 241, 0.3);
+    }
+
+    .visual-comparison-box {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 12px;
+      margin: 20px 0;
+    }
+
+    .variant-thumb {
+      border-radius: 12px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      border: 1px solid var(--card-border);
+    }
+
+    .thumb-white { background: #FFFFFF; }
+    .thumb-black { background: #0B0F19; }
+    .thumb-mono { background: #F1F5F9; }
+    [data-theme="dark"] .thumb-mono { background: #070B14; }
+
+    .variant-thumb img {
+      width: 64px;
+      height: 64px;
+    }
+
+    .variant-thumb span {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      color: #64748B;
+    }
+
+    .readings-box {
+      background: rgba(0,0,0,0.15);
+      border-radius: 14px;
+      padding: 18px;
+      margin: 16px 0;
+      border: 1px solid rgba(255,255,255,0.04);
+    }
+    [data-theme="light"] .readings-box {
+      background: #F8FAFC;
+      border: 1px solid #E2E8F0;
+    }
+
+    .reading-item {
+      margin-bottom: 12px;
+    }
+    .reading-item:last-child { margin-bottom: 0; }
+    .reading-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 2px;
+    }
+    .reading-text {
+      font-size: 13.5px;
+      line-height: 1.5;
+    }
+
+    .scale-row {
+      display: flex;
+      align-items: flex-end;
+      gap: 18px;
+      padding-top: 16px;
+      border-top: 1px solid var(--card-border);
+      margin-top: auto;
+    }
+
+    .scale-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .scale-item span {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      color: var(--text-muted);
+    }
+
+    /* Squint blur filter */
+    .squint-mode img {
+      filter: blur(3px) !important;
+    }
+
+    .hypotheses-list {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      padding: 28px;
+      margin-bottom: 40px;
+    }
+
+    .hypotheses-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 16px;
+      margin-top: 18px;
+    }
+
+    .hypo-item {
+      background: rgba(255,255,255,0.02);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 14px 18px;
+    }
+    .hypo-num {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 4px;
+    }
+    .hypo-title {
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+    .hypo-desc {
+      font-size: 12.5px;
+      color: var(--text-muted);
+      line-height: 1.45;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="title-group">
+        <h1>🧠 SuperFlash — O Momento da Recuperação da Memória</h1>
+        <p>Exploração sem clichês de flashcards: formas correspondentes, Gestalt, loops de retenção e espaço negativo.</p>
+      </div>
+      <div style="display:flex; gap:12px;">
+        <button class="theme-toggle-btn" onclick="toggleSquint()">
+          <span id="squintIcon">👓</span> <span id="squintLabel">Teste de Squint (Blur)</span>
+        </button>
+        <button class="theme-toggle-btn" onclick="toggleTheme()">
+          <span id="themeIcon">☀️</span> <span id="themeLabel">Modo Claro</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Prancha Oficial -->
+    <div class="hero-banner">
+      <h2>Prancha Oficial de Avaliação (Greyscale &amp; Escalas Reais)</h2>
+      <p>Gerada via <code>concept_sheet.py</code>. Cada conceito é avaliado em 512px, 64px, 32px e 16px para garantir que a ideia sobrevive à redução extrema sem empastamento.</p>
+      <img src="memory_recall_concept_sheet.png" alt="Concept Sheet SuperFlash">
+    </div>
+
+    <!-- 3 Conceitos Selecionados -->
+    <h2 class="section-title">🏆 Os 3 Conceitos Selecionados (Dupla Leitura &amp; Construção)</h2>
+
+    <div class="concepts-grid">
+      <!-- Conceito 1 -->
+      <div class="concept-card">
+        <span class="card-badge badge-rec">★ Recomendado</span>
+        <h3>01. The Gestalt Shutter</h3>
+        <p style="color:var(--text-muted); font-size:13.5px; margin-top:4px;">A mente completa a lacuna: a memória não é passiva, é um ato de preenchimento cognitivo ativo.</p>
+
+        <div class="visual-comparison-box">
+          <div class="variant-thumb thumb-white">
+            <img src="concept_01_gestalt_shutter.svg" alt="P&B">
+            <span>Preto / Branco</span>
+          </div>
+          <div class="variant-thumb thumb-black">
+            <img src="concept_01_gestalt_shutter_reversed.svg" alt="Reverso">
+            <span>Reverso (Dark)</span>
+          </div>
+          <div class="variant-thumb thumb-mono">
+            <img src="concept_01_gestalt_shutter_mono.svg" alt="Cor">
+            <span>Cobalt Mono</span>
+          </div>
+        </div>
+
+        <div class="readings-box">
+          <div class="reading-item">
+            <div class="reading-label">1ª Leitura (Imediata)</div>
+            <div class="reading-text">Um ícone geométrico arquitetônico com quatro formas sólidas chanfradas em 45°. Máxima estabilidade visual e peso como app icon.</div>
+          </div>
+          <div class="reading-item">
+            <div class="reading-label">2ª Leitura (Oculta / Gestalt)</div>
+            <div class="reading-text">O espaço negativo central desenha com precisão cirúrgica a letra <strong>'S'</strong> e uma <strong>centelha de raio</strong>. O cérebro do usuário "preenche" a forma antes mesmo de analisar as partes.</div>
+          </div>
+          <div class="reading-item">
+            <div class="reading-label">Potencial de Animação (Motion)</div>
+            <div class="reading-text">Os dois blocos externos deslizam ligeiramente e a fenda de luz central acende como um flash quando o card é memorizado com sucesso.</div>
+          </div>
+        </div>
+
+        <div class="scale-row">
+          <div class="scale-item"><img src="concept_01_gestalt_shutter.svg" width="64" height="64" alt="64px"><span>64px</span></div>
+          <div class="scale-item"><img src="concept_01_gestalt_shutter.svg" width="32" height="32" alt="32px"><span>32px</span></div>
+          <div class="scale-item"><img src="concept_01_gestalt_shutter.svg" width="16" height="16" alt="16px"><span>16px</span></div>
+        </div>
+      </div>
+
+      <!-- Conceito 2 -->
+      <div class="concept-card">
+        <span class="card-badge badge-alt">Encaixe</span>
+        <h3>02. The Synaptic Lock</h3>
+        <p style="color:var(--text-muted); font-size:13.5px; margin-top:4px;">A pergunta e a resposta se encaixam: a consolidação do rastro mnemônico em dois polos que se atraem.</p>
+
+        <div class="visual-comparison-box">
+          <div class="variant-thumb thumb-white">
+            <img src="concept_02_synaptic_lock.svg" alt="P&B">
+            <span>Preto / Branco</span>
+          </div>
+          <div class="variant-thumb thumb-black">
+            <img src="concept_02_synaptic_lock_reversed.svg" alt="Reverso">
+            <span>Reverso (Dark)</span>
+          </div>
+          <div class="variant-thumb thumb-mono">
+            <img src="concept_02_synaptic_lock_mono.svg" alt="Cor">
+            <span>Cobalt Mono</span>
+          </div>
+        </div>
+
+        <div class="readings-box">
+          <div class="reading-item">
+            <div class="reading-label">1ª Leitura (Imediata)</div>
+            <div class="reading-text">Dois sólidos complementares com cantos arredondados externos e recortes em dente de serra em aproximação milimétrica.</div>
+          </div>
+          <div class="reading-item">
+            <div class="reading-label">2ª Leitura (Oculta / Gestalt)</div>
+            <div class="reading-text">A fenda entre eles forma um <strong>raio de alta tensão</strong> contínuo, e o contorno total descreve o fluxo de um monograma <strong>'S'</strong> estilizado.</div>
+          </div>
+          <div class="reading-item">
+            <div class="reading-label">Potencial de Animação (Motion)</div>
+            <div class="reading-text">As duas metades se movem em sentidos opostos e se travam com um clique magnético tátil e um feixe de luz que percorre a fenda.</div>
+          </div>
+        </div>
+
+        <div class="scale-row">
+          <div class="scale-item"><img src="concept_02_synaptic_lock.svg" width="64" height="64" alt="64px"><span>64px</span></div>
+          <div class="scale-item"><img src="concept_02_synaptic_lock.svg" width="32" height="32" alt="32px"><span>32px</span></div>
+          <div class="scale-item"><img src="concept_02_synaptic_lock.svg" width="16" height="16" alt="16px"><span>16px</span></div>
+        </div>
+      </div>
+
+      <!-- Conceito 3 -->
+      <div class="concept-card">
+        <span class="card-badge badge-alt">Loop Infinito</span>
+        <h3>03. The Möbius Horizon</h3>
+        <p style="color:var(--text-muted); font-size:13.5px; margin-top:4px;">A curva do esquecimento domada: repetição contínua que fortalece a retenção a cada passagem periódica.</p>
+
+        <div class="visual-comparison-box">
+          <div class="variant-thumb thumb-white">
+            <img src="concept_03_mobius_horizon.svg" alt="P&B">
+            <span>Preto / Branco</span>
+          </div>
+          <div class="variant-thumb thumb-black">
+            <img src="concept_03_mobius_horizon_reversed.svg" alt="Reverso">
+            <span>Reverso (Dark)</span>
+          </div>
+          <div class="variant-thumb thumb-mono">
+            <img src="concept_03_mobius_horizon_mono.svg" alt="Cor">
+            <span>Cobalt Mono</span>
+          </div>
+        </div>
+
+        <div class="readings-box">
+          <div class="reading-item">
+            <div class="reading-label">1ª Leitura (Imediata)</div>
+            <div class="reading-text">Uma fita contínua em nó de Möbius com espessura uniforme de 64px e curvatura perfeita.</div>
+          </div>
+          <div class="reading-item">
+            <div class="reading-label">2ª Leitura (Oculta / Gestalt)</div>
+            <div class="reading-text">A fita desenha a letra <strong>'S'</strong> em ascensão vertical perpétua, e o vazio central contém um <strong>diamante/estrela de ancoragem</strong> (a memória retida).</div>
+          </div>
+          <div class="reading-item">
+            <div class="reading-label">Potencial de Animação (Motion)</div>
+            <div class="reading-text">Uma onda de energia viaja perpetuamente pela fita em loop e dispara uma pulsação no diamante central a cada sessão de revisão.</div>
+          </div>
+        </div>
+
+        <div class="scale-row">
+          <div class="scale-item"><img src="concept_03_mobius_horizon.svg" width="64" height="64" alt="64px"><span>64px</span></div>
+          <div class="scale-item"><img src="concept_03_mobius_horizon.svg" width="32" height="32" alt="32px"><span>32px</span></div>
+          <div class="scale-item"><img src="concept_03_mobius_horizon.svg" width="16" height="16" alt="16px"><span>16px</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 20 Hipóteses Conceituais -->
+    <div class="hypotheses-list">
+      <h2>💡 As 20 Hipóteses Visuais para "O Momento da Recuperação da Memória"</h2>
+      <p style="color:var(--text-muted); font-size:14px; margin-top:4px;">Mapeamento conceitual completo sem clichês de cérebro, lâmpada ou cartões de papel:</p>
+      
+      <div class="hypotheses-grid">
+        <div class="hypo-item"><div class="hypo-num">01</div><div class="hypo-title">The Quantum Shutter</div><div class="hypo-desc">Dois arcos convexos que convergem e esculpem o raio em espaço negativo.</div></div>
+        <div class="hypo-item"><div class="hypo-num">02</div><div class="hypo-title">The Gestalt Shutter</div><div class="hypo-desc">Quatro formas arquitetônicas onde a mente completa a letra 'S' e o spark central.</div></div>
+        <div class="hypo-item"><div class="hypo-num">03</div><div class="hypo-title">The Synaptic Lock</div><div class="hypo-desc">Encaixe de pergunta e resposta formando uma fenda de alta tensão.</div></div>
+        <div class="hypo-item"><div class="hypo-num">04</div><div class="hypo-title">The Möbius Horizon</div><div class="hypo-desc">Loop de repetição infinita com diamante de retenção no centro de gravidade.</div></div>
+        <div class="hypo-item"><div class="hypo-num">05</div><div class="hypo-title">The Harmonic Pulse</div><div class="hypo-desc">Três ondas que convergem em uma única linha espessa — a fixação do rastro.</div></div>
+        <div class="hypo-item"><div class="hypo-num">06</div><div class="hypo-title">The Retraction Trigger</div><div class="hypo-desc">Duas placas que se desviam como um diafragma disparando energia angular.</div></div>
+        <div class="hypo-item"><div class="hypo-num">07</div><div class="hypo-title">The Echo Chamber</div><div class="hypo-desc">Traços concêntricos que aumentam de densidade a cada ciclo de revisão.</div></div>
+        <div class="hypo-item"><div class="hypo-num">08</div><div class="hypo-title">The Bi-Stable Cube</div><div class="hypo-desc">Estrutura isométrica que alterna entre abrir a dúvida e revelar a certeza.</div></div>
+        <div class="hypo-item"><div class="hypo-num">09</div><div class="hypo-title">The Convergent Vectors</div><div class="hypo-desc">Dois vetores contrapostos cuja aproximação desenha uma faísca mnemônica.</div></div>
+        <div class="hypo-item"><div class="hypo-num">10</div><div class="hypo-title">The Eclipse of Clarity</div><div class="hypo-desc">Dois círculos sobrepostos com corte angular revelando núcleo radiante.</div></div>
+        <div class="hypo-item"><div class="hypo-num">11</div><div class="hypo-title">The Folded Horizon</div><div class="hypo-desc">Fita chanfrada em 45° que salta do plano 2D para o relevo tridimensional.</div></div>
+        <div class="hypo-item"><div class="hypo-num">12</div><div class="hypo-title">The Crystalline Seed</div><div class="hypo-desc">Forma primária que passa do estado caótico para a lapidação de diamante.</div></div>
+        <div class="hypo-item"><div class="hypo-num">13</div><div class="hypo-title">The Twin Monoliths</div><div class="hypo-desc">Dois pilares em bisel que criam um corredor de aceleração de resposta.</div></div>
+        <div class="hypo-item"><div class="hypo-num">14</div><div class="hypo-title">The Orbital Lagrange Lock</div><div class="hypo-desc">Dois anéis parciais em contra-rotação travando em alinhamento perfeito.</div></div>
+        <div class="hypo-item"><div class="hypo-num">15</div><div class="hypo-title">The Stepping Threshold</div><div class="hypo-desc">Degraus proporcionais à curva de retenção saltando de patamar.</div></div>
+        <div class="hypo-item"><div class="hypo-num">16</div><div class="hypo-title">The Nested Aperture</div><div class="hypo-desc">Molduras quadradas concêntricas convergindo para um ponto de fuga luminoso.</div></div>
+        <div class="hypo-item"><div class="hypo-num">17</div><div class="hypo-title">The Filament Tension</div><div class="hypo-desc">Casca externa e filamento central suspenso por tensão de campo magnético.</div></div>
+        <div class="hypo-item"><div class="hypo-num">18</div><div class="hypo-title">The Axial Shear</div><div class="hypo-desc">Um quadrado seccionado com descolamento óptico que forma um 'S'.</div></div>
+        <div class="hypo-item"><div class="hypo-num">19</div><div class="hypo-title">The Latent Monogram</div><div class="hypo-desc">Símbolo sólido cujo contorno negativo projeta a letra 'S' em espelho.</div></div>
+        <div class="hypo-item"><div class="hypo-num">20</div><div class="hypo-title">The Synaptic Spark</div><div class="hypo-desc">Intersecção de dois prismas de luz gerando uma centelha pura de recall.</div></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function toggleTheme() {
+      const current = document.documentElement.getAttribute('data-theme');
+      const next = current === 'light' ? 'dark' : 'light';
+      document.documentElement.setAttribute('data-theme', next);
+      document.getElementById('themeIcon').textContent = next === 'light' ? '🌙' : '☀️';
+      document.getElementById('themeLabel').textContent = next === 'light' ? 'Modo Escuro' : 'Modo Claro';
+    }
+
+    function toggleSquint() {
+      document.body.classList.toggle('squint-mode');
+      const active = document.body.classList.contains('squint-mode');
+      document.getElementById('squintLabel').textContent = active ? 'Desativar Blur' : 'Teste de Squint (Blur)';
+    }
+  </script>
+</body>
+</html>

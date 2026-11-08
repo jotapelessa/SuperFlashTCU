@@ -82,6 +82,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.data.model.BottleneckItem
 import com.example.data.model.FlashcardEntity
+import com.example.data.model.isDueForReview
 import com.example.data.model.L1DeckSummary
 import com.example.data.model.StudyProgressReport
 import com.example.ui.components.AiMarkdownContent
@@ -130,7 +131,7 @@ fun AiTutorScreen(
             eligibleCards.groupBy { it.l2 }
                 .map { (l2Name, cards) ->
                     val total = cards.size
-                    val due = cards.count { it.dueTimestamp <= now }
+                    val due = cards.count { it.isDueForReview(now) }
                     val mastered = cards.count { it.masteryLevel >= 2 }
                     val cardsWithS = cards.filter { it.stability > 0f }
                     val avgS = if (cardsWithS.isNotEmpty()) cardsWithS.map { it.stability.toDouble() }.average() else 0.0

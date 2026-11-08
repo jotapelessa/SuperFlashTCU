@@ -173,7 +173,32 @@ object DisciplinePalette {
 
     fun getIconKeyForDiscipline(disciplineName: String): String {
         val key = disciplineName.trim().lowercase()
-        return customIcons[key] ?: "School"
+        if (customIcons.containsKey(key)) {
+            return customIcons[key]!!
+        }
+
+        return when {
+            // 17 Disciplinas Oficiais TCU por sigla ou nome
+            key == "cex" || key.contains("controle externo") || key.contains("tcu") || key.contains("tce") -> "FactCheck"
+            key == "afo" || key.contains("financeiro") || key.contains("orçament") || key.contains("afo") -> "ReceiptLong"
+            key == "aud" || key.contains("auditoria") -> "Assessment"
+            key == "con" || key.contains("constitucional") -> "Gavel"
+            key == "adm" || key.contains("administrativo") -> "Balance"
+            key == "cpb" || key.contains("contabilidade pública") || key.contains("mcasp") -> "Payments"
+            key == "cge" || key == "ctg" || key.contains("contabilidade geral") || key.contains("contabil") -> "Calculate"
+            key == "ti" || key.startsWith("ti ") || key.contains(" ti ") || key.endsWith(" ti") ||
+                key.contains("informática") || key.contains("tecnologia") || key.contains("dados") -> "Analytics"
+            key == "eco" || key.contains("economia") -> "MonetizationOn"
+            key == "por" || key.contains("português") || key.contains("lingua portuguesa") -> "Language"
+            key == "ing" || key.contains("inglês") || key.contains("ingles") || key.contains("english") -> "Public"
+            key == "rlm" || key.contains("raciocínio") || key.contains("raciocinio") || key.contains("lógica") -> "Psychology"
+            key == "est" || key.contains("estatística") || key.contains("estatistica") -> "Timeline"
+            key == "civ" || key.contains("civil") && !key.contains("process") -> "Article"
+            key == "cpc" || key == "prc" || key.contains("processo civil") || key.contains("processual civil") -> "Description"
+            key == "pen" || key.contains("penal") -> "Security"
+            key == "pub" || key.contains("administração pública") || key.contains("gestão pública") -> "BusinessCenter"
+            else -> "School"
+        }
     }
 
     fun getIconVector(iconKey: String): ImageVector {
@@ -189,24 +214,52 @@ object DisciplinePalette {
             return customColors[lower]!!
         }
 
-        // Keyword-based matches for natural discipline colors
+        // Exact matches for 17 official TCU discipline acronyms
+        when (lower) {
+            "cex" -> return "#7C3AED"
+            "afo" -> return "#9333EA"
+            "aud" -> return "#16A34A"
+            "con" -> return "#2563EB"
+            "adm" -> return "#D97706"
+            "cpb" -> return "#CA8A04"
+            "cge", "ctg" -> return "#B45309"
+            "ti" -> return "#0891B2"
+            "eco" -> return "#059669"
+            "por" -> return "#3B82F6"
+            "ing" -> return "#0D9488"
+            "rlm" -> return "#6366F1"
+            "est" -> return "#4F46E5"
+            "civ" -> return "#1D4ED8"
+            "cpc", "prc" -> return "#0E7490"
+            "pen" -> return "#DC2626"
+            "pub" -> return "#EA580C"
+        }
+
+        // Keyword-based matches for natural discipline colors (ordered carefully to prevent collisions)
         return when {
             lower.contains("constitucional") -> "#2563EB"
             lower.contains("administrativo") -> "#D97706"
             lower.contains("controle") || lower.contains("tcu") || lower.contains("tce") -> "#7C3AED"
             lower.contains("tribut") || lower.contains("fiscal") -> "#059669"
-            lower.contains("processo civil") || lower.contains("processual civil") -> "#0D9488"
+            lower.contains("processo civil") || lower.contains("processual civil") -> "#0E7490"
             lower.contains("processo penal") || lower.contains("processual penal") -> "#BE123C"
             lower.contains("penal") -> "#DC2626"
-            lower.contains("civil") -> "#4F46E5"
+            lower.contains("civil") -> "#1D4ED8"
             lower.contains("trabalho") -> "#EA580C"
             lower.contains("previdenci") -> "#0284C7"
             lower.contains("financeiro") || lower.contains("orçament") -> "#9333EA"
             lower.contains("auditoria") -> "#16A34A"
-            lower.contains("contabil") -> "#CA8A04"
-            lower.contains("português") || lower.contains("lingua") -> "#3B82F6"
+            lower.contains("contabilidade pública") || lower.contains("mcasp") -> "#CA8A04"
+            lower.contains("contabil") -> "#B45309"
+            lower.contains("português") || lower.contains("lingua portuguesa") -> "#3B82F6"
+            lower.contains("inglês") || lower.contains("ingles") || lower.contains("english") -> "#0D9488"
             lower.contains("raciocínio") || lower.contains("lógica") -> "#6366F1"
-            lower.contains("informática") || lower.contains("ti") -> "#0891B2"
+            lower.contains("estatística") || lower.contains("estatistica") -> "#4F46E5"
+            lower.contains("economia") -> "#059669"
+            lower.contains("administração pública") || lower.contains("gestão pública") -> "#EA580C"
+            // TI checks with bounded word checks to avoid false positives (e.g., "estatística")
+            lower == "ti" || lower.startsWith("ti ") || lower.contains(" ti ") || lower.endsWith(" ti") ||
+                lower.contains("informática") || lower.contains("tecnologia") || lower.contains("dados") -> "#0891B2"
             else -> {
                 val index = lower.hashCode().absoluteValue % selectableColors.size
                 selectableColors[index]

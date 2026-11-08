@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+  <title>SuperFlash TCU - Frosted Glass 04: Chamfered Crystal</title>
+  <defs>
+    <linearGradient id="f4_glass" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38BDF8" stop-opacity="0.55"/>
+      <stop offset="50%" stop-color="#2563EB" stop-opacity="0.85"/>
+      <stop offset="100%" stop-color="#1E3A8A" stop-opacity="0.95"/>
+    </linearGradient>
+    <linearGradient id="f4_stroke" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.9"/>
+      <stop offset="50%" stop-color="#7DD3FC" stop-opacity="0.6"/>
+      <stop offset="100%" stop-color="#0284C7" stop-opacity="0.2"/>
+    </linearGradient>
+    <linearGradient id="f4_bolt" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FEF08A"/>
+      <stop offset="35%" stop-color="#F59E0B"/>
+      <stop offset="100%" stop-color="#EA580C"/>
+    </linearGradient>
+  </defs>
+
+  <rect x="36" y="36" width="440" height="440" rx="96" fill="#030712"/>
+
+  <!-- Back Crystal Shard -->
+  <polygon points="170,200 256,150 342,200 370,250 256,315 142,250" fill="#1E3A8A" opacity="0.45" stroke="url(#f4_stroke)" stroke-width="2"/>
+
+  <!-- Front Chamfered Crystal Hex-Card -->
+  <polygon points="150,260 256,198 362,260 395,320 256,400 117,320" fill="url(#f4_glass)" stroke="url(#f4_stroke)" stroke-width="3.5"/>
+  <!-- Crystal Thickness Bevels -->
+  <polygon points="117,320 256,400 256,420 117,340" fill="#0F172A" opacity="0.85"/>
+  <polygon points="256,400 395,320 395,340 256,420" fill="#1E40AF" opacity="0.85"/>
+
+  <!-- Specular Facet Highlights -->
+  <line x1="160" y1="310" x2="256" y2="252" stroke="#FFFFFF" stroke-width="5" stroke-linecap="round" opacity="0.65"/>
+  <line x1="170" y1="335" x2="240" y2="295" stroke="#BAE6FD" stroke-width="5" stroke-linecap="round" opacity="0.45"/>
+
+  <!-- Faceted Golden Lightning Blade with Dual Shading -->
+  <polygon points="280,45 180,230 255,230 205,435 345,215 270,215 310,45" fill="url(#f4_bolt)"/>
+  <polygon points="280,45 245,215 270,215 205,435 180,230" fill="#D97706" opacity="0.45"/>
+</svg>

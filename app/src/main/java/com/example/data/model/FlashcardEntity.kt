@@ -40,3 +40,17 @@ data class FlashcardEntity(
     val difficulty: Float = 0f,
     val createdAt: Long = System.currentTimeMillis()
 )
+
+/**
+ * Retorna true estritamente se o cartão for uma revisão pendente (já estudado e com vencimento atingido).
+ * Cartões novos (reps == 0) não são considerados vencidos.
+ */
+fun FlashcardEntity.isDueForReview(now: Long = System.currentTimeMillis()): Boolean {
+    return reps > 0 && dueTimestamp <= now
+}
+
+/**
+ * Retorna true se o cartão for novo (nunca revisado pelo usuário).
+ */
+fun FlashcardEntity.isNew(): Boolean = reps == 0
+

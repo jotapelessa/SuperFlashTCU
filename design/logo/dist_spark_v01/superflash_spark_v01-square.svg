@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256"><title>SuperFlash TCU Logo</title><g transform="translate(-13.06 -1.49) scale(0.551)">
+  
+  <defs>
+    <linearGradient id="v1_card1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1E3A8A"/>
+      <stop offset="100%" stop-color="#0F172A"/>
+    </linearGradient>
+    <linearGradient id="v1_card2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#2563EB"/>
+      <stop offset="100%" stop-color="#1D4ED8"/>
+    </linearGradient>
+    <linearGradient id="v1_card3" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#60A5FA"/>
+      <stop offset="100%" stop-color="#3B82F6"/>
+    </linearGradient>
+    <linearGradient id="v1_bolt" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FEF08A"/>
+      <stop offset="40%" stop-color="#FBBF24"/>
+      <stop offset="100%" stop-color="#F97316"/>
+    </linearGradient>
+    <linearGradient id="v1_bolt_shadow" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#EA580C"/>
+      <stop offset="100%" stop-color="#C2410C"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Level 1 Card (Base: New Cards) -->
+  <path d="M120 330 L256 250 L392 330 L256 410 Z" fill="url(#v1_card1)"/>
+  <path d="M120 330 L256 410 L256 430 L120 350 Z" fill="#090D16"/>
+  <path d="M256 410 L392 330 L392 350 L256 430 Z" fill="#0F172A"/>
+
+  <!-- Level 2 Card (Mid: Learning Cards) -->
+  <path d="M120 250 L256 170 L392 250 L256 330 Z" fill="url(#v1_card2)"/>
+  <path d="M120 250 L256 330 L256 270 L120 190 Z" fill="#1E40AF" opacity="0.8"/>
+  <path d="M256 330 L392 250 L392 270 L256 350 Z" fill="#1D4ED8" opacity="0.9"/>
+
+  <!-- Level 3 Card (Top: Mastered Cards) -->
+  <path d="M120 170 L256 90 L392 170 L256 250 Z" fill="url(#v1_card3)"/>
+  <path d="M120 170 L256 250 L256 265 L120 185 Z" fill="#2563EB"/>
+  <path d="M256 250 L392 170 L392 185 L256 265 Z" fill="#1D4ED8"/>
+
+  <!-- Card Cutout Hole (Eixo por onde o raio atravessa os 3 níveis de cards) -->
+  <ellipse cx="256" cy="170" rx="35" ry="18" fill="#0F172A" opacity="0.6"/>
+
+  <!-- The High-Voltage Core Lightning Bolt -->
+  <polygon points="275,40 220,200 270,200 225,380 325,180 270,180 305,40" fill="url(#v1_bolt)"/>
+  <polygon points="275,40 250,180 270,180 225,380 220,200" fill="url(#v1_bolt_shadow)" opacity="0.4"/>
+
+  <!-- AI Gemini Particle Glow -->
+  <polygon points="345,75 352,88 365,95 352,102 345,115 338,102 325,95 338,88" fill="#FDE047"/>
+  <polygon points="175,290 180,300 190,305 180,310 175,320 170,310 160,305 170,300" fill="#60A5FA" opacity="0.75"/>
+</g></svg>

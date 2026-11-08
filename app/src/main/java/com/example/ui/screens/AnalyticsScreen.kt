@@ -449,8 +449,10 @@ private fun StudyFrequencyChartCard(frequencyList: List<DayStudyStat>) {
                 Canvas(
                     modifier = Modifier.fillMaxSize()
                 ) {
+                    val topPadding = 24f
+                    val bottomPadding = 30f
                     val chartWidth = size.width
-                    val chartHeight = size.height - 30f // Leave space for bottom labels
+                    val chartHeight = size.height - topPadding - bottomPadding
                     val barCount = sortedFrequencyList.size
                     if (barCount == 0) return@Canvas
 
@@ -461,7 +463,7 @@ private fun StudyFrequencyChartCard(frequencyList: List<DayStudyStat>) {
                     // Draw reference gridlines
                     val gridLines = 3
                     for (i in 0..gridLines) {
-                        val y = chartHeight - (chartHeight * (i.toFloat() / gridLines))
+                        val y = topPadding + chartHeight - (chartHeight * (i.toFloat() / gridLines))
                         drawLine(
                             color = gridColor,
                             start = Offset(0f, y),
@@ -477,7 +479,7 @@ private fun StudyFrequencyChartCard(frequencyList: List<DayStudyStat>) {
                         val barHeight = normalizedHeight.coerceAtLeast(if (count > 0) minBarHeightPx else minEmptyBarHeightPx)
 
                         val x = (index * availableWidthPerBar) + (availableWidthPerBar - barWidth) / 2f
-                        val y = chartHeight - barHeight
+                        val y = topPadding + chartHeight - barHeight
 
                         val barBrush = when {
                             dayStat.isToday -> todayBrush
@@ -488,7 +490,7 @@ private fun StudyFrequencyChartCard(frequencyList: List<DayStudyStat>) {
                         // Draw background track for bar
                         drawRoundRect(
                             color = gridColor.copy(alpha = 0.25f),
-                            topLeft = Offset(x, 0f),
+                            topLeft = Offset(x, topPadding),
                             size = Size(barWidth, chartHeight),
                             cornerRadius = cornerRadius
                         )
@@ -516,7 +518,7 @@ private fun StudyFrequencyChartCard(frequencyList: List<DayStudyStat>) {
                             drawContext.canvas.nativeCanvas.drawText(
                                 "$count",
                                 x + (barWidth / 2f),
-                                (y - 8f).coerceAtLeast(14f),
+                                y - 6f,
                                 countPaint
                             )
                         }

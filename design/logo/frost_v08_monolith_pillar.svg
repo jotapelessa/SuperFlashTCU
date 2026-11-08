@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+  <title>SuperFlash TCU - Frosted Glass 08: Monolith Pillar</title>
+  <defs>
+    <linearGradient id="f8_top" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38BDF8" stop-opacity="0.8"/>
+      <stop offset="100%" stop-color="#2563EB" stop-opacity="0.95"/>
+    </linearGradient>
+    <linearGradient id="f8_left" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1E3A8A" stop-opacity="0.9"/>
+      <stop offset="100%" stop-color="#0F172A" stop-opacity="0.95"/>
+    </linearGradient>
+    <linearGradient id="f8_right" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#2563EB" stop-opacity="0.8"/>
+      <stop offset="100%" stop-color="#1D4ED8" stop-opacity="0.95"/>
+    </linearGradient>
+    <linearGradient id="f8_stroke" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.9"/>
+      <stop offset="100%" stop-color="#38BDF8" stop-opacity="0.2"/>
+    </linearGradient>
+    <linearGradient id="f8_bolt" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FEF08A"/>
+      <stop offset="40%" stop-color="#F59E0B"/>
+      <stop offset="100%" stop-color="#EA580C"/>
+    </linearGradient>
+  </defs>
+
+  <rect x="36" y="36" width="440" height="440" rx="96" fill="#030712"/>
+
+  <!-- Lower Base Glass Monolith Block -->
+  <polygon points="150,260 256,200 362,260 256,320" fill="url(#f8_top)" stroke="url(#f8_stroke)" stroke-width="2.5"/>
+  <polygon points="150,260 256,320 256,410 150,350" fill="url(#f8_left)"/>
+  <polygon points="256,320 362,260 362,350 256,410" fill="url(#f8_right)"/>
+
+  <!-- Upper Detached Floating Monolith Crown -->
+  <polygon points="150,150 256,90 362,150 256,210" fill="url(#f8_top)" stroke="url(#f8_stroke)" stroke-width="3"/>
+  <polygon points="150,150 256,210 256,245 150,185" fill="url(#f8_left)"/>
+  <polygon points="256,210 362,150 362,185 256,245" fill="url(#f8_right)"/>
+
+  <!-- Internal Laser Energy Rift Line -->
+  <line x1="170" y1="160" x2="256" y2="110" stroke="#FFFFFF" stroke-width="4.5" stroke-linecap="round" opacity="0.7"/>
+
+  <!-- Slashing Diagonal Energy Bolt Emerging from Core -->
+  <polygon points="280,45 180,225 255,225 200,435 345,210 270,210 310,45" fill="url(#f8_bolt)"/>
+  <polygon points="280,45 245,210 270,210 200,435 180,225" fill="#D97706" opacity="0.4"/>
+</svg>

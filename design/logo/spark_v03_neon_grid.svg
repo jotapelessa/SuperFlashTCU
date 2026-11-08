@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+  <title>SuperFlash TCU - Neon Cyber Grid</title>
+  <defs>
+    <linearGradient id="v3_gridPlate" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0F172A"/>
+      <stop offset="100%" stop-color="#020617"/>
+    </linearGradient>
+    <linearGradient id="v3_cyanNeon" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38BDF8"/>
+      <stop offset="100%" stop-color="#0284C7"/>
+    </linearGradient>
+    <linearGradient id="v3_boltNeon" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FEF08A"/>
+      <stop offset="50%" stop-color="#F59E0B"/>
+      <stop offset="100%" stop-color="#DC2626"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Isometric Ground Plate -->
+  <path d="M256 100 L430 200 L256 300 L82 200 Z" fill="url(#v3_gridPlate)" stroke="#1E293B" stroke-width="4"/>
+  <path d="M82 200 L256 300 L256 325 L82 225 Z" fill="#090D16"/>
+  <path d="M256 300 L430 200 L430 225 L256 325 Z" fill="#0F172A"/>
+
+  <!-- Isometric Gridlines inside Card Plane -->
+  <line x1="169" y1="150" x2="343" y2="250" stroke="#0284C7" stroke-width="2" opacity="0.4"/>
+  <line x1="126" y1="225" x2="300" y2="125" stroke="#0284C7" stroke-width="2" opacity="0.4"/>
+  <line x1="212" y1="275" x2="386" y2="175" stroke="#0284C7" stroke-width="2" opacity="0.4"/>
+
+  <!-- Upper Hovering Focus Card -->
+  <path d="M256 160 L380 230 L256 300 L132 230 Z" fill="none" stroke="url(#v3_cyanNeon)" stroke-width="6" stroke-linejoin="round"/>
+  <path d="M256 190 L340 240 L256 290 L172 240 Z" fill="#38BDF8" fill-opacity="0.08"/>
+
+  <!-- Dual Faceted Precision Lightning Bolt -->
+  <polygon points="290,30 170,230 250,230 190,460 360,210 280,210 320,30" fill="url(#v3_boltNeon)"/>
+  <!-- Highlight Spine Line -->
+  <line x1="290" y1="30" x2="250" y2="230" stroke="#FFF" stroke-width="4" stroke-linecap="round" opacity="0.8"/>
+  <line x1="250" y1="230" x2="190" y2="460" stroke="#FFF" stroke-width="4" stroke-linecap="round" opacity="0.8"/>
+
+  <!-- Circuit nodes -->
+  <circle cx="82" cy="200" r="6" fill="#38BDF8"/>
+  <circle cx="430" cy="200" r="6" fill="#38BDF8"/>
+  <circle cx="256" cy="100" r="6" fill="#FBBF24"/>
+</svg>

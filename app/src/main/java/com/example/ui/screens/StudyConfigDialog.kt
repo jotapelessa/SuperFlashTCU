@@ -62,6 +62,7 @@ import androidx.compose.ui.window.DialogProperties
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import com.example.data.local.HierarchyFolderTuple
 import com.example.data.model.FlashcardEntity
+import com.example.data.model.isDueForReview
 import com.example.data.model.PerCardTimeLimit
 import com.example.data.model.StudyFilterMode
 import com.example.data.model.StudyTimerConfig
@@ -152,7 +153,7 @@ fun StudyConfigDialog(
             filtered = when (selectedMode) {
                 StudyFilterMode.ALL -> filtered
                 StudyFilterMode.DUE_ONLY -> {
-                    val due = filtered.filter { it.dueTimestamp <= now }
+                    val due = filtered.filter { it.isDueForReview(now) }
                     if (due.isNotEmpty()) due else filtered
                 }
                 StudyFilterMode.NEW_AND_LEARNING -> {

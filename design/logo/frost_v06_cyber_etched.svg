@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+  <title>SuperFlash TCU - Frosted Glass 06: Cyber Etched Glass</title>
+  <defs>
+    <linearGradient id="f6_glass" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38BDF8" stop-opacity="0.45"/>
+      <stop offset="100%" stop-color="#1E3A8A" stop-opacity="0.9"/>
+    </linearGradient>
+    <linearGradient id="f6_stroke" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.9"/>
+      <stop offset="100%" stop-color="#38BDF8" stop-opacity="0.3"/>
+    </linearGradient>
+    <linearGradient id="f6_bolt" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FEF08A"/>
+      <stop offset="40%" stop-color="#F59E0B"/>
+      <stop offset="100%" stop-color="#EA580C"/>
+    </linearGradient>
+  </defs>
+
+  <rect x="36" y="36" width="440" height="440" rx="96" fill="#030712"/>
+
+  <!-- Back Glass Layer Card -->
+  <path d="M120 220 L270 140 L400 215 L250 295 Z" fill="#0F172A" opacity="0.6" stroke="url(#f6_stroke)" stroke-width="2"/>
+  <path d="M120 220 L250 295 L250 315 L120 240 Z" fill="#090D16" opacity="0.8"/>
+  <path d="M250 295 L400 215 L400 235 L250 315 Z" fill="#0F172A" opacity="0.8"/>
+
+  <!-- Front Frosted Glass Card -->
+  <path d="M100 280 L260 195 L410 275 L250 360 Z" fill="url(#f6_glass)" stroke="url(#f6_stroke)" stroke-width="3.5"/>
+  <path d="M100 280 L250 360 L250 382 L100 302 Z" fill="#1E3A8A" opacity="0.8"/>
+  <path d="M250 360 L410 275 L410 297 L250 382 Z" fill="#1D4ED8" opacity="0.8"/>
+
+  <!-- Laser Etched Circuit Lines & Node Points -->
+  <path d="M140 280 L210 242 L230 252 L260 235" fill="none" stroke="#BAE6FD" stroke-width="3" stroke-linecap="round" opacity="0.75"/>
+  <circle cx="140" cy="280" r="4.5" fill="#38BDF8"/>
+  <circle cx="230" cy="252" r="4.5" fill="#38BDF8"/>
+  <circle cx="260" cy="235" r="4.5" fill="#FFFFFF"/>
+
+  <path d="M160 305 L200 283 L245 283" fill="none" stroke="#BAE6FD" stroke-width="3" stroke-linecap="round" opacity="0.6"/>
+  <circle cx="160" cy="305" r="4" fill="#38BDF8"/>
+  <circle cx="245" cy="283" r="4" fill="#38BDF8"/>
+
+  <!-- Piercing Golden Blade -->
+  <polygon points="285,45 175,235 250,235 195,435 355,215 275,215 320,45" fill="url(#f6_bolt)"/>
+  <polygon points="285,45 250,215 275,215 195,435 175,235" fill="#D97706" opacity="0.45"/>
+</svg>

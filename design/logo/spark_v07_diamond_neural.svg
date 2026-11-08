@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+  <title>SuperFlash TCU - Diamond Neural AI Spark</title>
+  <defs>
+    <linearGradient id="v7_diaTop" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38BDF8"/>
+      <stop offset="100%" stop-color="#1D4ED8"/>
+    </linearGradient>
+    <linearGradient id="v7_diaBot" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1E3A8A"/>
+      <stop offset="100%" stop-color="#020617"/>
+    </linearGradient>
+    <linearGradient id="v7_spark" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FEF08A"/>
+      <stop offset="45%" stop-color="#F59E0B"/>
+      <stop offset="100%" stop-color="#DC2626"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Lower Diamond Flashcard -->
+  <path d="M256 160 L400 240 L256 320 L112 240 Z" fill="url(#v7_diaBot)" stroke="#1E293B" stroke-width="4"/>
+  <path d="M112 240 L256 320 L256 345 L112 265 Z" fill="#090D16"/>
+  <path d="M256 320 L400 240 L400 265 L256 345 Z" fill="#0F172A"/>
+
+  <!-- Upper Floating Diamond Flashcard with Glassy Glow -->
+  <path d="M256 220 L370 280 L256 340 L142 280 Z" fill="url(#v7_diaTop)" opacity="0.85"/>
+
+  <!-- Neural Constellation Lines on Upper Plane -->
+  <line x1="256" y1="220" x2="370" y2="280" stroke="#BAE6FD" stroke-width="2" opacity="0.6"/>
+  <line x1="370" y1="280" x2="256" y2="340" stroke="#BAE6FD" stroke-width="2" opacity="0.6"/>
+  <line x1="256" y1="340" x2="142" y2="280" stroke="#BAE6FD" stroke-width="2" opacity="0.6"/>
+  <line x1="142" y1="280" x2="256" y2="220" stroke="#BAE6FD" stroke-width="2" opacity="0.6"/>
+
+  <!-- Neural Vertex Nodes -->
+  <circle cx="256" cy="220" r="7" fill="#FDE047"/>
+  <circle cx="370" cy="280" r="6" fill="#38BDF8"/>
+  <circle cx="256" cy="340" r="6" fill="#38BDF8"/>
+  <circle cx="142" cy="280" r="6" fill="#38BDF8"/>
+
+  <!-- Central Supercharged Bolt -->
+  <polygon points="285,45 175,245 255,245 195,445 355,225 275,225 320,45" fill="url(#v7_spark)"/>
+  <polygon points="285,45 320,45 275,225 355,225 285,310" fill="#FEF08A" opacity="0.6"/>
+
+  <!-- AI Gemini 4-Point Star Core -->
+  <polygon points="256,110 262,125 277,131 262,137 256,152 250,137 235,131 250,125" fill="#FFFBEB"/>
+</svg>

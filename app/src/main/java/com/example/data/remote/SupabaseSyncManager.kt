@@ -1,8 +1,10 @@
 package com.example.data.remote
 
 import com.example.data.model.FlashcardEntity
+import com.example.data.model.ReviewLogEntity
 import com.example.data.model.StudyProgressReport
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
@@ -16,6 +18,11 @@ sealed class SupabaseSyncResult {
     data class Success(val message: String, val syncedCardsCount: Int) : SupabaseSyncResult()
     data class Error(val errorMessage: String) : SupabaseSyncResult()
 }
+
+data class CloudRestoreData(
+    val cards: List<FlashcardEntity>,
+    val logs: List<ReviewLogEntity> = emptyList()
+)
 
 class SupabaseSyncManager {
 
@@ -46,7 +53,6 @@ class SupabaseSyncManager {
                     if (response.isSuccessful) {
                         SupabaseSyncResult.Success("Conexão estabelecida com sucesso!", 0)
                     } else if (response.code == 404) {
-                        // Table doesn't exist yet, test root health or key endpoint
                         val rootRequest = Request.Builder()
                             .url("$cleanUrl/rest/v1/")
                             .addHeader("apikey", supabaseKey.trim())
@@ -65,7 +71,7 @@ class SupabaseSyncManager {
                     }
                 }
             } catch (e: Exception) {
-                SupabaseSyncResult.Error("Falha na conexão: ${e.localizedMessage ?: "Erro desconhecido"}")
+                SupabaseSyncResult.Error("Falha na conexão com o Supabase: ${e.localizedMessage ?: "Erro desconhecido"}")
             }
         }
 
@@ -74,7 +80,8 @@ class SupabaseSyncManager {
         supabaseKey: String,
         cards: List<FlashcardEntity>,
         progressReport: StudyProgressReport?,
-        settingsJson: String
+        settingsJson: String,
+        reviewLogs: List<ReviewLogEntity> = emptyList()
     ): SupabaseSyncResult = withContext(Dispatchers.IO) {
         val cleanUrl = sanitizeUrl(supabaseUrl)
         if (cleanUrl.isBlank() || supabaseKey.isBlank()) {
@@ -82,10 +89,10 @@ class SupabaseSyncManager {
         }
 
         try {
-            // 1. Upload cards in batches of 250 to prevent HTTP 413 (Payload Too Large) and OOM
+            // 1. Upload cards in batches of 250 with retry policy (up to 3 attempts per chunk)
             val chunks = cards.chunked(250)
             var uploadedCount = 0
-            for (chunk in chunks) {
+            for ((index, chunk) in chunks.withIndex()) {
                 val chunkArray = JSONArray()
                 chunk.forEach { card ->
                     val obj = JSONObject().apply {
@@ -112,24 +119,41 @@ class SupabaseSyncManager {
                     chunkArray.put(obj)
                 }
 
-                val cardsReq = Request.Builder()
-                    .url("$cleanUrl/rest/v1/app_flashcards")
-                    .addHeader("apikey", supabaseKey.trim())
-                    .addHeader("Authorization", "Bearer ${supabaseKey.trim()}")
-                    .addHeader("Content-Type", "application/json")
-                    .addHeader("Prefer", "resolution=merge-duplicates,return=minimal")
-                    .post(chunkArray.toString().toRequestBody(jsonMediaType))
-                    .build()
+                var chunkSuccess = false
+                var lastCode = 0
+                for (attempt in 1..3) {
+                    val cardsReq = Request.Builder()
+                        .url("$cleanUrl/rest/v1/app_flashcards")
+                        .addHeader("apikey", supabaseKey.trim())
+                        .addHeader("Authorization", "Bearer ${supabaseKey.trim()}")
+                        .addHeader("Content-Type", "application/json")
+                        .addHeader("Prefer", "resolution=merge-duplicates,return=minimal")
+                        .post(chunkArray.toString().toRequestBody(jsonMediaType))
+                        .build()
 
-                client.newCall(cardsReq).execute().use { resp ->
-                    if (resp.isSuccessful || resp.code == 201 || resp.code == 204) {
-                        uploadedCount += chunk.size
+                    try {
+                        client.newCall(cardsReq).execute().use { resp ->
+                            lastCode = resp.code
+                            if (resp.isSuccessful || resp.code == 201 || resp.code == 204) {
+                                uploadedCount += chunk.size
+                                chunkSuccess = true
+                            }
+                        }
+                    } catch (e: Exception) {
+                        if (attempt == 3) throw e
                     }
+                    if (chunkSuccess) break
+                    delay(400L * attempt)
+                }
+
+                if (!chunkSuccess) {
+                    return@withContext SupabaseSyncResult.Error(
+                        "Falha ao enviar lote ${index + 1} de ${chunks.size} para o Supabase (HTTP $lastCode). Sincronização interrompida para evitar dados parciais."
+                    )
                 }
             }
 
             // 2. Dual strategy: Also upload backup payload to `app_sync_backups` table
-            // If card count is reasonable (<= 2000), include cards_json; otherwise omit to avoid postgREST 10MB limit
             val cardsJsonForBackup = if (cards.size <= 2000) {
                 val sampleArray = JSONArray()
                 cards.forEach { card ->
@@ -153,11 +177,33 @@ class SupabaseSyncManager {
                 ""
             }
 
+            // Preserva até 5.000 logs atômicos de revisão no snapshot de backup
+            val logsJsonForBackup = if (reviewLogs.isNotEmpty()) {
+                val logsArray = JSONArray()
+                reviewLogs.takeLast(5000).forEach { log ->
+                    val obj = JSONObject().apply {
+                        put("id", log.id)
+                        put("card_id", log.cardId)
+                        put("l1", log.l1)
+                        put("l2", log.l2)
+                        put("l3", log.l3)
+                        put("rating", log.rating)
+                        put("duration_ms", log.reviewDurationMs)
+                        put("timestamp", log.timestamp)
+                    }
+                    logsArray.put(obj)
+                }
+                logsArray.toString()
+            } else {
+                ""
+            }
+
             val fullPayloadObj = JSONObject().apply {
                 put("key", "master_backup")
                 put("updated_at", System.currentTimeMillis())
                 put("cards_count", cards.size)
                 put("cards_json", cardsJsonForBackup)
+                put("logs_json", logsJsonForBackup)
                 put("settings_json", settingsJson)
                 put("progress_json", progressReportToJson(progressReport))
             }
@@ -186,7 +232,7 @@ class SupabaseSyncManager {
                     uploadedCount
                 )
             } else {
-                SupabaseSyncResult.Error("Não foi possível enviar para as tabelas Supabase. Verifique se as permissões de gravação ou RLS estão configuradas.")
+                SupabaseSyncResult.Error("Não foi possível enviar para as tabelas Supabase. Verifique permissões de gravação ou RLS.")
             }
         } catch (e: Exception) {
             SupabaseSyncResult.Error("Erro na sincronização: ${e.localizedMessage ?: "Falha ao enviar para o Supabase"}")
@@ -196,7 +242,7 @@ class SupabaseSyncManager {
     suspend fun downloadFullData(
         supabaseUrl: String,
         supabaseKey: String
-    ): Pair<List<FlashcardEntity>?, String?> = withContext(Dispatchers.IO) {
+    ): Pair<CloudRestoreData?, String?> = withContext(Dispatchers.IO) {
         val cleanUrl = sanitizeUrl(supabaseUrl)
         if (cleanUrl.isBlank() || supabaseKey.isBlank()) {
             return@withContext Pair(null, "URL ou Chave do Supabase não configuradas.")
@@ -218,33 +264,57 @@ class SupabaseSyncManager {
                     if (array.length() > 0) {
                         val obj = array.getJSONObject(0)
                         val cardsJsonStr = obj.optString("cards_json", "")
+                        val logsJsonStr = obj.optString("logs_json", "")
                         if (cardsJsonStr.isNotBlank()) {
                             val cardsList = parseCardsFromJsonArrayStr(cardsJsonStr)
+                            val logsList = parseLogsFromJsonArrayStr(logsJsonStr)
                             if (cardsList.isNotEmpty()) {
-                                return@withContext Pair(cardsList, null)
+                                return@withContext Pair(CloudRestoreData(cardsList, logsList), null)
                             }
                         }
                     }
                 }
             }
 
-            // Fallback: fetch directly from app_flashcards (up to 50k cards)
-            val cardsReq = Request.Builder()
-                .url("$cleanUrl/rest/v1/app_flashcards?select=*&limit=50000")
-                .addHeader("apikey", supabaseKey.trim())
-                .addHeader("Authorization", "Bearer ${supabaseKey.trim()}")
-                .get()
-                .build()
+            // Fallback: fetch directly from app_flashcards with pagination (up to 50k cards)
+            val pageSize = 1000
+            var offset = 0
+            val allFetchedCards = mutableListOf<FlashcardEntity>()
+            var hasMore = true
+            var pageIndex = 0
 
-            client.newCall(cardsReq).execute().use { resp ->
-                if (resp.isSuccessful) {
-                    val bodyStr = resp.body?.string().orEmpty()
-                    val cardsList = parseCardsFromJsonArrayStr(bodyStr)
-                    return@withContext Pair(cardsList, null)
+            while (hasMore && pageIndex < 50) {
+                pageIndex++
+                val pageUrl = "$cleanUrl/rest/v1/app_flashcards?select=*&order=id.asc&limit=$pageSize&offset=$offset"
+                val cardsReq = Request.Builder()
+                    .url(pageUrl)
+                    .addHeader("apikey", supabaseKey.trim())
+                    .addHeader("Authorization", "Bearer ${supabaseKey.trim()}")
+                    .get()
+                    .build()
+
+                val pageCards = client.newCall(cardsReq).execute().use { resp ->
+                    if (resp.isSuccessful) {
+                        val bodyStr = resp.body?.string().orEmpty()
+                        parseCardsFromJsonArrayStr(bodyStr)
+                    } else {
+                        return@withContext Pair(null, "Erro HTTP ${resp.code} ao baixar dados do Supabase na página $pageIndex.")
+                    }
+                }
+
+                if (pageCards.isEmpty()) {
+                    hasMore = false
                 } else {
-                    return@withContext Pair(null, "Erro HTTP ${resp.code} ao baixar dados do Supabase.")
+                    allFetchedCards.addAll(pageCards)
+                    if (pageCards.size < pageSize) {
+                        hasMore = false
+                    } else {
+                        offset += pageSize
+                    }
                 }
             }
+
+            return@withContext Pair(CloudRestoreData(allFetchedCards, emptyList()), null)
         } catch (e: Exception) {
             Pair(null, "Erro ao restaurar do Supabase: ${e.localizedMessage}")
         }
@@ -276,6 +346,28 @@ class SupabaseSyncManager {
                     lastReviewedTimestamp = obj.optLong("last_reviewed_timestamp", 0L),
                     stability = obj.optDouble("stability", 0.0).toFloat(),
                     difficulty = obj.optDouble("difficulty", 0.0).toFloat()
+                )
+            )
+        }
+        return list
+    }
+
+    private fun parseLogsFromJsonArrayStr(jsonStr: String): List<ReviewLogEntity> {
+        if (jsonStr.isBlank()) return emptyList()
+        val list = mutableListOf<ReviewLogEntity>()
+        val array = JSONArray(jsonStr)
+        for (i in 0 until array.length()) {
+            val obj = array.getJSONObject(i)
+            list.add(
+                ReviewLogEntity(
+                    id = obj.optLong("id", 0L),
+                    cardId = obj.optLong("card_id", 0L),
+                    l1 = obj.optString("l1", "Geral"),
+                    l2 = obj.optString("l2", "Geral"),
+                    l3 = obj.optString("l3", "Geral"),
+                    rating = obj.optInt("rating", 3),
+                    reviewDurationMs = obj.optLong("duration_ms", 0L),
+                    timestamp = obj.optLong("timestamp", System.currentTimeMillis())
                 )
             )
         }

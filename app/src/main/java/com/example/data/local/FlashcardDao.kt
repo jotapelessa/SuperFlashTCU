@@ -29,7 +29,7 @@ interface FlashcardDao {
     @Query("SELECT * FROM flashcards WHERE l1 = :l1 AND l2 = :l2 AND l3 = :l3 ORDER BY id ASC")
     fun getFlashcardsByL1L2L3(l1: String, l2: String, l3: String): Flow<List<FlashcardEntity>>
 
-    @Query("SELECT * FROM flashcards WHERE l1 = :l1 AND dueTimestamp <= :now ORDER BY dueTimestamp ASC")
+    @Query("SELECT * FROM flashcards WHERE l1 = :l1 AND reps > 0 AND dueTimestamp <= :now ORDER BY dueTimestamp ASC")
     fun getDueFlashcardsByL1(l1: String, now: Long): Flow<List<FlashcardEntity>>
 
     @Query("SELECT DISTINCT l1 FROM flashcards WHERE l1 != '' ORDER BY l1 ASC")

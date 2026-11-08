@@ -32,16 +32,48 @@ import java.util.Locale
 import kotlin.math.max
 import kotlin.math.roundToInt
 
-class DeckRepository(private val dao: FlashcardDao) {
+class DeckRepository(
+    private val dao: FlashcardDao,
+    private val reviewLogDao: com.example.data.local.ReviewLogDao? = null
+) {
 
     val allCards: Flow<List<FlashcardEntity>> = dao.getAllFlashcards()
+    val allReviewLogs: Flow<List<com.example.data.model.ReviewLogEntity>> = reviewLogDao?.getAllReviewLogs() ?: kotlinx.coroutines.flow.flowOf(emptyList())
+
+    private val _dailyGoalPercentage = MutableStateFlow(10f)
+
+    fun setDailyGoalPercentage(percentage: Float) {
+        _dailyGoalPercentage.value = percentage.coerceIn(5f, 15f)
+    }
+
+    fun getDailyGoalPercentage(): Float = _dailyGoalPercentage.value
+
+    /**
+     * Calculates day start aligning with standard 04:00 AM day cutoff (Anki standard).
+     * Prevents studies past midnight from breaking daily streaks and goals.
+     */
+    fun getAnkiDayStart(now: Long = System.currentTimeMillis()): Long {
+        val cal = Calendar.getInstance().apply {
+            timeInMillis = now
+            if (get(Calendar.HOUR_OF_DAY) < 4) {
+                add(Calendar.DAY_OF_YEAR, -1)
+            }
+            set(Calendar.HOUR_OF_DAY, 4)
+            set(Calendar.MINUTE, 0)
+            set(Calendar.SECOND, 0)
+            set(Calendar.MILLISECOND, 0)
+        }
+        return cal.timeInMillis
+    }
 
     /**
      * Strictly distinguish between L1, L2, and L3 levels during synchronization.
      * Only L1 decks are surfaced in the primary deck list.
      */
-    val l1DeckSummaries: Flow<List<L1DeckSummary>> = allCards.map { cards ->
+    val l1DeckSummaries: Flow<List<L1DeckSummary>> = combine(allCards, _dailyGoalPercentage) { cards, goalPct ->
         val now = System.currentTimeMillis()
+        val dayStart = getAnkiDayStart(now)
+
         cards.groupBy { it.l1 }
             .map { (l1, l1Cards) ->
                 val l2Groups = l1Cards.groupBy { it.l2 }
@@ -50,6 +82,7 @@ class DeckRepository(private val dao: FlashcardDao) {
                 val masteredCount = l1Cards.count { it.masteryLevel == 2 }
                 val learningCount = l1Cards.count { it.masteryLevel == 1 }
                 val newCount = l1Cards.count { it.reps == 0 && it.masteryLevel == 0 }
+                val reviewedToday = l1Cards.count { it.lastReviewedTimestamp >= dayStart }
 
                 val colors = l2Groups.keys.map { DisciplinePalette.getColorForDiscipline(it) }.distinct()
 
@@ -62,31 +95,48 @@ class DeckRepository(private val dao: FlashcardDao) {
                     newCards = newCount,
                     l2Count = l2Groups.size,
                     l3Count = l3Set.size,
-                    disciplineColors = colors
+                    disciplineColors = colors,
+                    reviewedToday = reviewedToday,
+                    dailyGoalPercentage = goalPct
                 )
             }
             .sortedBy { it.l1 }
     }.flowOn(Dispatchers.Default)
 
     private val _paletteUpdateSignal = MutableStateFlow(0L)
+    private val _l2GoalPercentages = MutableStateFlow<Map<String, Float>>(emptyMap())
 
     fun notifyPaletteChanged() {
         _paletteUpdateSignal.value = System.currentTimeMillis()
     }
 
+    fun setL2GoalPercentage(l1: String, l2: String, percentage: Float) {
+        val key = "$l1::$l2"
+        _l2GoalPercentages.value = _l2GoalPercentages.value + (key to percentage.coerceIn(1f, 100f))
+    }
+
+    fun getL2GoalPercentage(l1: String, l2: String): Float {
+        return _l2GoalPercentages.value["$l1::$l2"] ?: 5f
+    }
+
     /**
      * Dedicated L2 & L3 sub-deck hierarchy for a selected L1 deck.
-     * Reavalia reativamente tanto por alterações no Room quanto por atualizações de paleta/ícone.
+     * Reavalia reativamente tanto por alterações no Room quanto por atualizações de paleta/ícone e metas diárias.
      */
     fun getL2DisciplinesForL1(l1: String): Flow<List<L2DisciplineSummary>> =
-        combine(dao.getFlashcardsByL1(l1), _paletteUpdateSignal) { cards, _ ->
+        combine(dao.getFlashcardsByL1(l1), _paletteUpdateSignal, _l2GoalPercentages) { cards, _, goalPercentages ->
             val now = System.currentTimeMillis()
+            val dayStart = getAnkiDayStart(now)
+
             cards.groupBy { it.l2 }
                 .map { (l2, l2Cards) ->
                     val colorHex = DisciplinePalette.getColorForDiscipline(l2)
                     val iconKey = DisciplinePalette.getIconKeyForDiscipline(l2)
+                    val goalPct = goalPercentages["$l1::$l2"] ?: 5f
+
                     val l3Topics = l2Cards.groupBy { it.l3 }
                         .map { (l3, l3Cards) ->
+                            val l3ReviewedToday = l3Cards.count { it.lastReviewedTimestamp >= dayStart }
                             L3TopicSummary(
                                 l1 = l1,
                                 l2 = l2,
@@ -96,10 +146,14 @@ class DeckRepository(private val dao: FlashcardDao) {
                                 masteredCards = l3Cards.count { it.masteryLevel == 2 },
                                 learningCards = l3Cards.count { it.masteryLevel == 1 },
                                 newCards = l3Cards.count { it.reps == 0 && it.masteryLevel == 0 },
-                                colorHex = colorHex
+                                colorHex = colorHex,
+                                reviewedToday = l3ReviewedToday,
+                                dailyGoalPercentage = goalPct
                             )
                         }
                         .sortedBy { it.l3 }
+
+                    val l2ReviewedToday = l2Cards.count { it.lastReviewedTimestamp >= dayStart }
 
                     L2DisciplineSummary(
                         l1 = l1,
@@ -112,7 +166,9 @@ class DeckRepository(private val dao: FlashcardDao) {
                         l3Count = l3Topics.size,
                         colorHex = colorHex,
                         iconKey = iconKey,
-                        topics = l3Topics
+                        topics = l3Topics,
+                        reviewedToday = l2ReviewedToday,
+                        dailyGoalPercentage = goalPct
                     )
                 }
                 .sortedBy { it.l2 }
@@ -170,6 +226,7 @@ class DeckRepository(private val dao: FlashcardDao) {
             dueNow = dueNow,
             dueToday = dueToday,
             totalReviewed = reviewed.size,
+            totalReviewsCount = totalReviews,
             retentionRate = retention,
             averageIntervalDays = avgInterval
         )
@@ -387,8 +444,9 @@ class DeckRepository(private val dao: FlashcardDao) {
         card: FlashcardEntity,
         rating: Int,
         algorithm: String = "FSRS",
-        targetRetention: Double = 0.90
-    ) {
+        targetRetention: Double = 0.90,
+        reviewDurationMs: Long = 0L
+    ): FlashcardEntity {
         // rating: 1 = Again (Errei), 2 = Hard (Difícil), 3 = Good (Bom), 4 = Easy (Fácil)
         val now = System.currentTimeMillis()
         val newReps = card.reps + 1
@@ -459,14 +517,45 @@ class DeckRepository(private val dao: FlashcardDao) {
         )
 
         dao.updateFlashcard(updated)
+
+        // Persist atomic review log for vital streak and accurate historical frequency
+        try {
+            reviewLogDao?.insertReviewLog(
+                com.example.data.model.ReviewLogEntity(
+                    cardId = card.id,
+                    l1 = card.l1,
+                    l2 = card.l2,
+                    l3 = card.l3,
+                    rating = rating,
+                    reviewDurationMs = reviewDurationMs,
+                    timestamp = now
+                )
+            )
+        } catch (_: Exception) {
+            // Ignore if in test environment without reviewLogDao
+        }
+
+        return updated
     }
 
     /**
      * Calculates next due timestamp aligning with Anki's standard 04:00 AM day cutoff.
      * Prevents cards reviewed late at night from being hidden on the subsequent review morning.
+     * Adds controlled fuzz (jitter) to prevent review spikes on cards reviewed in the same session.
      */
-    fun calculateNextDueDate(intervalDays: Int, now: Long = System.currentTimeMillis()): Long {
+    fun calculateNextDueDate(
+        intervalDays: Int,
+        now: Long = System.currentTimeMillis(),
+        applyFuzz: Boolean = true
+    ): Long {
         if (intervalDays <= 0) return now
+        val fuzzedInterval = if (applyFuzz && intervalDays >= 3) {
+            val delta = kotlin.math.max(1, (intervalDays * 0.05).roundToInt())
+            val fuzzOffset = kotlin.random.Random.nextInt(-delta, delta + 1)
+            kotlin.math.max(1, intervalDays + fuzzOffset)
+        } else {
+            intervalDays
+        }
         val calendar = java.util.Calendar.getInstance().apply {
             timeInMillis = now
             if (get(java.util.Calendar.HOUR_OF_DAY) < 4) {
@@ -476,7 +565,7 @@ class DeckRepository(private val dao: FlashcardDao) {
             set(java.util.Calendar.MINUTE, 0)
             set(java.util.Calendar.SECOND, 0)
             set(java.util.Calendar.MILLISECOND, 0)
-            add(java.util.Calendar.DAY_OF_YEAR, intervalDays)
+            add(java.util.Calendar.DAY_OF_YEAR, fuzzedInterval)
         }
         return calendar.timeInMillis
     }
@@ -513,12 +602,14 @@ class DeckRepository(private val dao: FlashcardDao) {
         return dao.getAllDistinctFolders()
     }
 
-    fun calculateProgressReport(cards: List<FlashcardEntity>): StudyProgressReport {
+    fun calculateProgressReport(
+        cards: List<FlashcardEntity>,
+        reviewLogs: List<com.example.data.model.ReviewLogEntity> = emptyList(),
+        now: Long = System.currentTimeMillis()
+    ): StudyProgressReport {
         if (cards.isEmpty()) return StudyProgressReport()
-
-        val now = System.currentTimeMillis()
         val totalCards = cards.size
-        val totalReviews = cards.sumOf { it.reps }
+        val totalReviews = if (reviewLogs.isNotEmpty()) reviewLogs.size else cards.sumOf { it.reps }
         val mastered = cards.count { it.masteryLevel == 2 }
         val learning = cards.count { it.masteryLevel == 1 }
         val newCount = cards.count { it.masteryLevel == 0 }
@@ -528,11 +619,14 @@ class DeckRepository(private val dao: FlashcardDao) {
         } else 0f
 
         // Calculate 7-day study frequency in chronological order (SEG, TER, QUA, QUI, SEX, SÁB, DOM)
+        // Aligned with Anki's standard 04:00 AM day cutoff for 100% parity with daily goals HUD
         val dateFormat = SimpleDateFormat("dd/MM", Locale.getDefault())
 
-        val cal = Calendar.getInstance()
-        cal.timeInMillis = now
-        cal.firstDayOfWeek = Calendar.MONDAY
+        val ankiTodayStart = getAnkiDayStart(now)
+        val cal = Calendar.getInstance().apply {
+            timeInMillis = ankiTodayStart
+            firstDayOfWeek = Calendar.MONDAY
+        }
 
         val currentDayOfWeek = cal.get(Calendar.DAY_OF_WEEK)
         val daysFromMonday = when (currentDayOfWeek) {
@@ -547,24 +641,14 @@ class DeckRepository(private val dao: FlashcardDao) {
         }
 
         cal.add(Calendar.DAY_OF_YEAR, -daysFromMonday)
+        val mondayStartMs = cal.timeInMillis
+        val dayMs = 24L * 3600L * 1000L
 
         val dailyStats = (0..6).map { dayIndex ->
-            val dayCal = Calendar.getInstance()
-            dayCal.timeInMillis = cal.timeInMillis
-            dayCal.add(Calendar.DAY_OF_YEAR, dayIndex)
+            val dayStart = mondayStartMs + (dayIndex * dayMs)
+            val dayEnd = dayStart + dayMs - 1L
 
-            dayCal.set(Calendar.HOUR_OF_DAY, 0)
-            dayCal.set(Calendar.MINUTE, 0)
-            dayCal.set(Calendar.SECOND, 0)
-            dayCal.set(Calendar.MILLISECOND, 0)
-            val dayStart = dayCal.timeInMillis
-
-            dayCal.set(Calendar.HOUR_OF_DAY, 23)
-            dayCal.set(Calendar.MINUTE, 59)
-            dayCal.set(Calendar.SECOND, 59)
-            dayCal.set(Calendar.MILLISECOND, 999)
-            val dayEnd = dayCal.timeInMillis
-
+            val dayCal = Calendar.getInstance().apply { timeInMillis = dayStart }
             val dayOfWeek = dayCal.get(Calendar.DAY_OF_WEEK)
             val dayLabel = when (dayOfWeek) {
                 Calendar.MONDAY -> "SEG"
@@ -577,21 +661,22 @@ class DeckRepository(private val dao: FlashcardDao) {
                 else -> "DIA"
             }
 
-            val todayCal = Calendar.getInstance()
-            todayCal.timeInMillis = now
-            val isToday = (todayCal.get(Calendar.YEAR) == dayCal.get(Calendar.YEAR) &&
-                           todayCal.get(Calendar.DAY_OF_YEAR) == dayCal.get(Calendar.DAY_OF_YEAR))
+            val isToday = (dayStart == ankiTodayStart)
 
-            val cardsOnDay = cards.filter {
-                it.lastReviewedTimestamp in dayStart..dayEnd
+            val (dayReviewsCount, dayUniqueCount) = if (reviewLogs.isNotEmpty()) {
+                val logsOnDay = reviewLogs.filter { it.timestamp in dayStart..dayEnd }
+                Pair(logsOnDay.size, logsOnDay.distinctBy { it.cardId }.size)
+            } else {
+                val cardsOnDay = cards.filter { it.lastReviewedTimestamp in dayStart..dayEnd }
+                Pair(cardsOnDay.size, cardsOnDay.distinctBy { it.id }.size)
             }
 
             DayStudyStat(
                 dayLabel = dayLabel,
                 dateFormatted = dateFormat.format(Date(dayStart)),
                 timestamp = dayStart,
-                reviewsCount = cardsOnDay.size,
-                uniqueCardsCount = cardsOnDay.distinctBy { it.id }.size,
+                reviewsCount = dayReviewsCount,
+                uniqueCardsCount = dayUniqueCount,
                 isToday = isToday
             )
         }.sortedBy { stat ->
@@ -620,18 +705,31 @@ class DeckRepository(private val dao: FlashcardDao) {
             val todayStartMs = cal.timeInMillis
             val dayMs = 24L * 3600L * 1000L
 
-            val reviewedDayOffsets = cards
-                .asSequence()
-                .map { it.lastReviewedTimestamp }
-                .filter { it > 0 }
-                .map { ts ->
-                    if (ts >= todayStartMs) {
-                        0
-                    } else {
-                        ((todayStartMs - ts) / dayMs + 1).toInt()
+            val reviewedDayOffsets = if (reviewLogs.isNotEmpty()) {
+                reviewLogs.asSequence()
+                    .map { it.timestamp }
+                    .filter { it > 0 }
+                    .map { ts ->
+                        if (ts >= todayStartMs) {
+                            0
+                        } else {
+                            ((todayStartMs - ts) / dayMs + 1).toInt()
+                        }
                     }
-                }
-                .toSet()
+                    .toSet()
+            } else {
+                cards.asSequence()
+                    .map { it.lastReviewedTimestamp }
+                    .filter { it > 0 }
+                    .map { ts ->
+                        if (ts >= todayStartMs) {
+                            0
+                        } else {
+                            ((todayStartMs - ts) / dayMs + 1).toInt()
+                        }
+                    }
+                    .toSet()
+            }
 
             var checkOffset = 0
             while (checkOffset < 365) {
@@ -849,6 +947,16 @@ class DeckRepository(private val dao: FlashcardDao) {
 
     suspend fun restoreCardsFromCloud(cards: List<FlashcardEntity>) {
         dao.insertOrReplaceAll(cards)
+    }
+
+    suspend fun getAllReviewLogsSync(): List<com.example.data.model.ReviewLogEntity> {
+        return reviewLogDao?.getAllReviewLogsSync().orEmpty()
+    }
+
+    suspend fun restoreReviewLogs(logs: List<com.example.data.model.ReviewLogEntity>) {
+        if (logs.isNotEmpty()) {
+            reviewLogDao?.insertAll(logs)
+        }
     }
 
     suspend fun deleteDeck(l1: String) {

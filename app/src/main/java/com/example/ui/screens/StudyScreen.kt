@@ -55,6 +55,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableLongStateOf
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -72,8 +74,19 @@ import com.example.data.model.StudyTimerConfig
 import com.example.data.srs.FsrsScheduler
 import com.example.ui.components.DisciplinePalette
 import com.example.ui.components.HtmlText
+import com.example.ui.components.GoalCelebrationDialog
+import com.example.ui.viewmodel.DeckViewModel
 import kotlinx.coroutines.delay
 import kotlin.math.roundToInt
+data class CelebrationModalData(
+    val l1: String,
+    val l2: String,
+    val l3: String,
+    val reviewedToday: Int,
+    val targetCards: Int,
+    val percentage: Float,
+    val hasNextTopic: Boolean
+)
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -90,12 +103,18 @@ fun StudyScreen(
     onRateCard: (Int, Long) -> Unit,
     onEditCard: (FlashcardEntity) -> Unit,
     onFinish: () -> Unit,
+    onNextL3Topic: ((l1: String, l2: String, currentL3: String) -> Unit)? = null,
+    getL3GoalProgress: ((l1: String, l2: String, l3: String) -> DeckViewModel.L3GoalProgress)? = null,
+    onCheckShouldCelebrateTopic: ((l1: String, l2: String, l3: String, newReviewed: Int, targetCards: Int) -> Boolean)? = null,
     modifier: Modifier = Modifier
 ) {
     val sessionStartTimestamp = remember { SystemClock.elapsedRealtime() }
     var cardStartTimestamp by remember { mutableLongStateOf(SystemClock.elapsedRealtime()) }
     var sessionElapsedSeconds by remember { mutableLongStateOf(0L) }
     var cardElapsedSeconds by remember { mutableLongStateOf(0L) }
+
+    val celebratedL3s = remember { mutableStateListOf<String>() }
+    var celebrationTopicData by remember { mutableStateOf<CelebrationModalData?>(null) }
 
     LaunchedEffect(currentIndex) {
         cardStartTimestamp = SystemClock.elapsedRealtime()
@@ -388,6 +407,34 @@ fun StudyScreen(
                         }
                     }
 
+                    fun handleRate(rating: Int) {
+                        val now = SystemClock.elapsedRealtime()
+                        val cardDurationMillis = (now - cardStartTimestamp).coerceAtLeast(300L)
+                        val currentCard = cards.getOrNull(currentIndex)
+                        val topicKey = if (currentCard != null) "${currentCard.l1}::${currentCard.l2}::${currentCard.l3}" else ""
+                        if (currentCard != null && getL3GoalProgress != null && topicKey.isNotBlank()) {
+                            val progress = getL3GoalProgress(currentCard.l1, currentCard.l2, currentCard.l3)
+                            val newReviewed = progress.reviewedToday + 1
+                            val shouldCelebrate = onCheckShouldCelebrateTopic?.invoke(
+                                currentCard.l1, currentCard.l2, currentCard.l3, newReviewed, progress.targetCards
+                            ) ?: (!celebratedL3s.contains(topicKey) && newReviewed >= progress.targetCards && progress.targetCards > 0)
+
+                            if (shouldCelebrate) {
+                                celebratedL3s.add(topicKey)
+                                celebrationTopicData = CelebrationModalData(
+                                    l1 = currentCard.l1,
+                                    l2 = currentCard.l2,
+                                    l3 = currentCard.l3,
+                                    reviewedToday = newReviewed,
+                                    targetCards = progress.targetCards,
+                                    percentage = progress.goalPercentage,
+                                    hasNextTopic = progress.hasNextTopic && onNextL3Topic != null
+                                )
+                            }
+                        }
+                        onRateCard(rating, cardDurationMillis)
+                    }
+
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.spacedBy(8.dp)
@@ -396,11 +443,7 @@ fun StudyScreen(
                             label = "Errei",
                             interval = againStr,
                             color = Color(0xFFEF4444),
-                            onClick = {
-                                val now = SystemClock.elapsedRealtime()
-                                val cardDurationMillis = (now - cardStartTimestamp).coerceAtLeast(300L)
-                                onRateCard(1, cardDurationMillis)
-                            },
+                            onClick = { handleRate(1) },
                             testTag = "btn_rate_again",
                             modifier = Modifier.weight(1f)
                         )
@@ -408,11 +451,7 @@ fun StudyScreen(
                             label = "Difícil",
                             interval = hardStr,
                             color = Color(0xFFF59E0B),
-                            onClick = {
-                                val now = SystemClock.elapsedRealtime()
-                                val cardDurationMillis = (now - cardStartTimestamp).coerceAtLeast(300L)
-                                onRateCard(2, cardDurationMillis)
-                            },
+                            onClick = { handleRate(2) },
                             testTag = "btn_rate_hard",
                             modifier = Modifier.weight(1f)
                         )
@@ -420,11 +459,7 @@ fun StudyScreen(
                             label = "Bom",
                             interval = goodStr,
                             color = Color(0xFF3B82F6),
-                            onClick = {
-                                val now = SystemClock.elapsedRealtime()
-                                val cardDurationMillis = (now - cardStartTimestamp).coerceAtLeast(300L)
-                                onRateCard(3, cardDurationMillis)
-                            },
+                            onClick = { handleRate(3) },
                             testTag = "btn_rate_good",
                             modifier = Modifier.weight(1f)
                         )
@@ -432,11 +467,7 @@ fun StudyScreen(
                             label = "Fácil",
                             interval = easyStr,
                             color = Color(0xFF10B981),
-                            onClick = {
-                                val now = SystemClock.elapsedRealtime()
-                                val cardDurationMillis = (now - cardStartTimestamp).coerceAtLeast(300L)
-                                onRateCard(4, cardDurationMillis)
-                            },
+                            onClick = { handleRate(4) },
                             testTag = "btn_rate_easy",
                             modifier = Modifier.weight(1f)
                         )
@@ -446,6 +477,23 @@ fun StudyScreen(
                 Spacer(modifier = Modifier.height(8.dp))
             }
         }
+    }
+
+    celebrationTopicData?.let { data ->
+        GoalCelebrationDialog(
+            l3TopicName = data.l3,
+            reviewedCount = data.reviewedToday,
+            targetCount = data.targetCards,
+            percentage = data.percentage,
+            hasNextTopic = data.hasNextTopic,
+            onNextTopic = {
+                celebrationTopicData = null
+                onNextL3Topic?.invoke(data.l1, data.l2, data.l3)
+            },
+            onContinueCurrentTopic = {
+                celebrationTopicData = null
+            }
+        )
     }
 }
 

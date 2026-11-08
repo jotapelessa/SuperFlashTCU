@@ -84,6 +84,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.data.model.DomainStats
 import com.example.data.model.FlashcardEntity
+import com.example.data.model.isDueForReview
 import com.example.data.model.L2DisciplineSummary
 import com.example.data.model.L3TopicSummary
 import com.example.data.model.ReviewStats
@@ -134,6 +135,7 @@ fun SubDeckScreen(
     onOpenCompareDecks: () -> Unit = {},
     onDeleteL2Discipline: (l1: String, l2: String) -> Unit = { _, _ -> },
     onUpdateL2Discipline: (l1: String, oldL2: String, newL2: String, iconKey: String, colorHex: String) -> Unit = { _, _, _, _, _ -> },
+    onUpdateDailyGoalPercentage: (l1: String, l2: String, percentage: Float) -> Unit = { _, _, _ -> },
     srsAlgorithm: String = "FSRS",
     modifier: Modifier = Modifier
 ) {
@@ -193,6 +195,9 @@ fun SubDeckScreen(
                 onDeleteL2 = {
                     onDeleteL2Discipline(l1, currentDiscipline.l2)
                     selectedL2Detail = null
+                },
+                onUpdateDailyGoalPercentage = { pct ->
+                    onUpdateDailyGoalPercentage(l1, currentDiscipline.l2, pct)
                 },
                 srsAlgorithm = srsAlgorithm
             )
@@ -379,7 +384,7 @@ fun SubDeckScreen(
                         onSelectL2Filter = onSelectL2Filter,
                         onSelectL3Filter = onSelectL3Filter,
                         onStartReviewSession = {
-                            val dueCards = filteredCards.filter { it.dueTimestamp <= System.currentTimeMillis() }
+                            val dueCards = filteredCards.filter { it.isDueForReview() }
                             onStudyCards(if (dueCards.isNotEmpty()) dueCards else filteredCards)
                         },
                         onOpenStudyConfig = { onOpenStudyConfig(l1, selectedL2Filter, selectedL3Filter) },
@@ -488,7 +493,8 @@ private fun calculateL2ReviewStats(cards: List<FlashcardEntity>): ReviewStats {
     return ReviewStats(
         dueNow = dueNow,
         dueToday = dueToday,
-        totalReviewed = totalReviews,
+        totalReviewed = reviewed.size,
+        totalReviewsCount = totalReviews,
         retentionRate = retention,
         averageIntervalDays = avgInterval
     )

@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+  <title>SuperFlash TCU - Frosted Glass 07: Liquid Glass Capsule</title>
+  <defs>
+    <linearGradient id="f7_glass1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38BDF8" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="#1E3A8A" stop-opacity="0.85"/>
+    </linearGradient>
+    <linearGradient id="f7_glass2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#60A5FA" stop-opacity="0.55"/>
+      <stop offset="100%" stop-color="#2563EB" stop-opacity="0.9"/>
+    </linearGradient>
+    <linearGradient id="f7_stroke" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.9"/>
+      <stop offset="100%" stop-color="#38BDF8" stop-opacity="0.25"/>
+    </linearGradient>
+    <linearGradient id="f7_bolt" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FEF08A"/>
+      <stop offset="40%" stop-color="#F59E0B"/>
+      <stop offset="100%" stop-color="#EA580C"/>
+    </linearGradient>
+  </defs>
+
+  <rect x="36" y="36" width="440" height="440" rx="96" fill="#030712"/>
+
+  <!-- Back Rounded Glass Capsule (L2) -->
+  <g transform="rotate(-28 256 220)">
+    <rect x="120" y="180" width="272" height="95" rx="36" fill="url(#f7_glass1)" stroke="url(#f7_stroke)" stroke-width="3"/>
+  </g>
+
+  <!-- Front Rounded Glass Capsule (L3) -->
+  <g transform="rotate(-28 256 295)">
+    <rect x="110" y="245" width="292" height="105" rx="42" fill="url(#f7_glass2)" stroke="url(#f7_stroke)" stroke-width="4"/>
+    <!-- Internal Liquid Specular Bar -->
+    <rect x="135" y="260" width="160" height="12" rx="6" fill="#FFFFFF" opacity="0.6"/>
+    <rect x="135" y="285" width="100" height="8" rx="4" fill="#BAE6FD" opacity="0.5"/>
+  </g>
+
+  <!-- Golden Piercing Blade -->
+  <polygon points="285,45 180,235 255,235 200,435 350,215 275,215 320,45" fill="url(#f7_bolt)"/>
+  <polygon points="285,45 250,215 275,215 200,435 180,235" fill="#D97706" opacity="0.45"/>
+</svg>

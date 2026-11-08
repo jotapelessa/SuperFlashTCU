@@ -1,0 +1,225 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1600" height="840" viewBox="0 0 1600 840"><defs><filter id="grey"><feColorMatrix type="saturate" values="0"/></filter></defs><rect width="1600" height="840" fill="#f7f7f4"/><text x="60" y="78" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="40" font-weight="700" fill="#161616">SuperFlash — Conceitos de Identidade Visual</text><text x="60" y="116" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="20" fill="#6b6b6b">3 Direções autorais (Sem clichês de cérebro, lâmpada ou cartões literais) auditadas em 16/32/64 px</text><rect x="60" y="150" width="474.667" height="630" rx="18" fill="#fff" stroke="#161616" stroke-width="2"/><g filter="url(#grey)"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" x="90" y="190" width="414.667" height="300" preserveAspectRatio="xMidYMid meet">
+  <title>SuperFlash - Concept A: The Spark Aperture</title>
+  <!-- 
+    Concept A: The Spark Aperture
+    Dois blocos chanfrados complementares em ângulo de 45 graus.
+    A fenda em espaço negativo esculpe o monograma 'S' dinâmico e o spark central de ativação.
+    Construído com geometria rigorosa em grid modular de 16px.
+  -->
+  <g fill="#000000" fill-rule="evenodd">
+    <!-- Top-Right Anchor Shard -->
+    <path d="M176 80 L384 80 C406 80 424 98 424 120 L424 240 L340 240 L340 168 L264 168 L176 80 Z"/>
+    
+    <!-- Central Kinetic S-Blade (Upper Fin) -->
+    <path d="M120 152 L232 264 L160 264 C138 264 120 246 120 224 L120 152 Z"/>
+    
+    <!-- Central Kinetic S-Blade (Lower Fin) -->
+    <path d="M392 360 L280 248 L352 248 C374 248 392 266 392 288 L392 360 Z"/>
+
+    <!-- Bottom-Left Anchor Shard -->
+    <path d="M336 432 L128 432 C106 432 88 414 88 392 L88 272 L172 272 L172 344 L248 344 L336 432 Z"/>
+  </g>
+</svg>
+</g><g filter="url(#grey)"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" x="90" y="516" width="64" height="64" preserveAspectRatio="xMidYMid meet">
+  <title>SuperFlash - Concept A: The Spark Aperture</title>
+  <!-- 
+    Concept A: The Spark Aperture
+    Dois blocos chanfrados complementares em ângulo de 45 graus.
+    A fenda em espaço negativo esculpe o monograma 'S' dinâmico e o spark central de ativação.
+    Construído com geometria rigorosa em grid modular de 16px.
+  -->
+  <g fill="#000000" fill-rule="evenodd">
+    <!-- Top-Right Anchor Shard -->
+    <path d="M176 80 L384 80 C406 80 424 98 424 120 L424 240 L340 240 L340 168 L264 168 L176 80 Z"/>
+    
+    <!-- Central Kinetic S-Blade (Upper Fin) -->
+    <path d="M120 152 L232 264 L160 264 C138 264 120 246 120 224 L120 152 Z"/>
+    
+    <!-- Central Kinetic S-Blade (Lower Fin) -->
+    <path d="M392 360 L280 248 L352 248 C374 248 392 266 392 288 L392 360 Z"/>
+
+    <!-- Bottom-Left Anchor Shard -->
+    <path d="M336 432 L128 432 C106 432 88 414 88 392 L88 272 L172 272 L172 344 L248 344 L336 432 Z"/>
+  </g>
+</svg>
+</g><text x="122" y="600" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" fill="#8a8a8a" text-anchor="middle">64px</text><g filter="url(#grey)"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" x="180" y="548" width="32" height="32" preserveAspectRatio="xMidYMid meet">
+  <title>SuperFlash - Concept A: The Spark Aperture</title>
+  <!-- 
+    Concept A: The Spark Aperture
+    Dois blocos chanfrados complementares em ângulo de 45 graus.
+    A fenda em espaço negativo esculpe o monograma 'S' dinâmico e o spark central de ativação.
+    Construído com geometria rigorosa em grid modular de 16px.
+  -->
+  <g fill="#000000" fill-rule="evenodd">
+    <!-- Top-Right Anchor Shard -->
+    <path d="M176 80 L384 80 C406 80 424 98 424 120 L424 240 L340 240 L340 168 L264 168 L176 80 Z"/>
+    
+    <!-- Central Kinetic S-Blade (Upper Fin) -->
+    <path d="M120 152 L232 264 L160 264 C138 264 120 246 120 224 L120 152 Z"/>
+    
+    <!-- Central Kinetic S-Blade (Lower Fin) -->
+    <path d="M392 360 L280 248 L352 248 C374 248 392 266 392 288 L392 360 Z"/>
+
+    <!-- Bottom-Left Anchor Shard -->
+    <path d="M336 432 L128 432 C106 432 88 414 88 392 L88 272 L172 272 L172 344 L248 344 L336 432 Z"/>
+  </g>
+</svg>
+</g><text x="196" y="600" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" fill="#8a8a8a" text-anchor="middle">32px</text><g filter="url(#grey)"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" x="238" y="564" width="16" height="16" preserveAspectRatio="xMidYMid meet">
+  <title>SuperFlash - Concept A: The Spark Aperture</title>
+  <!-- 
+    Concept A: The Spark Aperture
+    Dois blocos chanfrados complementares em ângulo de 45 graus.
+    A fenda em espaço negativo esculpe o monograma 'S' dinâmico e o spark central de ativação.
+    Construído com geometria rigorosa em grid modular de 16px.
+  -->
+  <g fill="#000000" fill-rule="evenodd">
+    <!-- Top-Right Anchor Shard -->
+    <path d="M176 80 L384 80 C406 80 424 98 424 120 L424 240 L340 240 L340 168 L264 168 L176 80 Z"/>
+    
+    <!-- Central Kinetic S-Blade (Upper Fin) -->
+    <path d="M120 152 L232 264 L160 264 C138 264 120 246 120 224 L120 152 Z"/>
+    
+    <!-- Central Kinetic S-Blade (Lower Fin) -->
+    <path d="M392 360 L280 248 L352 248 C374 248 392 266 392 288 L392 360 Z"/>
+
+    <!-- Bottom-Left Anchor Shard -->
+    <path d="M336 432 L128 432 C106 432 88 414 88 392 L88 272 L172 272 L172 344 L248 344 L336 432 Z"/>
+  </g>
+</svg>
+</g><text x="246" y="600" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" fill="#8a8a8a" text-anchor="middle">16px</text><text x="90.0" y="636" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="26" font-weight="700" fill="#161616">A · The Spark Aperture</text><text x="90.0" y="664" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="15" font-weight="700" fill="#161616" letter-spacing="1.5">RECOMMENDED</text><text x="90.0" y="698" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="19" fill="#555">Monograma &#x27;S&#x27; em espaço negativo gerado por</text><text x="90.0" y="724" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="19" fill="#555">duas lâminas de revelação e centelha de</text><text x="90.0" y="750" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="19" fill="#555">ativação.</text><rect x="562.667" y="150" width="474.667" height="630" rx="18" fill="#fff" stroke="#e4e4e0" stroke-width="1"/><g filter="url(#grey)"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" x="592.667" y="190" width="414.667" height="300" preserveAspectRatio="xMidYMid meet">
+  <title>SuperFlash - Concept B: The Spaced Möbius</title>
+  <!-- 
+    Concept B: The Spaced Möbius
+    Dois laços interligados que formam o fluxo perpétuo da memória de longo prazo (curva de esquecimento domada).
+    A geometria desenha um 'S' contínuo em fita torcida com espessura uniforme de 64px.
+  -->
+  <g fill="#000000" fill-rule="evenodd">
+    <!-- Top Loop & Spine -->
+    <path d="M256 72 C335 72 400 137 400 216 C400 272 368 320 322 344 L284 290 C310 275 328 247 328 216 C328 176 296 144 256 144 C222 144 194 167 186 198 L114 198 C124 127 184 72 256 72 Z"/>
+    
+    <!-- Bottom Loop & Anchor -->
+    <path d="M256 440 C177 440 112 375 112 296 C112 240 144 192 190 168 L228 222 C202 237 184 265 184 296 C184 336 216 368 256 368 C290 368 318 345 326 314 L398 314 C388 385 328 440 256 440 Z"/>
+    
+    <!-- Central Convergence Diamond Core (The Spark of Activation) -->
+    <polygon points="256,216 288,256 256,296 224,256"/>
+  </g>
+</svg>
+</g><g filter="url(#grey)"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" x="592.667" y="516" width="64" height="64" preserveAspectRatio="xMidYMid meet">
+  <title>SuperFlash - Concept B: The Spaced Möbius</title>
+  <!-- 
+    Concept B: The Spaced Möbius
+    Dois laços interligados que formam o fluxo perpétuo da memória de longo prazo (curva de esquecimento domada).
+    A geometria desenha um 'S' contínuo em fita torcida com espessura uniforme de 64px.
+  -->
+  <g fill="#000000" fill-rule="evenodd">
+    <!-- Top Loop & Spine -->
+    <path d="M256 72 C335 72 400 137 400 216 C400 272 368 320 322 344 L284 290 C310 275 328 247 328 216 C328 176 296 144 256 144 C222 144 194 167 186 198 L114 198 C124 127 184 72 256 72 Z"/>
+    
+    <!-- Bottom Loop & Anchor -->
+    <path d="M256 440 C177 440 112 375 112 296 C112 240 144 192 190 168 L228 222 C202 237 184 265 184 296 C184 336 216 368 256 368 C290 368 318 345 326 314 L398 314 C388 385 328 440 256 440 Z"/>
+    
+    <!-- Central Convergence Diamond Core (The Spark of Activation) -->
+    <polygon points="256,216 288,256 256,296 224,256"/>
+  </g>
+</svg>
+</g><text x="624.667" y="600" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" fill="#8a8a8a" text-anchor="middle">64px</text><g filter="url(#grey)"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" x="682.667" y="548" width="32" height="32" preserveAspectRatio="xMidYMid meet">
+  <title>SuperFlash - Concept B: The Spaced Möbius</title>
+  <!-- 
+    Concept B: The Spaced Möbius
+    Dois laços interligados que formam o fluxo perpétuo da memória de longo prazo (curva de esquecimento domada).
+    A geometria desenha um 'S' contínuo em fita torcida com espessura uniforme de 64px.
+  -->
+  <g fill="#000000" fill-rule="evenodd">
+    <!-- Top Loop & Spine -->
+    <path d="M256 72 C335 72 400 137 400 216 C400 272 368 320 322 344 L284 290 C310 275 328 247 328 216 C328 176 296 144 256 144 C222 144 194 167 186 198 L114 198 C124 127 184 72 256 72 Z"/>
+    
+    <!-- Bottom Loop & Anchor -->
+    <path d="M256 440 C177 440 112 375 112 296 C112 240 144 192 190 168 L228 222 C202 237 184 265 184 296 C184 336 216 368 256 368 C290 368 318 345 326 314 L398 314 C388 385 328 440 256 440 Z"/>
+    
+    <!-- Central Convergence Diamond Core (The Spark of Activation) -->
+    <polygon points="256,216 288,256 256,296 224,256"/>
+  </g>
+</svg>
+</g><text x="698.667" y="600" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" fill="#8a8a8a" text-anchor="middle">32px</text><g filter="url(#grey)"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" x="740.667" y="564" width="16" height="16" preserveAspectRatio="xMidYMid meet">
+  <title>SuperFlash - Concept B: The Spaced Möbius</title>
+  <!-- 
+    Concept B: The Spaced Möbius
+    Dois laços interligados que formam o fluxo perpétuo da memória de longo prazo (curva de esquecimento domada).
+    A geometria desenha um 'S' contínuo em fita torcida com espessura uniforme de 64px.
+  -->
+  <g fill="#000000" fill-rule="evenodd">
+    <!-- Top Loop & Spine -->
+    <path d="M256 72 C335 72 400 137 400 216 C400 272 368 320 322 344 L284 290 C310 275 328 247 328 216 C328 176 296 144 256 144 C222 144 194 167 186 198 L114 198 C124 127 184 72 256 72 Z"/>
+    
+    <!-- Bottom Loop & Anchor -->
+    <path d="M256 440 C177 440 112 375 112 296 C112 240 144 192 190 168 L228 222 C202 237 184 265 184 296 C184 336 216 368 256 368 C290 368 318 345 326 314 L398 314 C388 385 328 440 256 440 Z"/>
+    
+    <!-- Central Convergence Diamond Core (The Spark of Activation) -->
+    <polygon points="256,216 288,256 256,296 224,256"/>
+  </g>
+</svg>
+</g><text x="748.667" y="600" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" fill="#8a8a8a" text-anchor="middle">16px</text><text x="592.6666666666667" y="636" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="26" font-weight="700" fill="#161616">B · The Spaced Möbius</text><text x="592.6666666666667" y="670" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="19" fill="#555">Fita infinita de repetição contínua com</text><text x="592.6666666666667" y="696" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="19" fill="#555">núcleo de ativação mnemônica e fluxo</text><text x="592.6666666666667" y="722" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="19" fill="#555">ascendente.</text><rect x="1065.33" y="150" width="474.667" height="630" rx="18" fill="#fff" stroke="#e4e4e0" stroke-width="1"/><g filter="url(#grey)"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" x="1095.33" y="190" width="414.667" height="300" preserveAspectRatio="xMidYMid meet">
+  <title>SuperFlash - Concept C: The Insight Lock</title>
+  <!-- 
+    Concept C: The Insight Lock
+    Duas formas primárias complementares em encaixe sináptico (pergunta + resposta = retenção).
+    O corte zig-zag em negativo gera o raio sutil e a silhueta da letra 'S' em espaço negativo contínuo.
+    Projetado para funcionar com máxima solidez em ícone de 16px a 512px.
+  -->
+  <g fill="#000000">
+    <!-- Left Wing (Stimulus / Question Face) -->
+    <path d="M96 160 C96 112 134 74 182 74 L276 74 L210 216 L286 216 L174 438 L182 350 L140 350 C116 350 96 330 96 306 Z"/>
+    
+    <!-- Right Wing (Recall / Answer Face) -->
+    <path d="M416 352 C416 400 378 438 330 438 L236 438 L302 296 L226 296 L338 74 L330 162 L372 162 C396 162 416 182 416 206 Z"/>
+  </g>
+</svg>
+</g><g filter="url(#grey)"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" x="1095.33" y="516" width="64" height="64" preserveAspectRatio="xMidYMid meet">
+  <title>SuperFlash - Concept C: The Insight Lock</title>
+  <!-- 
+    Concept C: The Insight Lock
+    Duas formas primárias complementares em encaixe sináptico (pergunta + resposta = retenção).
+    O corte zig-zag em negativo gera o raio sutil e a silhueta da letra 'S' em espaço negativo contínuo.
+    Projetado para funcionar com máxima solidez em ícone de 16px a 512px.
+  -->
+  <g fill="#000000">
+    <!-- Left Wing (Stimulus / Question Face) -->
+    <path d="M96 160 C96 112 134 74 182 74 L276 74 L210 216 L286 216 L174 438 L182 350 L140 350 C116 350 96 330 96 306 Z"/>
+    
+    <!-- Right Wing (Recall / Answer Face) -->
+    <path d="M416 352 C416 400 378 438 330 438 L236 438 L302 296 L226 296 L338 74 L330 162 L372 162 C396 162 416 182 416 206 Z"/>
+  </g>
+</svg>
+</g><text x="1127.33" y="600" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" fill="#8a8a8a" text-anchor="middle">64px</text><g filter="url(#grey)"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" x="1185.33" y="548" width="32" height="32" preserveAspectRatio="xMidYMid meet">
+  <title>SuperFlash - Concept C: The Insight Lock</title>
+  <!-- 
+    Concept C: The Insight Lock
+    Duas formas primárias complementares em encaixe sináptico (pergunta + resposta = retenção).
+    O corte zig-zag em negativo gera o raio sutil e a silhueta da letra 'S' em espaço negativo contínuo.
+    Projetado para funcionar com máxima solidez em ícone de 16px a 512px.
+  -->
+  <g fill="#000000">
+    <!-- Left Wing (Stimulus / Question Face) -->
+    <path d="M96 160 C96 112 134 74 182 74 L276 74 L210 216 L286 216 L174 438 L182 350 L140 350 C116 350 96 330 96 306 Z"/>
+    
+    <!-- Right Wing (Recall / Answer Face) -->
+    <path d="M416 352 C416 400 378 438 330 438 L236 438 L302 296 L226 296 L338 74 L330 162 L372 162 C396 162 416 182 416 206 Z"/>
+  </g>
+</svg>
+</g><text x="1201.33" y="600" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" fill="#8a8a8a" text-anchor="middle">32px</text><g filter="url(#grey)"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" x="1243.33" y="564" width="16" height="16" preserveAspectRatio="xMidYMid meet">
+  <title>SuperFlash - Concept C: The Insight Lock</title>
+  <!-- 
+    Concept C: The Insight Lock
+    Duas formas primárias complementares em encaixe sináptico (pergunta + resposta = retenção).
+    O corte zig-zag em negativo gera o raio sutil e a silhueta da letra 'S' em espaço negativo contínuo.
+    Projetado para funcionar com máxima solidez em ícone de 16px a 512px.
+  -->
+  <g fill="#000000">
+    <!-- Left Wing (Stimulus / Question Face) -->
+    <path d="M96 160 C96 112 134 74 182 74 L276 74 L210 216 L286 216 L174 438 L182 350 L140 350 C116 350 96 330 96 306 Z"/>
+    
+    <!-- Right Wing (Recall / Answer Face) -->
+    <path d="M416 352 C416 400 378 438 330 438 L236 438 L302 296 L226 296 L338 74 L330 162 L372 162 C396 162 416 182 416 206 Z"/>
+  </g>
+</svg>
+</g><text x="1251.33" y="600" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" fill="#8a8a8a" text-anchor="middle">16px</text><text x="1095.3333333333335" y="636" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="26" font-weight="700" fill="#161616">C · The Insight Lock</text><text x="1095.3333333333335" y="670" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="19" fill="#555">Duas formas complementares em encaixe</text><text x="1095.3333333333335" y="696" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="19" fill="#555">sináptico (pergunta + resposta = retenção</text><text x="1095.3333333333335" y="722" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="19" fill="#555">consolidada).</text></svg>

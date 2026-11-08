@@ -37,6 +37,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.example.data.model.isDueForReview
 import com.example.ui.screens.AnalyticsScreen
 import com.example.ui.screens.CardEditorDialog
 import com.example.ui.screens.DeckComparisonDialog
@@ -156,6 +157,7 @@ fun AnkiAppNavigation(viewModel: DeckViewModel) {
     val allCards by viewModel.allCards.collectAsStateWithLifecycle()
     val allTags by viewModel.allTags.collectAsStateWithLifecycle()
     val dailyStudyGoal by viewModel.dailyStudyGoal.collectAsStateWithLifecycle()
+    val dailyGoalPercentage by viewModel.dailyGoalPercentage.collectAsStateWithLifecycle()
     val todayReviewedCount by viewModel.todayReviewedCount.collectAsStateWithLifecycle()
     val smartShuffleEnabled by viewModel.smartShuffleEnabled.collectAsStateWithLifecycle()
     val sessionTimerConfig by viewModel.sessionTimerConfig.collectAsStateWithLifecycle()
@@ -247,6 +249,18 @@ fun AnkiAppNavigation(viewModel: DeckViewModel) {
                         onFinish = {
                             viewModel.finishStudySession()
                             subDestination = null
+                        },
+                        onNextL3Topic = { l1Target, l2Target, currentL3 ->
+                            val nextCards = viewModel.getNextL3TopicCards(l1Target, l2Target, currentL3)
+                            if (nextCards != null && nextCards.isNotEmpty()) {
+                                viewModel.startStudySession(nextCards, sessionTimerConfig)
+                            }
+                        },
+                        getL3GoalProgress = { l1Target, l2Target, l3Target ->
+                            viewModel.getL3GoalProgress(l1Target, l2Target, l3Target)
+                        },
+                        onCheckShouldCelebrateTopic = { l1Target, l2Target, l3Target, currentReviewed, targetCards ->
+                            viewModel.shouldCelebrateL3Topic(l1Target, l2Target, l3Target, currentReviewed, targetCards)
                         }
                     )
                 }
@@ -309,6 +323,9 @@ fun AnkiAppNavigation(viewModel: DeckViewModel) {
                             onUpdateL2Discipline = { l1Target, oldL2, newL2, iconKey, colorHex ->
                                 viewModel.updateL2Discipline(l1Target, oldL2, newL2, iconKey, colorHex)
                             },
+                            onUpdateDailyGoalPercentage = { l1Target, l2Target, pct ->
+                                viewModel.setL2DailyGoalPercentage(l1Target, l2Target, pct)
+                            },
                             srsAlgorithm = srsAlgorithm
                         )
                     } ?: run {
@@ -339,7 +356,7 @@ fun AnkiAppNavigation(viewModel: DeckViewModel) {
                             viewModel.selectL1(l1)
                             val cardsToStudy = allCards.filter { it.l1 == l1 }
                             if (cardsToStudy.isNotEmpty()) {
-                                val dueCards = cardsToStudy.filter { it.dueTimestamp <= System.currentTimeMillis() }
+                                val dueCards = cardsToStudy.filter { it.isDueForReview() }
                                 val targetCards = if (dueCards.isNotEmpty()) dueCards else cardsToStudy
                                 viewModel.startStudySession(targetCards, sessionTimerConfig)
                                 subDestination = AppDestination.STUDY
@@ -415,6 +432,9 @@ fun AnkiAppNavigation(viewModel: DeckViewModel) {
                 selectedTab == AppTab.SETTINGS -> {
                     SettingsScreen(
                         dailyGoal = dailyStudyGoal,
+                        dailyGoalPercentage = dailyGoalPercentage,
+                        onSetDailyGoalPercentage = { viewModel.setDailyGoalPercentage(it) },
+                        l1Decks = l1Decks,
                         smartShuffleEnabled = smartShuffleEnabled,
                         timerConfig = sessionTimerConfig,
                         totalCardsCount = allCards.size,

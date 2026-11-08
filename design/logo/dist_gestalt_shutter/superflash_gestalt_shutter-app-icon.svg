@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256"><title>SuperFlash Logo</title><rect width="256" height="256" rx="57.6" fill="#0B0F19"/><g transform="translate(12.54 12.54) scale(0.451)" fill="#FFFFFF">
+  
+  <!--
+    Conceito 1: The Gestalt Shutter (O Obturador de Gestalt)
+    Metáfora: O momento da recuperação ativa — a mente preenche a lacuna.
+    Primeira leitura: Um ícone geométrico com quatro blocos arquitetônicos e chanfros em 45°.
+    Segunda leitura: O espaço negativo entre as peças desenha a letra 'S' e uma centelha de luz central.
+  -->
+  <g fill="#FFFFFF" fill-rule="evenodd">
+    <!-- Top-Right Anchor Block -->
+    <path d="M184 80 L384 80 C406 80 424 98 424 120 L424 240 L344 240 L344 160 L264 160 L184 80 Z"/>
+    
+    <!-- Central Kinetic Fin (Upper) -->
+    <path d="M120 152 L232 264 L160 264 C138 264 120 246 120 224 L120 152 Z"/>
+    
+    <!-- Central Kinetic Fin (Lower) -->
+    <path d="M392 360 L280 248 L352 248 C374 248 392 266 392 288 L392 360 Z"/>
+
+    <!-- Bottom-Left Anchor Block -->
+    <path d="M328 432 L128 432 C106 432 88 414 88 392 L88 272 L168 272 L168 352 L248 352 L328 432 Z"/>
+  </g>
+</g></svg>

@@ -1,0 +1,1677 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1600" height="2814" viewBox="0 0 1600 2814"><rect width="1600" height="2814" fill="#f7f7f4"/><text x="60" y="78" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="40" font-weight="700" fill="#161616">SuperFlash TCU — Variações Isometric Spark</text><text x="60" y="116" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="20" fill="#6b6b6b">Exploração de 10 direções focadas em camadas 3D, velocidade e inteligência para concurso</text><rect x="60" y="150" width="474.667" height="630" rx="18" fill="#fff" stroke="#161616" stroke-width="2"/><g><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" x="90" y="190" width="414.667" height="300" preserveAspectRatio="xMidYMid meet">
+  <title>SuperFlash TCU - Triple Stack Spark</title>
+  <defs>
+    <linearGradient id="c0-v1_card1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1E3A8A"/>
+      <stop offset="100%" stop-color="#0F172A"/>
+    </linearGradient>
+    <linearGradient id="c0-v1_card2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#2563EB"/>
+      <stop offset="100%" stop-color="#1D4ED8"/>
+    </linearGradient>
+    <linearGradient id="c0-v1_card3" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#60A5FA"/>
+      <stop offset="100%" stop-color="#3B82F6"/>
+    </linearGradient>
+    <linearGradient id="c0-v1_bolt" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FEF08A"/>
+      <stop offset="40%" stop-color="#FBBF24"/>
+      <stop offset="100%" stop-color="#F97316"/>
+    </linearGradient>
+    <linearGradient id="c0-v1_bolt_shadow" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#EA580C"/>
+      <stop offset="100%" stop-color="#C2410C"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Level 1 Card (Base: New Cards) -->
+  <path d="M120 330 L256 250 L392 330 L256 410 Z" fill="url(#c0-v1_card1)"/>
+  <path d="M120 330 L256 410 L256 430 L120 350 Z" fill="#090D16"/>
+  <path d="M256 410 L392 330 L392 350 L256 430 Z" fill="#0F172A"/>
+
+  <!-- Level 2 Card (Mid: Learning Cards) -->
+  <path d="M120 250 L256 170 L392 250 L256 330 Z" fill="url(#c0-v1_card2)"/>
+  <path d="M120 250 L256 330 L256 270 L120 190 Z" fill="#1E40AF" opacity="0.8"/>
+  <path d="M256 330 L392 250 L392 270 L256 350 Z" fill="#1D4ED8" opacity="0.9"/>
+
+  <!-- Level 3 Card (Top: Mastered Cards) -->
+  <path d="M120 170 L256 90 L392 170 L256 250 Z" fill="url(#c0-v1_card3)"/>
+  <path d="M120 170 L256 250 L256 265 L120 185 Z" fill="#2563EB"/>
+  <path d="M256 250 L392 170 L392 185 L256 265 Z" fill="#1D4ED8"/>
+
+  <!-- Card Cutout Hole (Eixo por onde o raio atravessa os 3 níveis de cards) -->
+  <ellipse cx="256" cy="170" rx="35" ry="18" fill="#0F172A" opacity="0.6"/>
+
+  <!-- The High-Voltage Core Lightning Bolt -->
+  <polygon points="275,40 220,200 270,200 225,380 325,180 270,180 305,40" fill="url(#c0-v1_bolt)"/>
+  <polygon points="275,40 250,180 270,180 225,380 220,200" fill="url(#c0-v1_bolt_shadow)" opacity="0.4"/>
+
+  <!-- AI Gemini Particle Glow -->
+  <polygon points="345,75 352,88 365,95 352,102 345,115 338,102 325,95 338,88" fill="#FDE047"/>
+  <polygon points="175,290 180,300 190,305 180,310 175,320 170,310 160,305 170,300" fill="#60A5FA" opacity="0.75"/>
+</svg>
+</g><g><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" x="90" y="516" width="64" height="64" preserveAspectRatio="xMidYMid meet">
+  <title>SuperFlash TCU - Triple Stack Spark</title>
+  <defs>
+    <linearGradient id="s064-v1_card1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1E3A8A"/>
+      <stop offset="100%" stop-color="#0F172A"/>
+    </linearGradient>
+    <linearGradient id="s064-v1_card2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#2563EB"/>
+      <stop offset="100%" stop-color="#1D4ED8"/>
+    </linearGradient>
+    <linearGradient id="s064-v1_card3" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#60A5FA"/>
+      <stop offset="100%" stop-color="#3B82F6"/>
+    </linearGradient>
+    <linearGradient id="s064-v1_bolt" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FEF08A"/>
+      <stop offset="40%" stop-color="#FBBF24"/>
+      <stop offset="100%" stop-color="#F97316"/>
+    </linearGradient>
+    <linearGradient id="s064-v1_bolt_shadow" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#EA580C"/>
+      <stop offset="100%" stop-color="#C2410C"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Level 1 Card (Base: New Cards) -->
+  <path d="M120 330 L256 250 L392 330 L256 410 Z" fill="url(#s064-v1_card1)"/>
+  <path d="M120 330 L256 410 L256 430 L120 350 Z" fill="#090D16"/>
+  <path d="M256 410 L392 330 L392 350 L256 430 Z" fill="#0F172A"/>
+
+  <!-- Level 2 Card (Mid: Learning Cards) -->
+  <path d="M120 250 L256 170 L392 250 L256 330 Z" fill="url(#s064-v1_card2)"/>
+  <path d="M120 250 L256 330 L256 270 L120 190 Z" fill="#1E40AF" opacity="0.8"/>
+  <path d="M256 330 L392 250 L392 270 L256 350 Z" fill="#1D4ED8" opacity="0.9"/>
+
+  <!-- Level 3 Card (Top: Mastered Cards) -->
+  <path d="M120 170 L256 90 L392 170 L256 250 Z" fill="url(#s064-v1_card3)"/>
+  <path d="M120 170 L256 250 L256 265 L120 185 Z" fill="#2563EB"/>
+  <path d="M256 250 L392 170 L392 185 L256 265 Z" fill="#1D4ED8"/>
+
+  <!-- Card Cutout Hole (Eixo por onde o raio atravessa os 3 níveis de cards) -->
+  <ellipse cx="256" cy="170" rx="35" ry="18" fill="#0F172A" opacity="0.6"/>
+
+  <!-- The High-Voltage Core Lightning Bolt -->
+  <polygon points="275,40 220,200 270,200 225,380 325,180 270,180 305,40" fill="url(#s064-v1_bolt)"/>
+  <polygon points="275,40 250,180 270,180 225,380 220,200" fill="url(#s064-v1_bolt_shadow)" opacity="0.4"/>
+
+  <!-- AI Gemini Particle Glow -->
+  <polygon points="345,75 352,88 365,95 352,102 345,115 338,102 325,95 338,88" fill="#FDE047"/>
+  <polygon points="175,290 180,300 190,305 180,310 175,320 170,310 160,305 170,300" fill="#60A5FA" opacity="0.75"/>
+</svg>
+</g><text x="122" y="600" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" fill="#8a8a8a" text-anchor="middle">64px</text><g><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" x="180" y="548" width="32" height="32" preserveAspectRatio="xMidYMid meet">
+  <title>SuperFlash TCU - Triple Stack Spark</title>
+  <defs>
+    <linearGradient id="s032-v1_card1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1E3A8A"/>
+      <stop offset="100%" stop-color="#0F172A"/>
+    </linearGradient>
+    <linearGradient id="s032-v1_card2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#2563EB"/>
+      <stop offset="100%" stop-color="#1D4ED8"/>
+    </linearGradient>
+    <linearGradient id="s032-v1_card3" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#60A5FA"/>
+      <stop offset="100%" stop-color="#3B82F6"/>
+    </linearGradient>
+    <linearGradient id="s032-v1_bolt" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FEF08A"/>
+      <stop offset="40%" stop-color="#FBBF24"/>
+      <stop offset="100%" stop-color="#F97316"/>
+    </linearGradient>
+    <linearGradient id="s032-v1_bolt_shadow" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#EA580C"/>
+      <stop offset="100%" stop-color="#C2410C"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Level 1 Card (Base: New Cards) -->
+  <path d="M120 330 L256 250 L392 330 L256 410 Z" fill="url(#s032-v1_card1)"/>
+  <path d="M120 330 L256 410 L256 430 L120 350 Z" fill="#090D16"/>
+  <path d="M256 410 L392 330 L392 350 L256 430 Z" fill="#0F172A"/>
+
+  <!-- Level 2 Card (Mid: Learning Cards) -->
+  <path d="M120 250 L256 170 L392 250 L256 330 Z" fill="url(#s032-v1_card2)"/>
+  <path d="M120 250 L256 330 L256 270 L120 190 Z" fill="#1E40AF" opacity="0.8"/>
+  <path d="M256 330 L392 250 L392 270 L256 350 Z" fill="#1D4ED8" opacity="0.9"/>
+
+  <!-- Level 3 Card (Top: Mastered Cards) -->
+  <path d="M120 170 L256 90 L392 170 L256 250 Z" fill="url(#s032-v1_card3)"/>
+  <path d="M120 170 L256 250 L256 265 L120 185 Z" fill="#2563EB"/>
+  <path d="M256 250 L392 170 L392 185 L256 265 Z" fill="#1D4ED8"/>
+
+  <!-- Card Cutout Hole (Eixo por onde o raio atravessa os 3 níveis de cards) -->
+  <ellipse cx="256" cy="170" rx="35" ry="18" fill="#0F172A" opacity="0.6"/>
+
+  <!-- The High-Voltage Core Lightning Bolt -->
+  <polygon points="275,40 220,200 270,200 225,380 325,180 270,180 305,40" fill="url(#s032-v1_bolt)"/>
+  <polygon points="275,40 250,180 270,180 225,380 220,200" fill="url(#s032-v1_bolt_shadow)" opacity="0.4"/>
+
+  <!-- AI Gemini Particle Glow -->
+  <polygon points="345,75 352,88 365,95 352,102 345,115 338,102 325,95 338,88" fill="#FDE047"/>
+  <polygon points="175,290 180,300 190,305 180,310 175,320 170,310 160,305 170,300" fill="#60A5FA" opacity="0.75"/>
+</svg>
+</g><text x="196" y="600" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" fill="#8a8a8a" text-anchor="middle">32px</text><g><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" x="238" y="564" width="16" height="16" preserveAspectRatio="xMidYMid meet">
+  <title>SuperFlash TCU - Triple Stack Spark</title>
+  <defs>
+    <linearGradient id="s016-v1_card1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1E3A8A"/>
+      <stop offset="100%" stop-color="#0F172A"/>
+    </linearGradient>
+    <linearGradient id="s016-v1_card2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#2563EB"/>
+      <stop offset="100%" stop-color="#1D4ED8"/>
+    </linearGradient>
+    <linearGradient id="s016-v1_card3" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#60A5FA"/>
+      <stop offset="100%" stop-color="#3B82F6"/>
+    </linearGradient>
+    <linearGradient id="s016-v1_bolt" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FEF08A"/>
+      <stop offset="40%" stop-color="#FBBF24"/>
+      <stop offset="100%" stop-color="#F97316"/>
+    </linearGradient>
+    <linearGradient id="s016-v1_bolt_shadow" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#EA580C"/>
+      <stop offset="100%" stop-color="#C2410C"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Level 1 Card (Base: New Cards) -->
+  <path d="M120 330 L256 250 L392 330 L256 410 Z" fill="url(#s016-v1_card1)"/>
+  <path d="M120 330 L256 410 L256 430 L120 350 Z" fill="#090D16"/>
+  <path d="M256 410 L392 330 L392 350 L256 430 Z" fill="#0F172A"/>
+
+  <!-- Level 2 Card (Mid: Learning Cards) -->
+  <path d="M120 250 L256 170 L392 250 L256 330 Z" fill="url(#s016-v1_card2)"/>
+  <path d="M120 250 L256 330 L256 270 L120 190 Z" fill="#1E40AF" opacity="0.8"/>
+  <path d="M256 330 L392 250 L392 270 L256 350 Z" fill="#1D4ED8" opacity="0.9"/>
+
+  <!-- Level 3 Card (Top: Mastered Cards) -->
+  <path d="M120 170 L256 90 L392 170 L256 250 Z" fill="url(#s016-v1_card3)"/>
+  <path d="M120 170 L256 250 L256 265 L120 185 Z" fill="#2563EB"/>
+  <path d="M256 250 L392 170 L392 185 L256 265 Z" fill="#1D4ED8"/>
+
+  <!-- Card Cutout Hole (Eixo por onde o raio atravessa os 3 níveis de cards) -->
+  <ellipse cx="256" cy="170" rx="35" ry="18" fill="#0F172A" opacity="0.6"/>
+
+  <!-- The High-Voltage Core Lightning Bolt -->
+  <polygon points="275,40 220,200 270,200 225,380 325,180 270,180 305,40" fill="url(#s016-v1_bolt)"/>
+  <polygon points="275,40 250,180 270,180 225,380 220,200" fill="url(#s016-v1_bolt_shadow)" opacity="0.4"/>
+
+  <!-- AI Gemini Particle Glow -->
+  <polygon points="345,75 352,88 365,95 352,102 345,115 338,102 325,95 338,88" fill="#FDE047"/>
+  <polygon points="175,290 180,300 190,305 180,310 175,320 170,310 160,305 170,300" fill="#60A5FA" opacity="0.75"/>
+</svg>
+</g><text x="246" y="600" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" fill="#8a8a8a" text-anchor="middle">16px</text><text x="90.0" y="636" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="26" font-weight="700" fill="#161616">A · Triple Stack</text><text x="90.0" y="664" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="15" font-weight="700" fill="#161616" letter-spacing="1.5">RECOMMENDED</text><text x="90.0" y="698" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="19" fill="#555">Três camadas de flashcards L1/L2/L3 com</text><text x="90.0" y="724" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="19" fill="#555">raio perfurante central.</text><rect x="562.667" y="150" width="474.667" height="630" rx="18" fill="#fff" stroke="#e4e4e0" stroke-width="1"/><g><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" x="592.667" y="190" width="414.667" height="300" preserveAspectRatio="xMidYMid meet">
+  <title>SuperFlash TCU - Open Prism Portal</title>
+  <defs>
+    <linearGradient id="c1-v2_leftWing" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#3B82F6"/>
+      <stop offset="100%" stop-color="#1E3A8A"/>
+    </linearGradient>
+    <linearGradient id="c1-v2_rightWing" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#60A5FA"/>
+      <stop offset="100%" stop-color="#2563EB"/>
+    </linearGradient>
+    <linearGradient id="c1-v2_bolt" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFFBEB"/>
+      <stop offset="35%" stop-color="#FBBF24"/>
+      <stop offset="100%" stop-color="#EA580C"/>
+    </linearGradient>
+    <linearGradient id="c1-v2_glow" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#0284C7"/>
+      <stop offset="100%" stop-color="#38BDF8"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Left Open Card Wing (Face L2/L3) -->
+  <path d="M246 140 L90 220 L90 370 L246 290 Z" fill="url(#c1-v2_leftWing)"/>
+  <path d="M246 290 L90 370 L90 395 L246 315 Z" fill="#0F172A"/>
+
+  <!-- Right Open Card Wing (Face Front/Back) -->
+  <path d="M266 140 L422 220 L422 370 L266 290 Z" fill="url(#c1-v2_rightWing)"/>
+  <path d="M266 290 L422 370 L422 395 L266 315 Z" fill="#1E40AF"/>
+
+  <!-- Flashcard text mock lines (detalhes ópticos) -->
+  <line x1="120" y1="260" x2="216" y2="210" stroke="#93C5FD" stroke-width="6" stroke-linecap="round" opacity="0.4"/>
+  <line x1="120" y1="290" x2="196" y2="250" stroke="#93C5FD" stroke-width="6" stroke-linecap="round" opacity="0.4"/>
+  <line x1="296" y1="210" x2="392" y2="260" stroke="#BFDBFE" stroke-width="6" stroke-linecap="round" opacity="0.4"/>
+  <line x1="316" y1="250" x2="392" y2="290" stroke="#BFDBFE" stroke-width="6" stroke-linecap="round" opacity="0.4"/>
+
+  <!-- Central Prism Glow -->
+  <polygon points="256,120 286,280 256,330 226,280" fill="url(#c1-v2_glow)" opacity="0.35"/>
+
+  <!-- Projecting Hyper Lightning Bolt -->
+  <polygon points="280,50 180,240 250,240 200,430 345,210 270,210 310,50" fill="url(#c1-v2_bolt)"/>
+  <polygon points="280,50 250,210 270,210 200,430 180,240" fill="#F59E0B" opacity="0.5"/>
+
+  <!-- Gemini AI Sparkle Crown -->
+  <polygon points="256,20 262,35 277,41 262,47 256,62 250,47 235,41 250,35" fill="#FDE047"/>
+</svg>
+</g><g><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" x="592.667" y="516" width="64" height="64" preserveAspectRatio="xMidYMid meet">
+  <title>SuperFlash TCU - Open Prism Portal</title>
+  <defs>
+    <linearGradient id="s164-v2_leftWing" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#3B82F6"/>
+      <stop offset="100%" stop-color="#1E3A8A"/>
+    </linearGradient>
+    <linearGradient id="s164-v2_rightWing" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#60A5FA"/>
+      <stop offset="100%" stop-color="#2563EB"/>
+    </linearGradient>
+    <linearGradient id="s164-v2_bolt" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFFBEB"/>
+      <stop offset="35%" stop-color="#FBBF24"/>
+      <stop offset="100%" stop-color="#EA580C"/>
+    </linearGradient>
+    <linearGradient id="s164-v2_glow" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#0284C7"/>
+      <stop offset="100%" stop-color="#38BDF8"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Left Open Card Wing (Face L2/L3) -->
+  <path d="M246 140 L90 220 L90 370 L246 290 Z" fill="url(#s164-v2_leftWing)"/>
+  <path d="M246 290 L90 370 L90 395 L246 315 Z" fill="#0F172A"/>
+
+  <!-- Right Open Card Wing (Face Front/Back) -->
+  <path d="M266 140 L422 220 L422 370 L266 290 Z" fill="url(#s164-v2_rightWing)"/>
+  <path d="M266 290 L422 370 L422 395 L266 315 Z" fill="#1E40AF"/>
+
+  <!-- Flashcard text mock lines (detalhes ópticos) -->
+  <line x1="120" y1="260" x2="216" y2="210" stroke="#93C5FD" stroke-width="6" stroke-linecap="round" opacity="0.4"/>
+  <line x1="120" y1="290" x2="196" y2="250" stroke="#93C5FD" stroke-width="6" stroke-linecap="round" opacity="0.4"/>
+  <line x1="296" y1="210" x2="392" y2="260" stroke="#BFDBFE" stroke-width="6" stroke-linecap="round" opacity="0.4"/>
+  <line x1="316" y1="250" x2="392" y2="290" stroke="#BFDBFE" stroke-width="6" stroke-linecap="round" opacity="0.4"/>
+
+  <!-- Central Prism Glow -->
+  <polygon points="256,120 286,280 256,330 226,280" fill="url(#s164-v2_glow)" opacity="0.35"/>
+
+  <!-- Projecting Hyper Lightning Bolt -->
+  <polygon points="280,50 180,240 250,240 200,430 345,210 270,210 310,50" fill="url(#s164-v2_bolt)"/>
+  <polygon points="280,50 250,210 270,210 200,430 180,240" fill="#F59E0B" opacity="0.5"/>
+
+  <!-- Gemini AI Sparkle Crown -->
+  <polygon points="256,20 262,35 277,41 262,47 256,62 250,47 235,41 250,35" fill="#FDE047"/>
+</svg>
+</g><text x="624.667" y="600" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" fill="#8a8a8a" text-anchor="middle">64px</text><g><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" x="682.667" y="548" width="32" height="32" preserveAspectRatio="xMidYMid meet">
+  <title>SuperFlash TCU - Open Prism Portal</title>
+  <defs>
+    <linearGradient id="s132-v2_leftWing" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#3B82F6"/>
+      <stop offset="100%" stop-color="#1E3A8A"/>
+    </linearGradient>
+    <linearGradient id="s132-v2_rightWing" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#60A5FA"/>
+      <stop offset="100%" stop-color="#2563EB"/>
+    </linearGradient>
+    <linearGradient id="s132-v2_bolt" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFFBEB"/>
+      <stop offset="35%" stop-color="#FBBF24"/>
+      <stop offset="100%" stop-color="#EA580C"/>
+    </linearGradient>
+    <linearGradient id="s132-v2_glow" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#0284C7"/>
+      <stop offset="100%" stop-color="#38BDF8"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Left Open Card Wing (Face L2/L3) -->
+  <path d="M246 140 L90 220 L90 370 L246 290 Z" fill="url(#s132-v2_leftWing)"/>
+  <path d="M246 290 L90 370 L90 395 L246 315 Z" fill="#0F172A"/>
+
+  <!-- Right Open Card Wing (Face Front/Back) -->
+  <path d="M266 140 L422 220 L422 370 L266 290 Z" fill="url(#s132-v2_rightWing)"/>
+  <path d="M266 290 L422 370 L422 395 L266 315 Z" fill="#1E40AF"/>
+
+  <!-- Flashcard text mock lines (detalhes ópticos) -->
+  <line x1="120" y1="260" x2="216" y2="210" stroke="#93C5FD" stroke-width="6" stroke-linecap="round" opacity="0.4"/>
+  <line x1="120" y1="290" x2="196" y2="250" stroke="#93C5FD" stroke-width="6" stroke-linecap="round" opacity="0.4"/>
+  <line x1="296" y1="210" x2="392" y2="260" stroke="#BFDBFE" stroke-width="6" stroke-linecap="round" opacity="0.4"/>
+  <line x1="316" y1="250" x2="392" y2="290" stroke="#BFDBFE" stroke-width="6" stroke-linecap="round" opacity="0.4"/>
+
+  <!-- Central Prism Glow -->
+  <polygon points="256,120 286,280 256,330 226,280" fill="url(#s132-v2_glow)" opacity="0.35"/>
+
+  <!-- Projecting Hyper Lightning Bolt -->
+  <polygon points="280,50 180,240 250,240 200,430 345,210 270,210 310,50" fill="url(#s132-v2_bolt)"/>
+  <polygon points="280,50 250,210 270,210 200,430 180,240" fill="#F59E0B" opacity="0.5"/>
+
+  <!-- Gemini AI Sparkle Crown -->
+  <polygon points="256,20 262,35 277,41 262,47 256,62 250,47 235,41 250,35" fill="#FDE047"/>
+</svg>
+</g><text x="698.667" y="600" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" fill="#8a8a8a" text-anchor="middle">32px</text><g><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" x="740.667" y="564" width="16" height="16" preserveAspectRatio="xMidYMid meet">
+  <title>SuperFlash TCU - Open Prism Portal</title>
+  <defs>
+    <linearGradient id="s116-v2_leftWing" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#3B82F6"/>
+      <stop offset="100%" stop-color="#1E3A8A"/>
+    </linearGradient>
+    <linearGradient id="s116-v2_rightWing" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#60A5FA"/>
+      <stop offset="100%" stop-color="#2563EB"/>
+    </linearGradient>
+    <linearGradient id="s116-v2_bolt" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFFBEB"/>
+      <stop offset="35%" stop-color="#FBBF24"/>
+      <stop offset="100%" stop-color="#EA580C"/>
+    </linearGradient>
+    <linearGradient id="s116-v2_glow" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#0284C7"/>
+      <stop offset="100%" stop-color="#38BDF8"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Left Open Card Wing (Face L2/L3) -->
+  <path d="M246 140 L90 220 L90 370 L246 290 Z" fill="url(#s116-v2_leftWing)"/>
+  <path d="M246 290 L90 370 L90 395 L246 315 Z" fill="#0F172A"/>
+
+  <!-- Right Open Card Wing (Face Front/Back) -->
+  <path d="M266 140 L422 220 L422 370 L266 290 Z" fill="url(#s116-v2_rightWing)"/>
+  <path d="M266 290 L422 370 L422 395 L266 315 Z" fill="#1E40AF"/>
+
+  <!-- Flashcard text mock lines (detalhes ópticos) -->
+  <line x1="120" y1="260" x2="216" y2="210" stroke="#93C5FD" stroke-width="6" stroke-linecap="round" opacity="0.4"/>
+  <line x1="120" y1="290" x2="196" y2="250" stroke="#93C5FD" stroke-width="6" stroke-linecap="round" opacity="0.4"/>
+  <line x1="296" y1="210" x2="392" y2="260" stroke="#BFDBFE" stroke-width="6" stroke-linecap="round" opacity="0.4"/>
+  <line x1="316" y1="250" x2="392" y2="290" stroke="#BFDBFE" stroke-width="6" stroke-linecap="round" opacity="0.4"/>
+
+  <!-- Central Prism Glow -->
+  <polygon points="256,120 286,280 256,330 226,280" fill="url(#s116-v2_glow)" opacity="0.35"/>
+
+  <!-- Projecting Hyper Lightning Bolt -->
+  <polygon points="280,50 180,240 250,240 200,430 345,210 270,210 310,50" fill="url(#s116-v2_bolt)"/>
+  <polygon points="280,50 250,210 270,210 200,430 180,240" fill="#F59E0B" opacity="0.5"/>
+
+  <!-- Gemini AI Sparkle Crown -->
+  <polygon points="256,20 262,35 277,41 262,47 256,62 250,47 235,41 250,35" fill="#FDE047"/>
+</svg>
+</g><text x="748.667" y="600" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" fill="#8a8a8a" text-anchor="middle">16px</text><text x="592.6666666666667" y="636" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="26" font-weight="700" fill="#161616">B · Open Prism</text><text x="592.6666666666667" y="670" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="19" fill="#555">Prisma de cards aberto projetando feixe de</text><text x="592.6666666666667" y="696" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="19" fill="#555">energia ascendente.</text><rect x="1065.33" y="150" width="474.667" height="630" rx="18" fill="#fff" stroke="#e4e4e0" stroke-width="1"/><g><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" x="1095.33" y="190" width="414.667" height="300" preserveAspectRatio="xMidYMid meet">
+  <title>SuperFlash TCU - Neon Cyber Grid</title>
+  <defs>
+    <linearGradient id="c2-v3_gridPlate" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0F172A"/>
+      <stop offset="100%" stop-color="#020617"/>
+    </linearGradient>
+    <linearGradient id="c2-v3_cyanNeon" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38BDF8"/>
+      <stop offset="100%" stop-color="#0284C7"/>
+    </linearGradient>
+    <linearGradient id="c2-v3_boltNeon" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FEF08A"/>
+      <stop offset="50%" stop-color="#F59E0B"/>
+      <stop offset="100%" stop-color="#DC2626"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Isometric Ground Plate -->
+  <path d="M256 100 L430 200 L256 300 L82 200 Z" fill="url(#c2-v3_gridPlate)" stroke="#1E293B" stroke-width="4"/>
+  <path d="M82 200 L256 300 L256 325 L82 225 Z" fill="#090D16"/>
+  <path d="M256 300 L430 200 L430 225 L256 325 Z" fill="#0F172A"/>
+
+  <!-- Isometric Gridlines inside Card Plane -->
+  <line x1="169" y1="150" x2="343" y2="250" stroke="#0284C7" stroke-width="2" opacity="0.4"/>
+  <line x1="126" y1="225" x2="300" y2="125" stroke="#0284C7" stroke-width="2" opacity="0.4"/>
+  <line x1="212" y1="275" x2="386" y2="175" stroke="#0284C7" stroke-width="2" opacity="0.4"/>
+
+  <!-- Upper Hovering Focus Card -->
+  <path d="M256 160 L380 230 L256 300 L132 230 Z" fill="none" stroke="url(#c2-v3_cyanNeon)" stroke-width="6" stroke-linejoin="round"/>
+  <path d="M256 190 L340 240 L256 290 L172 240 Z" fill="#38BDF8" fill-opacity="0.08"/>
+
+  <!-- Dual Faceted Precision Lightning Bolt -->
+  <polygon points="290,30 170,230 250,230 190,460 360,210 280,210 320,30" fill="url(#c2-v3_boltNeon)"/>
+  <!-- Highlight Spine Line -->
+  <line x1="290" y1="30" x2="250" y2="230" stroke="#FFF" stroke-width="4" stroke-linecap="round" opacity="0.8"/>
+  <line x1="250" y1="230" x2="190" y2="460" stroke="#FFF" stroke-width="4" stroke-linecap="round" opacity="0.8"/>
+
+  <!-- Circuit nodes -->
+  <circle cx="82" cy="200" r="6" fill="#38BDF8"/>
+  <circle cx="430" cy="200" r="6" fill="#38BDF8"/>
+  <circle cx="256" cy="100" r="6" fill="#FBBF24"/>
+</svg>
+</g><g><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" x="1095.33" y="516" width="64" height="64" preserveAspectRatio="xMidYMid meet">
+  <title>SuperFlash TCU - Neon Cyber Grid</title>
+  <defs>
+    <linearGradient id="s264-v3_gridPlate" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0F172A"/>
+      <stop offset="100%" stop-color="#020617"/>
+    </linearGradient>
+    <linearGradient id="s264-v3_cyanNeon" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38BDF8"/>
+      <stop offset="100%" stop-color="#0284C7"/>
+    </linearGradient>
+    <linearGradient id="s264-v3_boltNeon" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FEF08A"/>
+      <stop offset="50%" stop-color="#F59E0B"/>
+      <stop offset="100%" stop-color="#DC2626"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Isometric Ground Plate -->
+  <path d="M256 100 L430 200 L256 300 L82 200 Z" fill="url(#s264-v3_gridPlate)" stroke="#1E293B" stroke-width="4"/>
+  <path d="M82 200 L256 300 L256 325 L82 225 Z" fill="#090D16"/>
+  <path d="M256 300 L430 200 L430 225 L256 325 Z" fill="#0F172A"/>
+
+  <!-- Isometric Gridlines inside Card Plane -->
+  <line x1="169" y1="150" x2="343" y2="250" stroke="#0284C7" stroke-width="2" opacity="0.4"/>
+  <line x1="126" y1="225" x2="300" y2="125" stroke="#0284C7" stroke-width="2" opacity="0.4"/>
+  <line x1="212" y1="275" x2="386" y2="175" stroke="#0284C7" stroke-width="2" opacity="0.4"/>
+
+  <!-- Upper Hovering Focus Card -->
+  <path d="M256 160 L380 230 L256 300 L132 230 Z" fill="none" stroke="url(#s264-v3_cyanNeon)" stroke-width="6" stroke-linejoin="round"/>
+  <path d="M256 190 L340 240 L256 290 L172 240 Z" fill="#38BDF8" fill-opacity="0.08"/>
+
+  <!-- Dual Faceted Precision Lightning Bolt -->
+  <polygon points="290,30 170,230 250,230 190,460 360,210 280,210 320,30" fill="url(#s264-v3_boltNeon)"/>
+  <!-- Highlight Spine Line -->
+  <line x1="290" y1="30" x2="250" y2="230" stroke="#FFF" stroke-width="4" stroke-linecap="round" opacity="0.8"/>
+  <line x1="250" y1="230" x2="190" y2="460" stroke="#FFF" stroke-width="4" stroke-linecap="round" opacity="0.8"/>
+
+  <!-- Circuit nodes -->
+  <circle cx="82" cy="200" r="6" fill="#38BDF8"/>
+  <circle cx="430" cy="200" r="6" fill="#38BDF8"/>
+  <circle cx="256" cy="100" r="6" fill="#FBBF24"/>
+</svg>
+</g><text x="1127.33" y="600" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" fill="#8a8a8a" text-anchor="middle">64px</text><g><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" x="1185.33" y="548" width="32" height="32" preserveAspectRatio="xMidYMid meet">
+  <title>SuperFlash TCU - Neon Cyber Grid</title>
+  <defs>
+    <linearGradient id="s232-v3_gridPlate" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0F172A"/>
+      <stop offset="100%" stop-color="#020617"/>
+    </linearGradient>
+    <linearGradient id="s232-v3_cyanNeon" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38BDF8"/>
+      <stop offset="100%" stop-color="#0284C7"/>
+    </linearGradient>
+    <linearGradient id="s232-v3_boltNeon" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FEF08A"/>
+      <stop offset="50%" stop-color="#F59E0B"/>
+      <stop offset="100%" stop-color="#DC2626"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Isometric Ground Plate -->
+  <path d="M256 100 L430 200 L256 300 L82 200 Z" fill="url(#s232-v3_gridPlate)" stroke="#1E293B" stroke-width="4"/>
+  <path d="M82 200 L256 300 L256 325 L82 225 Z" fill="#090D16"/>
+  <path d="M256 300 L430 200 L430 225 L256 325 Z" fill="#0F172A"/>
+
+  <!-- Isometric Gridlines inside Card Plane -->
+  <line x1="169" y1="150" x2="343" y2="250" stroke="#0284C7" stroke-width="2" opacity="0.4"/>
+  <line x1="126" y1="225" x2="300" y2="125" stroke="#0284C7" stroke-width="2" opacity="0.4"/>
+  <line x1="212" y1="275" x2="386" y2="175" stroke="#0284C7" stroke-width="2" opacity="0.4"/>
+
+  <!-- Upper Hovering Focus Card -->
+  <path d="M256 160 L380 230 L256 300 L132 230 Z" fill="none" stroke="url(#s232-v3_cyanNeon)" stroke-width="6" stroke-linejoin="round"/>
+  <path d="M256 190 L340 240 L256 290 L172 240 Z" fill="#38BDF8" fill-opacity="0.08"/>
+
+  <!-- Dual Faceted Precision Lightning Bolt -->
+  <polygon points="290,30 170,230 250,230 190,460 360,210 280,210 320,30" fill="url(#s232-v3_boltNeon)"/>
+  <!-- Highlight Spine Line -->
+  <line x1="290" y1="30" x2="250" y2="230" stroke="#FFF" stroke-width="4" stroke-linecap="round" opacity="0.8"/>
+  <line x1="250" y1="230" x2="190" y2="460" stroke="#FFF" stroke-width="4" stroke-linecap="round" opacity="0.8"/>
+
+  <!-- Circuit nodes -->
+  <circle cx="82" cy="200" r="6" fill="#38BDF8"/>
+  <circle cx="430" cy="200" r="6" fill="#38BDF8"/>
+  <circle cx="256" cy="100" r="6" fill="#FBBF24"/>
+</svg>
+</g><text x="1201.33" y="600" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" fill="#8a8a8a" text-anchor="middle">32px</text><g><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" x="1243.33" y="564" width="16" height="16" preserveAspectRatio="xMidYMid meet">
+  <title>SuperFlash TCU - Neon Cyber Grid</title>
+  <defs>
+    <linearGradient id="s216-v3_gridPlate" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0F172A"/>
+      <stop offset="100%" stop-color="#020617"/>
+    </linearGradient>
+    <linearGradient id="s216-v3_cyanNeon" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38BDF8"/>
+      <stop offset="100%" stop-color="#0284C7"/>
+    </linearGradient>
+    <linearGradient id="s216-v3_boltNeon" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FEF08A"/>
+      <stop offset="50%" stop-color="#F59E0B"/>
+      <stop offset="100%" stop-color="#DC2626"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Isometric Ground Plate -->
+  <path d="M256 100 L430 200 L256 300 L82 200 Z" fill="url(#s216-v3_gridPlate)" stroke="#1E293B" stroke-width="4"/>
+  <path d="M82 200 L256 300 L256 325 L82 225 Z" fill="#090D16"/>
+  <path d="M256 300 L430 200 L430 225 L256 325 Z" fill="#0F172A"/>
+
+  <!-- Isometric Gridlines inside Card Plane -->
+  <line x1="169" y1="150" x2="343" y2="250" stroke="#0284C7" stroke-width="2" opacity="0.4"/>
+  <line x1="126" y1="225" x2="300" y2="125" stroke="#0284C7" stroke-width="2" opacity="0.4"/>
+  <line x1="212" y1="275" x2="386" y2="175" stroke="#0284C7" stroke-width="2" opacity="0.4"/>
+
+  <!-- Upper Hovering Focus Card -->
+  <path d="M256 160 L380 230 L256 300 L132 230 Z" fill="none" stroke="url(#s216-v3_cyanNeon)" stroke-width="6" stroke-linejoin="round"/>
+  <path d="M256 190 L340 240 L256 290 L172 240 Z" fill="#38BDF8" fill-opacity="0.08"/>
+
+  <!-- Dual Faceted Precision Lightning Bolt -->
+  <polygon points="290,30 170,230 250,230 190,460 360,210 280,210 320,30" fill="url(#s216-v3_boltNeon)"/>
+  <!-- Highlight Spine Line -->
+  <line x1="290" y1="30" x2="250" y2="230" stroke="#FFF" stroke-width="4" stroke-linecap="round" opacity="0.8"/>
+  <line x1="250" y1="230" x2="190" y2="460" stroke="#FFF" stroke-width="4" stroke-linecap="round" opacity="0.8"/>
+
+  <!-- Circuit nodes -->
+  <circle cx="82" cy="200" r="6" fill="#38BDF8"/>
+  <circle cx="430" cy="200" r="6" fill="#38BDF8"/>
+  <circle cx="256" cy="100" r="6" fill="#FBBF24"/>
+</svg>
+</g><text x="1251.33" y="600" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" fill="#8a8a8a" text-anchor="middle">16px</text><text x="1095.3333333333335" y="636" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="26" font-weight="700" fill="#161616">C · Cyber Grid</text><text x="1095.3333333333335" y="670" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="19" fill="#555">Grid técnico com linhas isométricas e raio</text><text x="1095.3333333333335" y="696" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="19" fill="#555">dual de alta voltagem.</text><rect x="60" y="808" width="474.667" height="630" rx="18" fill="#fff" stroke="#e4e4e0" stroke-width="1"/><g><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" x="90" y="848" width="414.667" height="300" preserveAspectRatio="xMidYMid meet">
+  <title>SuperFlash TCU - Cube Fold Facet</title>
+  <defs>
+    <linearGradient id="c3-v4_top" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#3B82F6"/>
+      <stop offset="100%" stop-color="#1D4ED8"/>
+    </linearGradient>
+    <linearGradient id="c3-v4_left" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1E3A8A"/>
+      <stop offset="100%" stop-color="#0F172A"/>
+    </linearGradient>
+    <linearGradient id="c3-v4_right" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#2563EB"/>
+      <stop offset="100%" stop-color="#1E40AF"/>
+    </linearGradient>
+    <linearGradient id="c3-v4_gold" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FEF08A"/>
+      <stop offset="50%" stop-color="#F59E0B"/>
+      <stop offset="100%" stop-color="#D97706"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Isometric Cube: Top Face (Front of Flashcard) -->
+  <path d="M256 90 L396 170 L256 250 L116 170 Z" fill="url(#c3-v4_top)"/>
+
+  <!-- Left Face (SRS History / Back of Flashcard) -->
+  <path d="M116 170 L256 250 L256 410 L116 330 Z" fill="url(#c3-v4_left)"/>
+
+  <!-- Right Face (Mastery Level / FSRS Metrics) -->
+  <path d="M256 250 L396 170 L396 330 L256 410 Z" fill="url(#c3-v4_right)"/>
+
+  <!-- Embossed Geometric Bolt Running Across Faces -->
+  <polygon points="275,50 175,230 250,230 195,430 350,210 275,210 315,50" fill="url(#c3-v4_gold)"/>
+  <polygon points="275,50 250,210 275,210 195,430 175,230" fill="#B45309" opacity="0.35"/>
+
+  <!-- Minimal Card Header Detail -->
+  <circle cx="256" cy="140" r="10" fill="#93C5FD" opacity="0.8"/>
+  <line x1="200" y1="165" x2="312" y2="165" stroke="#BFDBFE" stroke-width="6" stroke-linecap="round" opacity="0.5"/>
+</svg>
+</g><g><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" x="90" y="1174" width="64" height="64" preserveAspectRatio="xMidYMid meet">
+  <title>SuperFlash TCU - Cube Fold Facet</title>
+  <defs>
+    <linearGradient id="s364-v4_top" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#3B82F6"/>
+      <stop offset="100%" stop-color="#1D4ED8"/>
+    </linearGradient>
+    <linearGradient id="s364-v4_left" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1E3A8A"/>
+      <stop offset="100%" stop-color="#0F172A"/>
+    </linearGradient>
+    <linearGradient id="s364-v4_right" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#2563EB"/>
+      <stop offset="100%" stop-color="#1E40AF"/>
+    </linearGradient>
+    <linearGradient id="s364-v4_gold" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FEF08A"/>
+      <stop offset="50%" stop-color="#F59E0B"/>
+      <stop offset="100%" stop-color="#D97706"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Isometric Cube: Top Face (Front of Flashcard) -->
+  <path d="M256 90 L396 170 L256 250 L116 170 Z" fill="url(#s364-v4_top)"/>
+
+  <!-- Left Face (SRS History / Back of Flashcard) -->
+  <path d="M116 170 L256 250 L256 410 L116 330 Z" fill="url(#s364-v4_left)"/>
+
+  <!-- Right Face (Mastery Level / FSRS Metrics) -->
+  <path d="M256 250 L396 170 L396 330 L256 410 Z" fill="url(#s364-v4_right)"/>
+
+  <!-- Embossed Geometric Bolt Running Across Faces -->
+  <polygon points="275,50 175,230 250,230 195,430 350,210 275,210 315,50" fill="url(#s364-v4_gold)"/>
+  <polygon points="275,50 250,210 275,210 195,430 175,230" fill="#B45309" opacity="0.35"/>
+
+  <!-- Minimal Card Header Detail -->
+  <circle cx="256" cy="140" r="10" fill="#93C5FD" opacity="0.8"/>
+  <line x1="200" y1="165" x2="312" y2="165" stroke="#BFDBFE" stroke-width="6" stroke-linecap="round" opacity="0.5"/>
+</svg>
+</g><text x="122" y="1258" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" fill="#8a8a8a" text-anchor="middle">64px</text><g><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" x="180" y="1206" width="32" height="32" preserveAspectRatio="xMidYMid meet">
+  <title>SuperFlash TCU - Cube Fold Facet</title>
+  <defs>
+    <linearGradient id="s332-v4_top" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#3B82F6"/>
+      <stop offset="100%" stop-color="#1D4ED8"/>
+    </linearGradient>
+    <linearGradient id="s332-v4_left" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1E3A8A"/>
+      <stop offset="100%" stop-color="#0F172A"/>
+    </linearGradient>
+    <linearGradient id="s332-v4_right" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#2563EB"/>
+      <stop offset="100%" stop-color="#1E40AF"/>
+    </linearGradient>
+    <linearGradient id="s332-v4_gold" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FEF08A"/>
+      <stop offset="50%" stop-color="#F59E0B"/>
+      <stop offset="100%" stop-color="#D97706"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Isometric Cube: Top Face (Front of Flashcard) -->
+  <path d="M256 90 L396 170 L256 250 L116 170 Z" fill="url(#s332-v4_top)"/>
+
+  <!-- Left Face (SRS History / Back of Flashcard) -->
+  <path d="M116 170 L256 250 L256 410 L116 330 Z" fill="url(#s332-v4_left)"/>
+
+  <!-- Right Face (Mastery Level / FSRS Metrics) -->
+  <path d="M256 250 L396 170 L396 330 L256 410 Z" fill="url(#s332-v4_right)"/>
+
+  <!-- Embossed Geometric Bolt Running Across Faces -->
+  <polygon points="275,50 175,230 250,230 195,430 350,210 275,210 315,50" fill="url(#s332-v4_gold)"/>
+  <polygon points="275,50 250,210 275,210 195,430 175,230" fill="#B45309" opacity="0.35"/>
+
+  <!-- Minimal Card Header Detail -->
+  <circle cx="256" cy="140" r="10" fill="#93C5FD" opacity="0.8"/>
+  <line x1="200" y1="165" x2="312" y2="165" stroke="#BFDBFE" stroke-width="6" stroke-linecap="round" opacity="0.5"/>
+</svg>
+</g><text x="196" y="1258" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" fill="#8a8a8a" text-anchor="middle">32px</text><g><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" x="238" y="1222" width="16" height="16" preserveAspectRatio="xMidYMid meet">
+  <title>SuperFlash TCU - Cube Fold Facet</title>
+  <defs>
+    <linearGradient id="s316-v4_top" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#3B82F6"/>
+      <stop offset="100%" stop-color="#1D4ED8"/>
+    </linearGradient>
+    <linearGradient id="s316-v4_left" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1E3A8A"/>
+      <stop offset="100%" stop-color="#0F172A"/>
+    </linearGradient>
+    <linearGradient id="s316-v4_right" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#2563EB"/>
+      <stop offset="100%" stop-color="#1E40AF"/>
+    </linearGradient>
+    <linearGradient id="s316-v4_gold" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FEF08A"/>
+      <stop offset="50%" stop-color="#F59E0B"/>
+      <stop offset="100%" stop-color="#D97706"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Isometric Cube: Top Face (Front of Flashcard) -->
+  <path d="M256 90 L396 170 L256 250 L116 170 Z" fill="url(#s316-v4_top)"/>
+
+  <!-- Left Face (SRS History / Back of Flashcard) -->
+  <path d="M116 170 L256 250 L256 410 L116 330 Z" fill="url(#s316-v4_left)"/>
+
+  <!-- Right Face (Mastery Level / FSRS Metrics) -->
+  <path d="M256 250 L396 170 L396 330 L256 410 Z" fill="url(#s316-v4_right)"/>
+
+  <!-- Embossed Geometric Bolt Running Across Faces -->
+  <polygon points="275,50 175,230 250,230 195,430 350,210 275,210 315,50" fill="url(#s316-v4_gold)"/>
+  <polygon points="275,50 250,210 275,210 195,430 175,230" fill="#B45309" opacity="0.35"/>
+
+  <!-- Minimal Card Header Detail -->
+  <circle cx="256" cy="140" r="10" fill="#93C5FD" opacity="0.8"/>
+  <line x1="200" y1="165" x2="312" y2="165" stroke="#BFDBFE" stroke-width="6" stroke-linecap="round" opacity="0.5"/>
+</svg>
+</g><text x="246" y="1258" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" fill="#8a8a8a" text-anchor="middle">16px</text><text x="90.0" y="1294" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="26" font-weight="700" fill="#161616">D · Cube Facet</text><text x="90.0" y="1328" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="19" fill="#555">Cubo 3D facetado com corte negativo</text><text x="90.0" y="1354" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="19" fill="#555">revelando núcleo âmbar.</text><rect x="562.667" y="808" width="474.667" height="630" rx="18" fill="#fff" stroke="#e4e4e0" stroke-width="1"/><g><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" x="592.667" y="848" width="414.667" height="300" preserveAspectRatio="xMidYMid meet">
+  <title>SuperFlash TCU - Cascade Orbit</title>
+  <defs>
+    <linearGradient id="c4-v5_c1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1E3A8A"/>
+      <stop offset="100%" stop-color="#0F172A"/>
+    </linearGradient>
+    <linearGradient id="c4-v5_c2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#2563EB"/>
+      <stop offset="100%" stop-color="#1D4ED8"/>
+    </linearGradient>
+    <linearGradient id="c4-v5_c3" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#60A5FA"/>
+      <stop offset="100%" stop-color="#3B82F6"/>
+    </linearGradient>
+    <linearGradient id="c4-v5_spark" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FEF08A"/>
+      <stop offset="50%" stop-color="#F59E0B"/>
+      <stop offset="100%" stop-color="#EA580C"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Card 1: Bottom Angle -->
+  <path d="M70 290 L210 210 L330 280 L190 360 Z" fill="url(#c4-v5_c1)" opacity="0.9"/>
+  <path d="M70 290 L190 360 L190 380 L70 310 Z" fill="#090D16"/>
+
+  <!-- Card 2: Mid Shifted Angle -->
+  <path d="M140 230 L280 150 L400 220 L260 300 Z" fill="url(#c4-v5_c2)"/>
+  <path d="M140 230 L260 300 L260 320 L140 250 Z" fill="#1E40AF"/>
+
+  <!-- Card 3: Top Ascending Angle -->
+  <path d="M210 170 L350 90 L470 160 L330 240 Z" fill="url(#c4-v5_c3)"/>
+  <path d="M210 170 L330 240 L330 260 L210 190 Z" fill="#1D4ED8"/>
+
+  <!-- Dynamic Curved Speed Trails -->
+  <path d="M90 340 C140 370 240 380 300 350" stroke="#FBBF24" stroke-width="4" stroke-linecap="round" fill="none" opacity="0.6"/>
+  <path d="M160 280 C210 310 310 320 370 290" stroke="#FBBF24" stroke-width="4" stroke-linecap="round" fill="none" opacity="0.6"/>
+
+  <!-- High Velocity Lightning Spear Cutting Through The Arc -->
+  <polygon points="280,40 180,230 245,230 195,440 350,210 275,210 315,40" fill="url(#c4-v5_spark)"/>
+</svg>
+</g><g><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" x="592.667" y="1174" width="64" height="64" preserveAspectRatio="xMidYMid meet">
+  <title>SuperFlash TCU - Cascade Orbit</title>
+  <defs>
+    <linearGradient id="s464-v5_c1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1E3A8A"/>
+      <stop offset="100%" stop-color="#0F172A"/>
+    </linearGradient>
+    <linearGradient id="s464-v5_c2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#2563EB"/>
+      <stop offset="100%" stop-color="#1D4ED8"/>
+    </linearGradient>
+    <linearGradient id="s464-v5_c3" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#60A5FA"/>
+      <stop offset="100%" stop-color="#3B82F6"/>
+    </linearGradient>
+    <linearGradient id="s464-v5_spark" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FEF08A"/>
+      <stop offset="50%" stop-color="#F59E0B"/>
+      <stop offset="100%" stop-color="#EA580C"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Card 1: Bottom Angle -->
+  <path d="M70 290 L210 210 L330 280 L190 360 Z" fill="url(#s464-v5_c1)" opacity="0.9"/>
+  <path d="M70 290 L190 360 L190 380 L70 310 Z" fill="#090D16"/>
+
+  <!-- Card 2: Mid Shifted Angle -->
+  <path d="M140 230 L280 150 L400 220 L260 300 Z" fill="url(#s464-v5_c2)"/>
+  <path d="M140 230 L260 300 L260 320 L140 250 Z" fill="#1E40AF"/>
+
+  <!-- Card 3: Top Ascending Angle -->
+  <path d="M210 170 L350 90 L470 160 L330 240 Z" fill="url(#s464-v5_c3)"/>
+  <path d="M210 170 L330 240 L330 260 L210 190 Z" fill="#1D4ED8"/>
+
+  <!-- Dynamic Curved Speed Trails -->
+  <path d="M90 340 C140 370 240 380 300 350" stroke="#FBBF24" stroke-width="4" stroke-linecap="round" fill="none" opacity="0.6"/>
+  <path d="M160 280 C210 310 310 320 370 290" stroke="#FBBF24" stroke-width="4" stroke-linecap="round" fill="none" opacity="0.6"/>
+
+  <!-- High Velocity Lightning Spear Cutting Through The Arc -->
+  <polygon points="280,40 180,230 245,230 195,440 350,210 275,210 315,40" fill="url(#s464-v5_spark)"/>
+</svg>
+</g><text x="624.667" y="1258" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" fill="#8a8a8a" text-anchor="middle">64px</text><g><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" x="682.667" y="1206" width="32" height="32" preserveAspectRatio="xMidYMid meet">
+  <title>SuperFlash TCU - Cascade Orbit</title>
+  <defs>
+    <linearGradient id="s432-v5_c1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1E3A8A"/>
+      <stop offset="100%" stop-color="#0F172A"/>
+    </linearGradient>
+    <linearGradient id="s432-v5_c2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#2563EB"/>
+      <stop offset="100%" stop-color="#1D4ED8"/>
+    </linearGradient>
+    <linearGradient id="s432-v5_c3" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#60A5FA"/>
+      <stop offset="100%" stop-color="#3B82F6"/>
+    </linearGradient>
+    <linearGradient id="s432-v5_spark" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FEF08A"/>
+      <stop offset="50%" stop-color="#F59E0B"/>
+      <stop offset="100%" stop-color="#EA580C"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Card 1: Bottom Angle -->
+  <path d="M70 290 L210 210 L330 280 L190 360 Z" fill="url(#s432-v5_c1)" opacity="0.9"/>
+  <path d="M70 290 L190 360 L190 380 L70 310 Z" fill="#090D16"/>
+
+  <!-- Card 2: Mid Shifted Angle -->
+  <path d="M140 230 L280 150 L400 220 L260 300 Z" fill="url(#s432-v5_c2)"/>
+  <path d="M140 230 L260 300 L260 320 L140 250 Z" fill="#1E40AF"/>
+
+  <!-- Card 3: Top Ascending Angle -->
+  <path d="M210 170 L350 90 L470 160 L330 240 Z" fill="url(#s432-v5_c3)"/>
+  <path d="M210 170 L330 240 L330 260 L210 190 Z" fill="#1D4ED8"/>
+
+  <!-- Dynamic Curved Speed Trails -->
+  <path d="M90 340 C140 370 240 380 300 350" stroke="#FBBF24" stroke-width="4" stroke-linecap="round" fill="none" opacity="0.6"/>
+  <path d="M160 280 C210 310 310 320 370 290" stroke="#FBBF24" stroke-width="4" stroke-linecap="round" fill="none" opacity="0.6"/>
+
+  <!-- High Velocity Lightning Spear Cutting Through The Arc -->
+  <polygon points="280,40 180,230 245,230 195,440 350,210 275,210 315,40" fill="url(#s432-v5_spark)"/>
+</svg>
+</g><text x="698.667" y="1258" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" fill="#8a8a8a" text-anchor="middle">32px</text><g><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" x="740.667" y="1222" width="16" height="16" preserveAspectRatio="xMidYMid meet">
+  <title>SuperFlash TCU - Cascade Orbit</title>
+  <defs>
+    <linearGradient id="s416-v5_c1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1E3A8A"/>
+      <stop offset="100%" stop-color="#0F172A"/>
+    </linearGradient>
+    <linearGradient id="s416-v5_c2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#2563EB"/>
+      <stop offset="100%" stop-color="#1D4ED8"/>
+    </linearGradient>
+    <linearGradient id="s416-v5_c3" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#60A5FA"/>
+      <stop offset="100%" stop-color="#3B82F6"/>
+    </linearGradient>
+    <linearGradient id="s416-v5_spark" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FEF08A"/>
+      <stop offset="50%" stop-color="#F59E0B"/>
+      <stop offset="100%" stop-color="#EA580C"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Card 1: Bottom Angle -->
+  <path d="M70 290 L210 210 L330 280 L190 360 Z" fill="url(#s416-v5_c1)" opacity="0.9"/>
+  <path d="M70 290 L190 360 L190 380 L70 310 Z" fill="#090D16"/>
+
+  <!-- Card 2: Mid Shifted Angle -->
+  <path d="M140 230 L280 150 L400 220 L260 300 Z" fill="url(#s416-v5_c2)"/>
+  <path d="M140 230 L260 300 L260 320 L140 250 Z" fill="#1E40AF"/>
+
+  <!-- Card 3: Top Ascending Angle -->
+  <path d="M210 170 L350 90 L470 160 L330 240 Z" fill="url(#s416-v5_c3)"/>
+  <path d="M210 170 L330 240 L330 260 L210 190 Z" fill="#1D4ED8"/>
+
+  <!-- Dynamic Curved Speed Trails -->
+  <path d="M90 340 C140 370 240 380 300 350" stroke="#FBBF24" stroke-width="4" stroke-linecap="round" fill="none" opacity="0.6"/>
+  <path d="M160 280 C210 310 310 320 370 290" stroke="#FBBF24" stroke-width="4" stroke-linecap="round" fill="none" opacity="0.6"/>
+
+  <!-- High Velocity Lightning Spear Cutting Through The Arc -->
+  <polygon points="280,40 180,230 245,230 195,440 350,210 275,210 315,40" fill="url(#s416-v5_spark)"/>
+</svg>
+</g><text x="748.667" y="1258" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" fill="#8a8a8a" text-anchor="middle">16px</text><text x="592.6666666666667" y="1294" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="26" font-weight="700" fill="#161616">E · Cascade Orbit</text><text x="592.6666666666667" y="1328" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="19" fill="#555">Cards em cascata orbital com esteira de</text><text x="592.6666666666667" y="1354" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="19" fill="#555">velocidade de memorização.</text><rect x="1065.33" y="808" width="474.667" height="630" rx="18" fill="#fff" stroke="#e4e4e0" stroke-width="1"/><g><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" x="1095.33" y="848" width="414.667" height="300" preserveAspectRatio="xMidYMid meet">
+  <title>SuperFlash TCU - Minimal Monoline Tech</title>
+  <defs>
+    <linearGradient id="c5-v6_blueGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38BDF8"/>
+      <stop offset="100%" stop-color="#1D4ED8"/>
+    </linearGradient>
+    <linearGradient id="c5-v6_goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FDE047"/>
+      <stop offset="100%" stop-color="#F59E0B"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Ground Shadow Ring -->
+  <ellipse cx="256" cy="430" rx="140" ry="40" fill="#0F172A" opacity="0.15"/>
+
+  <!-- Isometric Card Silhouette (Thick Geometric Monoline 24px) -->
+  <path d="M110 240 L256 155 L402 240 L256 325 Z" fill="#0F172A" stroke="url(#c5-v6_blueGrad)" stroke-width="24" stroke-linejoin="round"/>
+  
+  <!-- Secondary Underlayer Card Frame -->
+  <path d="M140 290 L256 357 L372 290" fill="none" stroke="#2563EB" stroke-width="16" stroke-linecap="round" stroke-linejoin="round" opacity="0.6"/>
+  <path d="M170 330 L256 380 L342 330" fill="none" stroke="#1E40AF" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" opacity="0.4"/>
+
+  <!-- Centered Razor-Sharp Lightning Bolt In Solid Gold Monoline/Fill -->
+  <polygon points="280,60 170,260 250,260 190,450 360,220 275,220 320,60" fill="url(#c5-v6_goldGrad)" stroke="#B45309" stroke-width="4" stroke-linejoin="round"/>
+
+  <!-- Internal Spark Cut -->
+  <polygon points="280,60 275,220 320,60" fill="#FFFBEB" opacity="0.7"/>
+</svg>
+</g><g><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" x="1095.33" y="1174" width="64" height="64" preserveAspectRatio="xMidYMid meet">
+  <title>SuperFlash TCU - Minimal Monoline Tech</title>
+  <defs>
+    <linearGradient id="s564-v6_blueGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38BDF8"/>
+      <stop offset="100%" stop-color="#1D4ED8"/>
+    </linearGradient>
+    <linearGradient id="s564-v6_goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FDE047"/>
+      <stop offset="100%" stop-color="#F59E0B"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Ground Shadow Ring -->
+  <ellipse cx="256" cy="430" rx="140" ry="40" fill="#0F172A" opacity="0.15"/>
+
+  <!-- Isometric Card Silhouette (Thick Geometric Monoline 24px) -->
+  <path d="M110 240 L256 155 L402 240 L256 325 Z" fill="#0F172A" stroke="url(#s564-v6_blueGrad)" stroke-width="24" stroke-linejoin="round"/>
+  
+  <!-- Secondary Underlayer Card Frame -->
+  <path d="M140 290 L256 357 L372 290" fill="none" stroke="#2563EB" stroke-width="16" stroke-linecap="round" stroke-linejoin="round" opacity="0.6"/>
+  <path d="M170 330 L256 380 L342 330" fill="none" stroke="#1E40AF" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" opacity="0.4"/>
+
+  <!-- Centered Razor-Sharp Lightning Bolt In Solid Gold Monoline/Fill -->
+  <polygon points="280,60 170,260 250,260 190,450 360,220 275,220 320,60" fill="url(#s564-v6_goldGrad)" stroke="#B45309" stroke-width="4" stroke-linejoin="round"/>
+
+  <!-- Internal Spark Cut -->
+  <polygon points="280,60 275,220 320,60" fill="#FFFBEB" opacity="0.7"/>
+</svg>
+</g><text x="1127.33" y="1258" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" fill="#8a8a8a" text-anchor="middle">64px</text><g><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" x="1185.33" y="1206" width="32" height="32" preserveAspectRatio="xMidYMid meet">
+  <title>SuperFlash TCU - Minimal Monoline Tech</title>
+  <defs>
+    <linearGradient id="s532-v6_blueGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38BDF8"/>
+      <stop offset="100%" stop-color="#1D4ED8"/>
+    </linearGradient>
+    <linearGradient id="s532-v6_goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FDE047"/>
+      <stop offset="100%" stop-color="#F59E0B"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Ground Shadow Ring -->
+  <ellipse cx="256" cy="430" rx="140" ry="40" fill="#0F172A" opacity="0.15"/>
+
+  <!-- Isometric Card Silhouette (Thick Geometric Monoline 24px) -->
+  <path d="M110 240 L256 155 L402 240 L256 325 Z" fill="#0F172A" stroke="url(#s532-v6_blueGrad)" stroke-width="24" stroke-linejoin="round"/>
+  
+  <!-- Secondary Underlayer Card Frame -->
+  <path d="M140 290 L256 357 L372 290" fill="none" stroke="#2563EB" stroke-width="16" stroke-linecap="round" stroke-linejoin="round" opacity="0.6"/>
+  <path d="M170 330 L256 380 L342 330" fill="none" stroke="#1E40AF" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" opacity="0.4"/>
+
+  <!-- Centered Razor-Sharp Lightning Bolt In Solid Gold Monoline/Fill -->
+  <polygon points="280,60 170,260 250,260 190,450 360,220 275,220 320,60" fill="url(#s532-v6_goldGrad)" stroke="#B45309" stroke-width="4" stroke-linejoin="round"/>
+
+  <!-- Internal Spark Cut -->
+  <polygon points="280,60 275,220 320,60" fill="#FFFBEB" opacity="0.7"/>
+</svg>
+</g><text x="1201.33" y="1258" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" fill="#8a8a8a" text-anchor="middle">32px</text><g><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" x="1243.33" y="1222" width="16" height="16" preserveAspectRatio="xMidYMid meet">
+  <title>SuperFlash TCU - Minimal Monoline Tech</title>
+  <defs>
+    <linearGradient id="s516-v6_blueGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38BDF8"/>
+      <stop offset="100%" stop-color="#1D4ED8"/>
+    </linearGradient>
+    <linearGradient id="s516-v6_goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FDE047"/>
+      <stop offset="100%" stop-color="#F59E0B"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Ground Shadow Ring -->
+  <ellipse cx="256" cy="430" rx="140" ry="40" fill="#0F172A" opacity="0.15"/>
+
+  <!-- Isometric Card Silhouette (Thick Geometric Monoline 24px) -->
+  <path d="M110 240 L256 155 L402 240 L256 325 Z" fill="#0F172A" stroke="url(#s516-v6_blueGrad)" stroke-width="24" stroke-linejoin="round"/>
+  
+  <!-- Secondary Underlayer Card Frame -->
+  <path d="M140 290 L256 357 L372 290" fill="none" stroke="#2563EB" stroke-width="16" stroke-linecap="round" stroke-linejoin="round" opacity="0.6"/>
+  <path d="M170 330 L256 380 L342 330" fill="none" stroke="#1E40AF" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" opacity="0.4"/>
+
+  <!-- Centered Razor-Sharp Lightning Bolt In Solid Gold Monoline/Fill -->
+  <polygon points="280,60 170,260 250,260 190,450 360,220 275,220 320,60" fill="url(#s516-v6_goldGrad)" stroke="#B45309" stroke-width="4" stroke-linejoin="round"/>
+
+  <!-- Internal Spark Cut -->
+  <polygon points="280,60 275,220 320,60" fill="#FFFBEB" opacity="0.7"/>
+</svg>
+</g><text x="1251.33" y="1258" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" fill="#8a8a8a" text-anchor="middle">16px</text><text x="1095.3333333333335" y="1294" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="26" font-weight="700" fill="#161616">F · Monoline Tech</text><text x="1095.3333333333335" y="1328" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="19" fill="#555">Monoline limpo estilo Stripe com chanfros e</text><text x="1095.3333333333335" y="1354" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="19" fill="#555">contraste brutalista.</text><rect x="60" y="1466" width="474.667" height="630" rx="18" fill="#fff" stroke="#e4e4e0" stroke-width="1"/><g><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" x="90" y="1506" width="414.667" height="300" preserveAspectRatio="xMidYMid meet">
+  <title>SuperFlash TCU - Diamond Neural AI Spark</title>
+  <defs>
+    <linearGradient id="c6-v7_diaTop" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38BDF8"/>
+      <stop offset="100%" stop-color="#1D4ED8"/>
+    </linearGradient>
+    <linearGradient id="c6-v7_diaBot" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1E3A8A"/>
+      <stop offset="100%" stop-color="#020617"/>
+    </linearGradient>
+    <linearGradient id="c6-v7_spark" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FEF08A"/>
+      <stop offset="45%" stop-color="#F59E0B"/>
+      <stop offset="100%" stop-color="#DC2626"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Lower Diamond Flashcard -->
+  <path d="M256 160 L400 240 L256 320 L112 240 Z" fill="url(#c6-v7_diaBot)" stroke="#1E293B" stroke-width="4"/>
+  <path d="M112 240 L256 320 L256 345 L112 265 Z" fill="#090D16"/>
+  <path d="M256 320 L400 240 L400 265 L256 345 Z" fill="#0F172A"/>
+
+  <!-- Upper Floating Diamond Flashcard with Glassy Glow -->
+  <path d="M256 220 L370 280 L256 340 L142 280 Z" fill="url(#c6-v7_diaTop)" opacity="0.85"/>
+
+  <!-- Neural Constellation Lines on Upper Plane -->
+  <line x1="256" y1="220" x2="370" y2="280" stroke="#BAE6FD" stroke-width="2" opacity="0.6"/>
+  <line x1="370" y1="280" x2="256" y2="340" stroke="#BAE6FD" stroke-width="2" opacity="0.6"/>
+  <line x1="256" y1="340" x2="142" y2="280" stroke="#BAE6FD" stroke-width="2" opacity="0.6"/>
+  <line x1="142" y1="280" x2="256" y2="220" stroke="#BAE6FD" stroke-width="2" opacity="0.6"/>
+
+  <!-- Neural Vertex Nodes -->
+  <circle cx="256" cy="220" r="7" fill="#FDE047"/>
+  <circle cx="370" cy="280" r="6" fill="#38BDF8"/>
+  <circle cx="256" cy="340" r="6" fill="#38BDF8"/>
+  <circle cx="142" cy="280" r="6" fill="#38BDF8"/>
+
+  <!-- Central Supercharged Bolt -->
+  <polygon points="285,45 175,245 255,245 195,445 355,225 275,225 320,45" fill="url(#c6-v7_spark)"/>
+  <polygon points="285,45 320,45 275,225 355,225 285,310" fill="#FEF08A" opacity="0.6"/>
+
+  <!-- AI Gemini 4-Point Star Core -->
+  <polygon points="256,110 262,125 277,131 262,137 256,152 250,137 235,131 250,125" fill="#FFFBEB"/>
+</svg>
+</g><g><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" x="90" y="1832" width="64" height="64" preserveAspectRatio="xMidYMid meet">
+  <title>SuperFlash TCU - Diamond Neural AI Spark</title>
+  <defs>
+    <linearGradient id="s664-v7_diaTop" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38BDF8"/>
+      <stop offset="100%" stop-color="#1D4ED8"/>
+    </linearGradient>
+    <linearGradient id="s664-v7_diaBot" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1E3A8A"/>
+      <stop offset="100%" stop-color="#020617"/>
+    </linearGradient>
+    <linearGradient id="s664-v7_spark" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FEF08A"/>
+      <stop offset="45%" stop-color="#F59E0B"/>
+      <stop offset="100%" stop-color="#DC2626"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Lower Diamond Flashcard -->
+  <path d="M256 160 L400 240 L256 320 L112 240 Z" fill="url(#s664-v7_diaBot)" stroke="#1E293B" stroke-width="4"/>
+  <path d="M112 240 L256 320 L256 345 L112 265 Z" fill="#090D16"/>
+  <path d="M256 320 L400 240 L400 265 L256 345 Z" fill="#0F172A"/>
+
+  <!-- Upper Floating Diamond Flashcard with Glassy Glow -->
+  <path d="M256 220 L370 280 L256 340 L142 280 Z" fill="url(#s664-v7_diaTop)" opacity="0.85"/>
+
+  <!-- Neural Constellation Lines on Upper Plane -->
+  <line x1="256" y1="220" x2="370" y2="280" stroke="#BAE6FD" stroke-width="2" opacity="0.6"/>
+  <line x1="370" y1="280" x2="256" y2="340" stroke="#BAE6FD" stroke-width="2" opacity="0.6"/>
+  <line x1="256" y1="340" x2="142" y2="280" stroke="#BAE6FD" stroke-width="2" opacity="0.6"/>
+  <line x1="142" y1="280" x2="256" y2="220" stroke="#BAE6FD" stroke-width="2" opacity="0.6"/>
+
+  <!-- Neural Vertex Nodes -->
+  <circle cx="256" cy="220" r="7" fill="#FDE047"/>
+  <circle cx="370" cy="280" r="6" fill="#38BDF8"/>
+  <circle cx="256" cy="340" r="6" fill="#38BDF8"/>
+  <circle cx="142" cy="280" r="6" fill="#38BDF8"/>
+
+  <!-- Central Supercharged Bolt -->
+  <polygon points="285,45 175,245 255,245 195,445 355,225 275,225 320,45" fill="url(#s664-v7_spark)"/>
+  <polygon points="285,45 320,45 275,225 355,225 285,310" fill="#FEF08A" opacity="0.6"/>
+
+  <!-- AI Gemini 4-Point Star Core -->
+  <polygon points="256,110 262,125 277,131 262,137 256,152 250,137 235,131 250,125" fill="#FFFBEB"/>
+</svg>
+</g><text x="122" y="1916" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" fill="#8a8a8a" text-anchor="middle">64px</text><g><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" x="180" y="1864" width="32" height="32" preserveAspectRatio="xMidYMid meet">
+  <title>SuperFlash TCU - Diamond Neural AI Spark</title>
+  <defs>
+    <linearGradient id="s632-v7_diaTop" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38BDF8"/>
+      <stop offset="100%" stop-color="#1D4ED8"/>
+    </linearGradient>
+    <linearGradient id="s632-v7_diaBot" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1E3A8A"/>
+      <stop offset="100%" stop-color="#020617"/>
+    </linearGradient>
+    <linearGradient id="s632-v7_spark" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FEF08A"/>
+      <stop offset="45%" stop-color="#F59E0B"/>
+      <stop offset="100%" stop-color="#DC2626"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Lower Diamond Flashcard -->
+  <path d="M256 160 L400 240 L256 320 L112 240 Z" fill="url(#s632-v7_diaBot)" stroke="#1E293B" stroke-width="4"/>
+  <path d="M112 240 L256 320 L256 345 L112 265 Z" fill="#090D16"/>
+  <path d="M256 320 L400 240 L400 265 L256 345 Z" fill="#0F172A"/>
+
+  <!-- Upper Floating Diamond Flashcard with Glassy Glow -->
+  <path d="M256 220 L370 280 L256 340 L142 280 Z" fill="url(#s632-v7_diaTop)" opacity="0.85"/>
+
+  <!-- Neural Constellation Lines on Upper Plane -->
+  <line x1="256" y1="220" x2="370" y2="280" stroke="#BAE6FD" stroke-width="2" opacity="0.6"/>
+  <line x1="370" y1="280" x2="256" y2="340" stroke="#BAE6FD" stroke-width="2" opacity="0.6"/>
+  <line x1="256" y1="340" x2="142" y2="280" stroke="#BAE6FD" stroke-width="2" opacity="0.6"/>
+  <line x1="142" y1="280" x2="256" y2="220" stroke="#BAE6FD" stroke-width="2" opacity="0.6"/>
+
+  <!-- Neural Vertex Nodes -->
+  <circle cx="256" cy="220" r="7" fill="#FDE047"/>
+  <circle cx="370" cy="280" r="6" fill="#38BDF8"/>
+  <circle cx="256" cy="340" r="6" fill="#38BDF8"/>
+  <circle cx="142" cy="280" r="6" fill="#38BDF8"/>
+
+  <!-- Central Supercharged Bolt -->
+  <polygon points="285,45 175,245 255,245 195,445 355,225 275,225 320,45" fill="url(#s632-v7_spark)"/>
+  <polygon points="285,45 320,45 275,225 355,225 285,310" fill="#FEF08A" opacity="0.6"/>
+
+  <!-- AI Gemini 4-Point Star Core -->
+  <polygon points="256,110 262,125 277,131 262,137 256,152 250,137 235,131 250,125" fill="#FFFBEB"/>
+</svg>
+</g><text x="196" y="1916" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" fill="#8a8a8a" text-anchor="middle">32px</text><g><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" x="238" y="1880" width="16" height="16" preserveAspectRatio="xMidYMid meet">
+  <title>SuperFlash TCU - Diamond Neural AI Spark</title>
+  <defs>
+    <linearGradient id="s616-v7_diaTop" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38BDF8"/>
+      <stop offset="100%" stop-color="#1D4ED8"/>
+    </linearGradient>
+    <linearGradient id="s616-v7_diaBot" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1E3A8A"/>
+      <stop offset="100%" stop-color="#020617"/>
+    </linearGradient>
+    <linearGradient id="s616-v7_spark" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FEF08A"/>
+      <stop offset="45%" stop-color="#F59E0B"/>
+      <stop offset="100%" stop-color="#DC2626"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Lower Diamond Flashcard -->
+  <path d="M256 160 L400 240 L256 320 L112 240 Z" fill="url(#s616-v7_diaBot)" stroke="#1E293B" stroke-width="4"/>
+  <path d="M112 240 L256 320 L256 345 L112 265 Z" fill="#090D16"/>
+  <path d="M256 320 L400 240 L400 265 L256 345 Z" fill="#0F172A"/>
+
+  <!-- Upper Floating Diamond Flashcard with Glassy Glow -->
+  <path d="M256 220 L370 280 L256 340 L142 280 Z" fill="url(#s616-v7_diaTop)" opacity="0.85"/>
+
+  <!-- Neural Constellation Lines on Upper Plane -->
+  <line x1="256" y1="220" x2="370" y2="280" stroke="#BAE6FD" stroke-width="2" opacity="0.6"/>
+  <line x1="370" y1="280" x2="256" y2="340" stroke="#BAE6FD" stroke-width="2" opacity="0.6"/>
+  <line x1="256" y1="340" x2="142" y2="280" stroke="#BAE6FD" stroke-width="2" opacity="0.6"/>
+  <line x1="142" y1="280" x2="256" y2="220" stroke="#BAE6FD" stroke-width="2" opacity="0.6"/>
+
+  <!-- Neural Vertex Nodes -->
+  <circle cx="256" cy="220" r="7" fill="#FDE047"/>
+  <circle cx="370" cy="280" r="6" fill="#38BDF8"/>
+  <circle cx="256" cy="340" r="6" fill="#38BDF8"/>
+  <circle cx="142" cy="280" r="6" fill="#38BDF8"/>
+
+  <!-- Central Supercharged Bolt -->
+  <polygon points="285,45 175,245 255,245 195,445 355,225 275,225 320,45" fill="url(#s616-v7_spark)"/>
+  <polygon points="285,45 320,45 275,225 355,225 285,310" fill="#FEF08A" opacity="0.6"/>
+
+  <!-- AI Gemini 4-Point Star Core -->
+  <polygon points="256,110 262,125 277,131 262,137 256,152 250,137 235,131 250,125" fill="#FFFBEB"/>
+</svg>
+</g><text x="246" y="1916" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" fill="#8a8a8a" text-anchor="middle">16px</text><text x="90.0" y="1952" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="26" font-weight="700" fill="#161616">G · Neural Diamond</text><text x="90.0" y="1986" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="19" fill="#555">Diamante de estudo com nós de rede neural e</text><text x="90.0" y="2012" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="19" fill="#555">centelha Gemini.</text><rect x="562.667" y="1466" width="474.667" height="630" rx="18" fill="#fff" stroke="#e4e4e0" stroke-width="1"/><g><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" x="592.667" y="1506" width="414.667" height="300" preserveAspectRatio="xMidYMid meet">
+  <title>SuperFlash TCU - Glassmorphism Frost Spark</title>
+  <defs>
+    <linearGradient id="c7-v8_glass1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38BDF8" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="#1E3A8A" stop-opacity="0.8"/>
+    </linearGradient>
+    <linearGradient id="c7-v8_glass2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#60A5FA" stop-opacity="0.5"/>
+      <stop offset="100%" stop-color="#2563EB" stop-opacity="0.9"/>
+    </linearGradient>
+    <linearGradient id="c7-v8_strokeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.7"/>
+      <stop offset="100%" stop-color="#38BDF8" stop-opacity="0.2"/>
+    </linearGradient>
+    <linearGradient id="c7-v8_bolt" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FEF08A"/>
+      <stop offset="40%" stop-color="#F59E0B"/>
+      <stop offset="100%" stop-color="#EA580C"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Deep Dark Ambient Backdrop Circle -->
+  <rect x="36" y="36" width="440" height="440" rx="96" fill="#030712"/>
+
+  <!-- Back Glass Layer Card -->
+  <path d="M120 220 L270 140 L400 215 L250 295 Z" fill="url(#c7-v8_glass1)" stroke="url(#c7-v8_strokeGrad)" stroke-width="3"/>
+  <path d="M120 220 L250 295 L250 320 L120 245 Z" fill="#0B132B" opacity="0.6"/>
+  <path d="M250 295 L400 215 L400 240 L250 320 Z" fill="#1C2541" opacity="0.6"/>
+
+  <!-- Front Glass Layer Card (Shifted down and forward) -->
+  <path d="M100 290 L260 205 L410 285 L250 370 Z" fill="url(#c7-v8_glass2)" stroke="url(#c7-v8_strokeGrad)" stroke-width="4"/>
+  <path d="M100 290 L250 370 L250 395 L100 315 Z" fill="#1E3A8A" opacity="0.7"/>
+  <path d="M250 370 L410 285 L410 310 L250 395 Z" fill="#1D4ED8" opacity="0.7"/>
+
+  <!-- Glowing Flashcard Lines -->
+  <line x1="140" y1="290" x2="250" y2="232" stroke="#BAE6FD" stroke-width="6" stroke-linecap="round" opacity="0.5"/>
+  <line x1="150" y1="315" x2="230" y2="273" stroke="#BAE6FD" stroke-width="6" stroke-linecap="round" opacity="0.4"/>
+
+  <!-- Cutting Golden Lightning Blade -->
+  <polygon points="285,45 175,245 250,245 195,445 355,225 275,225 320,45" fill="url(#c7-v8_bolt)"/>
+  <polygon points="285,45 250,225 275,225 195,445 175,245" fill="#D97706" opacity="0.4"/>
+</svg>
+</g><g><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" x="592.667" y="1832" width="64" height="64" preserveAspectRatio="xMidYMid meet">
+  <title>SuperFlash TCU - Glassmorphism Frost Spark</title>
+  <defs>
+    <linearGradient id="s764-v8_glass1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38BDF8" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="#1E3A8A" stop-opacity="0.8"/>
+    </linearGradient>
+    <linearGradient id="s764-v8_glass2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#60A5FA" stop-opacity="0.5"/>
+      <stop offset="100%" stop-color="#2563EB" stop-opacity="0.9"/>
+    </linearGradient>
+    <linearGradient id="s764-v8_strokeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.7"/>
+      <stop offset="100%" stop-color="#38BDF8" stop-opacity="0.2"/>
+    </linearGradient>
+    <linearGradient id="s764-v8_bolt" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FEF08A"/>
+      <stop offset="40%" stop-color="#F59E0B"/>
+      <stop offset="100%" stop-color="#EA580C"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Deep Dark Ambient Backdrop Circle -->
+  <rect x="36" y="36" width="440" height="440" rx="96" fill="#030712"/>
+
+  <!-- Back Glass Layer Card -->
+  <path d="M120 220 L270 140 L400 215 L250 295 Z" fill="url(#s764-v8_glass1)" stroke="url(#s764-v8_strokeGrad)" stroke-width="3"/>
+  <path d="M120 220 L250 295 L250 320 L120 245 Z" fill="#0B132B" opacity="0.6"/>
+  <path d="M250 295 L400 215 L400 240 L250 320 Z" fill="#1C2541" opacity="0.6"/>
+
+  <!-- Front Glass Layer Card (Shifted down and forward) -->
+  <path d="M100 290 L260 205 L410 285 L250 370 Z" fill="url(#s764-v8_glass2)" stroke="url(#s764-v8_strokeGrad)" stroke-width="4"/>
+  <path d="M100 290 L250 370 L250 395 L100 315 Z" fill="#1E3A8A" opacity="0.7"/>
+  <path d="M250 370 L410 285 L410 310 L250 395 Z" fill="#1D4ED8" opacity="0.7"/>
+
+  <!-- Glowing Flashcard Lines -->
+  <line x1="140" y1="290" x2="250" y2="232" stroke="#BAE6FD" stroke-width="6" stroke-linecap="round" opacity="0.5"/>
+  <line x1="150" y1="315" x2="230" y2="273" stroke="#BAE6FD" stroke-width="6" stroke-linecap="round" opacity="0.4"/>
+
+  <!-- Cutting Golden Lightning Blade -->
+  <polygon points="285,45 175,245 250,245 195,445 355,225 275,225 320,45" fill="url(#s764-v8_bolt)"/>
+  <polygon points="285,45 250,225 275,225 195,445 175,245" fill="#D97706" opacity="0.4"/>
+</svg>
+</g><text x="624.667" y="1916" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" fill="#8a8a8a" text-anchor="middle">64px</text><g><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" x="682.667" y="1864" width="32" height="32" preserveAspectRatio="xMidYMid meet">
+  <title>SuperFlash TCU - Glassmorphism Frost Spark</title>
+  <defs>
+    <linearGradient id="s732-v8_glass1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38BDF8" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="#1E3A8A" stop-opacity="0.8"/>
+    </linearGradient>
+    <linearGradient id="s732-v8_glass2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#60A5FA" stop-opacity="0.5"/>
+      <stop offset="100%" stop-color="#2563EB" stop-opacity="0.9"/>
+    </linearGradient>
+    <linearGradient id="s732-v8_strokeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.7"/>
+      <stop offset="100%" stop-color="#38BDF8" stop-opacity="0.2"/>
+    </linearGradient>
+    <linearGradient id="s732-v8_bolt" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FEF08A"/>
+      <stop offset="40%" stop-color="#F59E0B"/>
+      <stop offset="100%" stop-color="#EA580C"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Deep Dark Ambient Backdrop Circle -->
+  <rect x="36" y="36" width="440" height="440" rx="96" fill="#030712"/>
+
+  <!-- Back Glass Layer Card -->
+  <path d="M120 220 L270 140 L400 215 L250 295 Z" fill="url(#s732-v8_glass1)" stroke="url(#s732-v8_strokeGrad)" stroke-width="3"/>
+  <path d="M120 220 L250 295 L250 320 L120 245 Z" fill="#0B132B" opacity="0.6"/>
+  <path d="M250 295 L400 215 L400 240 L250 320 Z" fill="#1C2541" opacity="0.6"/>
+
+  <!-- Front Glass Layer Card (Shifted down and forward) -->
+  <path d="M100 290 L260 205 L410 285 L250 370 Z" fill="url(#s732-v8_glass2)" stroke="url(#s732-v8_strokeGrad)" stroke-width="4"/>
+  <path d="M100 290 L250 370 L250 395 L100 315 Z" fill="#1E3A8A" opacity="0.7"/>
+  <path d="M250 370 L410 285 L410 310 L250 395 Z" fill="#1D4ED8" opacity="0.7"/>
+
+  <!-- Glowing Flashcard Lines -->
+  <line x1="140" y1="290" x2="250" y2="232" stroke="#BAE6FD" stroke-width="6" stroke-linecap="round" opacity="0.5"/>
+  <line x1="150" y1="315" x2="230" y2="273" stroke="#BAE6FD" stroke-width="6" stroke-linecap="round" opacity="0.4"/>
+
+  <!-- Cutting Golden Lightning Blade -->
+  <polygon points="285,45 175,245 250,245 195,445 355,225 275,225 320,45" fill="url(#s732-v8_bolt)"/>
+  <polygon points="285,45 250,225 275,225 195,445 175,245" fill="#D97706" opacity="0.4"/>
+</svg>
+</g><text x="698.667" y="1916" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" fill="#8a8a8a" text-anchor="middle">32px</text><g><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" x="740.667" y="1880" width="16" height="16" preserveAspectRatio="xMidYMid meet">
+  <title>SuperFlash TCU - Glassmorphism Frost Spark</title>
+  <defs>
+    <linearGradient id="s716-v8_glass1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38BDF8" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="#1E3A8A" stop-opacity="0.8"/>
+    </linearGradient>
+    <linearGradient id="s716-v8_glass2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#60A5FA" stop-opacity="0.5"/>
+      <stop offset="100%" stop-color="#2563EB" stop-opacity="0.9"/>
+    </linearGradient>
+    <linearGradient id="s716-v8_strokeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.7"/>
+      <stop offset="100%" stop-color="#38BDF8" stop-opacity="0.2"/>
+    </linearGradient>
+    <linearGradient id="s716-v8_bolt" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FEF08A"/>
+      <stop offset="40%" stop-color="#F59E0B"/>
+      <stop offset="100%" stop-color="#EA580C"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Deep Dark Ambient Backdrop Circle -->
+  <rect x="36" y="36" width="440" height="440" rx="96" fill="#030712"/>
+
+  <!-- Back Glass Layer Card -->
+  <path d="M120 220 L270 140 L400 215 L250 295 Z" fill="url(#s716-v8_glass1)" stroke="url(#s716-v8_strokeGrad)" stroke-width="3"/>
+  <path d="M120 220 L250 295 L250 320 L120 245 Z" fill="#0B132B" opacity="0.6"/>
+  <path d="M250 295 L400 215 L400 240 L250 320 Z" fill="#1C2541" opacity="0.6"/>
+
+  <!-- Front Glass Layer Card (Shifted down and forward) -->
+  <path d="M100 290 L260 205 L410 285 L250 370 Z" fill="url(#s716-v8_glass2)" stroke="url(#s716-v8_strokeGrad)" stroke-width="4"/>
+  <path d="M100 290 L250 370 L250 395 L100 315 Z" fill="#1E3A8A" opacity="0.7"/>
+  <path d="M250 370 L410 285 L410 310 L250 395 Z" fill="#1D4ED8" opacity="0.7"/>
+
+  <!-- Glowing Flashcard Lines -->
+  <line x1="140" y1="290" x2="250" y2="232" stroke="#BAE6FD" stroke-width="6" stroke-linecap="round" opacity="0.5"/>
+  <line x1="150" y1="315" x2="230" y2="273" stroke="#BAE6FD" stroke-width="6" stroke-linecap="round" opacity="0.4"/>
+
+  <!-- Cutting Golden Lightning Blade -->
+  <polygon points="285,45 175,245 250,245 195,445 355,225 275,225 320,45" fill="url(#s716-v8_bolt)"/>
+  <polygon points="285,45 250,225 275,225 195,445 175,245" fill="#D97706" opacity="0.4"/>
+</svg>
+</g><text x="748.667" y="1916" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" fill="#8a8a8a" text-anchor="middle">16px</text><text x="592.6666666666667" y="1952" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="26" font-weight="700" fill="#161616">H · Frosted Glass</text><text x="592.6666666666667" y="1986" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="19" fill="#555">Camadas de vidro translúcido com bordas</text><text x="592.6666666666667" y="2012" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="19" fill="#555">ciano e lâmina dourada.</text><rect x="1065.33" y="1466" width="474.667" height="630" rx="18" fill="#fff" stroke="#e4e4e0" stroke-width="1"/><g><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" x="1095.33" y="1506" width="414.667" height="300" preserveAspectRatio="xMidYMid meet">
+  <title>SuperFlash TCU - Infinite Loop Isometric</title>
+  <defs>
+    <linearGradient id="c8-v9_loop1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38BDF8"/>
+      <stop offset="50%" stop-color="#2563EB"/>
+      <stop offset="100%" stop-color="#1E3A8A"/>
+    </linearGradient>
+    <linearGradient id="c8-v9_loop2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1D4ED8"/>
+      <stop offset="50%" stop-color="#0F172A"/>
+      <stop offset="100%" stop-color="#1E40AF"/>
+    </linearGradient>
+    <linearGradient id="c8-v9_spark" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FEF08A"/>
+      <stop offset="45%" stop-color="#F59E0B"/>
+      <stop offset="100%" stop-color="#EA580C"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Left Isometric Loop Wing -->
+  <path d="M190 170 C120 170 80 220 80 280 C80 340 130 380 190 380 C240 380 270 340 300 290 L260 270 C235 310 215 330 190 330 C155 330 130 305 130 280 C130 250 155 220 190 220 C220 220 240 240 260 270 L300 250 C270 200 240 170 190 170 Z" fill="url(#c8-v9_loop1)"/>
+
+  <!-- Right Isometric Loop Wing (Symmetric Intersect) -->
+  <path d="M322 170 C372 170 412 200 442 250 L402 270 C382 240 362 220 322 220 C287 220 262 250 262 280 C262 305 287 330 322 330 C347 330 367 310 392 270 L432 290 C402 340 372 380 322 380 C262 380 212 340 212 280 C212 220 262 170 322 170 Z" fill="url(#c8-v9_loop2)"/>
+
+  <!-- Center Diagonal Anchor Blade (O Raio Cruzando o Ponto de Infinito) -->
+  <polygon points="275,50 185,245 250,245 200,445 350,225 275,225 310,50" fill="url(#c8-v9_spark)"/>
+  <polygon points="275,50 250,225 275,225 200,445 185,245" fill="#D97706" opacity="0.45"/>
+
+  <!-- Energy nodes -->
+  <circle cx="190" cy="275" r="8" fill="#38BDF8"/>
+  <circle cx="322" cy="275" r="8" fill="#FBBF24"/>
+</svg>
+</g><g><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" x="1095.33" y="1832" width="64" height="64" preserveAspectRatio="xMidYMid meet">
+  <title>SuperFlash TCU - Infinite Loop Isometric</title>
+  <defs>
+    <linearGradient id="s864-v9_loop1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38BDF8"/>
+      <stop offset="50%" stop-color="#2563EB"/>
+      <stop offset="100%" stop-color="#1E3A8A"/>
+    </linearGradient>
+    <linearGradient id="s864-v9_loop2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1D4ED8"/>
+      <stop offset="50%" stop-color="#0F172A"/>
+      <stop offset="100%" stop-color="#1E40AF"/>
+    </linearGradient>
+    <linearGradient id="s864-v9_spark" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FEF08A"/>
+      <stop offset="45%" stop-color="#F59E0B"/>
+      <stop offset="100%" stop-color="#EA580C"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Left Isometric Loop Wing -->
+  <path d="M190 170 C120 170 80 220 80 280 C80 340 130 380 190 380 C240 380 270 340 300 290 L260 270 C235 310 215 330 190 330 C155 330 130 305 130 280 C130 250 155 220 190 220 C220 220 240 240 260 270 L300 250 C270 200 240 170 190 170 Z" fill="url(#s864-v9_loop1)"/>
+
+  <!-- Right Isometric Loop Wing (Symmetric Intersect) -->
+  <path d="M322 170 C372 170 412 200 442 250 L402 270 C382 240 362 220 322 220 C287 220 262 250 262 280 C262 305 287 330 322 330 C347 330 367 310 392 270 L432 290 C402 340 372 380 322 380 C262 380 212 340 212 280 C212 220 262 170 322 170 Z" fill="url(#s864-v9_loop2)"/>
+
+  <!-- Center Diagonal Anchor Blade (O Raio Cruzando o Ponto de Infinito) -->
+  <polygon points="275,50 185,245 250,245 200,445 350,225 275,225 310,50" fill="url(#s864-v9_spark)"/>
+  <polygon points="275,50 250,225 275,225 200,445 185,245" fill="#D97706" opacity="0.45"/>
+
+  <!-- Energy nodes -->
+  <circle cx="190" cy="275" r="8" fill="#38BDF8"/>
+  <circle cx="322" cy="275" r="8" fill="#FBBF24"/>
+</svg>
+</g><text x="1127.33" y="1916" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" fill="#8a8a8a" text-anchor="middle">64px</text><g><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" x="1185.33" y="1864" width="32" height="32" preserveAspectRatio="xMidYMid meet">
+  <title>SuperFlash TCU - Infinite Loop Isometric</title>
+  <defs>
+    <linearGradient id="s832-v9_loop1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38BDF8"/>
+      <stop offset="50%" stop-color="#2563EB"/>
+      <stop offset="100%" stop-color="#1E3A8A"/>
+    </linearGradient>
+    <linearGradient id="s832-v9_loop2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1D4ED8"/>
+      <stop offset="50%" stop-color="#0F172A"/>
+      <stop offset="100%" stop-color="#1E40AF"/>
+    </linearGradient>
+    <linearGradient id="s832-v9_spark" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FEF08A"/>
+      <stop offset="45%" stop-color="#F59E0B"/>
+      <stop offset="100%" stop-color="#EA580C"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Left Isometric Loop Wing -->
+  <path d="M190 170 C120 170 80 220 80 280 C80 340 130 380 190 380 C240 380 270 340 300 290 L260 270 C235 310 215 330 190 330 C155 330 130 305 130 280 C130 250 155 220 190 220 C220 220 240 240 260 270 L300 250 C270 200 240 170 190 170 Z" fill="url(#s832-v9_loop1)"/>
+
+  <!-- Right Isometric Loop Wing (Symmetric Intersect) -->
+  <path d="M322 170 C372 170 412 200 442 250 L402 270 C382 240 362 220 322 220 C287 220 262 250 262 280 C262 305 287 330 322 330 C347 330 367 310 392 270 L432 290 C402 340 372 380 322 380 C262 380 212 340 212 280 C212 220 262 170 322 170 Z" fill="url(#s832-v9_loop2)"/>
+
+  <!-- Center Diagonal Anchor Blade (O Raio Cruzando o Ponto de Infinito) -->
+  <polygon points="275,50 185,245 250,245 200,445 350,225 275,225 310,50" fill="url(#s832-v9_spark)"/>
+  <polygon points="275,50 250,225 275,225 200,445 185,245" fill="#D97706" opacity="0.45"/>
+
+  <!-- Energy nodes -->
+  <circle cx="190" cy="275" r="8" fill="#38BDF8"/>
+  <circle cx="322" cy="275" r="8" fill="#FBBF24"/>
+</svg>
+</g><text x="1201.33" y="1916" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" fill="#8a8a8a" text-anchor="middle">32px</text><g><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" x="1243.33" y="1880" width="16" height="16" preserveAspectRatio="xMidYMid meet">
+  <title>SuperFlash TCU - Infinite Loop Isometric</title>
+  <defs>
+    <linearGradient id="s816-v9_loop1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38BDF8"/>
+      <stop offset="50%" stop-color="#2563EB"/>
+      <stop offset="100%" stop-color="#1E3A8A"/>
+    </linearGradient>
+    <linearGradient id="s816-v9_loop2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1D4ED8"/>
+      <stop offset="50%" stop-color="#0F172A"/>
+      <stop offset="100%" stop-color="#1E40AF"/>
+    </linearGradient>
+    <linearGradient id="s816-v9_spark" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FEF08A"/>
+      <stop offset="45%" stop-color="#F59E0B"/>
+      <stop offset="100%" stop-color="#EA580C"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Left Isometric Loop Wing -->
+  <path d="M190 170 C120 170 80 220 80 280 C80 340 130 380 190 380 C240 380 270 340 300 290 L260 270 C235 310 215 330 190 330 C155 330 130 305 130 280 C130 250 155 220 190 220 C220 220 240 240 260 270 L300 250 C270 200 240 170 190 170 Z" fill="url(#s816-v9_loop1)"/>
+
+  <!-- Right Isometric Loop Wing (Symmetric Intersect) -->
+  <path d="M322 170 C372 170 412 200 442 250 L402 270 C382 240 362 220 322 220 C287 220 262 250 262 280 C262 305 287 330 322 330 C347 330 367 310 392 270 L432 290 C402 340 372 380 322 380 C262 380 212 340 212 280 C212 220 262 170 322 170 Z" fill="url(#s816-v9_loop2)"/>
+
+  <!-- Center Diagonal Anchor Blade (O Raio Cruzando o Ponto de Infinito) -->
+  <polygon points="275,50 185,245 250,245 200,445 350,225 275,225 310,50" fill="url(#s816-v9_spark)"/>
+  <polygon points="275,50 250,225 275,225 200,445 185,245" fill="#D97706" opacity="0.45"/>
+
+  <!-- Energy nodes -->
+  <circle cx="190" cy="275" r="8" fill="#38BDF8"/>
+  <circle cx="322" cy="275" r="8" fill="#FBBF24"/>
+</svg>
+</g><text x="1251.33" y="1916" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" fill="#8a8a8a" text-anchor="middle">16px</text><text x="1095.3333333333335" y="1952" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="26" font-weight="700" fill="#161616">I · Infinite Loop</text><text x="1095.3333333333335" y="1986" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="19" fill="#555">Fita contínua de repetição espaçada</text><text x="1095.3333333333335" y="2012" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="19" fill="#555">infinita ancorada por raio.</text><rect x="60" y="2124" width="474.667" height="630" rx="18" fill="#fff" stroke="#e4e4e0" stroke-width="1"/><g><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" x="90" y="2164" width="414.667" height="300" preserveAspectRatio="xMidYMid meet">
+  <title>SuperFlash TCU - Monumental TCU Column Bolt</title>
+  <defs>
+    <linearGradient id="c9-v10_col1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1E3A8A"/>
+      <stop offset="100%" stop-color="#0F172A"/>
+    </linearGradient>
+    <linearGradient id="c9-v10_col2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#2563EB"/>
+      <stop offset="100%" stop-color="#1E3A8A"/>
+    </linearGradient>
+    <linearGradient id="c9-v10_col3" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#3B82F6"/>
+      <stop offset="100%" stop-color="#1D4ED8"/>
+    </linearGradient>
+    <linearGradient id="c9-v10_bolt" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FEF08A"/>
+      <stop offset="35%" stop-color="#FBBF24"/>
+      <stop offset="100%" stop-color="#EA580C"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Column 1 (Left: Pilar Legal / Auditoria) -->
+  <path d="M100 230 L170 190 L170 380 L100 420 Z" fill="url(#c9-v10_col1)"/>
+  <path d="M170 190 L220 220 L220 410 L170 380 Z" fill="#090D16"/>
+  <path d="M100 230 L150 200 L220 220 L170 250 Z" fill="#1E40AF"/>
+
+  <!-- Column 2 (Center High: Plenário / Inteligência) -->
+  <path d="M220 160 L290 120 L290 350 L220 390 Z" fill="url(#c9-v10_col2)"/>
+  <path d="M290 120 L340 150 L340 380 L290 350 Z" fill="#0F172A"/>
+  <path d="M220 160 L270 130 L340 150 L290 180 Z" fill="#2563EB"/>
+
+  <!-- Column 3 (Right: Domínio Pleno / Controle) -->
+  <path d="M340 210 L410 170 L410 370 L340 410 Z" fill="url(#c9-v10_col3)"/>
+  <path d="M410 170 L460 200 L460 400 L410 370 Z" fill="#1E293B"/>
+  <path d="M340 210 L390 180 L460 200 L410 230 Z" fill="#60A5FA"/>
+
+  <!-- Grounding Isometric Shadow -->
+  <path d="M80 430 L256 490 L480 410 L304 350 Z" fill="#020617" opacity="0.3"/>
+
+  <!-- Sovereign Gold Lightning Bolt -->
+  <polygon points="280,40 180,240 250,240 195,445 355,220 275,220 320,40" fill="url(#c9-v10_bolt)"/>
+  <polygon points="280,40 250,220 275,220 195,445 180,240" fill="#D97706" opacity="0.45"/>
+
+  <!-- Star of Excellence at Zenith -->
+  <polygon points="280,22 284,32 295,36 284,40 280,50 276,40 265,36 276,32" fill="#FEF08A"/>
+</svg>
+</g><g><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" x="90" y="2490" width="64" height="64" preserveAspectRatio="xMidYMid meet">
+  <title>SuperFlash TCU - Monumental TCU Column Bolt</title>
+  <defs>
+    <linearGradient id="s964-v10_col1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1E3A8A"/>
+      <stop offset="100%" stop-color="#0F172A"/>
+    </linearGradient>
+    <linearGradient id="s964-v10_col2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#2563EB"/>
+      <stop offset="100%" stop-color="#1E3A8A"/>
+    </linearGradient>
+    <linearGradient id="s964-v10_col3" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#3B82F6"/>
+      <stop offset="100%" stop-color="#1D4ED8"/>
+    </linearGradient>
+    <linearGradient id="s964-v10_bolt" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FEF08A"/>
+      <stop offset="35%" stop-color="#FBBF24"/>
+      <stop offset="100%" stop-color="#EA580C"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Column 1 (Left: Pilar Legal / Auditoria) -->
+  <path d="M100 230 L170 190 L170 380 L100 420 Z" fill="url(#s964-v10_col1)"/>
+  <path d="M170 190 L220 220 L220 410 L170 380 Z" fill="#090D16"/>
+  <path d="M100 230 L150 200 L220 220 L170 250 Z" fill="#1E40AF"/>
+
+  <!-- Column 2 (Center High: Plenário / Inteligência) -->
+  <path d="M220 160 L290 120 L290 350 L220 390 Z" fill="url(#s964-v10_col2)"/>
+  <path d="M290 120 L340 150 L340 380 L290 350 Z" fill="#0F172A"/>
+  <path d="M220 160 L270 130 L340 150 L290 180 Z" fill="#2563EB"/>
+
+  <!-- Column 3 (Right: Domínio Pleno / Controle) -->
+  <path d="M340 210 L410 170 L410 370 L340 410 Z" fill="url(#s964-v10_col3)"/>
+  <path d="M410 170 L460 200 L460 400 L410 370 Z" fill="#1E293B"/>
+  <path d="M340 210 L390 180 L460 200 L410 230 Z" fill="#60A5FA"/>
+
+  <!-- Grounding Isometric Shadow -->
+  <path d="M80 430 L256 490 L480 410 L304 350 Z" fill="#020617" opacity="0.3"/>
+
+  <!-- Sovereign Gold Lightning Bolt -->
+  <polygon points="280,40 180,240 250,240 195,445 355,220 275,220 320,40" fill="url(#s964-v10_bolt)"/>
+  <polygon points="280,40 250,220 275,220 195,445 180,240" fill="#D97706" opacity="0.45"/>
+
+  <!-- Star of Excellence at Zenith -->
+  <polygon points="280,22 284,32 295,36 284,40 280,50 276,40 265,36 276,32" fill="#FEF08A"/>
+</svg>
+</g><text x="122" y="2574" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" fill="#8a8a8a" text-anchor="middle">64px</text><g><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" x="180" y="2522" width="32" height="32" preserveAspectRatio="xMidYMid meet">
+  <title>SuperFlash TCU - Monumental TCU Column Bolt</title>
+  <defs>
+    <linearGradient id="s932-v10_col1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1E3A8A"/>
+      <stop offset="100%" stop-color="#0F172A"/>
+    </linearGradient>
+    <linearGradient id="s932-v10_col2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#2563EB"/>
+      <stop offset="100%" stop-color="#1E3A8A"/>
+    </linearGradient>
+    <linearGradient id="s932-v10_col3" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#3B82F6"/>
+      <stop offset="100%" stop-color="#1D4ED8"/>
+    </linearGradient>
+    <linearGradient id="s932-v10_bolt" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FEF08A"/>
+      <stop offset="35%" stop-color="#FBBF24"/>
+      <stop offset="100%" stop-color="#EA580C"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Column 1 (Left: Pilar Legal / Auditoria) -->
+  <path d="M100 230 L170 190 L170 380 L100 420 Z" fill="url(#s932-v10_col1)"/>
+  <path d="M170 190 L220 220 L220 410 L170 380 Z" fill="#090D16"/>
+  <path d="M100 230 L150 200 L220 220 L170 250 Z" fill="#1E40AF"/>
+
+  <!-- Column 2 (Center High: Plenário / Inteligência) -->
+  <path d="M220 160 L290 120 L290 350 L220 390 Z" fill="url(#s932-v10_col2)"/>
+  <path d="M290 120 L340 150 L340 380 L290 350 Z" fill="#0F172A"/>
+  <path d="M220 160 L270 130 L340 150 L290 180 Z" fill="#2563EB"/>
+
+  <!-- Column 3 (Right: Domínio Pleno / Controle) -->
+  <path d="M340 210 L410 170 L410 370 L340 410 Z" fill="url(#s932-v10_col3)"/>
+  <path d="M410 170 L460 200 L460 400 L410 370 Z" fill="#1E293B"/>
+  <path d="M340 210 L390 180 L460 200 L410 230 Z" fill="#60A5FA"/>
+
+  <!-- Grounding Isometric Shadow -->
+  <path d="M80 430 L256 490 L480 410 L304 350 Z" fill="#020617" opacity="0.3"/>
+
+  <!-- Sovereign Gold Lightning Bolt -->
+  <polygon points="280,40 180,240 250,240 195,445 355,220 275,220 320,40" fill="url(#s932-v10_bolt)"/>
+  <polygon points="280,40 250,220 275,220 195,445 180,240" fill="#D97706" opacity="0.45"/>
+
+  <!-- Star of Excellence at Zenith -->
+  <polygon points="280,22 284,32 295,36 284,40 280,50 276,40 265,36 276,32" fill="#FEF08A"/>
+</svg>
+</g><text x="196" y="2574" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" fill="#8a8a8a" text-anchor="middle">32px</text><g><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" x="238" y="2538" width="16" height="16" preserveAspectRatio="xMidYMid meet">
+  <title>SuperFlash TCU - Monumental TCU Column Bolt</title>
+  <defs>
+    <linearGradient id="s916-v10_col1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1E3A8A"/>
+      <stop offset="100%" stop-color="#0F172A"/>
+    </linearGradient>
+    <linearGradient id="s916-v10_col2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#2563EB"/>
+      <stop offset="100%" stop-color="#1E3A8A"/>
+    </linearGradient>
+    <linearGradient id="s916-v10_col3" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#3B82F6"/>
+      <stop offset="100%" stop-color="#1D4ED8"/>
+    </linearGradient>
+    <linearGradient id="s916-v10_bolt" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FEF08A"/>
+      <stop offset="35%" stop-color="#FBBF24"/>
+      <stop offset="100%" stop-color="#EA580C"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Column 1 (Left: Pilar Legal / Auditoria) -->
+  <path d="M100 230 L170 190 L170 380 L100 420 Z" fill="url(#s916-v10_col1)"/>
+  <path d="M170 190 L220 220 L220 410 L170 380 Z" fill="#090D16"/>
+  <path d="M100 230 L150 200 L220 220 L170 250 Z" fill="#1E40AF"/>
+
+  <!-- Column 2 (Center High: Plenário / Inteligência) -->
+  <path d="M220 160 L290 120 L290 350 L220 390 Z" fill="url(#s916-v10_col2)"/>
+  <path d="M290 120 L340 150 L340 380 L290 350 Z" fill="#0F172A"/>
+  <path d="M220 160 L270 130 L340 150 L290 180 Z" fill="#2563EB"/>
+
+  <!-- Column 3 (Right: Domínio Pleno / Controle) -->
+  <path d="M340 210 L410 170 L410 370 L340 410 Z" fill="url(#s916-v10_col3)"/>
+  <path d="M410 170 L460 200 L460 400 L410 370 Z" fill="#1E293B"/>
+  <path d="M340 210 L390 180 L460 200 L410 230 Z" fill="#60A5FA"/>
+
+  <!-- Grounding Isometric Shadow -->
+  <path d="M80 430 L256 490 L480 410 L304 350 Z" fill="#020617" opacity="0.3"/>
+
+  <!-- Sovereign Gold Lightning Bolt -->
+  <polygon points="280,40 180,240 250,240 195,445 355,220 275,220 320,40" fill="url(#s916-v10_bolt)"/>
+  <polygon points="280,40 250,220 275,220 195,445 180,240" fill="#D97706" opacity="0.45"/>
+
+  <!-- Star of Excellence at Zenith -->
+  <polygon points="280,22 284,32 295,36 284,40 280,50 276,40 265,36 276,32" fill="#FEF08A"/>
+</svg>
+</g><text x="246" y="2574" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" fill="#8a8a8a" text-anchor="middle">16px</text><text x="90.0" y="2610" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="26" font-weight="700" fill="#161616">J · Monumental TCU</text><text x="90.0" y="2644" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="19" fill="#555">Estrutura monumental escalonada evocando a</text><text x="90.0" y="2670" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="19" fill="#555">autoridade do TCU.</text></svg>

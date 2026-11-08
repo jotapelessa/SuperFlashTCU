@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+  <title>SuperFlash TCU - Cascade Orbit</title>
+  <defs>
+    <linearGradient id="v5_c1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1E3A8A"/>
+      <stop offset="100%" stop-color="#0F172A"/>
+    </linearGradient>
+    <linearGradient id="v5_c2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#2563EB"/>
+      <stop offset="100%" stop-color="#1D4ED8"/>
+    </linearGradient>
+    <linearGradient id="v5_c3" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#60A5FA"/>
+      <stop offset="100%" stop-color="#3B82F6"/>
+    </linearGradient>
+    <linearGradient id="v5_spark" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FEF08A"/>
+      <stop offset="50%" stop-color="#F59E0B"/>
+      <stop offset="100%" stop-color="#EA580C"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Card 1: Bottom Angle -->
+  <path d="M70 290 L210 210 L330 280 L190 360 Z" fill="url(#v5_c1)" opacity="0.9"/>
+  <path d="M70 290 L190 360 L190 380 L70 310 Z" fill="#090D16"/>
+
+  <!-- Card 2: Mid Shifted Angle -->
+  <path d="M140 230 L280 150 L400 220 L260 300 Z" fill="url(#v5_c2)"/>
+  <path d="M140 230 L260 300 L260 320 L140 250 Z" fill="#1E40AF"/>
+
+  <!-- Card 3: Top Ascending Angle -->
+  <path d="M210 170 L350 90 L470 160 L330 240 Z" fill="url(#v5_c3)"/>
+  <path d="M210 170 L330 240 L330 260 L210 190 Z" fill="#1D4ED8"/>
+
+  <!-- Dynamic Curved Speed Trails -->
+  <path d="M90 340 C140 370 240 380 300 350" stroke="#FBBF24" stroke-width="4" stroke-linecap="round" fill="none" opacity="0.6"/>
+  <path d="M160 280 C210 310 310 320 370 290" stroke="#FBBF24" stroke-width="4" stroke-linecap="round" fill="none" opacity="0.6"/>
+
+  <!-- High Velocity Lightning Spear Cutting Through The Arc -->
+  <polygon points="280,40 180,230 245,230 195,440 350,210 275,210 315,40" fill="url(#v5_spark)"/>
+</svg>

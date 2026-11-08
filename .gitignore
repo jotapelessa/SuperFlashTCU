@@ -16,6 +16,8 @@ app/build/
 .idea/
 .vscode/
 .antigravity/
+.agents/
+skills-lock.json
 captures/
 .externalNativeBuild
 .cxx

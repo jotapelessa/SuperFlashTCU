@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+  <defs>
+    <!-- Background / Shadow Gradients -->
+    <linearGradient id="cardGradBottom" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1E3A8A"/>
+      <stop offset="100%" stop-color="#0F172A"/>
+    </linearGradient>
+
+    <linearGradient id="cardGradTop" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#3B82F6"/>
+      <stop offset="100%" stop-color="#1D4ED8"/>
+    </linearGradient>
+
+    <linearGradient id="cardGradAccent" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#60A5FA"/>
+      <stop offset="100%" stop-color="#2563EB"/>
+    </linearGradient>
+
+    <!-- Bolt Spark Gradient -->
+    <linearGradient id="boltGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FEF08A"/>
+      <stop offset="45%" stop-color="#FBBF24"/>
+      <stop offset="100%" stop-color="#EA580C"/>
+    </linearGradient>
+
+    <!-- Bolt Inner Glow / Facet -->
+    <linearGradient id="boltFacet" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#F59E0B"/>
+      <stop offset="100%" stop-color="#FDE047"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Base Backing Card (Isométrica inferior, representando o acervo / repetição espaçada) -->
+  <path d="M120 200 L280 120 L400 185 L240 265 Z" fill="url(#cardGradBottom)" opacity="0.95"/>
+  <path d="M120 200 L240 265 L240 295 L120 230 Z" fill="#0F172A"/>
+  <path d="M240 265 L400 185 L400 215 L240 295 Z" fill="#1E293B"/>
+
+  <!-- Mid Active Flashcard (Isométrica central, deslocada para cima) -->
+  <path d="M100 280 L270 190 L410 265 L240 355 Z" fill="url(#cardGradTop)"/>
+  <path d="M100 280 L240 355 L240 385 L100 310 Z" fill="#1E40AF"/>
+  <path d="M240 355 L410 265 L410 295 L240 385 Z" fill="#1D4ED8"/>
+
+  <!-- Top Floating Card Highlight (Reflexo e linhas de estudo) -->
+  <path d="M140 275 L260 212 L330 250 L210 312 Z" fill="url(#cardGradAccent)" opacity="0.3"/>
+
+  <!-- Dynamic Lightning Bolt (O Raio SuperFlash cortando vertical-diagonalmente) -->
+  <!-- Faceta Esquerda / Sombra -->
+  <polygon points="305,60 175,250 255,250 195,450 355,230 275,230 325,60" fill="url(#boltGrad)"/>
+  <!-- Faceta Chanfrada Interna para relevo 3D de alta performance -->
+  <polygon points="305,60 255,230 275,230 195,450 240,250 175,250" fill="url(#boltFacet)" opacity="0.45"/>
+  <polygon points="305,60 325,60 275,230 355,230 300,310" fill="#FEF08A" opacity="0.6"/>
+
+  <!-- Pequeno Spark / Estrela de Inteligência Artificial no topo do raio -->
+  <polygon points="380,110 390,130 410,140 390,150 380,170 370,150 350,140 370,130" fill="#FDE047" opacity="0.9"/>
+</svg>

@@ -12,6 +12,7 @@ import com.example.data.model.BottleneckItem
 import com.example.data.model.DeckTimeSpent
 import com.example.data.model.DomainStats
 import com.example.data.model.FlashcardEntity
+import com.example.data.model.isDueForReview
 import com.example.data.model.L1DeckSummary
 import com.example.data.model.L2DisciplineSummary
 import com.example.data.model.ReviewStats
@@ -37,6 +38,7 @@ import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import java.util.Calendar
 
@@ -48,7 +50,7 @@ class DeckViewModel(application: Application) : AndroidViewModel(application) {
 
     init {
         val db = AppDatabase.getDatabase(application)
-        repository = DeckRepository(db.flashcardDao())
+        repository = DeckRepository(db.flashcardDao(), db.reviewLogDao())
 
         // Load custom deck colors and icons from prefs
         prefs.all.forEach { (key, value) ->
@@ -65,16 +67,109 @@ class DeckViewModel(application: Application) : AndroidViewModel(application) {
         viewModelScope.launch {
             repository.checkAndSeedInitialData()
         }
+
+        // Preload custom L2 daily goal percentages from prefs
+        prefs.all.forEach { (key, value) ->
+            if (key.startsWith("l2_goal_pct_") && (value is Float || value is Number)) {
+                val raw = key.removePrefix("l2_goal_pct_")
+                val parts = raw.split("::", limit = 2)
+                if (parts.size == 2) {
+                    val pct = (value as Number).toFloat()
+                    repository.setL2GoalPercentage(parts[0], parts[1], pct)
+                }
+            }
+        }
+
+        val savedL1GoalPct = prefs.getFloat("daily_goal_percentage", 10f).coerceIn(5f, 15f)
+        repository.setDailyGoalPercentage(savedL1GoalPct)
+
+        // Pulso periódico para reavaliar vencimentos e metas em repouso (a cada 60s)
+        viewModelScope.launch {
+            while (isActive) {
+                kotlinx.coroutines.delay(60_000L)
+                _customizationsTrigger.value = System.currentTimeMillis()
+            }
+        }
     }
 
-    // Daily Study Goal Feature
-    private val _dailyStudyGoal = MutableStateFlow(prefs.getInt("daily_study_goal", 20))
-    val dailyStudyGoal: StateFlow<Int> = _dailyStudyGoal.asStateFlow()
+    // L2 Daily Goal Percentage (5% to 10%, default 5%)
+    fun getL2DailyGoalPercentage(l1: String, l2: String): Float {
+        val key = "l2_goal_pct_${l1}::${l2}"
+        return prefs.getFloat(key, repository.getL2GoalPercentage(l1, l2))
+    }
 
-    fun setDailyStudyGoal(goal: Int) {
-        val safe = goal.coerceIn(5, 500)
-        _dailyStudyGoal.value = safe
-        prefs.edit().putInt("daily_study_goal", safe).apply()
+    fun setL2DailyGoalPercentage(l1: String, l2: String, percentage: Float) {
+        val safe = percentage.coerceIn(1f, 100f)
+        repository.setL2GoalPercentage(l1, l2, safe)
+        val key = "l2_goal_pct_${l1}::${l2}"
+        prefs.edit().putFloat(key, safe).apply()
+    }
+
+    data class L3GoalProgress(
+        val reviewedToday: Int,
+        val targetCards: Int,
+        val goalPercentage: Float,
+        val hasNextTopic: Boolean
+    )
+
+    fun getL3GoalProgress(l1: String, l2: String, l3: String): L3GoalProgress {
+        val dayStart = repository.getAnkiDayStart()
+        val allCardsList = allCards.value
+        val l2Cards = allCardsList.filter { it.l1 == l1 && it.l2 == l2 }
+        val l3Cards = l2Cards.filter { it.l3 == l3 }
+        val reviewedToday = l3Cards.count { it.lastReviewedTimestamp >= dayStart }
+        val goalPct = getL2DailyGoalPercentage(l1, l2)
+        val target = if (l3Cards.isNotEmpty()) kotlin.math.max(1, kotlin.math.ceil(l3Cards.size * (goalPct / 100f)).toInt()) else 0
+
+        val distinctL3s = l2Cards.map { it.l3 }.distinct().sorted()
+        val currentIndex = distinctL3s.indexOf(l3)
+        val hasNext = currentIndex != -1 && currentIndex + 1 < distinctL3s.size
+
+        return L3GoalProgress(
+            reviewedToday = reviewedToday,
+            targetCards = target,
+            goalPercentage = goalPct,
+            hasNextTopic = hasNext
+        )
+    }
+
+    private val _celebratedTopicsToday = mutableSetOf<String>()
+    private var lastCelebrationDayStart: Long = 0L
+
+    fun shouldCelebrateL3Topic(l1: String, l2: String, l3: String, currentReviewed: Int, targetCards: Int): Boolean {
+        val dayStart = repository.getAnkiDayStart()
+        if (dayStart != lastCelebrationDayStart) {
+            _celebratedTopicsToday.clear()
+            lastCelebrationDayStart = dayStart
+        }
+        val topicKey = "$l1::$l2::$l3"
+        if (targetCards <= 0 || currentReviewed < targetCards) return false
+        if (_celebratedTopicsToday.contains(topicKey)) return false
+        _celebratedTopicsToday.add(topicKey)
+        return true
+    }
+
+    fun getNextL3TopicCards(l1: String, currentL2: String, currentL3: String): List<FlashcardEntity>? {
+        val allCardsList = allCards.value
+        val l2Cards = allCardsList.filter { it.l1 == l1 && it.l2 == currentL2 }
+        val distinctL3s = l2Cards.map { it.l3 }.distinct().sorted()
+        val currentIndex = distinctL3s.indexOf(currentL3)
+        if (currentIndex != -1 && currentIndex + 1 < distinctL3s.size) {
+            val nextL3 = distinctL3s[currentIndex + 1]
+            return l2Cards.filter { it.l3 == nextL3 }
+        }
+        return null
+    }
+
+    // Daily Study Goal Percentage Feature (5% to 15%)
+    private val _dailyGoalPercentage = MutableStateFlow(prefs.getFloat("daily_goal_percentage", 10f).coerceIn(5f, 15f))
+    val dailyGoalPercentage: StateFlow<Float> = _dailyGoalPercentage.asStateFlow()
+
+    fun setDailyGoalPercentage(percentage: Float) {
+        val safe = percentage.coerceIn(5f, 15f)
+        _dailyGoalPercentage.value = safe
+        prefs.edit().putFloat("daily_goal_percentage", safe).apply()
+        repository.setDailyGoalPercentage(safe)
     }
 
     // Smart Shuffle Toggle (prioritizes overdue cards & lower mastery)
@@ -158,7 +253,7 @@ class DeckViewModel(application: Application) : AndroidViewModel(application) {
         val now = System.currentTimeMillis()
         cards.groupBy { "${it.l1} > ${it.l2}" }
             .map { (key, disciplineCards) ->
-                val dueCount = disciplineCards.count { it.dueTimestamp <= now }
+                val dueCount = disciplineCards.count { it.reps > 0 && it.dueTimestamp <= now }
                 val masteredCount = disciplineCards.count { it.masteryLevel >= 2 }
                 val masteryRate = if (disciplineCards.isNotEmpty()) (masteredCount.toFloat() / disciplineCards.size) * 100f else 0f
                 val cardsWithS = disciplineCards.filter { it.stability > 0f }
@@ -219,6 +314,28 @@ class DeckViewModel(application: Application) : AndroidViewModel(application) {
         initialValue = emptyList()
     )
 
+    // Dynamic Daily Study Goal computed from the sum of all L1 decks' target cards
+    val dailyStudyGoal: StateFlow<Int> = l1Decks.map { decks ->
+        val sum = decks.sumOf { it.dailyTargetCards }
+        if (sum > 0) sum else prefs.getInt("daily_study_goal", 20)
+    }
+    .flowOn(Dispatchers.Default)
+    .stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000),
+        initialValue = prefs.getInt("daily_study_goal", 20)
+    )
+
+    fun setDailyStudyGoal(goal: Int) {
+        val safe = goal.coerceIn(5, 500)
+        prefs.edit().putInt("daily_study_goal", safe).apply()
+        val total = allCards.value.size
+        if (total > 0) {
+            val approxPct = ((safe.toFloat() / total) * 100f).coerceIn(5f, 15f)
+            setDailyGoalPercentage(approxPct)
+        }
+    }
+
     fun updateL1Customization(
         oldL1: String,
         newName: String,
@@ -267,6 +384,17 @@ class DeckViewModel(application: Application) : AndroidViewModel(application) {
     fun deleteL2Discipline(l1: String, l2: String) {
         viewModelScope.launch {
             repository.deleteL2Discipline(l1, l2)
+            // Expurgar configurações e preferências órfãs salvas para esta disciplina L2
+            val l2Suffix = "_${l1}_$l2"
+            val keysToRemove = prefs.all.keys.filter { key ->
+                key.endsWith(l2Suffix) || key.contains("_${l1}_${l2}_")
+            }
+            if (keysToRemove.isNotEmpty()) {
+                val editor = prefs.edit()
+                keysToRemove.forEach { editor.remove(it) }
+                editor.apply()
+                _customizationsTrigger.value = System.currentTimeMillis()
+            }
         }
     }
 
@@ -364,21 +492,29 @@ class DeckViewModel(application: Application) : AndroidViewModel(application) {
         )
 
     // 5. Progress Analytics & Visualization State
-    val progressReport: StateFlow<StudyProgressReport> = repository.allCards
-        .combine(_selectedL1) { allCards, selectedL1 ->
-            val scopedCards = if (selectedL1 != null) {
-                allCards.filter { it.l1 == selectedL1 }
-            } else {
-                allCards
-            }
-            repository.calculateProgressReport(scopedCards)
+    val progressReport: StateFlow<StudyProgressReport> = combine(
+        repository.allCards,
+        _selectedL1,
+        repository.allReviewLogs
+    ) { allCards, selectedL1, logs ->
+        val scopedCards = if (selectedL1 != null) {
+            allCards.filter { it.l1 == selectedL1 }
+        } else {
+            allCards
         }
-        .flowOn(Dispatchers.Default)
-        .stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5000),
-            initialValue = StudyProgressReport()
-        )
+        val scopedLogs = if (selectedL1 != null) {
+            logs.filter { it.l1 == selectedL1 }
+        } else {
+            logs
+        }
+        repository.calculateProgressReport(scopedCards, scopedLogs)
+    }
+    .flowOn(Dispatchers.Default)
+    .stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000),
+        initialValue = StudyProgressReport()
+    )
 
     // 6. Study / Review Session State
     private val _studyCards = MutableStateFlow<List<FlashcardEntity>>(emptyList())
@@ -489,12 +625,18 @@ class DeckViewModel(application: Application) : AndroidViewModel(application) {
             val algorithm = _srsAlgorithm.value
             val retention = _targetRetention.value.toDouble()
             viewModelScope.launch {
-                repository.recordReview(
+                val updatedCard = repository.recordReview(
                     card = card,
                     rating = rating,
                     algorithm = algorithm,
-                    targetRetention = retention
+                    targetRetention = retention,
+                    reviewDurationMs = timeSpentMillis
                 )
+                if (card.masteryLevel < 2 && updatedCard.masteryLevel >= 2) {
+                    _sessionStats.value = _sessionStats.value.copy(
+                        graduatedToMasteredCount = _sessionStats.value.graduatedToMasteredCount + 1
+                    )
+                }
             }
 
             // Track time spent per deck/discipline
@@ -510,7 +652,6 @@ class DeckViewModel(application: Application) : AndroidViewModel(application) {
 
             // Update live session statistics
             val prev = _sessionStats.value
-            val isGraduated = card.masteryLevel < 2 && (rating >= 3 && (card.intervalDays >= 5 || card.reps >= 2))
             val newCompleted = prev.completedCards + 1
 
             val totalTime = sessionDeckTimes.values.sum()
@@ -539,7 +680,7 @@ class DeckViewModel(application: Application) : AndroidViewModel(application) {
                 hardCount = if (rating == 2) prev.hardCount + 1 else prev.hardCount,
                 goodCount = if (rating == 3) prev.goodCount + 1 else prev.goodCount,
                 easyCount = if (rating == 4) prev.easyCount + 1 else prev.easyCount,
-                graduatedToMasteredCount = if (isGraduated) prev.graduatedToMasteredCount + 1 else prev.graduatedToMasteredCount,
+                graduatedToMasteredCount = prev.graduatedToMasteredCount,
                 timeReport = timeReport
             )
 
@@ -798,6 +939,7 @@ class DeckViewModel(application: Application) : AndroidViewModel(application) {
             _supabaseSyncState.value = "Enviando dados para o Supabase..."
             val cards = allCards.value
             val progress = progressReport.value
+            val reviewLogs = repository.getAllReviewLogsSync()
             val settingsJson = org.json.JSONObject().apply {
                 put("dailyGoal", dailyStudyGoal.value)
                 put("smartShuffle", smartShuffleEnabled.value)
@@ -810,7 +952,8 @@ class DeckViewModel(application: Application) : AndroidViewModel(application) {
                 supabaseKey = _supabaseKey.value,
                 cards = cards,
                 progressReport = progress,
-                settingsJson = settingsJson
+                settingsJson = settingsJson,
+                reviewLogs = reviewLogs
             )
 
             when (result) {
@@ -833,12 +976,16 @@ class DeckViewModel(application: Application) : AndroidViewModel(application) {
                 supabaseUrl = _supabaseUrl.value,
                 supabaseKey = _supabaseKey.value
             )
-            val downloadedCards = resultPair.first
+            val restoreData = resultPair.first
             val error = resultPair.second
 
-            if (downloadedCards != null && downloadedCards.isNotEmpty()) {
-                repository.restoreCardsFromCloud(downloadedCards)
-                _supabaseSyncState.value = "🟢 Sucesso! ${downloadedCards.size} flashcards restaurados da nuvem."
+            if (restoreData != null && restoreData.cards.isNotEmpty()) {
+                repository.restoreCardsFromCloud(restoreData.cards)
+                if (restoreData.logs.isNotEmpty()) {
+                    repository.restoreReviewLogs(restoreData.logs)
+                }
+                val logMsg = if (restoreData.logs.isNotEmpty()) " e ${restoreData.logs.size} eventos de histórico" else ""
+                _supabaseSyncState.value = "🟢 Sucesso! ${restoreData.cards.size} flashcards$logMsg restaurados da nuvem."
             } else {
                 _supabaseSyncState.value = "🔴 ${error ?: "Nenhum dado encontrado no Supabase para restaurar."}"
             }
@@ -851,6 +998,17 @@ class DeckViewModel(application: Application) : AndroidViewModel(application) {
             repository.deleteDeck(l1)
             if (_selectedL1.value == l1) {
                 _selectedL1.value = null
+            }
+            // Expurgar todas as preferências órfãs associadas a este baralho L1 e seus filhos
+            val l1Pattern = "_$l1"
+            val keysToRemove = prefs.all.keys.filter { key ->
+                key.endsWith(l1Pattern) || key.contains("_${l1}_")
+            }
+            if (keysToRemove.isNotEmpty()) {
+                val editor = prefs.edit()
+                keysToRemove.forEach { editor.remove(it) }
+                editor.apply()
+                _customizationsTrigger.value = System.currentTimeMillis()
             }
         }
     }
@@ -964,7 +1122,7 @@ class DeckViewModel(application: Application) : AndroidViewModel(application) {
             // Recalcula o progresso contextualizado estritamente para os baralhos permitidos
             val now = System.currentTimeMillis()
             val total = permittedCards.size
-            val due = permittedCards.count { it.dueTimestamp <= now }
+            val due = permittedCards.count { it.isDueForReview(now) }
             val mastered = permittedCards.count { it.masteryLevel >= 2 }
             val learning = permittedCards.count { it.masteryLevel == 1 }
             val newCards = permittedCards.count { it.masteryLevel == 0 && it.reps == 0 }

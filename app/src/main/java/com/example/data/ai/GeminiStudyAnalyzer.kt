@@ -182,7 +182,7 @@ class GeminiStudyAnalyzer(
                 val cardsInL1 = allCards.filter { it.l1 == l1.l1 }
                 val l2Groups = cardsInL1.groupBy { it.l2 }
                 l2Groups.forEach { (l2Name, l2Cards) ->
-                    val l2Due = l2Cards.count { it.dueTimestamp <= nowTime }
+                    val l2Due = l2Cards.count { it.reps > 0 && it.dueTimestamp <= nowTime }
                     val l2Mastered = l2Cards.count { it.masteryLevel >= 2 }
                     val l2WithS = l2Cards.filter { it.stability > 0f }
                     val fsrsInfo = if (srsAlgorithm.equals("FSRS", ignoreCase = true) && l2WithS.isNotEmpty()) {
@@ -193,10 +193,10 @@ class GeminiStudyAnalyzer(
                     promptBuilder.appendLine("    * [L2 Disciplina] $l2Name: ${l2Cards.size} cards (Vencidos: $l2Due, Dominados: $l2Mastered$fsrsInfo)")
 
                     val l3Groups = l2Cards.groupBy { it.l3 }
-                    val dueL3Groups = l3Groups.filter { (_, cards) -> cards.any { it.dueTimestamp <= nowTime } }
+                    val dueL3Groups = l3Groups.filter { (_, cards) -> cards.any { it.reps > 0 && it.dueTimestamp <= nowTime } }
                     val topicsToShow = dueL3Groups.entries.take(6)
                     topicsToShow.forEach { (l3Name, l3Cards) ->
-                        val l3Due = l3Cards.count { it.dueTimestamp <= nowTime }
+                        val l3Due = l3Cards.count { it.reps > 0 && it.dueTimestamp <= nowTime }
                         promptBuilder.appendLine("      - [L3 Tópico Crítico] $l3Name: ${l3Cards.size} cards (Vencidos: $l3Due)")
                     }
                     val remainingDue = dueL3Groups.size - topicsToShow.size

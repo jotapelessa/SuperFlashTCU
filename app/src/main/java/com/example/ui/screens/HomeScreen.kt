@@ -120,10 +120,10 @@ fun HomeScreen(
         topBar = {
             TopAppBar(
                 title = {
-                    Text(
-                        text = "SuperFlash",
-                        style = MaterialTheme.typography.titleLarge,
-                        fontWeight = FontWeight.Bold
+                    com.example.ui.components.SuperFlashLockup(
+                        iconSize = 26.dp,
+                        textColor = MaterialTheme.colorScheme.onSurface,
+                        accentColor = MaterialTheme.colorScheme.primary
                     )
                 },
                 actions = {

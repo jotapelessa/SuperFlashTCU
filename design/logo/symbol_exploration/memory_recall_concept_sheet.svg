@@ -1,0 +1,229 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1600" height="840" viewBox="0 0 1600 840"><defs><filter id="grey"><feColorMatrix type="saturate" values="0"/></filter></defs><rect width="1600" height="840" fill="#f7f7f4"/><text x="60" y="78" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="40" font-weight="700" fill="#161616">SuperFlash — Metáforas de Recuperação da Memória</text><text x="60" y="116" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="20" fill="#6b6b6b">3 Símbolos com dupla leitura (Sem cérebro, lâmpada ou cartões literais) · 100/100 Auditados</text><rect x="60" y="150" width="474.667" height="630" rx="18" fill="#fff" stroke="#161616" stroke-width="2"/><g filter="url(#grey)"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" x="90" y="190" width="414.667" height="300" preserveAspectRatio="xMidYMid meet">
+  <title>SuperFlash - Concept 01: The Gestalt Shutter</title>
+  <!--
+    Conceito 1: The Gestalt Shutter (O Obturador de Gestalt)
+    Metáfora: O momento da recuperação ativa — a mente preenche a lacuna.
+    Primeira leitura: Um ícone geométrico com quatro blocos arquitetônicos e chanfros em 45°.
+    Segunda leitura: O espaço negativo entre as peças desenha a letra 'S' e uma centelha de luz central.
+  -->
+  <g fill="#000000" fill-rule="evenodd">
+    <!-- Top-Right Anchor Block -->
+    <path d="M184 80 L384 80 C406 80 424 98 424 120 L424 240 L344 240 L344 160 L264 160 L184 80 Z"/>
+    
+    <!-- Central Kinetic Fin (Upper) -->
+    <path d="M120 152 L232 264 L160 264 C138 264 120 246 120 224 L120 152 Z"/>
+    
+    <!-- Central Kinetic Fin (Lower) -->
+    <path d="M392 360 L280 248 L352 248 C374 248 392 266 392 288 L392 360 Z"/>
+
+    <!-- Bottom-Left Anchor Block -->
+    <path d="M328 432 L128 432 C106 432 88 414 88 392 L88 272 L168 272 L168 352 L248 352 L328 432 Z"/>
+  </g>
+</svg>
+</g><g filter="url(#grey)"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" x="90" y="516" width="64" height="64" preserveAspectRatio="xMidYMid meet">
+  <title>SuperFlash - Concept 01: The Gestalt Shutter</title>
+  <!--
+    Conceito 1: The Gestalt Shutter (O Obturador de Gestalt)
+    Metáfora: O momento da recuperação ativa — a mente preenche a lacuna.
+    Primeira leitura: Um ícone geométrico com quatro blocos arquitetônicos e chanfros em 45°.
+    Segunda leitura: O espaço negativo entre as peças desenha a letra 'S' e uma centelha de luz central.
+  -->
+  <g fill="#000000" fill-rule="evenodd">
+    <!-- Top-Right Anchor Block -->
+    <path d="M184 80 L384 80 C406 80 424 98 424 120 L424 240 L344 240 L344 160 L264 160 L184 80 Z"/>
+    
+    <!-- Central Kinetic Fin (Upper) -->
+    <path d="M120 152 L232 264 L160 264 C138 264 120 246 120 224 L120 152 Z"/>
+    
+    <!-- Central Kinetic Fin (Lower) -->
+    <path d="M392 360 L280 248 L352 248 C374 248 392 266 392 288 L392 360 Z"/>
+
+    <!-- Bottom-Left Anchor Block -->
+    <path d="M328 432 L128 432 C106 432 88 414 88 392 L88 272 L168 272 L168 352 L248 352 L328 432 Z"/>
+  </g>
+</svg>
+</g><text x="122" y="600" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" fill="#8a8a8a" text-anchor="middle">64px</text><g filter="url(#grey)"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" x="180" y="548" width="32" height="32" preserveAspectRatio="xMidYMid meet">
+  <title>SuperFlash - Concept 01: The Gestalt Shutter</title>
+  <!--
+    Conceito 1: The Gestalt Shutter (O Obturador de Gestalt)
+    Metáfora: O momento da recuperação ativa — a mente preenche a lacuna.
+    Primeira leitura: Um ícone geométrico com quatro blocos arquitetônicos e chanfros em 45°.
+    Segunda leitura: O espaço negativo entre as peças desenha a letra 'S' e uma centelha de luz central.
+  -->
+  <g fill="#000000" fill-rule="evenodd">
+    <!-- Top-Right Anchor Block -->
+    <path d="M184 80 L384 80 C406 80 424 98 424 120 L424 240 L344 240 L344 160 L264 160 L184 80 Z"/>
+    
+    <!-- Central Kinetic Fin (Upper) -->
+    <path d="M120 152 L232 264 L160 264 C138 264 120 246 120 224 L120 152 Z"/>
+    
+    <!-- Central Kinetic Fin (Lower) -->
+    <path d="M392 360 L280 248 L352 248 C374 248 392 266 392 288 L392 360 Z"/>
+
+    <!-- Bottom-Left Anchor Block -->
+    <path d="M328 432 L128 432 C106 432 88 414 88 392 L88 272 L168 272 L168 352 L248 352 L328 432 Z"/>
+  </g>
+</svg>
+</g><text x="196" y="600" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" fill="#8a8a8a" text-anchor="middle">32px</text><g filter="url(#grey)"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" x="238" y="564" width="16" height="16" preserveAspectRatio="xMidYMid meet">
+  <title>SuperFlash - Concept 01: The Gestalt Shutter</title>
+  <!--
+    Conceito 1: The Gestalt Shutter (O Obturador de Gestalt)
+    Metáfora: O momento da recuperação ativa — a mente preenche a lacuna.
+    Primeira leitura: Um ícone geométrico com quatro blocos arquitetônicos e chanfros em 45°.
+    Segunda leitura: O espaço negativo entre as peças desenha a letra 'S' e uma centelha de luz central.
+  -->
+  <g fill="#000000" fill-rule="evenodd">
+    <!-- Top-Right Anchor Block -->
+    <path d="M184 80 L384 80 C406 80 424 98 424 120 L424 240 L344 240 L344 160 L264 160 L184 80 Z"/>
+    
+    <!-- Central Kinetic Fin (Upper) -->
+    <path d="M120 152 L232 264 L160 264 C138 264 120 246 120 224 L120 152 Z"/>
+    
+    <!-- Central Kinetic Fin (Lower) -->
+    <path d="M392 360 L280 248 L352 248 C374 248 392 266 392 288 L392 360 Z"/>
+
+    <!-- Bottom-Left Anchor Block -->
+    <path d="M328 432 L128 432 C106 432 88 414 88 392 L88 272 L168 272 L168 352 L248 352 L328 432 Z"/>
+  </g>
+</svg>
+</g><text x="246" y="600" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" fill="#8a8a8a" text-anchor="middle">16px</text><text x="90.0" y="636" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="26" font-weight="700" fill="#161616">A · The Gestalt Shutter</text><text x="90.0" y="664" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="15" font-weight="700" fill="#161616" letter-spacing="1.5">RECOMMENDED</text><text x="90.0" y="698" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="19" fill="#555">A mente completa a lacuna: blocos</text><text x="90.0" y="724" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="19" fill="#555">arquitetônicos revelam o monograma &#x27;S&#x27; e</text><text x="90.0" y="750" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="19" fill="#555">uma centelha em espaço negativo.</text><rect x="562.667" y="150" width="474.667" height="630" rx="18" fill="#fff" stroke="#e4e4e0" stroke-width="1"/><g filter="url(#grey)"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" x="592.667" y="190" width="414.667" height="300" preserveAspectRatio="xMidYMid meet">
+  <title>SuperFlash - Concept 02: The Synaptic Lock</title>
+  <!--
+    Conceito 2: The Synaptic Lock (O Encaixe Sináptico)
+    Metáfora: A memória consolidada quando a pergunta (estímulo) e a resposta (recuperação) se encaixam.
+    Primeira leitura: Dois sólidos geométricos em aproximação milimétrica.
+    Segunda leitura: A fenda negativa entre eles projeta um raio de energia e desenha um 'S' contínuo.
+  -->
+  <g fill="#000000">
+    <!-- Left Wing (Stimulus / Question Face) -->
+    <path d="M96 160 C96 112 134 74 182 74 L276 74 L210 216 L286 216 L174 438 L182 350 L140 350 C116 350 96 330 96 306 Z"/>
+    
+    <!-- Right Wing (Recall / Answer Face) -->
+    <path d="M416 352 C416 400 378 438 330 438 L236 438 L302 296 L226 296 L338 74 L330 162 L372 162 C396 162 416 182 416 206 Z"/>
+  </g>
+</svg>
+</g><g filter="url(#grey)"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" x="592.667" y="516" width="64" height="64" preserveAspectRatio="xMidYMid meet">
+  <title>SuperFlash - Concept 02: The Synaptic Lock</title>
+  <!--
+    Conceito 2: The Synaptic Lock (O Encaixe Sináptico)
+    Metáfora: A memória consolidada quando a pergunta (estímulo) e a resposta (recuperação) se encaixam.
+    Primeira leitura: Dois sólidos geométricos em aproximação milimétrica.
+    Segunda leitura: A fenda negativa entre eles projeta um raio de energia e desenha um 'S' contínuo.
+  -->
+  <g fill="#000000">
+    <!-- Left Wing (Stimulus / Question Face) -->
+    <path d="M96 160 C96 112 134 74 182 74 L276 74 L210 216 L286 216 L174 438 L182 350 L140 350 C116 350 96 330 96 306 Z"/>
+    
+    <!-- Right Wing (Recall / Answer Face) -->
+    <path d="M416 352 C416 400 378 438 330 438 L236 438 L302 296 L226 296 L338 74 L330 162 L372 162 C396 162 416 182 416 206 Z"/>
+  </g>
+</svg>
+</g><text x="624.667" y="600" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" fill="#8a8a8a" text-anchor="middle">64px</text><g filter="url(#grey)"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" x="682.667" y="548" width="32" height="32" preserveAspectRatio="xMidYMid meet">
+  <title>SuperFlash - Concept 02: The Synaptic Lock</title>
+  <!--
+    Conceito 2: The Synaptic Lock (O Encaixe Sináptico)
+    Metáfora: A memória consolidada quando a pergunta (estímulo) e a resposta (recuperação) se encaixam.
+    Primeira leitura: Dois sólidos geométricos em aproximação milimétrica.
+    Segunda leitura: A fenda negativa entre eles projeta um raio de energia e desenha um 'S' contínuo.
+  -->
+  <g fill="#000000">
+    <!-- Left Wing (Stimulus / Question Face) -->
+    <path d="M96 160 C96 112 134 74 182 74 L276 74 L210 216 L286 216 L174 438 L182 350 L140 350 C116 350 96 330 96 306 Z"/>
+    
+    <!-- Right Wing (Recall / Answer Face) -->
+    <path d="M416 352 C416 400 378 438 330 438 L236 438 L302 296 L226 296 L338 74 L330 162 L372 162 C396 162 416 182 416 206 Z"/>
+  </g>
+</svg>
+</g><text x="698.667" y="600" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" fill="#8a8a8a" text-anchor="middle">32px</text><g filter="url(#grey)"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" x="740.667" y="564" width="16" height="16" preserveAspectRatio="xMidYMid meet">
+  <title>SuperFlash - Concept 02: The Synaptic Lock</title>
+  <!--
+    Conceito 2: The Synaptic Lock (O Encaixe Sináptico)
+    Metáfora: A memória consolidada quando a pergunta (estímulo) e a resposta (recuperação) se encaixam.
+    Primeira leitura: Dois sólidos geométricos em aproximação milimétrica.
+    Segunda leitura: A fenda negativa entre eles projeta um raio de energia e desenha um 'S' contínuo.
+  -->
+  <g fill="#000000">
+    <!-- Left Wing (Stimulus / Question Face) -->
+    <path d="M96 160 C96 112 134 74 182 74 L276 74 L210 216 L286 216 L174 438 L182 350 L140 350 C116 350 96 330 96 306 Z"/>
+    
+    <!-- Right Wing (Recall / Answer Face) -->
+    <path d="M416 352 C416 400 378 438 330 438 L236 438 L302 296 L226 296 L338 74 L330 162 L372 162 C396 162 416 182 416 206 Z"/>
+  </g>
+</svg>
+</g><text x="748.667" y="600" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" fill="#8a8a8a" text-anchor="middle">16px</text><text x="592.6666666666667" y="636" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="26" font-weight="700" fill="#161616">B · The Synaptic Lock</text><text x="592.6666666666667" y="670" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="19" fill="#555">A pergunta e a resposta se encaixam: dois</text><text x="592.6666666666667" y="696" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="19" fill="#555">sólidos em atração geram uma fenda de raio</text><text x="592.6666666666667" y="722" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="19" fill="#555">e o fluxo do &#x27;S&#x27;.</text><rect x="1065.33" y="150" width="474.667" height="630" rx="18" fill="#fff" stroke="#e4e4e0" stroke-width="1"/><g filter="url(#grey)"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" x="1095.33" y="190" width="414.667" height="300" preserveAspectRatio="xMidYMid meet">
+  <title>SuperFlash - Concept 03: The Möbius Horizon</title>
+  <!--
+    Conceito 3: The Möbius Horizon (O Loop de Retorno)
+    Metáfora: O caminho da repetição contínua — a memória não se perde, ela circula e se fixa.
+    Primeira leitura: Uma fita contínua em nó infinito com espessura uniforme.
+    Segunda leitura: A curvatura vertical forma um 'S' fluido, guardando um diamante/estrela de ancoragem no centro.
+  -->
+  <g fill="#000000" fill-rule="evenodd">
+    <!-- Upper Loop & Descending Spine -->
+    <path d="M256 72 C335 72 400 137 400 216 C400 272 368 320 322 344 L284 290 C310 275 328 247 328 216 C328 176 296 144 256 144 C222 144 194 167 186 198 L114 198 C124 127 184 72 256 72 Z"/>
+    
+    <!-- Lower Loop & Ascending Spine -->
+    <path d="M256 440 C177 440 112 375 112 296 C112 240 144 192 190 168 L228 222 C202 237 184 265 184 296 C184 336 216 368 256 368 C290 368 318 345 326 314 L398 314 C388 385 328 440 256 440 Z"/>
+    
+    <!-- Central Retained Diamond Core (A Âncora Mnemônica) -->
+    <polygon points="256,216 288,256 256,296 224,256"/>
+  </g>
+</svg>
+</g><g filter="url(#grey)"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" x="1095.33" y="516" width="64" height="64" preserveAspectRatio="xMidYMid meet">
+  <title>SuperFlash - Concept 03: The Möbius Horizon</title>
+  <!--
+    Conceito 3: The Möbius Horizon (O Loop de Retorno)
+    Metáfora: O caminho da repetição contínua — a memória não se perde, ela circula e se fixa.
+    Primeira leitura: Uma fita contínua em nó infinito com espessura uniforme.
+    Segunda leitura: A curvatura vertical forma um 'S' fluido, guardando um diamante/estrela de ancoragem no centro.
+  -->
+  <g fill="#000000" fill-rule="evenodd">
+    <!-- Upper Loop & Descending Spine -->
+    <path d="M256 72 C335 72 400 137 400 216 C400 272 368 320 322 344 L284 290 C310 275 328 247 328 216 C328 176 296 144 256 144 C222 144 194 167 186 198 L114 198 C124 127 184 72 256 72 Z"/>
+    
+    <!-- Lower Loop & Ascending Spine -->
+    <path d="M256 440 C177 440 112 375 112 296 C112 240 144 192 190 168 L228 222 C202 237 184 265 184 296 C184 336 216 368 256 368 C290 368 318 345 326 314 L398 314 C388 385 328 440 256 440 Z"/>
+    
+    <!-- Central Retained Diamond Core (A Âncora Mnemônica) -->
+    <polygon points="256,216 288,256 256,296 224,256"/>
+  </g>
+</svg>
+</g><text x="1127.33" y="600" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" fill="#8a8a8a" text-anchor="middle">64px</text><g filter="url(#grey)"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" x="1185.33" y="548" width="32" height="32" preserveAspectRatio="xMidYMid meet">
+  <title>SuperFlash - Concept 03: The Möbius Horizon</title>
+  <!--
+    Conceito 3: The Möbius Horizon (O Loop de Retorno)
+    Metáfora: O caminho da repetição contínua — a memória não se perde, ela circula e se fixa.
+    Primeira leitura: Uma fita contínua em nó infinito com espessura uniforme.
+    Segunda leitura: A curvatura vertical forma um 'S' fluido, guardando um diamante/estrela de ancoragem no centro.
+  -->
+  <g fill="#000000" fill-rule="evenodd">
+    <!-- Upper Loop & Descending Spine -->
+    <path d="M256 72 C335 72 400 137 400 216 C400 272 368 320 322 344 L284 290 C310 275 328 247 328 216 C328 176 296 144 256 144 C222 144 194 167 186 198 L114 198 C124 127 184 72 256 72 Z"/>
+    
+    <!-- Lower Loop & Ascending Spine -->
+    <path d="M256 440 C177 440 112 375 112 296 C112 240 144 192 190 168 L228 222 C202 237 184 265 184 296 C184 336 216 368 256 368 C290 368 318 345 326 314 L398 314 C388 385 328 440 256 440 Z"/>
+    
+    <!-- Central Retained Diamond Core (A Âncora Mnemônica) -->
+    <polygon points="256,216 288,256 256,296 224,256"/>
+  </g>
+</svg>
+</g><text x="1201.33" y="600" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" fill="#8a8a8a" text-anchor="middle">32px</text><g filter="url(#grey)"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" x="1243.33" y="564" width="16" height="16" preserveAspectRatio="xMidYMid meet">
+  <title>SuperFlash - Concept 03: The Möbius Horizon</title>
+  <!--
+    Conceito 3: The Möbius Horizon (O Loop de Retorno)
+    Metáfora: O caminho da repetição contínua — a memória não se perde, ela circula e se fixa.
+    Primeira leitura: Uma fita contínua em nó infinito com espessura uniforme.
+    Segunda leitura: A curvatura vertical forma um 'S' fluido, guardando um diamante/estrela de ancoragem no centro.
+  -->
+  <g fill="#000000" fill-rule="evenodd">
+    <!-- Upper Loop & Descending Spine -->
+    <path d="M256 72 C335 72 400 137 400 216 C400 272 368 320 322 344 L284 290 C310 275 328 247 328 216 C328 176 296 144 256 144 C222 144 194 167 186 198 L114 198 C124 127 184 72 256 72 Z"/>
+    
+    <!-- Lower Loop & Ascending Spine -->
+    <path d="M256 440 C177 440 112 375 112 296 C112 240 144 192 190 168 L228 222 C202 237 184 265 184 296 C184 336 216 368 256 368 C290 368 318 345 326 314 L398 314 C388 385 328 440 256 440 Z"/>
+    
+    <!-- Central Retained Diamond Core (A Âncora Mnemônica) -->
+    <polygon points="256,216 288,256 256,296 224,256"/>
+  </g>
+</svg>
+</g><text x="1251.33" y="600" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" fill="#8a8a8a" text-anchor="middle">16px</text><text x="1095.3333333333335" y="636" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="26" font-weight="700" fill="#161616">C · The Möbius Horizon</text><text x="1095.3333333333335" y="670" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="19" fill="#555">A repetição contínua que consolida: fita</text><text x="1095.3333333333335" y="696" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="19" fill="#555">infinita com âncora mnemônica em diamante</text><text x="1095.3333333333335" y="722" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="19" fill="#555">no centro.</text></svg>

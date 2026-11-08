@@ -1,9 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-    <item
-        android:width="90dp"
-        android:height="90dp"
-        android:drawable="@drawable/app_launcher_icon_1788971802767"
-        android:gravity="center" />
-</layer-list>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    
+    <!-- 
+      SuperFlash Official Adaptive Icon Foreground
+      Concept: The Gestalt Shutter (A mente completa a forma)
+      Escala óptica calibrada para a zona segura central de 72dp.
+    -->
+    <group
+        android:translateX="21.2"
+        android:translateY="21.2"
+        android:scaleX="0.128"
+        android:scaleY="0.128">
 
+        <!-- Top-Right Anchor Shard -->
+        <path
+            android:fillColor="#FFFFFF"
+            android:pathData="M184,80 L384,80 C406,80 424,98 424,120 L424,240 L344,240 L344,160 L264,160 L184,80 Z" />
+
+        <!-- Central Kinetic Fin (Upper) -->
+        <path
+            android:fillColor="#38BDF8"
+            android:pathData="M120,152 L232,264 L160,264 C138,264 120,246 120,224 L120,152 Z" />
+
+        <!-- Central Kinetic Fin (Lower) -->
+        <path
+            android:fillColor="#38BDF8"
+            android:pathData="M392,360 L280,248 L352,248 C374,248 392,266 392,288 L392,360 Z" />
+
+        <!-- Bottom-Left Anchor Shard -->
+        <path
+            android:fillColor="#2563EB"
+            android:pathData="M328,432 L128,432 C106,432 88,414 88,392 L88,272 L168,272 L168,352 L248,352 L328,432 Z" />
+    </group>
+</vector>

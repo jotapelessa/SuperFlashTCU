@@ -1,0 +1,1797 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1600" height="2814" viewBox="0 0 1600 2814"><rect width="1600" height="2814" fill="#f7f7f4"/><text x="60" y="78" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="40" font-weight="700" fill="#161616">SuperFlash TCU — Frosted Glass Layers (10 Variações)</text><text x="60" y="116" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="20" fill="#6b6b6b">Exploração aprofundada do modelo de glassmorphism translúcido com raio lâmina de ouro</text><rect x="60" y="150" width="474.667" height="630" rx="18" fill="#fff" stroke="#161616" stroke-width="2"/><g><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" x="90" y="190" width="414.667" height="300" preserveAspectRatio="xMidYMid meet">
+  <title>SuperFlash TCU - Frosted Glass 01: Triple Tier Stack</title>
+  <defs>
+    <linearGradient id="c0-f1_glass1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38BDF8" stop-opacity="0.25"/>
+      <stop offset="100%" stop-color="#0F172A" stop-opacity="0.85"/>
+    </linearGradient>
+    <linearGradient id="c0-f1_glass2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38BDF8" stop-opacity="0.4"/>
+      <stop offset="100%" stop-color="#1E3A8A" stop-opacity="0.85"/>
+    </linearGradient>
+    <linearGradient id="c0-f1_glass3" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#60A5FA" stop-opacity="0.6"/>
+      <stop offset="100%" stop-color="#2563EB" stop-opacity="0.9"/>
+    </linearGradient>
+    <linearGradient id="c0-f1_stroke" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.8"/>
+      <stop offset="60%" stop-color="#38BDF8" stop-opacity="0.5"/>
+      <stop offset="100%" stop-color="#0284C7" stop-opacity="0.1"/>
+    </linearGradient>
+    <linearGradient id="c0-f1_bolt" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FEF08A"/>
+      <stop offset="35%" stop-color="#F59E0B"/>
+      <stop offset="100%" stop-color="#EA580C"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Deep Obsidian Rounded Container -->
+  <rect x="36" y="36" width="440" height="440" rx="96" fill="#030712"/>
+
+  <!-- Tier 1: Base Glass Card (L1 Concurso) -->
+  <path d="M120 270 L256 195 L392 270 L256 345 Z" fill="url(#c0-f1_glass1)" stroke="url(#c0-f1_stroke)" stroke-width="2.5"/>
+  <path d="M120 270 L256 345 L256 362 L120 287 Z" fill="#090D16" opacity="0.7"/>
+  <path d="M256 345 L392 270 L392 287 L256 362 Z" fill="#0F172A" opacity="0.7"/>
+
+  <!-- Tier 2: Mid Glass Card (L2 Disciplina) -->
+  <path d="M110 220 L256 140 L402 220 L256 300 Z" fill="url(#c0-f1_glass2)" stroke="url(#c0-f1_stroke)" stroke-width="3"/>
+  <path d="M110 220 L256 300 L256 318 L110 238 Z" fill="#0B132B" opacity="0.6"/>
+  <path d="M256 300 L402 220 L402 238 L256 318 Z" fill="#1C2541" opacity="0.6"/>
+
+  <!-- Tier 3: Top Glass Card (L3 Tópico) -->
+  <path d="M100 170 L256 85 L412 170 L256 255 Z" fill="url(#c0-f1_glass3)" stroke="url(#c0-f1_stroke)" stroke-width="3.5"/>
+  <path d="M100 170 L256 255 L256 273 L100 188 Z" fill="#1E3A8A" opacity="0.65"/>
+  <path d="M256 255 L412 170 L412 188 L256 273 Z" fill="#1D4ED8" opacity="0.65"/>
+
+  <!-- Internal Translucent Shimmer Lines -->
+  <line x1="140" y1="172" x2="256" y2="108" stroke="#BAE6FD" stroke-width="5" stroke-linecap="round" opacity="0.45"/>
+  <line x1="150" y1="195" x2="230" y2="150" stroke="#BAE6FD" stroke-width="5" stroke-linecap="round" opacity="0.35"/>
+
+  <!-- Piercing Golden Lightning Blade -->
+  <polygon points="280,35 180,225 255,225 200,435 345,210 270,210 310,35" fill="url(#c0-f1_bolt)"/>
+  <polygon points="280,35 245,210 270,210 200,435 180,225" fill="#D97706" opacity="0.4"/>
+</svg>
+</g><g><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" x="90" y="516" width="64" height="64" preserveAspectRatio="xMidYMid meet">
+  <title>SuperFlash TCU - Frosted Glass 01: Triple Tier Stack</title>
+  <defs>
+    <linearGradient id="s064-f1_glass1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38BDF8" stop-opacity="0.25"/>
+      <stop offset="100%" stop-color="#0F172A" stop-opacity="0.85"/>
+    </linearGradient>
+    <linearGradient id="s064-f1_glass2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38BDF8" stop-opacity="0.4"/>
+      <stop offset="100%" stop-color="#1E3A8A" stop-opacity="0.85"/>
+    </linearGradient>
+    <linearGradient id="s064-f1_glass3" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#60A5FA" stop-opacity="0.6"/>
+      <stop offset="100%" stop-color="#2563EB" stop-opacity="0.9"/>
+    </linearGradient>
+    <linearGradient id="s064-f1_stroke" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.8"/>
+      <stop offset="60%" stop-color="#38BDF8" stop-opacity="0.5"/>
+      <stop offset="100%" stop-color="#0284C7" stop-opacity="0.1"/>
+    </linearGradient>
+    <linearGradient id="s064-f1_bolt" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FEF08A"/>
+      <stop offset="35%" stop-color="#F59E0B"/>
+      <stop offset="100%" stop-color="#EA580C"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Deep Obsidian Rounded Container -->
+  <rect x="36" y="36" width="440" height="440" rx="96" fill="#030712"/>
+
+  <!-- Tier 1: Base Glass Card (L1 Concurso) -->
+  <path d="M120 270 L256 195 L392 270 L256 345 Z" fill="url(#s064-f1_glass1)" stroke="url(#s064-f1_stroke)" stroke-width="2.5"/>
+  <path d="M120 270 L256 345 L256 362 L120 287 Z" fill="#090D16" opacity="0.7"/>
+  <path d="M256 345 L392 270 L392 287 L256 362 Z" fill="#0F172A" opacity="0.7"/>
+
+  <!-- Tier 2: Mid Glass Card (L2 Disciplina) -->
+  <path d="M110 220 L256 140 L402 220 L256 300 Z" fill="url(#s064-f1_glass2)" stroke="url(#s064-f1_stroke)" stroke-width="3"/>
+  <path d="M110 220 L256 300 L256 318 L110 238 Z" fill="#0B132B" opacity="0.6"/>
+  <path d="M256 300 L402 220 L402 238 L256 318 Z" fill="#1C2541" opacity="0.6"/>
+
+  <!-- Tier 3: Top Glass Card (L3 Tópico) -->
+  <path d="M100 170 L256 85 L412 170 L256 255 Z" fill="url(#s064-f1_glass3)" stroke="url(#s064-f1_stroke)" stroke-width="3.5"/>
+  <path d="M100 170 L256 255 L256 273 L100 188 Z" fill="#1E3A8A" opacity="0.65"/>
+  <path d="M256 255 L412 170 L412 188 L256 273 Z" fill="#1D4ED8" opacity="0.65"/>
+
+  <!-- Internal Translucent Shimmer Lines -->
+  <line x1="140" y1="172" x2="256" y2="108" stroke="#BAE6FD" stroke-width="5" stroke-linecap="round" opacity="0.45"/>
+  <line x1="150" y1="195" x2="230" y2="150" stroke="#BAE6FD" stroke-width="5" stroke-linecap="round" opacity="0.35"/>
+
+  <!-- Piercing Golden Lightning Blade -->
+  <polygon points="280,35 180,225 255,225 200,435 345,210 270,210 310,35" fill="url(#s064-f1_bolt)"/>
+  <polygon points="280,35 245,210 270,210 200,435 180,225" fill="#D97706" opacity="0.4"/>
+</svg>
+</g><text x="122" y="600" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" fill="#8a8a8a" text-anchor="middle">64px</text><g><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" x="180" y="548" width="32" height="32" preserveAspectRatio="xMidYMid meet">
+  <title>SuperFlash TCU - Frosted Glass 01: Triple Tier Stack</title>
+  <defs>
+    <linearGradient id="s032-f1_glass1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38BDF8" stop-opacity="0.25"/>
+      <stop offset="100%" stop-color="#0F172A" stop-opacity="0.85"/>
+    </linearGradient>
+    <linearGradient id="s032-f1_glass2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38BDF8" stop-opacity="0.4"/>
+      <stop offset="100%" stop-color="#1E3A8A" stop-opacity="0.85"/>
+    </linearGradient>
+    <linearGradient id="s032-f1_glass3" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#60A5FA" stop-opacity="0.6"/>
+      <stop offset="100%" stop-color="#2563EB" stop-opacity="0.9"/>
+    </linearGradient>
+    <linearGradient id="s032-f1_stroke" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.8"/>
+      <stop offset="60%" stop-color="#38BDF8" stop-opacity="0.5"/>
+      <stop offset="100%" stop-color="#0284C7" stop-opacity="0.1"/>
+    </linearGradient>
+    <linearGradient id="s032-f1_bolt" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FEF08A"/>
+      <stop offset="35%" stop-color="#F59E0B"/>
+      <stop offset="100%" stop-color="#EA580C"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Deep Obsidian Rounded Container -->
+  <rect x="36" y="36" width="440" height="440" rx="96" fill="#030712"/>
+
+  <!-- Tier 1: Base Glass Card (L1 Concurso) -->
+  <path d="M120 270 L256 195 L392 270 L256 345 Z" fill="url(#s032-f1_glass1)" stroke="url(#s032-f1_stroke)" stroke-width="2.5"/>
+  <path d="M120 270 L256 345 L256 362 L120 287 Z" fill="#090D16" opacity="0.7"/>
+  <path d="M256 345 L392 270 L392 287 L256 362 Z" fill="#0F172A" opacity="0.7"/>
+
+  <!-- Tier 2: Mid Glass Card (L2 Disciplina) -->
+  <path d="M110 220 L256 140 L402 220 L256 300 Z" fill="url(#s032-f1_glass2)" stroke="url(#s032-f1_stroke)" stroke-width="3"/>
+  <path d="M110 220 L256 300 L256 318 L110 238 Z" fill="#0B132B" opacity="0.6"/>
+  <path d="M256 300 L402 220 L402 238 L256 318 Z" fill="#1C2541" opacity="0.6"/>
+
+  <!-- Tier 3: Top Glass Card (L3 Tópico) -->
+  <path d="M100 170 L256 85 L412 170 L256 255 Z" fill="url(#s032-f1_glass3)" stroke="url(#s032-f1_stroke)" stroke-width="3.5"/>
+  <path d="M100 170 L256 255 L256 273 L100 188 Z" fill="#1E3A8A" opacity="0.65"/>
+  <path d="M256 255 L412 170 L412 188 L256 273 Z" fill="#1D4ED8" opacity="0.65"/>
+
+  <!-- Internal Translucent Shimmer Lines -->
+  <line x1="140" y1="172" x2="256" y2="108" stroke="#BAE6FD" stroke-width="5" stroke-linecap="round" opacity="0.45"/>
+  <line x1="150" y1="195" x2="230" y2="150" stroke="#BAE6FD" stroke-width="5" stroke-linecap="round" opacity="0.35"/>
+
+  <!-- Piercing Golden Lightning Blade -->
+  <polygon points="280,35 180,225 255,225 200,435 345,210 270,210 310,35" fill="url(#s032-f1_bolt)"/>
+  <polygon points="280,35 245,210 270,210 200,435 180,225" fill="#D97706" opacity="0.4"/>
+</svg>
+</g><text x="196" y="600" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" fill="#8a8a8a" text-anchor="middle">32px</text><g><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" x="238" y="564" width="16" height="16" preserveAspectRatio="xMidYMid meet">
+  <title>SuperFlash TCU - Frosted Glass 01: Triple Tier Stack</title>
+  <defs>
+    <linearGradient id="s016-f1_glass1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38BDF8" stop-opacity="0.25"/>
+      <stop offset="100%" stop-color="#0F172A" stop-opacity="0.85"/>
+    </linearGradient>
+    <linearGradient id="s016-f1_glass2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38BDF8" stop-opacity="0.4"/>
+      <stop offset="100%" stop-color="#1E3A8A" stop-opacity="0.85"/>
+    </linearGradient>
+    <linearGradient id="s016-f1_glass3" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#60A5FA" stop-opacity="0.6"/>
+      <stop offset="100%" stop-color="#2563EB" stop-opacity="0.9"/>
+    </linearGradient>
+    <linearGradient id="s016-f1_stroke" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.8"/>
+      <stop offset="60%" stop-color="#38BDF8" stop-opacity="0.5"/>
+      <stop offset="100%" stop-color="#0284C7" stop-opacity="0.1"/>
+    </linearGradient>
+    <linearGradient id="s016-f1_bolt" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FEF08A"/>
+      <stop offset="35%" stop-color="#F59E0B"/>
+      <stop offset="100%" stop-color="#EA580C"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Deep Obsidian Rounded Container -->
+  <rect x="36" y="36" width="440" height="440" rx="96" fill="#030712"/>
+
+  <!-- Tier 1: Base Glass Card (L1 Concurso) -->
+  <path d="M120 270 L256 195 L392 270 L256 345 Z" fill="url(#s016-f1_glass1)" stroke="url(#s016-f1_stroke)" stroke-width="2.5"/>
+  <path d="M120 270 L256 345 L256 362 L120 287 Z" fill="#090D16" opacity="0.7"/>
+  <path d="M256 345 L392 270 L392 287 L256 362 Z" fill="#0F172A" opacity="0.7"/>
+
+  <!-- Tier 2: Mid Glass Card (L2 Disciplina) -->
+  <path d="M110 220 L256 140 L402 220 L256 300 Z" fill="url(#s016-f1_glass2)" stroke="url(#s016-f1_stroke)" stroke-width="3"/>
+  <path d="M110 220 L256 300 L256 318 L110 238 Z" fill="#0B132B" opacity="0.6"/>
+  <path d="M256 300 L402 220 L402 238 L256 318 Z" fill="#1C2541" opacity="0.6"/>
+
+  <!-- Tier 3: Top Glass Card (L3 Tópico) -->
+  <path d="M100 170 L256 85 L412 170 L256 255 Z" fill="url(#s016-f1_glass3)" stroke="url(#s016-f1_stroke)" stroke-width="3.5"/>
+  <path d="M100 170 L256 255 L256 273 L100 188 Z" fill="#1E3A8A" opacity="0.65"/>
+  <path d="M256 255 L412 170 L412 188 L256 273 Z" fill="#1D4ED8" opacity="0.65"/>
+
+  <!-- Internal Translucent Shimmer Lines -->
+  <line x1="140" y1="172" x2="256" y2="108" stroke="#BAE6FD" stroke-width="5" stroke-linecap="round" opacity="0.45"/>
+  <line x1="150" y1="195" x2="230" y2="150" stroke="#BAE6FD" stroke-width="5" stroke-linecap="round" opacity="0.35"/>
+
+  <!-- Piercing Golden Lightning Blade -->
+  <polygon points="280,35 180,225 255,225 200,435 345,210 270,210 310,35" fill="url(#s016-f1_bolt)"/>
+  <polygon points="280,35 245,210 270,210 200,435 180,225" fill="#D97706" opacity="0.4"/>
+</svg>
+</g><text x="246" y="600" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" fill="#8a8a8a" text-anchor="middle">16px</text><text x="90.0" y="636" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="26" font-weight="700" fill="#161616">A · Frost Triple Tier</text><text x="90.0" y="664" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="15" font-weight="700" fill="#161616" letter-spacing="1.5">RECOMMENDED</text><text x="90.0" y="698" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="19" fill="#555">Três camadas translúcidas (L1/L2/L3) com</text><text x="90.0" y="724" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="19" fill="#555">bordas ciano e raio perfurante.</text><rect x="562.667" y="150" width="474.667" height="630" rx="18" fill="#fff" stroke="#e4e4e0" stroke-width="1"/><g><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" x="592.667" y="190" width="414.667" height="300" preserveAspectRatio="xMidYMid meet">
+  <title>SuperFlash TCU - Frosted Glass 02: Dual Prism</title>
+  <defs>
+    <linearGradient id="c1-f2_glassL" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38BDF8" stop-opacity="0.6"/>
+      <stop offset="100%" stop-color="#1E3A8A" stop-opacity="0.85"/>
+    </linearGradient>
+    <linearGradient id="c1-f2_glassR" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#60A5FA" stop-opacity="0.6"/>
+      <stop offset="100%" stop-color="#2563EB" stop-opacity="0.9"/>
+    </linearGradient>
+    <linearGradient id="c1-f2_stroke" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.85"/>
+      <stop offset="100%" stop-color="#38BDF8" stop-opacity="0.3"/>
+    </linearGradient>
+    <linearGradient id="c1-f2_bolt" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FEF08A"/>
+      <stop offset="40%" stop-color="#F59E0B"/>
+      <stop offset="100%" stop-color="#EA580C"/>
+    </linearGradient>
+  </defs>
+
+  <rect x="36" y="36" width="440" height="440" rx="96" fill="#030712"/>
+
+  <!-- Left Glass Wing -->
+  <polygon points="256,150 110,230 110,340 256,260" fill="url(#c1-f2_glassL)" stroke="url(#c1-f2_stroke)" stroke-width="3"/>
+  <polygon points="110,340 256,260 256,280 110,360" fill="#0B132B" opacity="0.8"/>
+
+  <!-- Right Glass Wing -->
+  <polygon points="256,150 402,230 402,340 256,260" fill="url(#c1-f2_glassR)" stroke="url(#c1-f2_stroke)" stroke-width="3"/>
+  <polygon points="256,260 402,340 402,360 256,280" fill="#1C2541" opacity="0.8"/>
+
+  <!-- Etched Study Lines on Glass Wings -->
+  <line x1="140" y1="260" x2="225" y2="215" stroke="#BAE6FD" stroke-width="4.5" stroke-linecap="round" opacity="0.5"/>
+  <line x1="140" y1="285" x2="215" y2="245" stroke="#BAE6FD" stroke-width="4.5" stroke-linecap="round" opacity="0.4"/>
+  <line x1="287" y1="215" x2="372" y2="260" stroke="#BAE6FD" stroke-width="4.5" stroke-linecap="round" opacity="0.5"/>
+  <line x1="297" y1="245" x2="372" y2="285" stroke="#BAE6FD" stroke-width="4.5" stroke-linecap="round" opacity="0.4"/>
+
+  <!-- Center Ascending Golden Lightning Bolt -->
+  <polygon points="275,45 190,235 255,235 210,435 335,215 270,215 305,45" fill="url(#c1-f2_bolt)"/>
+  <polygon points="275,45 250,215 270,215 210,435 190,235" fill="#D97706" opacity="0.45"/>
+</svg>
+</g><g><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" x="592.667" y="516" width="64" height="64" preserveAspectRatio="xMidYMid meet">
+  <title>SuperFlash TCU - Frosted Glass 02: Dual Prism</title>
+  <defs>
+    <linearGradient id="s164-f2_glassL" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38BDF8" stop-opacity="0.6"/>
+      <stop offset="100%" stop-color="#1E3A8A" stop-opacity="0.85"/>
+    </linearGradient>
+    <linearGradient id="s164-f2_glassR" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#60A5FA" stop-opacity="0.6"/>
+      <stop offset="100%" stop-color="#2563EB" stop-opacity="0.9"/>
+    </linearGradient>
+    <linearGradient id="s164-f2_stroke" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.85"/>
+      <stop offset="100%" stop-color="#38BDF8" stop-opacity="0.3"/>
+    </linearGradient>
+    <linearGradient id="s164-f2_bolt" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FEF08A"/>
+      <stop offset="40%" stop-color="#F59E0B"/>
+      <stop offset="100%" stop-color="#EA580C"/>
+    </linearGradient>
+  </defs>
+
+  <rect x="36" y="36" width="440" height="440" rx="96" fill="#030712"/>
+
+  <!-- Left Glass Wing -->
+  <polygon points="256,150 110,230 110,340 256,260" fill="url(#s164-f2_glassL)" stroke="url(#s164-f2_stroke)" stroke-width="3"/>
+  <polygon points="110,340 256,260 256,280 110,360" fill="#0B132B" opacity="0.8"/>
+
+  <!-- Right Glass Wing -->
+  <polygon points="256,150 402,230 402,340 256,260" fill="url(#s164-f2_glassR)" stroke="url(#s164-f2_stroke)" stroke-width="3"/>
+  <polygon points="256,260 402,340 402,360 256,280" fill="#1C2541" opacity="0.8"/>
+
+  <!-- Etched Study Lines on Glass Wings -->
+  <line x1="140" y1="260" x2="225" y2="215" stroke="#BAE6FD" stroke-width="4.5" stroke-linecap="round" opacity="0.5"/>
+  <line x1="140" y1="285" x2="215" y2="245" stroke="#BAE6FD" stroke-width="4.5" stroke-linecap="round" opacity="0.4"/>
+  <line x1="287" y1="215" x2="372" y2="260" stroke="#BAE6FD" stroke-width="4.5" stroke-linecap="round" opacity="0.5"/>
+  <line x1="297" y1="245" x2="372" y2="285" stroke="#BAE6FD" stroke-width="4.5" stroke-linecap="round" opacity="0.4"/>
+
+  <!-- Center Ascending Golden Lightning Bolt -->
+  <polygon points="275,45 190,235 255,235 210,435 335,215 270,215 305,45" fill="url(#s164-f2_bolt)"/>
+  <polygon points="275,45 250,215 270,215 210,435 190,235" fill="#D97706" opacity="0.45"/>
+</svg>
+</g><text x="624.667" y="600" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" fill="#8a8a8a" text-anchor="middle">64px</text><g><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" x="682.667" y="548" width="32" height="32" preserveAspectRatio="xMidYMid meet">
+  <title>SuperFlash TCU - Frosted Glass 02: Dual Prism</title>
+  <defs>
+    <linearGradient id="s132-f2_glassL" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38BDF8" stop-opacity="0.6"/>
+      <stop offset="100%" stop-color="#1E3A8A" stop-opacity="0.85"/>
+    </linearGradient>
+    <linearGradient id="s132-f2_glassR" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#60A5FA" stop-opacity="0.6"/>
+      <stop offset="100%" stop-color="#2563EB" stop-opacity="0.9"/>
+    </linearGradient>
+    <linearGradient id="s132-f2_stroke" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.85"/>
+      <stop offset="100%" stop-color="#38BDF8" stop-opacity="0.3"/>
+    </linearGradient>
+    <linearGradient id="s132-f2_bolt" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FEF08A"/>
+      <stop offset="40%" stop-color="#F59E0B"/>
+      <stop offset="100%" stop-color="#EA580C"/>
+    </linearGradient>
+  </defs>
+
+  <rect x="36" y="36" width="440" height="440" rx="96" fill="#030712"/>
+
+  <!-- Left Glass Wing -->
+  <polygon points="256,150 110,230 110,340 256,260" fill="url(#s132-f2_glassL)" stroke="url(#s132-f2_stroke)" stroke-width="3"/>
+  <polygon points="110,340 256,260 256,280 110,360" fill="#0B132B" opacity="0.8"/>
+
+  <!-- Right Glass Wing -->
+  <polygon points="256,150 402,230 402,340 256,260" fill="url(#s132-f2_glassR)" stroke="url(#s132-f2_stroke)" stroke-width="3"/>
+  <polygon points="256,260 402,340 402,360 256,280" fill="#1C2541" opacity="0.8"/>
+
+  <!-- Etched Study Lines on Glass Wings -->
+  <line x1="140" y1="260" x2="225" y2="215" stroke="#BAE6FD" stroke-width="4.5" stroke-linecap="round" opacity="0.5"/>
+  <line x1="140" y1="285" x2="215" y2="245" stroke="#BAE6FD" stroke-width="4.5" stroke-linecap="round" opacity="0.4"/>
+  <line x1="287" y1="215" x2="372" y2="260" stroke="#BAE6FD" stroke-width="4.5" stroke-linecap="round" opacity="0.5"/>
+  <line x1="297" y1="245" x2="372" y2="285" stroke="#BAE6FD" stroke-width="4.5" stroke-linecap="round" opacity="0.4"/>
+
+  <!-- Center Ascending Golden Lightning Bolt -->
+  <polygon points="275,45 190,235 255,235 210,435 335,215 270,215 305,45" fill="url(#s132-f2_bolt)"/>
+  <polygon points="275,45 250,215 270,215 210,435 190,235" fill="#D97706" opacity="0.45"/>
+</svg>
+</g><text x="698.667" y="600" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" fill="#8a8a8a" text-anchor="middle">32px</text><g><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" x="740.667" y="564" width="16" height="16" preserveAspectRatio="xMidYMid meet">
+  <title>SuperFlash TCU - Frosted Glass 02: Dual Prism</title>
+  <defs>
+    <linearGradient id="s116-f2_glassL" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38BDF8" stop-opacity="0.6"/>
+      <stop offset="100%" stop-color="#1E3A8A" stop-opacity="0.85"/>
+    </linearGradient>
+    <linearGradient id="s116-f2_glassR" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#60A5FA" stop-opacity="0.6"/>
+      <stop offset="100%" stop-color="#2563EB" stop-opacity="0.9"/>
+    </linearGradient>
+    <linearGradient id="s116-f2_stroke" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.85"/>
+      <stop offset="100%" stop-color="#38BDF8" stop-opacity="0.3"/>
+    </linearGradient>
+    <linearGradient id="s116-f2_bolt" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FEF08A"/>
+      <stop offset="40%" stop-color="#F59E0B"/>
+      <stop offset="100%" stop-color="#EA580C"/>
+    </linearGradient>
+  </defs>
+
+  <rect x="36" y="36" width="440" height="440" rx="96" fill="#030712"/>
+
+  <!-- Left Glass Wing -->
+  <polygon points="256,150 110,230 110,340 256,260" fill="url(#s116-f2_glassL)" stroke="url(#s116-f2_stroke)" stroke-width="3"/>
+  <polygon points="110,340 256,260 256,280 110,360" fill="#0B132B" opacity="0.8"/>
+
+  <!-- Right Glass Wing -->
+  <polygon points="256,150 402,230 402,340 256,260" fill="url(#s116-f2_glassR)" stroke="url(#s116-f2_stroke)" stroke-width="3"/>
+  <polygon points="256,260 402,340 402,360 256,280" fill="#1C2541" opacity="0.8"/>
+
+  <!-- Etched Study Lines on Glass Wings -->
+  <line x1="140" y1="260" x2="225" y2="215" stroke="#BAE6FD" stroke-width="4.5" stroke-linecap="round" opacity="0.5"/>
+  <line x1="140" y1="285" x2="215" y2="245" stroke="#BAE6FD" stroke-width="4.5" stroke-linecap="round" opacity="0.4"/>
+  <line x1="287" y1="215" x2="372" y2="260" stroke="#BAE6FD" stroke-width="4.5" stroke-linecap="round" opacity="0.5"/>
+  <line x1="297" y1="245" x2="372" y2="285" stroke="#BAE6FD" stroke-width="4.5" stroke-linecap="round" opacity="0.4"/>
+
+  <!-- Center Ascending Golden Lightning Bolt -->
+  <polygon points="275,45 190,235 255,235 210,435 335,215 270,215 305,45" fill="url(#s116-f2_bolt)"/>
+  <polygon points="275,45 250,215 270,215 210,435 190,235" fill="#D97706" opacity="0.45"/>
+</svg>
+</g><text x="748.667" y="600" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" fill="#8a8a8a" text-anchor="middle">16px</text><text x="592.6666666666667" y="636" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="26" font-weight="700" fill="#161616">B · Dual Glass Prism</text><text x="592.6666666666667" y="670" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="19" fill="#555">Prisma aberto em V com refração translúcida</text><text x="592.6666666666667" y="696" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="19" fill="#555">e raio ascendente central.</text><rect x="1065.33" y="150" width="474.667" height="630" rx="18" fill="#fff" stroke="#e4e4e0" stroke-width="1"/><g><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" x="1095.33" y="190" width="414.667" height="300" preserveAspectRatio="xMidYMid meet">
+  <title>SuperFlash TCU - Frosted Glass 03: Floating Zero-G</title>
+  <defs>
+    <linearGradient id="c2-f3_card1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38BDF8" stop-opacity="0.3"/>
+      <stop offset="100%" stop-color="#1E3A8A" stop-opacity="0.8"/>
+    </linearGradient>
+    <linearGradient id="c2-f3_card2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#60A5FA" stop-opacity="0.5"/>
+      <stop offset="100%" stop-color="#2563EB" stop-opacity="0.9"/>
+    </linearGradient>
+    <linearGradient id="c2-f3_stroke" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.9"/>
+      <stop offset="100%" stop-color="#38BDF8" stop-opacity="0.2"/>
+    </linearGradient>
+    <linearGradient id="c2-f3_bolt" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FEF08A"/>
+      <stop offset="40%" stop-color="#F59E0B"/>
+      <stop offset="100%" stop-color="#EA580C"/>
+    </linearGradient>
+    <radialGradient id="c2-f3_glow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#38BDF8" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="#030712" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <rect x="36" y="36" width="440" height="440" rx="96" fill="#030712"/>
+
+  <!-- Ethereal Glow Bed -->
+  <ellipse cx="256" cy="380" rx="140" ry="40" fill="url(#c2-f3_glow)"/>
+
+  <!-- Lower Suspended Card -->
+  <path d="M130 320 L256 250 L382 320 L256 390 Z" fill="url(#c2-f3_card1)" stroke="url(#c2-f3_stroke)" stroke-width="2.5"/>
+  <path d="M130 320 L256 390 L256 405 L130 335 Z" fill="#090D16" opacity="0.8"/>
+  <path d="M256 390 L382 320 L382 335 L256 405 Z" fill="#0F172A" opacity="0.8"/>
+
+  <!-- Upper Floating Card (Zero-G Offset) -->
+  <path d="M90 200 L256 105 L422 200 L256 295 Z" fill="url(#c2-f3_card2)" stroke="url(#c2-f3_stroke)" stroke-width="3.5"/>
+  <path d="M90 200 L256 295 L256 312 L90 217 Z" fill="#1E3A8A" opacity="0.7"/>
+  <path d="M256 295 L422 200 L422 217 L256 312 Z" fill="#1D4ED8" opacity="0.7"/>
+
+  <!-- Text Preview Shimmer -->
+  <line x1="140" y1="205" x2="256" y2="138" stroke="#FFFFFF" stroke-width="6" stroke-linecap="round" opacity="0.6"/>
+  <line x1="150" y1="230" x2="235" y2="180" stroke="#BAE6FD" stroke-width="5" stroke-linecap="round" opacity="0.5"/>
+
+  <!-- Piercing Energy Bolt Cutting Cleanly -->
+  <polygon points="280,45 185,225 255,225 205,435 340,215 270,215 305,45" fill="url(#c2-f3_bolt)"/>
+  <polygon points="280,45 250,215 270,215 205,435 185,225" fill="#D97706" opacity="0.4"/>
+</svg>
+</g><g><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" x="1095.33" y="516" width="64" height="64" preserveAspectRatio="xMidYMid meet">
+  <title>SuperFlash TCU - Frosted Glass 03: Floating Zero-G</title>
+  <defs>
+    <linearGradient id="s264-f3_card1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38BDF8" stop-opacity="0.3"/>
+      <stop offset="100%" stop-color="#1E3A8A" stop-opacity="0.8"/>
+    </linearGradient>
+    <linearGradient id="s264-f3_card2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#60A5FA" stop-opacity="0.5"/>
+      <stop offset="100%" stop-color="#2563EB" stop-opacity="0.9"/>
+    </linearGradient>
+    <linearGradient id="s264-f3_stroke" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.9"/>
+      <stop offset="100%" stop-color="#38BDF8" stop-opacity="0.2"/>
+    </linearGradient>
+    <linearGradient id="s264-f3_bolt" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FEF08A"/>
+      <stop offset="40%" stop-color="#F59E0B"/>
+      <stop offset="100%" stop-color="#EA580C"/>
+    </linearGradient>
+    <radialGradient id="s264-f3_glow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#38BDF8" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="#030712" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <rect x="36" y="36" width="440" height="440" rx="96" fill="#030712"/>
+
+  <!-- Ethereal Glow Bed -->
+  <ellipse cx="256" cy="380" rx="140" ry="40" fill="url(#s264-f3_glow)"/>
+
+  <!-- Lower Suspended Card -->
+  <path d="M130 320 L256 250 L382 320 L256 390 Z" fill="url(#s264-f3_card1)" stroke="url(#s264-f3_stroke)" stroke-width="2.5"/>
+  <path d="M130 320 L256 390 L256 405 L130 335 Z" fill="#090D16" opacity="0.8"/>
+  <path d="M256 390 L382 320 L382 335 L256 405 Z" fill="#0F172A" opacity="0.8"/>
+
+  <!-- Upper Floating Card (Zero-G Offset) -->
+  <path d="M90 200 L256 105 L422 200 L256 295 Z" fill="url(#s264-f3_card2)" stroke="url(#s264-f3_stroke)" stroke-width="3.5"/>
+  <path d="M90 200 L256 295 L256 312 L90 217 Z" fill="#1E3A8A" opacity="0.7"/>
+  <path d="M256 295 L422 200 L422 217 L256 312 Z" fill="#1D4ED8" opacity="0.7"/>
+
+  <!-- Text Preview Shimmer -->
+  <line x1="140" y1="205" x2="256" y2="138" stroke="#FFFFFF" stroke-width="6" stroke-linecap="round" opacity="0.6"/>
+  <line x1="150" y1="230" x2="235" y2="180" stroke="#BAE6FD" stroke-width="5" stroke-linecap="round" opacity="0.5"/>
+
+  <!-- Piercing Energy Bolt Cutting Cleanly -->
+  <polygon points="280,45 185,225 255,225 205,435 340,215 270,215 305,45" fill="url(#s264-f3_bolt)"/>
+  <polygon points="280,45 250,215 270,215 205,435 185,225" fill="#D97706" opacity="0.4"/>
+</svg>
+</g><text x="1127.33" y="600" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" fill="#8a8a8a" text-anchor="middle">64px</text><g><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" x="1185.33" y="548" width="32" height="32" preserveAspectRatio="xMidYMid meet">
+  <title>SuperFlash TCU - Frosted Glass 03: Floating Zero-G</title>
+  <defs>
+    <linearGradient id="s232-f3_card1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38BDF8" stop-opacity="0.3"/>
+      <stop offset="100%" stop-color="#1E3A8A" stop-opacity="0.8"/>
+    </linearGradient>
+    <linearGradient id="s232-f3_card2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#60A5FA" stop-opacity="0.5"/>
+      <stop offset="100%" stop-color="#2563EB" stop-opacity="0.9"/>
+    </linearGradient>
+    <linearGradient id="s232-f3_stroke" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.9"/>
+      <stop offset="100%" stop-color="#38BDF8" stop-opacity="0.2"/>
+    </linearGradient>
+    <linearGradient id="s232-f3_bolt" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FEF08A"/>
+      <stop offset="40%" stop-color="#F59E0B"/>
+      <stop offset="100%" stop-color="#EA580C"/>
+    </linearGradient>
+    <radialGradient id="s232-f3_glow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#38BDF8" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="#030712" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <rect x="36" y="36" width="440" height="440" rx="96" fill="#030712"/>
+
+  <!-- Ethereal Glow Bed -->
+  <ellipse cx="256" cy="380" rx="140" ry="40" fill="url(#s232-f3_glow)"/>
+
+  <!-- Lower Suspended Card -->
+  <path d="M130 320 L256 250 L382 320 L256 390 Z" fill="url(#s232-f3_card1)" stroke="url(#s232-f3_stroke)" stroke-width="2.5"/>
+  <path d="M130 320 L256 390 L256 405 L130 335 Z" fill="#090D16" opacity="0.8"/>
+  <path d="M256 390 L382 320 L382 335 L256 405 Z" fill="#0F172A" opacity="0.8"/>
+
+  <!-- Upper Floating Card (Zero-G Offset) -->
+  <path d="M90 200 L256 105 L422 200 L256 295 Z" fill="url(#s232-f3_card2)" stroke="url(#s232-f3_stroke)" stroke-width="3.5"/>
+  <path d="M90 200 L256 295 L256 312 L90 217 Z" fill="#1E3A8A" opacity="0.7"/>
+  <path d="M256 295 L422 200 L422 217 L256 312 Z" fill="#1D4ED8" opacity="0.7"/>
+
+  <!-- Text Preview Shimmer -->
+  <line x1="140" y1="205" x2="256" y2="138" stroke="#FFFFFF" stroke-width="6" stroke-linecap="round" opacity="0.6"/>
+  <line x1="150" y1="230" x2="235" y2="180" stroke="#BAE6FD" stroke-width="5" stroke-linecap="round" opacity="0.5"/>
+
+  <!-- Piercing Energy Bolt Cutting Cleanly -->
+  <polygon points="280,45 185,225 255,225 205,435 340,215 270,215 305,45" fill="url(#s232-f3_bolt)"/>
+  <polygon points="280,45 250,215 270,215 205,435 185,225" fill="#D97706" opacity="0.4"/>
+</svg>
+</g><text x="1201.33" y="600" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" fill="#8a8a8a" text-anchor="middle">32px</text><g><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" x="1243.33" y="564" width="16" height="16" preserveAspectRatio="xMidYMid meet">
+  <title>SuperFlash TCU - Frosted Glass 03: Floating Zero-G</title>
+  <defs>
+    <linearGradient id="s216-f3_card1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38BDF8" stop-opacity="0.3"/>
+      <stop offset="100%" stop-color="#1E3A8A" stop-opacity="0.8"/>
+    </linearGradient>
+    <linearGradient id="s216-f3_card2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#60A5FA" stop-opacity="0.5"/>
+      <stop offset="100%" stop-color="#2563EB" stop-opacity="0.9"/>
+    </linearGradient>
+    <linearGradient id="s216-f3_stroke" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.9"/>
+      <stop offset="100%" stop-color="#38BDF8" stop-opacity="0.2"/>
+    </linearGradient>
+    <linearGradient id="s216-f3_bolt" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FEF08A"/>
+      <stop offset="40%" stop-color="#F59E0B"/>
+      <stop offset="100%" stop-color="#EA580C"/>
+    </linearGradient>
+    <radialGradient id="s216-f3_glow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#38BDF8" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="#030712" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <rect x="36" y="36" width="440" height="440" rx="96" fill="#030712"/>
+
+  <!-- Ethereal Glow Bed -->
+  <ellipse cx="256" cy="380" rx="140" ry="40" fill="url(#s216-f3_glow)"/>
+
+  <!-- Lower Suspended Card -->
+  <path d="M130 320 L256 250 L382 320 L256 390 Z" fill="url(#s216-f3_card1)" stroke="url(#s216-f3_stroke)" stroke-width="2.5"/>
+  <path d="M130 320 L256 390 L256 405 L130 335 Z" fill="#090D16" opacity="0.8"/>
+  <path d="M256 390 L382 320 L382 335 L256 405 Z" fill="#0F172A" opacity="0.8"/>
+
+  <!-- Upper Floating Card (Zero-G Offset) -->
+  <path d="M90 200 L256 105 L422 200 L256 295 Z" fill="url(#s216-f3_card2)" stroke="url(#s216-f3_stroke)" stroke-width="3.5"/>
+  <path d="M90 200 L256 295 L256 312 L90 217 Z" fill="#1E3A8A" opacity="0.7"/>
+  <path d="M256 295 L422 200 L422 217 L256 312 Z" fill="#1D4ED8" opacity="0.7"/>
+
+  <!-- Text Preview Shimmer -->
+  <line x1="140" y1="205" x2="256" y2="138" stroke="#FFFFFF" stroke-width="6" stroke-linecap="round" opacity="0.6"/>
+  <line x1="150" y1="230" x2="235" y2="180" stroke="#BAE6FD" stroke-width="5" stroke-linecap="round" opacity="0.5"/>
+
+  <!-- Piercing Energy Bolt Cutting Cleanly -->
+  <polygon points="280,45 185,225 255,225 205,435 340,215 270,215 305,45" fill="url(#s216-f3_bolt)"/>
+  <polygon points="280,45 250,215 270,215 205,435 185,225" fill="#D97706" opacity="0.4"/>
+</svg>
+</g><text x="1251.33" y="600" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" fill="#8a8a8a" text-anchor="middle">16px</text><text x="1095.3333333333335" y="636" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="26" font-weight="700" fill="#161616">C · Floating Zero-G</text><text x="1095.3333333333335" y="670" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="19" fill="#555">Plataformas de vidro flutuantes com halo de</text><text x="1095.3333333333335" y="696" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="19" fill="#555">luz e corte limpo de raio.</text><rect x="60" y="808" width="474.667" height="630" rx="18" fill="#fff" stroke="#e4e4e0" stroke-width="1"/><g><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" x="90" y="848" width="414.667" height="300" preserveAspectRatio="xMidYMid meet">
+  <title>SuperFlash TCU - Frosted Glass 04: Chamfered Crystal</title>
+  <defs>
+    <linearGradient id="c3-f4_glass" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38BDF8" stop-opacity="0.55"/>
+      <stop offset="50%" stop-color="#2563EB" stop-opacity="0.85"/>
+      <stop offset="100%" stop-color="#1E3A8A" stop-opacity="0.95"/>
+    </linearGradient>
+    <linearGradient id="c3-f4_stroke" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.9"/>
+      <stop offset="50%" stop-color="#7DD3FC" stop-opacity="0.6"/>
+      <stop offset="100%" stop-color="#0284C7" stop-opacity="0.2"/>
+    </linearGradient>
+    <linearGradient id="c3-f4_bolt" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FEF08A"/>
+      <stop offset="35%" stop-color="#F59E0B"/>
+      <stop offset="100%" stop-color="#EA580C"/>
+    </linearGradient>
+  </defs>
+
+  <rect x="36" y="36" width="440" height="440" rx="96" fill="#030712"/>
+
+  <!-- Back Crystal Shard -->
+  <polygon points="170,200 256,150 342,200 370,250 256,315 142,250" fill="#1E3A8A" opacity="0.45" stroke="url(#c3-f4_stroke)" stroke-width="2"/>
+
+  <!-- Front Chamfered Crystal Hex-Card -->
+  <polygon points="150,260 256,198 362,260 395,320 256,400 117,320" fill="url(#c3-f4_glass)" stroke="url(#c3-f4_stroke)" stroke-width="3.5"/>
+  <!-- Crystal Thickness Bevels -->
+  <polygon points="117,320 256,400 256,420 117,340" fill="#0F172A" opacity="0.85"/>
+  <polygon points="256,400 395,320 395,340 256,420" fill="#1E40AF" opacity="0.85"/>
+
+  <!-- Specular Facet Highlights -->
+  <line x1="160" y1="310" x2="256" y2="252" stroke="#FFFFFF" stroke-width="5" stroke-linecap="round" opacity="0.65"/>
+  <line x1="170" y1="335" x2="240" y2="295" stroke="#BAE6FD" stroke-width="5" stroke-linecap="round" opacity="0.45"/>
+
+  <!-- Faceted Golden Lightning Blade with Dual Shading -->
+  <polygon points="280,45 180,230 255,230 205,435 345,215 270,215 310,45" fill="url(#c3-f4_bolt)"/>
+  <polygon points="280,45 245,215 270,215 205,435 180,230" fill="#D97706" opacity="0.45"/>
+</svg>
+</g><g><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" x="90" y="1174" width="64" height="64" preserveAspectRatio="xMidYMid meet">
+  <title>SuperFlash TCU - Frosted Glass 04: Chamfered Crystal</title>
+  <defs>
+    <linearGradient id="s364-f4_glass" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38BDF8" stop-opacity="0.55"/>
+      <stop offset="50%" stop-color="#2563EB" stop-opacity="0.85"/>
+      <stop offset="100%" stop-color="#1E3A8A" stop-opacity="0.95"/>
+    </linearGradient>
+    <linearGradient id="s364-f4_stroke" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.9"/>
+      <stop offset="50%" stop-color="#7DD3FC" stop-opacity="0.6"/>
+      <stop offset="100%" stop-color="#0284C7" stop-opacity="0.2"/>
+    </linearGradient>
+    <linearGradient id="s364-f4_bolt" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FEF08A"/>
+      <stop offset="35%" stop-color="#F59E0B"/>
+      <stop offset="100%" stop-color="#EA580C"/>
+    </linearGradient>
+  </defs>
+
+  <rect x="36" y="36" width="440" height="440" rx="96" fill="#030712"/>
+
+  <!-- Back Crystal Shard -->
+  <polygon points="170,200 256,150 342,200 370,250 256,315 142,250" fill="#1E3A8A" opacity="0.45" stroke="url(#s364-f4_stroke)" stroke-width="2"/>
+
+  <!-- Front Chamfered Crystal Hex-Card -->
+  <polygon points="150,260 256,198 362,260 395,320 256,400 117,320" fill="url(#s364-f4_glass)" stroke="url(#s364-f4_stroke)" stroke-width="3.5"/>
+  <!-- Crystal Thickness Bevels -->
+  <polygon points="117,320 256,400 256,420 117,340" fill="#0F172A" opacity="0.85"/>
+  <polygon points="256,400 395,320 395,340 256,420" fill="#1E40AF" opacity="0.85"/>
+
+  <!-- Specular Facet Highlights -->
+  <line x1="160" y1="310" x2="256" y2="252" stroke="#FFFFFF" stroke-width="5" stroke-linecap="round" opacity="0.65"/>
+  <line x1="170" y1="335" x2="240" y2="295" stroke="#BAE6FD" stroke-width="5" stroke-linecap="round" opacity="0.45"/>
+
+  <!-- Faceted Golden Lightning Blade with Dual Shading -->
+  <polygon points="280,45 180,230 255,230 205,435 345,215 270,215 310,45" fill="url(#s364-f4_bolt)"/>
+  <polygon points="280,45 245,215 270,215 205,435 180,230" fill="#D97706" opacity="0.45"/>
+</svg>
+</g><text x="122" y="1258" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" fill="#8a8a8a" text-anchor="middle">64px</text><g><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" x="180" y="1206" width="32" height="32" preserveAspectRatio="xMidYMid meet">
+  <title>SuperFlash TCU - Frosted Glass 04: Chamfered Crystal</title>
+  <defs>
+    <linearGradient id="s332-f4_glass" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38BDF8" stop-opacity="0.55"/>
+      <stop offset="50%" stop-color="#2563EB" stop-opacity="0.85"/>
+      <stop offset="100%" stop-color="#1E3A8A" stop-opacity="0.95"/>
+    </linearGradient>
+    <linearGradient id="s332-f4_stroke" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.9"/>
+      <stop offset="50%" stop-color="#7DD3FC" stop-opacity="0.6"/>
+      <stop offset="100%" stop-color="#0284C7" stop-opacity="0.2"/>
+    </linearGradient>
+    <linearGradient id="s332-f4_bolt" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FEF08A"/>
+      <stop offset="35%" stop-color="#F59E0B"/>
+      <stop offset="100%" stop-color="#EA580C"/>
+    </linearGradient>
+  </defs>
+
+  <rect x="36" y="36" width="440" height="440" rx="96" fill="#030712"/>
+
+  <!-- Back Crystal Shard -->
+  <polygon points="170,200 256,150 342,200 370,250 256,315 142,250" fill="#1E3A8A" opacity="0.45" stroke="url(#s332-f4_stroke)" stroke-width="2"/>
+
+  <!-- Front Chamfered Crystal Hex-Card -->
+  <polygon points="150,260 256,198 362,260 395,320 256,400 117,320" fill="url(#s332-f4_glass)" stroke="url(#s332-f4_stroke)" stroke-width="3.5"/>
+  <!-- Crystal Thickness Bevels -->
+  <polygon points="117,320 256,400 256,420 117,340" fill="#0F172A" opacity="0.85"/>
+  <polygon points="256,400 395,320 395,340 256,420" fill="#1E40AF" opacity="0.85"/>
+
+  <!-- Specular Facet Highlights -->
+  <line x1="160" y1="310" x2="256" y2="252" stroke="#FFFFFF" stroke-width="5" stroke-linecap="round" opacity="0.65"/>
+  <line x1="170" y1="335" x2="240" y2="295" stroke="#BAE6FD" stroke-width="5" stroke-linecap="round" opacity="0.45"/>
+
+  <!-- Faceted Golden Lightning Blade with Dual Shading -->
+  <polygon points="280,45 180,230 255,230 205,435 345,215 270,215 310,45" fill="url(#s332-f4_bolt)"/>
+  <polygon points="280,45 245,215 270,215 205,435 180,230" fill="#D97706" opacity="0.45"/>
+</svg>
+</g><text x="196" y="1258" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" fill="#8a8a8a" text-anchor="middle">32px</text><g><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" x="238" y="1222" width="16" height="16" preserveAspectRatio="xMidYMid meet">
+  <title>SuperFlash TCU - Frosted Glass 04: Chamfered Crystal</title>
+  <defs>
+    <linearGradient id="s316-f4_glass" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38BDF8" stop-opacity="0.55"/>
+      <stop offset="50%" stop-color="#2563EB" stop-opacity="0.85"/>
+      <stop offset="100%" stop-color="#1E3A8A" stop-opacity="0.95"/>
+    </linearGradient>
+    <linearGradient id="s316-f4_stroke" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.9"/>
+      <stop offset="50%" stop-color="#7DD3FC" stop-opacity="0.6"/>
+      <stop offset="100%" stop-color="#0284C7" stop-opacity="0.2"/>
+    </linearGradient>
+    <linearGradient id="s316-f4_bolt" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FEF08A"/>
+      <stop offset="35%" stop-color="#F59E0B"/>
+      <stop offset="100%" stop-color="#EA580C"/>
+    </linearGradient>
+  </defs>
+
+  <rect x="36" y="36" width="440" height="440" rx="96" fill="#030712"/>
+
+  <!-- Back Crystal Shard -->
+  <polygon points="170,200 256,150 342,200 370,250 256,315 142,250" fill="#1E3A8A" opacity="0.45" stroke="url(#s316-f4_stroke)" stroke-width="2"/>
+
+  <!-- Front Chamfered Crystal Hex-Card -->
+  <polygon points="150,260 256,198 362,260 395,320 256,400 117,320" fill="url(#s316-f4_glass)" stroke="url(#s316-f4_stroke)" stroke-width="3.5"/>
+  <!-- Crystal Thickness Bevels -->
+  <polygon points="117,320 256,400 256,420 117,340" fill="#0F172A" opacity="0.85"/>
+  <polygon points="256,400 395,320 395,340 256,420" fill="#1E40AF" opacity="0.85"/>
+
+  <!-- Specular Facet Highlights -->
+  <line x1="160" y1="310" x2="256" y2="252" stroke="#FFFFFF" stroke-width="5" stroke-linecap="round" opacity="0.65"/>
+  <line x1="170" y1="335" x2="240" y2="295" stroke="#BAE6FD" stroke-width="5" stroke-linecap="round" opacity="0.45"/>
+
+  <!-- Faceted Golden Lightning Blade with Dual Shading -->
+  <polygon points="280,45 180,230 255,230 205,435 345,215 270,215 310,45" fill="url(#s316-f4_bolt)"/>
+  <polygon points="280,45 245,215 270,215 205,435 180,230" fill="#D97706" opacity="0.45"/>
+</svg>
+</g><text x="246" y="1258" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" fill="#8a8a8a" text-anchor="middle">16px</text><text x="90.0" y="1294" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="26" font-weight="700" fill="#161616">D · Chamfered Crystal</text><text x="90.0" y="1328" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="19" fill="#555">Cartões facetados lapidados como cristal</text><text x="90.0" y="1354" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="19" fill="#555">com reflexos especulares.</text><rect x="562.667" y="808" width="474.667" height="630" rx="18" fill="#fff" stroke="#e4e4e0" stroke-width="1"/><g><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" x="592.667" y="848" width="414.667" height="300" preserveAspectRatio="xMidYMid meet">
+  <title>SuperFlash TCU - Frosted Glass 05: Aurora Core</title>
+  <defs>
+    <linearGradient id="c4-f5_aurora" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#10B981" stop-opacity="0.5"/>
+      <stop offset="50%" stop-color="#06B6D4" stop-opacity="0.7"/>
+      <stop offset="100%" stop-color="#3B82F6" stop-opacity="0.9"/>
+    </linearGradient>
+    <linearGradient id="c4-f5_glassTop" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#A7F3D0" stop-opacity="0.6"/>
+      <stop offset="100%" stop-color="#0284C7" stop-opacity="0.85"/>
+    </linearGradient>
+    <linearGradient id="c4-f5_stroke" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.95"/>
+      <stop offset="100%" stop-color="#34D399" stop-opacity="0.3"/>
+    </linearGradient>
+    <linearGradient id="c4-f5_bolt" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FEF08A"/>
+      <stop offset="40%" stop-color="#F59E0B"/>
+      <stop offset="100%" stop-color="#EA580C"/>
+    </linearGradient>
+  </defs>
+
+  <rect x="36" y="36" width="440" height="440" rx="96" fill="#030712"/>
+
+  <!-- Back Aurora Layer Card -->
+  <path d="M120 220 L270 140 L400 215 L250 295 Z" fill="url(#c4-f5_aurora)" stroke="url(#c4-f5_stroke)" stroke-width="2.5"/>
+  <path d="M120 220 L250 295 L250 320 L120 245 Z" fill="#064E3B" opacity="0.7"/>
+  <path d="M250 295 L400 215 L400 240 L250 320 Z" fill="#0F766E" opacity="0.7"/>
+
+  <!-- Front Frosted Card -->
+  <path d="M100 290 L260 205 L410 285 L250 370 Z" fill="url(#c4-f5_glassTop)" stroke="url(#c4-f5_stroke)" stroke-width="3.5"/>
+  <path d="M100 290 L250 370 L250 395 L100 315 Z" fill="#0E7490" opacity="0.8"/>
+  <path d="M250 370 L410 285 L410 310 L250 395 Z" fill="#0369A1" opacity="0.8"/>
+
+  <!-- Glowing Flashcard Lines -->
+  <line x1="140" y1="290" x2="250" y2="232" stroke="#E0E7FF" stroke-width="6" stroke-linecap="round" opacity="0.7"/>
+  <line x1="150" y1="315" x2="230" y2="273" stroke="#A7F3D0" stroke-width="5" stroke-linecap="round" opacity="0.6"/>
+
+  <!-- Piercing Golden Core Bolt -->
+  <polygon points="285,45 175,245 250,245 195,445 355,225 275,225 320,45" fill="url(#c4-f5_bolt)"/>
+  <polygon points="285,45 250,225 275,225 195,445 175,245" fill="#B45309" opacity="0.45"/>
+</svg>
+</g><g><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" x="592.667" y="1174" width="64" height="64" preserveAspectRatio="xMidYMid meet">
+  <title>SuperFlash TCU - Frosted Glass 05: Aurora Core</title>
+  <defs>
+    <linearGradient id="s464-f5_aurora" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#10B981" stop-opacity="0.5"/>
+      <stop offset="50%" stop-color="#06B6D4" stop-opacity="0.7"/>
+      <stop offset="100%" stop-color="#3B82F6" stop-opacity="0.9"/>
+    </linearGradient>
+    <linearGradient id="s464-f5_glassTop" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#A7F3D0" stop-opacity="0.6"/>
+      <stop offset="100%" stop-color="#0284C7" stop-opacity="0.85"/>
+    </linearGradient>
+    <linearGradient id="s464-f5_stroke" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.95"/>
+      <stop offset="100%" stop-color="#34D399" stop-opacity="0.3"/>
+    </linearGradient>
+    <linearGradient id="s464-f5_bolt" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FEF08A"/>
+      <stop offset="40%" stop-color="#F59E0B"/>
+      <stop offset="100%" stop-color="#EA580C"/>
+    </linearGradient>
+  </defs>
+
+  <rect x="36" y="36" width="440" height="440" rx="96" fill="#030712"/>
+
+  <!-- Back Aurora Layer Card -->
+  <path d="M120 220 L270 140 L400 215 L250 295 Z" fill="url(#s464-f5_aurora)" stroke="url(#s464-f5_stroke)" stroke-width="2.5"/>
+  <path d="M120 220 L250 295 L250 320 L120 245 Z" fill="#064E3B" opacity="0.7"/>
+  <path d="M250 295 L400 215 L400 240 L250 320 Z" fill="#0F766E" opacity="0.7"/>
+
+  <!-- Front Frosted Card -->
+  <path d="M100 290 L260 205 L410 285 L250 370 Z" fill="url(#s464-f5_glassTop)" stroke="url(#s464-f5_stroke)" stroke-width="3.5"/>
+  <path d="M100 290 L250 370 L250 395 L100 315 Z" fill="#0E7490" opacity="0.8"/>
+  <path d="M250 370 L410 285 L410 310 L250 395 Z" fill="#0369A1" opacity="0.8"/>
+
+  <!-- Glowing Flashcard Lines -->
+  <line x1="140" y1="290" x2="250" y2="232" stroke="#E0E7FF" stroke-width="6" stroke-linecap="round" opacity="0.7"/>
+  <line x1="150" y1="315" x2="230" y2="273" stroke="#A7F3D0" stroke-width="5" stroke-linecap="round" opacity="0.6"/>
+
+  <!-- Piercing Golden Core Bolt -->
+  <polygon points="285,45 175,245 250,245 195,445 355,225 275,225 320,45" fill="url(#s464-f5_bolt)"/>
+  <polygon points="285,45 250,225 275,225 195,445 175,245" fill="#B45309" opacity="0.45"/>
+</svg>
+</g><text x="624.667" y="1258" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" fill="#8a8a8a" text-anchor="middle">64px</text><g><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" x="682.667" y="1206" width="32" height="32" preserveAspectRatio="xMidYMid meet">
+  <title>SuperFlash TCU - Frosted Glass 05: Aurora Core</title>
+  <defs>
+    <linearGradient id="s432-f5_aurora" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#10B981" stop-opacity="0.5"/>
+      <stop offset="50%" stop-color="#06B6D4" stop-opacity="0.7"/>
+      <stop offset="100%" stop-color="#3B82F6" stop-opacity="0.9"/>
+    </linearGradient>
+    <linearGradient id="s432-f5_glassTop" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#A7F3D0" stop-opacity="0.6"/>
+      <stop offset="100%" stop-color="#0284C7" stop-opacity="0.85"/>
+    </linearGradient>
+    <linearGradient id="s432-f5_stroke" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.95"/>
+      <stop offset="100%" stop-color="#34D399" stop-opacity="0.3"/>
+    </linearGradient>
+    <linearGradient id="s432-f5_bolt" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FEF08A"/>
+      <stop offset="40%" stop-color="#F59E0B"/>
+      <stop offset="100%" stop-color="#EA580C"/>
+    </linearGradient>
+  </defs>
+
+  <rect x="36" y="36" width="440" height="440" rx="96" fill="#030712"/>
+
+  <!-- Back Aurora Layer Card -->
+  <path d="M120 220 L270 140 L400 215 L250 295 Z" fill="url(#s432-f5_aurora)" stroke="url(#s432-f5_stroke)" stroke-width="2.5"/>
+  <path d="M120 220 L250 295 L250 320 L120 245 Z" fill="#064E3B" opacity="0.7"/>
+  <path d="M250 295 L400 215 L400 240 L250 320 Z" fill="#0F766E" opacity="0.7"/>
+
+  <!-- Front Frosted Card -->
+  <path d="M100 290 L260 205 L410 285 L250 370 Z" fill="url(#s432-f5_glassTop)" stroke="url(#s432-f5_stroke)" stroke-width="3.5"/>
+  <path d="M100 290 L250 370 L250 395 L100 315 Z" fill="#0E7490" opacity="0.8"/>
+  <path d="M250 370 L410 285 L410 310 L250 395 Z" fill="#0369A1" opacity="0.8"/>
+
+  <!-- Glowing Flashcard Lines -->
+  <line x1="140" y1="290" x2="250" y2="232" stroke="#E0E7FF" stroke-width="6" stroke-linecap="round" opacity="0.7"/>
+  <line x1="150" y1="315" x2="230" y2="273" stroke="#A7F3D0" stroke-width="5" stroke-linecap="round" opacity="0.6"/>
+
+  <!-- Piercing Golden Core Bolt -->
+  <polygon points="285,45 175,245 250,245 195,445 355,225 275,225 320,45" fill="url(#s432-f5_bolt)"/>
+  <polygon points="285,45 250,225 275,225 195,445 175,245" fill="#B45309" opacity="0.45"/>
+</svg>
+</g><text x="698.667" y="1258" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" fill="#8a8a8a" text-anchor="middle">32px</text><g><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" x="740.667" y="1222" width="16" height="16" preserveAspectRatio="xMidYMid meet">
+  <title>SuperFlash TCU - Frosted Glass 05: Aurora Core</title>
+  <defs>
+    <linearGradient id="s416-f5_aurora" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#10B981" stop-opacity="0.5"/>
+      <stop offset="50%" stop-color="#06B6D4" stop-opacity="0.7"/>
+      <stop offset="100%" stop-color="#3B82F6" stop-opacity="0.9"/>
+    </linearGradient>
+    <linearGradient id="s416-f5_glassTop" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#A7F3D0" stop-opacity="0.6"/>
+      <stop offset="100%" stop-color="#0284C7" stop-opacity="0.85"/>
+    </linearGradient>
+    <linearGradient id="s416-f5_stroke" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.95"/>
+      <stop offset="100%" stop-color="#34D399" stop-opacity="0.3"/>
+    </linearGradient>
+    <linearGradient id="s416-f5_bolt" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FEF08A"/>
+      <stop offset="40%" stop-color="#F59E0B"/>
+      <stop offset="100%" stop-color="#EA580C"/>
+    </linearGradient>
+  </defs>
+
+  <rect x="36" y="36" width="440" height="440" rx="96" fill="#030712"/>
+
+  <!-- Back Aurora Layer Card -->
+  <path d="M120 220 L270 140 L400 215 L250 295 Z" fill="url(#s416-f5_aurora)" stroke="url(#s416-f5_stroke)" stroke-width="2.5"/>
+  <path d="M120 220 L250 295 L250 320 L120 245 Z" fill="#064E3B" opacity="0.7"/>
+  <path d="M250 295 L400 215 L400 240 L250 320 Z" fill="#0F766E" opacity="0.7"/>
+
+  <!-- Front Frosted Card -->
+  <path d="M100 290 L260 205 L410 285 L250 370 Z" fill="url(#s416-f5_glassTop)" stroke="url(#s416-f5_stroke)" stroke-width="3.5"/>
+  <path d="M100 290 L250 370 L250 395 L100 315 Z" fill="#0E7490" opacity="0.8"/>
+  <path d="M250 370 L410 285 L410 310 L250 395 Z" fill="#0369A1" opacity="0.8"/>
+
+  <!-- Glowing Flashcard Lines -->
+  <line x1="140" y1="290" x2="250" y2="232" stroke="#E0E7FF" stroke-width="6" stroke-linecap="round" opacity="0.7"/>
+  <line x1="150" y1="315" x2="230" y2="273" stroke="#A7F3D0" stroke-width="5" stroke-linecap="round" opacity="0.6"/>
+
+  <!-- Piercing Golden Core Bolt -->
+  <polygon points="285,45 175,245 250,245 195,445 355,225 275,225 320,45" fill="url(#s416-f5_bolt)"/>
+  <polygon points="285,45 250,225 275,225 195,445 175,245" fill="#B45309" opacity="0.45"/>
+</svg>
+</g><text x="748.667" y="1258" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" fill="#8a8a8a" text-anchor="middle">16px</text><text x="592.6666666666667" y="1294" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="26" font-weight="700" fill="#161616">E · Aurora Borealis</text><text x="592.6666666666667" y="1328" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="19" fill="#555">Gradiente interno aurora</text><text x="592.6666666666667" y="1354" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="19" fill="#555">esmeralda-ciano-índigo com raio 24k de</text><text x="592.6666666666667" y="1380" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="19" fill="#555">ouro.</text><rect x="1065.33" y="808" width="474.667" height="630" rx="18" fill="#fff" stroke="#e4e4e0" stroke-width="1"/><g><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" x="1095.33" y="848" width="414.667" height="300" preserveAspectRatio="xMidYMid meet">
+  <title>SuperFlash TCU - Frosted Glass 06: Cyber Etched Glass</title>
+  <defs>
+    <linearGradient id="c5-f6_glass" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38BDF8" stop-opacity="0.45"/>
+      <stop offset="100%" stop-color="#1E3A8A" stop-opacity="0.9"/>
+    </linearGradient>
+    <linearGradient id="c5-f6_stroke" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.9"/>
+      <stop offset="100%" stop-color="#38BDF8" stop-opacity="0.3"/>
+    </linearGradient>
+    <linearGradient id="c5-f6_bolt" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FEF08A"/>
+      <stop offset="40%" stop-color="#F59E0B"/>
+      <stop offset="100%" stop-color="#EA580C"/>
+    </linearGradient>
+  </defs>
+
+  <rect x="36" y="36" width="440" height="440" rx="96" fill="#030712"/>
+
+  <!-- Back Glass Layer Card -->
+  <path d="M120 220 L270 140 L400 215 L250 295 Z" fill="#0F172A" opacity="0.6" stroke="url(#c5-f6_stroke)" stroke-width="2"/>
+  <path d="M120 220 L250 295 L250 315 L120 240 Z" fill="#090D16" opacity="0.8"/>
+  <path d="M250 295 L400 215 L400 235 L250 315 Z" fill="#0F172A" opacity="0.8"/>
+
+  <!-- Front Frosted Glass Card -->
+  <path d="M100 280 L260 195 L410 275 L250 360 Z" fill="url(#c5-f6_glass)" stroke="url(#c5-f6_stroke)" stroke-width="3.5"/>
+  <path d="M100 280 L250 360 L250 382 L100 302 Z" fill="#1E3A8A" opacity="0.8"/>
+  <path d="M250 360 L410 275 L410 297 L250 382 Z" fill="#1D4ED8" opacity="0.8"/>
+
+  <!-- Laser Etched Circuit Lines & Node Points -->
+  <path d="M140 280 L210 242 L230 252 L260 235" fill="none" stroke="#BAE6FD" stroke-width="3" stroke-linecap="round" opacity="0.75"/>
+  <circle cx="140" cy="280" r="4.5" fill="#38BDF8"/>
+  <circle cx="230" cy="252" r="4.5" fill="#38BDF8"/>
+  <circle cx="260" cy="235" r="4.5" fill="#FFFFFF"/>
+
+  <path d="M160 305 L200 283 L245 283" fill="none" stroke="#BAE6FD" stroke-width="3" stroke-linecap="round" opacity="0.6"/>
+  <circle cx="160" cy="305" r="4" fill="#38BDF8"/>
+  <circle cx="245" cy="283" r="4" fill="#38BDF8"/>
+
+  <!-- Piercing Golden Blade -->
+  <polygon points="285,45 175,235 250,235 195,435 355,215 275,215 320,45" fill="url(#c5-f6_bolt)"/>
+  <polygon points="285,45 250,215 275,215 195,435 175,235" fill="#D97706" opacity="0.45"/>
+</svg>
+</g><g><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" x="1095.33" y="1174" width="64" height="64" preserveAspectRatio="xMidYMid meet">
+  <title>SuperFlash TCU - Frosted Glass 06: Cyber Etched Glass</title>
+  <defs>
+    <linearGradient id="s564-f6_glass" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38BDF8" stop-opacity="0.45"/>
+      <stop offset="100%" stop-color="#1E3A8A" stop-opacity="0.9"/>
+    </linearGradient>
+    <linearGradient id="s564-f6_stroke" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.9"/>
+      <stop offset="100%" stop-color="#38BDF8" stop-opacity="0.3"/>
+    </linearGradient>
+    <linearGradient id="s564-f6_bolt" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FEF08A"/>
+      <stop offset="40%" stop-color="#F59E0B"/>
+      <stop offset="100%" stop-color="#EA580C"/>
+    </linearGradient>
+  </defs>
+
+  <rect x="36" y="36" width="440" height="440" rx="96" fill="#030712"/>
+
+  <!-- Back Glass Layer Card -->
+  <path d="M120 220 L270 140 L400 215 L250 295 Z" fill="#0F172A" opacity="0.6" stroke="url(#s564-f6_stroke)" stroke-width="2"/>
+  <path d="M120 220 L250 295 L250 315 L120 240 Z" fill="#090D16" opacity="0.8"/>
+  <path d="M250 295 L400 215 L400 235 L250 315 Z" fill="#0F172A" opacity="0.8"/>
+
+  <!-- Front Frosted Glass Card -->
+  <path d="M100 280 L260 195 L410 275 L250 360 Z" fill="url(#s564-f6_glass)" stroke="url(#s564-f6_stroke)" stroke-width="3.5"/>
+  <path d="M100 280 L250 360 L250 382 L100 302 Z" fill="#1E3A8A" opacity="0.8"/>
+  <path d="M250 360 L410 275 L410 297 L250 382 Z" fill="#1D4ED8" opacity="0.8"/>
+
+  <!-- Laser Etched Circuit Lines & Node Points -->
+  <path d="M140 280 L210 242 L230 252 L260 235" fill="none" stroke="#BAE6FD" stroke-width="3" stroke-linecap="round" opacity="0.75"/>
+  <circle cx="140" cy="280" r="4.5" fill="#38BDF8"/>
+  <circle cx="230" cy="252" r="4.5" fill="#38BDF8"/>
+  <circle cx="260" cy="235" r="4.5" fill="#FFFFFF"/>
+
+  <path d="M160 305 L200 283 L245 283" fill="none" stroke="#BAE6FD" stroke-width="3" stroke-linecap="round" opacity="0.6"/>
+  <circle cx="160" cy="305" r="4" fill="#38BDF8"/>
+  <circle cx="245" cy="283" r="4" fill="#38BDF8"/>
+
+  <!-- Piercing Golden Blade -->
+  <polygon points="285,45 175,235 250,235 195,435 355,215 275,215 320,45" fill="url(#s564-f6_bolt)"/>
+  <polygon points="285,45 250,215 275,215 195,435 175,235" fill="#D97706" opacity="0.45"/>
+</svg>
+</g><text x="1127.33" y="1258" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" fill="#8a8a8a" text-anchor="middle">64px</text><g><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" x="1185.33" y="1206" width="32" height="32" preserveAspectRatio="xMidYMid meet">
+  <title>SuperFlash TCU - Frosted Glass 06: Cyber Etched Glass</title>
+  <defs>
+    <linearGradient id="s532-f6_glass" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38BDF8" stop-opacity="0.45"/>
+      <stop offset="100%" stop-color="#1E3A8A" stop-opacity="0.9"/>
+    </linearGradient>
+    <linearGradient id="s532-f6_stroke" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.9"/>
+      <stop offset="100%" stop-color="#38BDF8" stop-opacity="0.3"/>
+    </linearGradient>
+    <linearGradient id="s532-f6_bolt" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FEF08A"/>
+      <stop offset="40%" stop-color="#F59E0B"/>
+      <stop offset="100%" stop-color="#EA580C"/>
+    </linearGradient>
+  </defs>
+
+  <rect x="36" y="36" width="440" height="440" rx="96" fill="#030712"/>
+
+  <!-- Back Glass Layer Card -->
+  <path d="M120 220 L270 140 L400 215 L250 295 Z" fill="#0F172A" opacity="0.6" stroke="url(#s532-f6_stroke)" stroke-width="2"/>
+  <path d="M120 220 L250 295 L250 315 L120 240 Z" fill="#090D16" opacity="0.8"/>
+  <path d="M250 295 L400 215 L400 235 L250 315 Z" fill="#0F172A" opacity="0.8"/>
+
+  <!-- Front Frosted Glass Card -->
+  <path d="M100 280 L260 195 L410 275 L250 360 Z" fill="url(#s532-f6_glass)" stroke="url(#s532-f6_stroke)" stroke-width="3.5"/>
+  <path d="M100 280 L250 360 L250 382 L100 302 Z" fill="#1E3A8A" opacity="0.8"/>
+  <path d="M250 360 L410 275 L410 297 L250 382 Z" fill="#1D4ED8" opacity="0.8"/>
+
+  <!-- Laser Etched Circuit Lines & Node Points -->
+  <path d="M140 280 L210 242 L230 252 L260 235" fill="none" stroke="#BAE6FD" stroke-width="3" stroke-linecap="round" opacity="0.75"/>
+  <circle cx="140" cy="280" r="4.5" fill="#38BDF8"/>
+  <circle cx="230" cy="252" r="4.5" fill="#38BDF8"/>
+  <circle cx="260" cy="235" r="4.5" fill="#FFFFFF"/>
+
+  <path d="M160 305 L200 283 L245 283" fill="none" stroke="#BAE6FD" stroke-width="3" stroke-linecap="round" opacity="0.6"/>
+  <circle cx="160" cy="305" r="4" fill="#38BDF8"/>
+  <circle cx="245" cy="283" r="4" fill="#38BDF8"/>
+
+  <!-- Piercing Golden Blade -->
+  <polygon points="285,45 175,235 250,235 195,435 355,215 275,215 320,45" fill="url(#s532-f6_bolt)"/>
+  <polygon points="285,45 250,215 275,215 195,435 175,235" fill="#D97706" opacity="0.45"/>
+</svg>
+</g><text x="1201.33" y="1258" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" fill="#8a8a8a" text-anchor="middle">32px</text><g><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" x="1243.33" y="1222" width="16" height="16" preserveAspectRatio="xMidYMid meet">
+  <title>SuperFlash TCU - Frosted Glass 06: Cyber Etched Glass</title>
+  <defs>
+    <linearGradient id="s516-f6_glass" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38BDF8" stop-opacity="0.45"/>
+      <stop offset="100%" stop-color="#1E3A8A" stop-opacity="0.9"/>
+    </linearGradient>
+    <linearGradient id="s516-f6_stroke" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.9"/>
+      <stop offset="100%" stop-color="#38BDF8" stop-opacity="0.3"/>
+    </linearGradient>
+    <linearGradient id="s516-f6_bolt" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FEF08A"/>
+      <stop offset="40%" stop-color="#F59E0B"/>
+      <stop offset="100%" stop-color="#EA580C"/>
+    </linearGradient>
+  </defs>
+
+  <rect x="36" y="36" width="440" height="440" rx="96" fill="#030712"/>
+
+  <!-- Back Glass Layer Card -->
+  <path d="M120 220 L270 140 L400 215 L250 295 Z" fill="#0F172A" opacity="0.6" stroke="url(#s516-f6_stroke)" stroke-width="2"/>
+  <path d="M120 220 L250 295 L250 315 L120 240 Z" fill="#090D16" opacity="0.8"/>
+  <path d="M250 295 L400 215 L400 235 L250 315 Z" fill="#0F172A" opacity="0.8"/>
+
+  <!-- Front Frosted Glass Card -->
+  <path d="M100 280 L260 195 L410 275 L250 360 Z" fill="url(#s516-f6_glass)" stroke="url(#s516-f6_stroke)" stroke-width="3.5"/>
+  <path d="M100 280 L250 360 L250 382 L100 302 Z" fill="#1E3A8A" opacity="0.8"/>
+  <path d="M250 360 L410 275 L410 297 L250 382 Z" fill="#1D4ED8" opacity="0.8"/>
+
+  <!-- Laser Etched Circuit Lines & Node Points -->
+  <path d="M140 280 L210 242 L230 252 L260 235" fill="none" stroke="#BAE6FD" stroke-width="3" stroke-linecap="round" opacity="0.75"/>
+  <circle cx="140" cy="280" r="4.5" fill="#38BDF8"/>
+  <circle cx="230" cy="252" r="4.5" fill="#38BDF8"/>
+  <circle cx="260" cy="235" r="4.5" fill="#FFFFFF"/>
+
+  <path d="M160 305 L200 283 L245 283" fill="none" stroke="#BAE6FD" stroke-width="3" stroke-linecap="round" opacity="0.6"/>
+  <circle cx="160" cy="305" r="4" fill="#38BDF8"/>
+  <circle cx="245" cy="283" r="4" fill="#38BDF8"/>
+
+  <!-- Piercing Golden Blade -->
+  <polygon points="285,45 175,235 250,235 195,435 355,215 275,215 320,45" fill="url(#s516-f6_bolt)"/>
+  <polygon points="285,45 250,215 275,215 195,435 175,235" fill="#D97706" opacity="0.45"/>
+</svg>
+</g><text x="1251.33" y="1258" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" fill="#8a8a8a" text-anchor="middle">16px</text><text x="1095.3333333333335" y="1294" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="26" font-weight="700" fill="#161616">F · Cyber Circuit Etched</text><text x="1095.3333333333335" y="1328" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="19" fill="#555">Trilhas de circuito neural gravadas a laser</text><text x="1095.3333333333335" y="1354" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="19" fill="#555">no corpo dos cartões de vidro.</text><rect x="60" y="1466" width="474.667" height="630" rx="18" fill="#fff" stroke="#e4e4e0" stroke-width="1"/><g><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" x="90" y="1506" width="414.667" height="300" preserveAspectRatio="xMidYMid meet">
+  <title>SuperFlash TCU - Frosted Glass 07: Liquid Glass Capsule</title>
+  <defs>
+    <linearGradient id="c6-f7_glass1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38BDF8" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="#1E3A8A" stop-opacity="0.85"/>
+    </linearGradient>
+    <linearGradient id="c6-f7_glass2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#60A5FA" stop-opacity="0.55"/>
+      <stop offset="100%" stop-color="#2563EB" stop-opacity="0.9"/>
+    </linearGradient>
+    <linearGradient id="c6-f7_stroke" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.9"/>
+      <stop offset="100%" stop-color="#38BDF8" stop-opacity="0.25"/>
+    </linearGradient>
+    <linearGradient id="c6-f7_bolt" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FEF08A"/>
+      <stop offset="40%" stop-color="#F59E0B"/>
+      <stop offset="100%" stop-color="#EA580C"/>
+    </linearGradient>
+  </defs>
+
+  <rect x="36" y="36" width="440" height="440" rx="96" fill="#030712"/>
+
+  <!-- Back Rounded Glass Capsule (L2) -->
+  <g transform="rotate(-28 256 220)">
+    <rect x="120" y="180" width="272" height="95" rx="36" fill="url(#c6-f7_glass1)" stroke="url(#c6-f7_stroke)" stroke-width="3"/>
+  </g>
+
+  <!-- Front Rounded Glass Capsule (L3) -->
+  <g transform="rotate(-28 256 295)">
+    <rect x="110" y="245" width="292" height="105" rx="42" fill="url(#c6-f7_glass2)" stroke="url(#c6-f7_stroke)" stroke-width="4"/>
+    <!-- Internal Liquid Specular Bar -->
+    <rect x="135" y="260" width="160" height="12" rx="6" fill="#FFFFFF" opacity="0.6"/>
+    <rect x="135" y="285" width="100" height="8" rx="4" fill="#BAE6FD" opacity="0.5"/>
+  </g>
+
+  <!-- Golden Piercing Blade -->
+  <polygon points="285,45 180,235 255,235 200,435 350,215 275,215 320,45" fill="url(#c6-f7_bolt)"/>
+  <polygon points="285,45 250,215 275,215 200,435 180,235" fill="#D97706" opacity="0.45"/>
+</svg>
+</g><g><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" x="90" y="1832" width="64" height="64" preserveAspectRatio="xMidYMid meet">
+  <title>SuperFlash TCU - Frosted Glass 07: Liquid Glass Capsule</title>
+  <defs>
+    <linearGradient id="s664-f7_glass1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38BDF8" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="#1E3A8A" stop-opacity="0.85"/>
+    </linearGradient>
+    <linearGradient id="s664-f7_glass2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#60A5FA" stop-opacity="0.55"/>
+      <stop offset="100%" stop-color="#2563EB" stop-opacity="0.9"/>
+    </linearGradient>
+    <linearGradient id="s664-f7_stroke" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.9"/>
+      <stop offset="100%" stop-color="#38BDF8" stop-opacity="0.25"/>
+    </linearGradient>
+    <linearGradient id="s664-f7_bolt" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FEF08A"/>
+      <stop offset="40%" stop-color="#F59E0B"/>
+      <stop offset="100%" stop-color="#EA580C"/>
+    </linearGradient>
+  </defs>
+
+  <rect x="36" y="36" width="440" height="440" rx="96" fill="#030712"/>
+
+  <!-- Back Rounded Glass Capsule (L2) -->
+  <g transform="rotate(-28 256 220)">
+    <rect x="120" y="180" width="272" height="95" rx="36" fill="url(#s664-f7_glass1)" stroke="url(#s664-f7_stroke)" stroke-width="3"/>
+  </g>
+
+  <!-- Front Rounded Glass Capsule (L3) -->
+  <g transform="rotate(-28 256 295)">
+    <rect x="110" y="245" width="292" height="105" rx="42" fill="url(#s664-f7_glass2)" stroke="url(#s664-f7_stroke)" stroke-width="4"/>
+    <!-- Internal Liquid Specular Bar -->
+    <rect x="135" y="260" width="160" height="12" rx="6" fill="#FFFFFF" opacity="0.6"/>
+    <rect x="135" y="285" width="100" height="8" rx="4" fill="#BAE6FD" opacity="0.5"/>
+  </g>
+
+  <!-- Golden Piercing Blade -->
+  <polygon points="285,45 180,235 255,235 200,435 350,215 275,215 320,45" fill="url(#s664-f7_bolt)"/>
+  <polygon points="285,45 250,215 275,215 200,435 180,235" fill="#D97706" opacity="0.45"/>
+</svg>
+</g><text x="122" y="1916" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" fill="#8a8a8a" text-anchor="middle">64px</text><g><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" x="180" y="1864" width="32" height="32" preserveAspectRatio="xMidYMid meet">
+  <title>SuperFlash TCU - Frosted Glass 07: Liquid Glass Capsule</title>
+  <defs>
+    <linearGradient id="s632-f7_glass1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38BDF8" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="#1E3A8A" stop-opacity="0.85"/>
+    </linearGradient>
+    <linearGradient id="s632-f7_glass2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#60A5FA" stop-opacity="0.55"/>
+      <stop offset="100%" stop-color="#2563EB" stop-opacity="0.9"/>
+    </linearGradient>
+    <linearGradient id="s632-f7_stroke" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.9"/>
+      <stop offset="100%" stop-color="#38BDF8" stop-opacity="0.25"/>
+    </linearGradient>
+    <linearGradient id="s632-f7_bolt" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FEF08A"/>
+      <stop offset="40%" stop-color="#F59E0B"/>
+      <stop offset="100%" stop-color="#EA580C"/>
+    </linearGradient>
+  </defs>
+
+  <rect x="36" y="36" width="440" height="440" rx="96" fill="#030712"/>
+
+  <!-- Back Rounded Glass Capsule (L2) -->
+  <g transform="rotate(-28 256 220)">
+    <rect x="120" y="180" width="272" height="95" rx="36" fill="url(#s632-f7_glass1)" stroke="url(#s632-f7_stroke)" stroke-width="3"/>
+  </g>
+
+  <!-- Front Rounded Glass Capsule (L3) -->
+  <g transform="rotate(-28 256 295)">
+    <rect x="110" y="245" width="292" height="105" rx="42" fill="url(#s632-f7_glass2)" stroke="url(#s632-f7_stroke)" stroke-width="4"/>
+    <!-- Internal Liquid Specular Bar -->
+    <rect x="135" y="260" width="160" height="12" rx="6" fill="#FFFFFF" opacity="0.6"/>
+    <rect x="135" y="285" width="100" height="8" rx="4" fill="#BAE6FD" opacity="0.5"/>
+  </g>
+
+  <!-- Golden Piercing Blade -->
+  <polygon points="285,45 180,235 255,235 200,435 350,215 275,215 320,45" fill="url(#s632-f7_bolt)"/>
+  <polygon points="285,45 250,215 275,215 200,435 180,235" fill="#D97706" opacity="0.45"/>
+</svg>
+</g><text x="196" y="1916" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" fill="#8a8a8a" text-anchor="middle">32px</text><g><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" x="238" y="1880" width="16" height="16" preserveAspectRatio="xMidYMid meet">
+  <title>SuperFlash TCU - Frosted Glass 07: Liquid Glass Capsule</title>
+  <defs>
+    <linearGradient id="s616-f7_glass1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38BDF8" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="#1E3A8A" stop-opacity="0.85"/>
+    </linearGradient>
+    <linearGradient id="s616-f7_glass2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#60A5FA" stop-opacity="0.55"/>
+      <stop offset="100%" stop-color="#2563EB" stop-opacity="0.9"/>
+    </linearGradient>
+    <linearGradient id="s616-f7_stroke" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.9"/>
+      <stop offset="100%" stop-color="#38BDF8" stop-opacity="0.25"/>
+    </linearGradient>
+    <linearGradient id="s616-f7_bolt" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FEF08A"/>
+      <stop offset="40%" stop-color="#F59E0B"/>
+      <stop offset="100%" stop-color="#EA580C"/>
+    </linearGradient>
+  </defs>
+
+  <rect x="36" y="36" width="440" height="440" rx="96" fill="#030712"/>
+
+  <!-- Back Rounded Glass Capsule (L2) -->
+  <g transform="rotate(-28 256 220)">
+    <rect x="120" y="180" width="272" height="95" rx="36" fill="url(#s616-f7_glass1)" stroke="url(#s616-f7_stroke)" stroke-width="3"/>
+  </g>
+
+  <!-- Front Rounded Glass Capsule (L3) -->
+  <g transform="rotate(-28 256 295)">
+    <rect x="110" y="245" width="292" height="105" rx="42" fill="url(#s616-f7_glass2)" stroke="url(#s616-f7_stroke)" stroke-width="4"/>
+    <!-- Internal Liquid Specular Bar -->
+    <rect x="135" y="260" width="160" height="12" rx="6" fill="#FFFFFF" opacity="0.6"/>
+    <rect x="135" y="285" width="100" height="8" rx="4" fill="#BAE6FD" opacity="0.5"/>
+  </g>
+
+  <!-- Golden Piercing Blade -->
+  <polygon points="285,45 180,235 255,235 200,435 350,215 275,215 320,45" fill="url(#s616-f7_bolt)"/>
+  <polygon points="285,45 250,215 275,215 200,435 180,235" fill="#D97706" opacity="0.45"/>
+</svg>
+</g><text x="246" y="1916" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" fill="#8a8a8a" text-anchor="middle">16px</text><text x="90.0" y="1952" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="26" font-weight="700" fill="#161616">G · Liquid Vision Capsule</text><text x="90.0" y="1986" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="19" fill="#555">Pílula de vidro líquido orgânico inspirada</text><text x="90.0" y="2012" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="19" fill="#555">no estilo VisionOS/iOS.</text><rect x="562.667" y="1466" width="474.667" height="630" rx="18" fill="#fff" stroke="#e4e4e0" stroke-width="1"/><g><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" x="592.667" y="1506" width="414.667" height="300" preserveAspectRatio="xMidYMid meet">
+  <title>SuperFlash TCU - Frosted Glass 08: Monolith Pillar</title>
+  <defs>
+    <linearGradient id="c7-f8_top" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38BDF8" stop-opacity="0.8"/>
+      <stop offset="100%" stop-color="#2563EB" stop-opacity="0.95"/>
+    </linearGradient>
+    <linearGradient id="c7-f8_left" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1E3A8A" stop-opacity="0.9"/>
+      <stop offset="100%" stop-color="#0F172A" stop-opacity="0.95"/>
+    </linearGradient>
+    <linearGradient id="c7-f8_right" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#2563EB" stop-opacity="0.8"/>
+      <stop offset="100%" stop-color="#1D4ED8" stop-opacity="0.95"/>
+    </linearGradient>
+    <linearGradient id="c7-f8_stroke" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.9"/>
+      <stop offset="100%" stop-color="#38BDF8" stop-opacity="0.2"/>
+    </linearGradient>
+    <linearGradient id="c7-f8_bolt" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FEF08A"/>
+      <stop offset="40%" stop-color="#F59E0B"/>
+      <stop offset="100%" stop-color="#EA580C"/>
+    </linearGradient>
+  </defs>
+
+  <rect x="36" y="36" width="440" height="440" rx="96" fill="#030712"/>
+
+  <!-- Lower Base Glass Monolith Block -->
+  <polygon points="150,260 256,200 362,260 256,320" fill="url(#c7-f8_top)" stroke="url(#c7-f8_stroke)" stroke-width="2.5"/>
+  <polygon points="150,260 256,320 256,410 150,350" fill="url(#c7-f8_left)"/>
+  <polygon points="256,320 362,260 362,350 256,410" fill="url(#c7-f8_right)"/>
+
+  <!-- Upper Detached Floating Monolith Crown -->
+  <polygon points="150,150 256,90 362,150 256,210" fill="url(#c7-f8_top)" stroke="url(#c7-f8_stroke)" stroke-width="3"/>
+  <polygon points="150,150 256,210 256,245 150,185" fill="url(#c7-f8_left)"/>
+  <polygon points="256,210 362,150 362,185 256,245" fill="url(#c7-f8_right)"/>
+
+  <!-- Internal Laser Energy Rift Line -->
+  <line x1="170" y1="160" x2="256" y2="110" stroke="#FFFFFF" stroke-width="4.5" stroke-linecap="round" opacity="0.7"/>
+
+  <!-- Slashing Diagonal Energy Bolt Emerging from Core -->
+  <polygon points="280,45 180,225 255,225 200,435 345,210 270,210 310,45" fill="url(#c7-f8_bolt)"/>
+  <polygon points="280,45 245,210 270,210 200,435 180,225" fill="#D97706" opacity="0.4"/>
+</svg>
+</g><g><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" x="592.667" y="1832" width="64" height="64" preserveAspectRatio="xMidYMid meet">
+  <title>SuperFlash TCU - Frosted Glass 08: Monolith Pillar</title>
+  <defs>
+    <linearGradient id="s764-f8_top" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38BDF8" stop-opacity="0.8"/>
+      <stop offset="100%" stop-color="#2563EB" stop-opacity="0.95"/>
+    </linearGradient>
+    <linearGradient id="s764-f8_left" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1E3A8A" stop-opacity="0.9"/>
+      <stop offset="100%" stop-color="#0F172A" stop-opacity="0.95"/>
+    </linearGradient>
+    <linearGradient id="s764-f8_right" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#2563EB" stop-opacity="0.8"/>
+      <stop offset="100%" stop-color="#1D4ED8" stop-opacity="0.95"/>
+    </linearGradient>
+    <linearGradient id="s764-f8_stroke" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.9"/>
+      <stop offset="100%" stop-color="#38BDF8" stop-opacity="0.2"/>
+    </linearGradient>
+    <linearGradient id="s764-f8_bolt" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FEF08A"/>
+      <stop offset="40%" stop-color="#F59E0B"/>
+      <stop offset="100%" stop-color="#EA580C"/>
+    </linearGradient>
+  </defs>
+
+  <rect x="36" y="36" width="440" height="440" rx="96" fill="#030712"/>
+
+  <!-- Lower Base Glass Monolith Block -->
+  <polygon points="150,260 256,200 362,260 256,320" fill="url(#s764-f8_top)" stroke="url(#s764-f8_stroke)" stroke-width="2.5"/>
+  <polygon points="150,260 256,320 256,410 150,350" fill="url(#s764-f8_left)"/>
+  <polygon points="256,320 362,260 362,350 256,410" fill="url(#s764-f8_right)"/>
+
+  <!-- Upper Detached Floating Monolith Crown -->
+  <polygon points="150,150 256,90 362,150 256,210" fill="url(#s764-f8_top)" stroke="url(#s764-f8_stroke)" stroke-width="3"/>
+  <polygon points="150,150 256,210 256,245 150,185" fill="url(#s764-f8_left)"/>
+  <polygon points="256,210 362,150 362,185 256,245" fill="url(#s764-f8_right)"/>
+
+  <!-- Internal Laser Energy Rift Line -->
+  <line x1="170" y1="160" x2="256" y2="110" stroke="#FFFFFF" stroke-width="4.5" stroke-linecap="round" opacity="0.7"/>
+
+  <!-- Slashing Diagonal Energy Bolt Emerging from Core -->
+  <polygon points="280,45 180,225 255,225 200,435 345,210 270,210 310,45" fill="url(#s764-f8_bolt)"/>
+  <polygon points="280,45 245,210 270,210 200,435 180,225" fill="#D97706" opacity="0.4"/>
+</svg>
+</g><text x="624.667" y="1916" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" fill="#8a8a8a" text-anchor="middle">64px</text><g><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" x="682.667" y="1864" width="32" height="32" preserveAspectRatio="xMidYMid meet">
+  <title>SuperFlash TCU - Frosted Glass 08: Monolith Pillar</title>
+  <defs>
+    <linearGradient id="s732-f8_top" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38BDF8" stop-opacity="0.8"/>
+      <stop offset="100%" stop-color="#2563EB" stop-opacity="0.95"/>
+    </linearGradient>
+    <linearGradient id="s732-f8_left" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1E3A8A" stop-opacity="0.9"/>
+      <stop offset="100%" stop-color="#0F172A" stop-opacity="0.95"/>
+    </linearGradient>
+    <linearGradient id="s732-f8_right" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#2563EB" stop-opacity="0.8"/>
+      <stop offset="100%" stop-color="#1D4ED8" stop-opacity="0.95"/>
+    </linearGradient>
+    <linearGradient id="s732-f8_stroke" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.9"/>
+      <stop offset="100%" stop-color="#38BDF8" stop-opacity="0.2"/>
+    </linearGradient>
+    <linearGradient id="s732-f8_bolt" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FEF08A"/>
+      <stop offset="40%" stop-color="#F59E0B"/>
+      <stop offset="100%" stop-color="#EA580C"/>
+    </linearGradient>
+  </defs>
+
+  <rect x="36" y="36" width="440" height="440" rx="96" fill="#030712"/>
+
+  <!-- Lower Base Glass Monolith Block -->
+  <polygon points="150,260 256,200 362,260 256,320" fill="url(#s732-f8_top)" stroke="url(#s732-f8_stroke)" stroke-width="2.5"/>
+  <polygon points="150,260 256,320 256,410 150,350" fill="url(#s732-f8_left)"/>
+  <polygon points="256,320 362,260 362,350 256,410" fill="url(#s732-f8_right)"/>
+
+  <!-- Upper Detached Floating Monolith Crown -->
+  <polygon points="150,150 256,90 362,150 256,210" fill="url(#s732-f8_top)" stroke="url(#s732-f8_stroke)" stroke-width="3"/>
+  <polygon points="150,150 256,210 256,245 150,185" fill="url(#s732-f8_left)"/>
+  <polygon points="256,210 362,150 362,185 256,245" fill="url(#s732-f8_right)"/>
+
+  <!-- Internal Laser Energy Rift Line -->
+  <line x1="170" y1="160" x2="256" y2="110" stroke="#FFFFFF" stroke-width="4.5" stroke-linecap="round" opacity="0.7"/>
+
+  <!-- Slashing Diagonal Energy Bolt Emerging from Core -->
+  <polygon points="280,45 180,225 255,225 200,435 345,210 270,210 310,45" fill="url(#s732-f8_bolt)"/>
+  <polygon points="280,45 245,210 270,210 200,435 180,225" fill="#D97706" opacity="0.4"/>
+</svg>
+</g><text x="698.667" y="1916" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" fill="#8a8a8a" text-anchor="middle">32px</text><g><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" x="740.667" y="1880" width="16" height="16" preserveAspectRatio="xMidYMid meet">
+  <title>SuperFlash TCU - Frosted Glass 08: Monolith Pillar</title>
+  <defs>
+    <linearGradient id="s716-f8_top" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38BDF8" stop-opacity="0.8"/>
+      <stop offset="100%" stop-color="#2563EB" stop-opacity="0.95"/>
+    </linearGradient>
+    <linearGradient id="s716-f8_left" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1E3A8A" stop-opacity="0.9"/>
+      <stop offset="100%" stop-color="#0F172A" stop-opacity="0.95"/>
+    </linearGradient>
+    <linearGradient id="s716-f8_right" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#2563EB" stop-opacity="0.8"/>
+      <stop offset="100%" stop-color="#1D4ED8" stop-opacity="0.95"/>
+    </linearGradient>
+    <linearGradient id="s716-f8_stroke" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.9"/>
+      <stop offset="100%" stop-color="#38BDF8" stop-opacity="0.2"/>
+    </linearGradient>
+    <linearGradient id="s716-f8_bolt" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FEF08A"/>
+      <stop offset="40%" stop-color="#F59E0B"/>
+      <stop offset="100%" stop-color="#EA580C"/>
+    </linearGradient>
+  </defs>
+
+  <rect x="36" y="36" width="440" height="440" rx="96" fill="#030712"/>
+
+  <!-- Lower Base Glass Monolith Block -->
+  <polygon points="150,260 256,200 362,260 256,320" fill="url(#s716-f8_top)" stroke="url(#s716-f8_stroke)" stroke-width="2.5"/>
+  <polygon points="150,260 256,320 256,410 150,350" fill="url(#s716-f8_left)"/>
+  <polygon points="256,320 362,260 362,350 256,410" fill="url(#s716-f8_right)"/>
+
+  <!-- Upper Detached Floating Monolith Crown -->
+  <polygon points="150,150 256,90 362,150 256,210" fill="url(#s716-f8_top)" stroke="url(#s716-f8_stroke)" stroke-width="3"/>
+  <polygon points="150,150 256,210 256,245 150,185" fill="url(#s716-f8_left)"/>
+  <polygon points="256,210 362,150 362,185 256,245" fill="url(#s716-f8_right)"/>
+
+  <!-- Internal Laser Energy Rift Line -->
+  <line x1="170" y1="160" x2="256" y2="110" stroke="#FFFFFF" stroke-width="4.5" stroke-linecap="round" opacity="0.7"/>
+
+  <!-- Slashing Diagonal Energy Bolt Emerging from Core -->
+  <polygon points="280,45 180,225 255,225 200,435 345,210 270,210 310,45" fill="url(#s716-f8_bolt)"/>
+  <polygon points="280,45 245,210 270,210 200,435 180,225" fill="#D97706" opacity="0.4"/>
+</svg>
+</g><text x="748.667" y="1916" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" fill="#8a8a8a" text-anchor="middle">16px</text><text x="592.6666666666667" y="1952" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="26" font-weight="700" fill="#161616">H · Monolith Pillar</text><text x="592.6666666666667" y="1986" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="19" fill="#555">Coluna cristalina monolítica seccionada</text><text x="592.6666666666667" y="2012" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="19" fill="#555">diagonalmente pelo raio.</text><rect x="1065.33" y="1466" width="474.667" height="630" rx="18" fill="#fff" stroke="#e4e4e0" stroke-width="1"/><g><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" x="1095.33" y="1506" width="414.667" height="300" preserveAspectRatio="xMidYMid meet">
+  <title>SuperFlash TCU - Frosted Glass 09: Concentric Portal</title>
+  <defs>
+    <linearGradient id="c8-f9_glassOuter" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38BDF8" stop-opacity="0.3"/>
+      <stop offset="100%" stop-color="#0F172A" stop-opacity="0.8"/>
+    </linearGradient>
+    <linearGradient id="c8-f9_glassMid" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#60A5FA" stop-opacity="0.45"/>
+      <stop offset="100%" stop-color="#1E3A8A" stop-opacity="0.85"/>
+    </linearGradient>
+    <linearGradient id="c8-f9_glassCore" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#93C5FD" stop-opacity="0.6"/>
+      <stop offset="100%" stop-color="#2563EB" stop-opacity="0.9"/>
+    </linearGradient>
+    <linearGradient id="c8-f9_stroke" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.85"/>
+      <stop offset="100%" stop-color="#38BDF8" stop-opacity="0.2"/>
+    </linearGradient>
+    <linearGradient id="c8-f9_bolt" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FEF08A"/>
+      <stop offset="40%" stop-color="#F59E0B"/>
+      <stop offset="100%" stop-color="#EA580C"/>
+    </linearGradient>
+  </defs>
+
+  <rect x="36" y="36" width="440" height="440" rx="96" fill="#030712"/>
+
+  <!-- Outer Isometric Glass Frame (Depth Layer 1) -->
+  <path d="M90 280 L256 185 L422 280 L256 375 Z" fill="url(#c8-f9_glassOuter)" stroke="url(#c8-f9_stroke)" stroke-width="2"/>
+  <path d="M90 280 L256 375 L256 395 L90 300 Z" fill="#090D16" opacity="0.75"/>
+  <path d="M256 375 L422 280 L422 300 L256 395 Z" fill="#0F172A" opacity="0.75"/>
+
+  <!-- Middle Isometric Glass Card (Depth Layer 2) -->
+  <path d="M115 240 L256 160 L397 240 L256 320 Z" fill="url(#c8-f9_glassMid)" stroke="url(#c8-f9_stroke)" stroke-width="3"/>
+  <path d="M115 240 L256 320 L256 338 L115 258 Z" fill="#0B132B" opacity="0.7"/>
+  <path d="M256 320 L397 240 L397 258 L256 338 Z" fill="#1C2541" opacity="0.7"/>
+
+  <!-- Inner High-Intensity Core Card (Depth Layer 3) -->
+  <path d="M140 200 L256 135 L372 200 L256 265 Z" fill="url(#c8-f9_glassCore)" stroke="url(#c8-f9_stroke)" stroke-width="3.5"/>
+
+  <!-- Portal Center Eye Hole -->
+  <ellipse cx="256" cy="200" rx="35" ry="18" fill="#030712" opacity="0.8"/>
+
+  <!-- Piercing Golden Spark Emerging through the Portal Core -->
+  <polygon points="280,45 185,225 255,225 205,435 340,215 270,215 305,45" fill="url(#c8-f9_bolt)"/>
+  <polygon points="280,45 250,215 270,215 205,435 185,225" fill="#D97706" opacity="0.4"/>
+</svg>
+</g><g><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" x="1095.33" y="1832" width="64" height="64" preserveAspectRatio="xMidYMid meet">
+  <title>SuperFlash TCU - Frosted Glass 09: Concentric Portal</title>
+  <defs>
+    <linearGradient id="s864-f9_glassOuter" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38BDF8" stop-opacity="0.3"/>
+      <stop offset="100%" stop-color="#0F172A" stop-opacity="0.8"/>
+    </linearGradient>
+    <linearGradient id="s864-f9_glassMid" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#60A5FA" stop-opacity="0.45"/>
+      <stop offset="100%" stop-color="#1E3A8A" stop-opacity="0.85"/>
+    </linearGradient>
+    <linearGradient id="s864-f9_glassCore" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#93C5FD" stop-opacity="0.6"/>
+      <stop offset="100%" stop-color="#2563EB" stop-opacity="0.9"/>
+    </linearGradient>
+    <linearGradient id="s864-f9_stroke" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.85"/>
+      <stop offset="100%" stop-color="#38BDF8" stop-opacity="0.2"/>
+    </linearGradient>
+    <linearGradient id="s864-f9_bolt" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FEF08A"/>
+      <stop offset="40%" stop-color="#F59E0B"/>
+      <stop offset="100%" stop-color="#EA580C"/>
+    </linearGradient>
+  </defs>
+
+  <rect x="36" y="36" width="440" height="440" rx="96" fill="#030712"/>
+
+  <!-- Outer Isometric Glass Frame (Depth Layer 1) -->
+  <path d="M90 280 L256 185 L422 280 L256 375 Z" fill="url(#s864-f9_glassOuter)" stroke="url(#s864-f9_stroke)" stroke-width="2"/>
+  <path d="M90 280 L256 375 L256 395 L90 300 Z" fill="#090D16" opacity="0.75"/>
+  <path d="M256 375 L422 280 L422 300 L256 395 Z" fill="#0F172A" opacity="0.75"/>
+
+  <!-- Middle Isometric Glass Card (Depth Layer 2) -->
+  <path d="M115 240 L256 160 L397 240 L256 320 Z" fill="url(#s864-f9_glassMid)" stroke="url(#s864-f9_stroke)" stroke-width="3"/>
+  <path d="M115 240 L256 320 L256 338 L115 258 Z" fill="#0B132B" opacity="0.7"/>
+  <path d="M256 320 L397 240 L397 258 L256 338 Z" fill="#1C2541" opacity="0.7"/>
+
+  <!-- Inner High-Intensity Core Card (Depth Layer 3) -->
+  <path d="M140 200 L256 135 L372 200 L256 265 Z" fill="url(#s864-f9_glassCore)" stroke="url(#s864-f9_stroke)" stroke-width="3.5"/>
+
+  <!-- Portal Center Eye Hole -->
+  <ellipse cx="256" cy="200" rx="35" ry="18" fill="#030712" opacity="0.8"/>
+
+  <!-- Piercing Golden Spark Emerging through the Portal Core -->
+  <polygon points="280,45 185,225 255,225 205,435 340,215 270,215 305,45" fill="url(#s864-f9_bolt)"/>
+  <polygon points="280,45 250,215 270,215 205,435 185,225" fill="#D97706" opacity="0.4"/>
+</svg>
+</g><text x="1127.33" y="1916" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" fill="#8a8a8a" text-anchor="middle">64px</text><g><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" x="1185.33" y="1864" width="32" height="32" preserveAspectRatio="xMidYMid meet">
+  <title>SuperFlash TCU - Frosted Glass 09: Concentric Portal</title>
+  <defs>
+    <linearGradient id="s832-f9_glassOuter" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38BDF8" stop-opacity="0.3"/>
+      <stop offset="100%" stop-color="#0F172A" stop-opacity="0.8"/>
+    </linearGradient>
+    <linearGradient id="s832-f9_glassMid" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#60A5FA" stop-opacity="0.45"/>
+      <stop offset="100%" stop-color="#1E3A8A" stop-opacity="0.85"/>
+    </linearGradient>
+    <linearGradient id="s832-f9_glassCore" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#93C5FD" stop-opacity="0.6"/>
+      <stop offset="100%" stop-color="#2563EB" stop-opacity="0.9"/>
+    </linearGradient>
+    <linearGradient id="s832-f9_stroke" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.85"/>
+      <stop offset="100%" stop-color="#38BDF8" stop-opacity="0.2"/>
+    </linearGradient>
+    <linearGradient id="s832-f9_bolt" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FEF08A"/>
+      <stop offset="40%" stop-color="#F59E0B"/>
+      <stop offset="100%" stop-color="#EA580C"/>
+    </linearGradient>
+  </defs>
+
+  <rect x="36" y="36" width="440" height="440" rx="96" fill="#030712"/>
+
+  <!-- Outer Isometric Glass Frame (Depth Layer 1) -->
+  <path d="M90 280 L256 185 L422 280 L256 375 Z" fill="url(#s832-f9_glassOuter)" stroke="url(#s832-f9_stroke)" stroke-width="2"/>
+  <path d="M90 280 L256 375 L256 395 L90 300 Z" fill="#090D16" opacity="0.75"/>
+  <path d="M256 375 L422 280 L422 300 L256 395 Z" fill="#0F172A" opacity="0.75"/>
+
+  <!-- Middle Isometric Glass Card (Depth Layer 2) -->
+  <path d="M115 240 L256 160 L397 240 L256 320 Z" fill="url(#s832-f9_glassMid)" stroke="url(#s832-f9_stroke)" stroke-width="3"/>
+  <path d="M115 240 L256 320 L256 338 L115 258 Z" fill="#0B132B" opacity="0.7"/>
+  <path d="M256 320 L397 240 L397 258 L256 338 Z" fill="#1C2541" opacity="0.7"/>
+
+  <!-- Inner High-Intensity Core Card (Depth Layer 3) -->
+  <path d="M140 200 L256 135 L372 200 L256 265 Z" fill="url(#s832-f9_glassCore)" stroke="url(#s832-f9_stroke)" stroke-width="3.5"/>
+
+  <!-- Portal Center Eye Hole -->
+  <ellipse cx="256" cy="200" rx="35" ry="18" fill="#030712" opacity="0.8"/>
+
+  <!-- Piercing Golden Spark Emerging through the Portal Core -->
+  <polygon points="280,45 185,225 255,225 205,435 340,215 270,215 305,45" fill="url(#s832-f9_bolt)"/>
+  <polygon points="280,45 250,215 270,215 205,435 185,225" fill="#D97706" opacity="0.4"/>
+</svg>
+</g><text x="1201.33" y="1916" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" fill="#8a8a8a" text-anchor="middle">32px</text><g><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" x="1243.33" y="1880" width="16" height="16" preserveAspectRatio="xMidYMid meet">
+  <title>SuperFlash TCU - Frosted Glass 09: Concentric Portal</title>
+  <defs>
+    <linearGradient id="s816-f9_glassOuter" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38BDF8" stop-opacity="0.3"/>
+      <stop offset="100%" stop-color="#0F172A" stop-opacity="0.8"/>
+    </linearGradient>
+    <linearGradient id="s816-f9_glassMid" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#60A5FA" stop-opacity="0.45"/>
+      <stop offset="100%" stop-color="#1E3A8A" stop-opacity="0.85"/>
+    </linearGradient>
+    <linearGradient id="s816-f9_glassCore" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#93C5FD" stop-opacity="0.6"/>
+      <stop offset="100%" stop-color="#2563EB" stop-opacity="0.9"/>
+    </linearGradient>
+    <linearGradient id="s816-f9_stroke" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.85"/>
+      <stop offset="100%" stop-color="#38BDF8" stop-opacity="0.2"/>
+    </linearGradient>
+    <linearGradient id="s816-f9_bolt" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FEF08A"/>
+      <stop offset="40%" stop-color="#F59E0B"/>
+      <stop offset="100%" stop-color="#EA580C"/>
+    </linearGradient>
+  </defs>
+
+  <rect x="36" y="36" width="440" height="440" rx="96" fill="#030712"/>
+
+  <!-- Outer Isometric Glass Frame (Depth Layer 1) -->
+  <path d="M90 280 L256 185 L422 280 L256 375 Z" fill="url(#s816-f9_glassOuter)" stroke="url(#s816-f9_stroke)" stroke-width="2"/>
+  <path d="M90 280 L256 375 L256 395 L90 300 Z" fill="#090D16" opacity="0.75"/>
+  <path d="M256 375 L422 280 L422 300 L256 395 Z" fill="#0F172A" opacity="0.75"/>
+
+  <!-- Middle Isometric Glass Card (Depth Layer 2) -->
+  <path d="M115 240 L256 160 L397 240 L256 320 Z" fill="url(#s816-f9_glassMid)" stroke="url(#s816-f9_stroke)" stroke-width="3"/>
+  <path d="M115 240 L256 320 L256 338 L115 258 Z" fill="#0B132B" opacity="0.7"/>
+  <path d="M256 320 L397 240 L397 258 L256 338 Z" fill="#1C2541" opacity="0.7"/>
+
+  <!-- Inner High-Intensity Core Card (Depth Layer 3) -->
+  <path d="M140 200 L256 135 L372 200 L256 265 Z" fill="url(#s816-f9_glassCore)" stroke="url(#s816-f9_stroke)" stroke-width="3.5"/>
+
+  <!-- Portal Center Eye Hole -->
+  <ellipse cx="256" cy="200" rx="35" ry="18" fill="#030712" opacity="0.8"/>
+
+  <!-- Piercing Golden Spark Emerging through the Portal Core -->
+  <polygon points="280,45 185,225 255,225 205,435 340,215 270,215 305,45" fill="url(#s816-f9_bolt)"/>
+  <polygon points="280,45 250,215 270,215 205,435 185,225" fill="#D97706" opacity="0.4"/>
+</svg>
+</g><text x="1251.33" y="1916" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" fill="#8a8a8a" text-anchor="middle">16px</text><text x="1095.3333333333335" y="1952" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="26" font-weight="700" fill="#161616">I · Concentric Portal</text><text x="1095.3333333333335" y="1986" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="19" fill="#555">Molduras concêntricas com efeito túnel de</text><text x="1095.3333333333335" y="2012" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="19" fill="#555">profundidade e raio ejetor.</text><rect x="60" y="2124" width="474.667" height="630" rx="18" fill="#fff" stroke="#e4e4e0" stroke-width="1"/><g><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" x="90" y="2164" width="414.667" height="300" preserveAspectRatio="xMidYMid meet">
+  <title>SuperFlash TCU - Frosted Glass 10: Pure Frameless</title>
+  <defs>
+    <linearGradient id="c9-f10_glass1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38BDF8" stop-opacity="0.4"/>
+      <stop offset="100%" stop-color="#1E3A8A" stop-opacity="0.85"/>
+    </linearGradient>
+    <linearGradient id="c9-f10_glass2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#60A5FA" stop-opacity="0.6"/>
+      <stop offset="100%" stop-color="#2563EB" stop-opacity="0.95"/>
+    </linearGradient>
+    <linearGradient id="c9-f10_stroke" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.95"/>
+      <stop offset="100%" stop-color="#38BDF8" stop-opacity="0.3"/>
+    </linearGradient>
+    <linearGradient id="c9-f10_bolt" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FEF08A"/>
+      <stop offset="40%" stop-color="#F59E0B"/>
+      <stop offset="100%" stop-color="#EA580C"/>
+    </linearGradient>
+    <filter id="c9-f10_shadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="12" stdDeviation="16" flood-color="#020617" flood-opacity="0.6"/>
+    </filter>
+  </defs>
+
+  <g filter="url(#c9-f10_shadow)">
+    <!-- Back Translucent Glass Card -->
+    <path d="M100 210 L256 120 L412 210 L256 300 Z" fill="url(#c9-f10_glass1)" stroke="url(#c9-f10_stroke)" stroke-width="3.5"/>
+    <path d="M100 210 L256 300 L256 325 L100 235 Z" fill="#0B132B" opacity="0.75"/>
+    <path d="M256 300 L412 210 L412 235 L256 325 Z" fill="#1C2541" opacity="0.75"/>
+
+    <!-- Front Frosted Card with Specular Edges -->
+    <path d="M75 285 L256 185 L437 285 L256 385 Z" fill="url(#c9-f10_glass2)" stroke="url(#c9-f10_stroke)" stroke-width="4.5"/>
+    <path d="M75 285 L256 385 L256 412 L75 312 Z" fill="#1E3A8A" opacity="0.85"/>
+    <path d="M256 385 L437 285 L437 312 L256 412 Z" fill="#1D4ED8" opacity="0.85"/>
+
+    <!-- Glowing Frosted Study Lines -->
+    <line x1="120" y1="285" x2="256" y2="210" stroke="#FFFFFF" stroke-width="7" stroke-linecap="round" opacity="0.7"/>
+    <line x1="135" y1="315" x2="225" y2="265" stroke="#BAE6FD" stroke-width="6" stroke-linecap="round" opacity="0.55"/>
+
+    <!-- The Razor-Sharp Golden Lightning Blade -->
+    <polygon points="285,35 165,245 250,245 190,465 365,225 275,225 325,35" fill="url(#c9-f10_bolt)"/>
+    <polygon points="285,35 245,225 275,225 190,465 165,245" fill="#D97706" opacity="0.45"/>
+  </g>
+</svg>
+</g><g><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" x="90" y="2490" width="64" height="64" preserveAspectRatio="xMidYMid meet">
+  <title>SuperFlash TCU - Frosted Glass 10: Pure Frameless</title>
+  <defs>
+    <linearGradient id="s964-f10_glass1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38BDF8" stop-opacity="0.4"/>
+      <stop offset="100%" stop-color="#1E3A8A" stop-opacity="0.85"/>
+    </linearGradient>
+    <linearGradient id="s964-f10_glass2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#60A5FA" stop-opacity="0.6"/>
+      <stop offset="100%" stop-color="#2563EB" stop-opacity="0.95"/>
+    </linearGradient>
+    <linearGradient id="s964-f10_stroke" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.95"/>
+      <stop offset="100%" stop-color="#38BDF8" stop-opacity="0.3"/>
+    </linearGradient>
+    <linearGradient id="s964-f10_bolt" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FEF08A"/>
+      <stop offset="40%" stop-color="#F59E0B"/>
+      <stop offset="100%" stop-color="#EA580C"/>
+    </linearGradient>
+    <filter id="s964-f10_shadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="12" stdDeviation="16" flood-color="#020617" flood-opacity="0.6"/>
+    </filter>
+  </defs>
+
+  <g filter="url(#s964-f10_shadow)">
+    <!-- Back Translucent Glass Card -->
+    <path d="M100 210 L256 120 L412 210 L256 300 Z" fill="url(#s964-f10_glass1)" stroke="url(#s964-f10_stroke)" stroke-width="3.5"/>
+    <path d="M100 210 L256 300 L256 325 L100 235 Z" fill="#0B132B" opacity="0.75"/>
+    <path d="M256 300 L412 210 L412 235 L256 325 Z" fill="#1C2541" opacity="0.75"/>
+
+    <!-- Front Frosted Card with Specular Edges -->
+    <path d="M75 285 L256 185 L437 285 L256 385 Z" fill="url(#s964-f10_glass2)" stroke="url(#s964-f10_stroke)" stroke-width="4.5"/>
+    <path d="M75 285 L256 385 L256 412 L75 312 Z" fill="#1E3A8A" opacity="0.85"/>
+    <path d="M256 385 L437 285 L437 312 L256 412 Z" fill="#1D4ED8" opacity="0.85"/>
+
+    <!-- Glowing Frosted Study Lines -->
+    <line x1="120" y1="285" x2="256" y2="210" stroke="#FFFFFF" stroke-width="7" stroke-linecap="round" opacity="0.7"/>
+    <line x1="135" y1="315" x2="225" y2="265" stroke="#BAE6FD" stroke-width="6" stroke-linecap="round" opacity="0.55"/>
+
+    <!-- The Razor-Sharp Golden Lightning Blade -->
+    <polygon points="285,35 165,245 250,245 190,465 365,225 275,225 325,35" fill="url(#s964-f10_bolt)"/>
+    <polygon points="285,35 245,225 275,225 190,465 165,245" fill="#D97706" opacity="0.45"/>
+  </g>
+</svg>
+</g><text x="122" y="2574" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" fill="#8a8a8a" text-anchor="middle">64px</text><g><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" x="180" y="2522" width="32" height="32" preserveAspectRatio="xMidYMid meet">
+  <title>SuperFlash TCU - Frosted Glass 10: Pure Frameless</title>
+  <defs>
+    <linearGradient id="s932-f10_glass1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38BDF8" stop-opacity="0.4"/>
+      <stop offset="100%" stop-color="#1E3A8A" stop-opacity="0.85"/>
+    </linearGradient>
+    <linearGradient id="s932-f10_glass2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#60A5FA" stop-opacity="0.6"/>
+      <stop offset="100%" stop-color="#2563EB" stop-opacity="0.95"/>
+    </linearGradient>
+    <linearGradient id="s932-f10_stroke" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.95"/>
+      <stop offset="100%" stop-color="#38BDF8" stop-opacity="0.3"/>
+    </linearGradient>
+    <linearGradient id="s932-f10_bolt" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FEF08A"/>
+      <stop offset="40%" stop-color="#F59E0B"/>
+      <stop offset="100%" stop-color="#EA580C"/>
+    </linearGradient>
+    <filter id="s932-f10_shadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="12" stdDeviation="16" flood-color="#020617" flood-opacity="0.6"/>
+    </filter>
+  </defs>
+
+  <g filter="url(#s932-f10_shadow)">
+    <!-- Back Translucent Glass Card -->
+    <path d="M100 210 L256 120 L412 210 L256 300 Z" fill="url(#s932-f10_glass1)" stroke="url(#s932-f10_stroke)" stroke-width="3.5"/>
+    <path d="M100 210 L256 300 L256 325 L100 235 Z" fill="#0B132B" opacity="0.75"/>
+    <path d="M256 300 L412 210 L412 235 L256 325 Z" fill="#1C2541" opacity="0.75"/>
+
+    <!-- Front Frosted Card with Specular Edges -->
+    <path d="M75 285 L256 185 L437 285 L256 385 Z" fill="url(#s932-f10_glass2)" stroke="url(#s932-f10_stroke)" stroke-width="4.5"/>
+    <path d="M75 285 L256 385 L256 412 L75 312 Z" fill="#1E3A8A" opacity="0.85"/>
+    <path d="M256 385 L437 285 L437 312 L256 412 Z" fill="#1D4ED8" opacity="0.85"/>
+
+    <!-- Glowing Frosted Study Lines -->
+    <line x1="120" y1="285" x2="256" y2="210" stroke="#FFFFFF" stroke-width="7" stroke-linecap="round" opacity="0.7"/>
+    <line x1="135" y1="315" x2="225" y2="265" stroke="#BAE6FD" stroke-width="6" stroke-linecap="round" opacity="0.55"/>
+
+    <!-- The Razor-Sharp Golden Lightning Blade -->
+    <polygon points="285,35 165,245 250,245 190,465 365,225 275,225 325,35" fill="url(#s932-f10_bolt)"/>
+    <polygon points="285,35 245,225 275,225 190,465 165,245" fill="#D97706" opacity="0.45"/>
+  </g>
+</svg>
+</g><text x="196" y="2574" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" fill="#8a8a8a" text-anchor="middle">32px</text><g><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" x="238" y="2538" width="16" height="16" preserveAspectRatio="xMidYMid meet">
+  <title>SuperFlash TCU - Frosted Glass 10: Pure Frameless</title>
+  <defs>
+    <linearGradient id="s916-f10_glass1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38BDF8" stop-opacity="0.4"/>
+      <stop offset="100%" stop-color="#1E3A8A" stop-opacity="0.85"/>
+    </linearGradient>
+    <linearGradient id="s916-f10_glass2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#60A5FA" stop-opacity="0.6"/>
+      <stop offset="100%" stop-color="#2563EB" stop-opacity="0.95"/>
+    </linearGradient>
+    <linearGradient id="s916-f10_stroke" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.95"/>
+      <stop offset="100%" stop-color="#38BDF8" stop-opacity="0.3"/>
+    </linearGradient>
+    <linearGradient id="s916-f10_bolt" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FEF08A"/>
+      <stop offset="40%" stop-color="#F59E0B"/>
+      <stop offset="100%" stop-color="#EA580C"/>
+    </linearGradient>
+    <filter id="s916-f10_shadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="12" stdDeviation="16" flood-color="#020617" flood-opacity="0.6"/>
+    </filter>
+  </defs>
+
+  <g filter="url(#s916-f10_shadow)">
+    <!-- Back Translucent Glass Card -->
+    <path d="M100 210 L256 120 L412 210 L256 300 Z" fill="url(#s916-f10_glass1)" stroke="url(#s916-f10_stroke)" stroke-width="3.5"/>
+    <path d="M100 210 L256 300 L256 325 L100 235 Z" fill="#0B132B" opacity="0.75"/>
+    <path d="M256 300 L412 210 L412 235 L256 325 Z" fill="#1C2541" opacity="0.75"/>
+
+    <!-- Front Frosted Card with Specular Edges -->
+    <path d="M75 285 L256 185 L437 285 L256 385 Z" fill="url(#s916-f10_glass2)" stroke="url(#s916-f10_stroke)" stroke-width="4.5"/>
+    <path d="M75 285 L256 385 L256 412 L75 312 Z" fill="#1E3A8A" opacity="0.85"/>
+    <path d="M256 385 L437 285 L437 312 L256 412 Z" fill="#1D4ED8" opacity="0.85"/>
+
+    <!-- Glowing Frosted Study Lines -->
+    <line x1="120" y1="285" x2="256" y2="210" stroke="#FFFFFF" stroke-width="7" stroke-linecap="round" opacity="0.7"/>
+    <line x1="135" y1="315" x2="225" y2="265" stroke="#BAE6FD" stroke-width="6" stroke-linecap="round" opacity="0.55"/>
+
+    <!-- The Razor-Sharp Golden Lightning Blade -->
+    <polygon points="285,35 165,245 250,245 190,465 365,225 275,225 325,35" fill="url(#s916-f10_bolt)"/>
+    <polygon points="285,35 245,225 275,225 190,465 165,245" fill="#D97706" opacity="0.45"/>
+  </g>
+</svg>
+</g><text x="246" y="2574" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" fill="#8a8a8a" text-anchor="middle">16px</text><text x="90.0" y="2610" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="26" font-weight="700" fill="#161616">J · Pure Frameless</text><text x="90.0" y="2644" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="19" fill="#555">Design puro sem container externo, foco</text><text x="90.0" y="2670" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="19" fill="#555">100% nas lâminas e no raio.</text></svg>

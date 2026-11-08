@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+  <title>SuperFlash TCU - Frosted Glass 02: Dual Prism</title>
+  <defs>
+    <linearGradient id="f2_glassL" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38BDF8" stop-opacity="0.6"/>
+      <stop offset="100%" stop-color="#1E3A8A" stop-opacity="0.85"/>
+    </linearGradient>
+    <linearGradient id="f2_glassR" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#60A5FA" stop-opacity="0.6"/>
+      <stop offset="100%" stop-color="#2563EB" stop-opacity="0.9"/>
+    </linearGradient>
+    <linearGradient id="f2_stroke" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.85"/>
+      <stop offset="100%" stop-color="#38BDF8" stop-opacity="0.3"/>
+    </linearGradient>
+    <linearGradient id="f2_bolt" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FEF08A"/>
+      <stop offset="40%" stop-color="#F59E0B"/>
+      <stop offset="100%" stop-color="#EA580C"/>
+    </linearGradient>
+  </defs>
+
+  <rect x="36" y="36" width="440" height="440" rx="96" fill="#030712"/>
+
+  <!-- Left Glass Wing -->
+  <polygon points="256,150 110,230 110,340 256,260" fill="url(#f2_glassL)" stroke="url(#f2_stroke)" stroke-width="3"/>
+  <polygon points="110,340 256,260 256,280 110,360" fill="#0B132B" opacity="0.8"/>
+
+  <!-- Right Glass Wing -->
+  <polygon points="256,150 402,230 402,340 256,260" fill="url(#f2_glassR)" stroke="url(#f2_stroke)" stroke-width="3"/>
+  <polygon points="256,260 402,340 402,360 256,280" fill="#1C2541" opacity="0.8"/>
+
+  <!-- Etched Study Lines on Glass Wings -->
+  <line x1="140" y1="260" x2="225" y2="215" stroke="#BAE6FD" stroke-width="4.5" stroke-linecap="round" opacity="0.5"/>
+  <line x1="140" y1="285" x2="215" y2="245" stroke="#BAE6FD" stroke-width="4.5" stroke-linecap="round" opacity="0.4"/>
+  <line x1="287" y1="215" x2="372" y2="260" stroke="#BAE6FD" stroke-width="4.5" stroke-linecap="round" opacity="0.5"/>
+  <line x1="297" y1="245" x2="372" y2="285" stroke="#BAE6FD" stroke-width="4.5" stroke-linecap="round" opacity="0.4"/>
+
+  <!-- Center Ascending Golden Lightning Bolt -->
+  <polygon points="275,45 190,235 255,235 210,435 335,215 270,215 305,45" fill="url(#f2_bolt)"/>
+  <polygon points="275,45 250,215 270,215 210,435 190,235" fill="#D97706" opacity="0.45"/>
+</svg>

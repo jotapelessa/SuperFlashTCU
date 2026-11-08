@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+  <title>SuperFlash TCU - Frosted Glass 09: Concentric Portal</title>
+  <defs>
+    <linearGradient id="f9_glassOuter" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38BDF8" stop-opacity="0.3"/>
+      <stop offset="100%" stop-color="#0F172A" stop-opacity="0.8"/>
+    </linearGradient>
+    <linearGradient id="f9_glassMid" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#60A5FA" stop-opacity="0.45"/>
+      <stop offset="100%" stop-color="#1E3A8A" stop-opacity="0.85"/>
+    </linearGradient>
+    <linearGradient id="f9_glassCore" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#93C5FD" stop-opacity="0.6"/>
+      <stop offset="100%" stop-color="#2563EB" stop-opacity="0.9"/>
+    </linearGradient>
+    <linearGradient id="f9_stroke" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.85"/>
+      <stop offset="100%" stop-color="#38BDF8" stop-opacity="0.2"/>
+    </linearGradient>
+    <linearGradient id="f9_bolt" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FEF08A"/>
+      <stop offset="40%" stop-color="#F59E0B"/>
+      <stop offset="100%" stop-color="#EA580C"/>
+    </linearGradient>
+  </defs>
+
+  <rect x="36" y="36" width="440" height="440" rx="96" fill="#030712"/>
+
+  <!-- Outer Isometric Glass Frame (Depth Layer 1) -->
+  <path d="M90 280 L256 185 L422 280 L256 375 Z" fill="url(#f9_glassOuter)" stroke="url(#f9_stroke)" stroke-width="2"/>
+  <path d="M90 280 L256 375 L256 395 L90 300 Z" fill="#090D16" opacity="0.75"/>
+  <path d="M256 375 L422 280 L422 300 L256 395 Z" fill="#0F172A" opacity="0.75"/>
+
+  <!-- Middle Isometric Glass Card (Depth Layer 2) -->
+  <path d="M115 240 L256 160 L397 240 L256 320 Z" fill="url(#f9_glassMid)" stroke="url(#f9_stroke)" stroke-width="3"/>
+  <path d="M115 240 L256 320 L256 338 L115 258 Z" fill="#0B132B" opacity="0.7"/>
+  <path d="M256 320 L397 240 L397 258 L256 338 Z" fill="#1C2541" opacity="0.7"/>
+
+  <!-- Inner High-Intensity Core Card (Depth Layer 3) -->
+  <path d="M140 200 L256 135 L372 200 L256 265 Z" fill="url(#f9_glassCore)" stroke="url(#f9_stroke)" stroke-width="3.5"/>
+
+  <!-- Portal Center Eye Hole -->
+  <ellipse cx="256" cy="200" rx="35" ry="18" fill="#030712" opacity="0.8"/>
+
+  <!-- Piercing Golden Spark Emerging through the Portal Core -->
+  <polygon points="280,45 185,225 255,225 205,435 340,215 270,215 305,45" fill="url(#f9_bolt)"/>
+  <polygon points="280,45 250,215 270,215 205,435 185,225" fill="#D97706" opacity="0.4"/>
+</svg>

@@ -1,0 +1,287 @@
+package com.example
+
+import android.content.Context
+import androidx.room.Room
+import androidx.test.core.app.ApplicationProvider
+import com.example.data.local.AppDatabase
+import com.example.data.model.FlashcardEntity
+import com.example.data.model.isDueForReview
+import com.example.data.model.isNew
+import com.example.data.repository.DeckRepository
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.test.runTest
+import org.junit.After
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertNotEquals
+import org.junit.Assert.assertTrue
+import org.junit.Before
+import org.junit.Test
+import org.junit.runner.RunWith
+import org.robolectric.RobolectricTestRunner
+import org.robolectric.annotation.Config
+import java.util.Calendar
+
+@RunWith(RobolectricTestRunner::class)
+@Config(sdk = [34])
+class AuditV2ParityTest {
+
+    private lateinit var db: AppDatabase
+    private lateinit var repository: DeckRepository
+
+    @Before
+    fun setup() {
+        val context = ApplicationProvider.getApplicationContext<Context>()
+        db = Room.inMemoryDatabaseBuilder(context, AppDatabase::class.java)
+            .allowMainThreadQueries()
+            .build()
+        repository = DeckRepository(db.flashcardDao(), db.reviewLogDao())
+    }
+
+    @After
+    fun teardown() {
+        db.close()
+    }
+
+    private fun createCard(
+        id: Long = 1L,
+        reps: Int = 0,
+        dueTimestamp: Long = 0L,
+        stability: Float = 0f,
+        lastReviewedTimestamp: Long = 0L
+    ): FlashcardEntity {
+        return FlashcardEntity(
+            id = id,
+            deckRaw = "TCU :: CEX :: Aula 01",
+            l1 = "TCU",
+            l2 = "CEX",
+            l3 = "Aula 01",
+            frontHtml = "Pergunta $id",
+            backHtml = "Resposta $id",
+            contentHash = "hash_$id",
+            reps = reps,
+            dueTimestamp = dueTimestamp,
+            stability = stability,
+            lastReviewedTimestamp = lastReviewedTimestamp
+        )
+    }
+
+    @Test
+    fun testDueFilterExcludesNewCards() = runTest {
+        val now = System.currentTimeMillis()
+
+        // Card novo (nunca visto, reps = 0, mas com dueTimestamp <= now como inserido pelo importador Anki)
+        val newCard = createCard(id = 1L, reps = 0, dueTimestamp = now - 1000)
+        // Card em revisão vencido (reps > 0 e dueTimestamp <= now)
+        val overdueReviewCard = createCard(id = 2L, reps = 3, dueTimestamp = now - 5000)
+        // Card em revisão futuro (reps > 0 e dueTimestamp > now)
+        val futureReviewCard = createCard(id = 3L, reps = 2, dueTimestamp = now + 86400000L)
+
+        // 1. Verificação no predicado canônico Kotlin
+        assertTrue("Card com reps == 0 deve ser novo", newCard.isNew())
+        assertFalse("Card novo NUNCA pode ser considerado vencido", newCard.isDueForReview(now))
+
+        assertFalse("Card com reps > 0 não é novo", overdueReviewCard.isNew())
+        assertTrue("Card revisado com data passada DEVE ser considerado vencido", overdueReviewCard.isDueForReview(now))
+
+        assertFalse("Card futuro não pode ser considerado vencido", futureReviewCard.isDueForReview(now))
+
+        // 2. Verificação na query SQL Room (FlashcardDao.getDueFlashcardsByL1)
+        db.flashcardDao().insertAll(listOf(newCard, overdueReviewCard, futureReviewCard))
+
+        val dueFromDao = db.flashcardDao().getDueFlashcardsByL1("TCU", now).first()
+        assertEquals("Apenas o card revisado com reps > 0 deve retornar da query SQL de vencidos", 1, dueFromDao.size)
+        assertEquals(2L, dueFromDao[0].id)
+    }
+
+    @Test
+    fun testFSRSGraduationReturnsUpdatedEntityDirectly() = runTest {
+        val card = createCard(id = 10L, reps = 1, dueTimestamp = System.currentTimeMillis())
+        db.flashcardDao().insertFlashcard(card)
+
+        // Simula revisão FSRS com Good (rating = 3)
+        val updated = repository.recordReview(
+            card = card,
+            rating = 3,
+            algorithm = "FSRS",
+            targetRetention = 0.90,
+            reviewDurationMs = 4500L
+        )
+
+        // O retorno de recordReview deve ser a entidade exata e atualizada
+        assertEquals(2, updated.reps)
+        assertTrue("Estabilidade FSRS deve ser calculada e > 0", updated.stability > 0f)
+        assertTrue("Dificuldade FSRS deve ser calculada e > 0", updated.difficulty > 0f)
+
+        // Valida que o masteryLevel só vira 2 se stability >= 21.0f
+        if (updated.stability < 21.0f) {
+            assertEquals("Card em aprendizado não pode reportar masteryLevel = 2", 1, updated.masteryLevel)
+        } else {
+            assertEquals("Card com estabilidade >= 21 deve reportar masteryLevel = 2", 2, updated.masteryLevel)
+        }
+    }
+
+    @Test
+    fun testFuzzingJitterPreservesAnkiDayCutoff() {
+        val calendar = Calendar.getInstance().apply {
+            set(2026, Calendar.OCTOBER, 15, 14, 30, 0)
+        }
+        val studyTimestamp = calendar.timeInMillis
+        val intervalDays = 10
+
+        // Com applyFuzz = false: cálculo determinístico
+        val deterministicDue = repository.calculateNextDueDate(intervalDays, studyTimestamp, applyFuzz = false)
+        val detCal = Calendar.getInstance().apply { timeInMillis = deterministicDue }
+        assertEquals("Deve estar cravado às 04:00 AM", 4, detCal.get(Calendar.HOUR_OF_DAY))
+        assertEquals(0, detCal.get(Calendar.MINUTE))
+        assertEquals(25, detCal.get(Calendar.DAY_OF_MONTH)) // 15 + 10 = 25
+
+        // Com applyFuzz = true: jitter em torno de ±5% (para 10 dias, delta = 1 dia -> entre 9 e 11 dias)
+        val fuzzedDue = repository.calculateNextDueDate(intervalDays, studyTimestamp, applyFuzz = true)
+        val fuzzCal = Calendar.getInstance().apply { timeInMillis = fuzzedDue }
+        assertEquals("Mesmo com fuzz, DEVE respeitar rigorosamente o corte das 04:00 AM", 4, fuzzCal.get(Calendar.HOUR_OF_DAY))
+        assertEquals(0, fuzzCal.get(Calendar.MINUTE))
+
+        val diffDays = (fuzzCal.get(Calendar.DAY_OF_MONTH) - 15)
+        assertTrue("Intervalo com jitter deve oscilar suavemente entre 9 e 11 dias", diffDays in 9..11)
+    }
+
+    @Test
+    fun testWeeklyFrequencyAlignedWithAnkiDayCutoff() {
+        // Terça-feira, 20 de Outubro de 2026 às 01:30 da madrugada
+        val tuesdayDawnCal = Calendar.getInstance().apply {
+            set(2026, Calendar.OCTOBER, 20, 1, 30, 0)
+            set(Calendar.MILLISECOND, 0)
+        }
+        val dawnTimestamp = tuesdayDawnCal.timeInMillis
+
+        // Para o Anki (corte às 04:00 AM), 01:30 da madrugada de terça-feira ainda é a SEGUNDA-FEIRA de estudos
+        val ankiDayStart = repository.getAnkiDayStart(dawnTimestamp)
+        val ankiStartCal = Calendar.getInstance().apply { timeInMillis = ankiDayStart }
+        assertEquals(Calendar.MONDAY, ankiStartCal.get(Calendar.DAY_OF_WEEK))
+        assertEquals(19, ankiStartCal.get(Calendar.DAY_OF_MONTH)) // Segunda, dia 19
+        assertEquals(4, ankiStartCal.get(Calendar.HOUR_OF_DAY))
+
+        // Cria log de revisão nessa madrugada
+        val log = com.example.data.model.ReviewLogEntity(
+            id = 100L,
+            cardId = 1L,
+            l1 = "TCU",
+            l2 = "CEX",
+            l3 = "Aula 01",
+            rating = 3,
+            reviewDurationMs = 5000L,
+            timestamp = dawnTimestamp
+        )
+
+        val card = createCard(id = 1L, reps = 1, lastReviewedTimestamp = dawnTimestamp)
+        val report = repository.calculateProgressReport(
+            cards = listOf(card),
+            reviewLogs = listOf(log),
+            now = dawnTimestamp
+        )
+
+        // No gráfico de 7 dias, a barra de SEGUNDA (primeiro elemento) deve contabilizar essa revisão
+        val mondayStat = report.studyFrequency7Days.firstOrNull { it.dayLabel == "SEG" }
+        val tuesdayStat = report.studyFrequency7Days.firstOrNull { it.dayLabel == "TER" }
+
+        assertTrue("A barra de SEG deve existir", mondayStat != null)
+        assertTrue("A barra de TER deve existir", tuesdayStat != null)
+        assertEquals("Revisão da madrugada (01:30) DEVE ser computada na SEGUNDA de estudos", 1, mondayStat!!.reviewsCount)
+        assertEquals("A TERÇA de estudos (que só inicia às 04:00 AM) deve estar com 0 revisões", 0, tuesdayStat!!.reviewsCount)
+        assertTrue("A SEGUNDA de estudos deve ser considerada 'isToday' pelo horário de 01:30", mondayStat.isToday)
+        assertFalse("A TERÇA civil ainda não é o 'isToday' do Anki às 01:30", tuesdayStat.isToday)
+    }
+
+    @Test
+    fun testReviewLogsPreservedInRepositoryAndRestore() = runTest {
+        val now = System.currentTimeMillis()
+        val logs = listOf(
+            com.example.data.model.ReviewLogEntity(
+                id = 1L,
+                cardId = 10L,
+                l1 = "TCU",
+                l2 = "CEX",
+                l3 = "Aula 01",
+                rating = 3,
+                reviewDurationMs = 4000L,
+                timestamp = now - 10000L
+            ),
+            com.example.data.model.ReviewLogEntity(
+                id = 2L,
+                cardId = 11L,
+                l1 = "TCU",
+                l2 = "AFO",
+                l3 = "Receita",
+                rating = 4,
+                reviewDurationMs = 3000L,
+                timestamp = now - 5000L
+            )
+        )
+
+        repository.restoreReviewLogs(logs)
+        val retrieved = repository.getAllReviewLogsSync()
+
+        assertEquals("Ambos os logs de revisão devem ser persistidos no Room", 2, retrieved.size)
+        assertEquals(10L, retrieved[0].cardId)
+        assertEquals("TCU", retrieved[0].l1)
+        assertEquals(3, retrieved[0].rating)
+    }
+
+    @Test
+    fun testReviewStatsTracksReviewedCardsAndTotalReviewsCount() {
+        val card1 = createCard(id = 1L, reps = 2)
+        val card2 = createCard(id = 2L, reps = 1)
+        val card3 = createCard(id = 3L, reps = 0)
+
+        val stats = repository.calculateReviewStats(listOf(card1, card2, card3))
+
+        assertEquals("Cards únicos revisados deve ser 2", 2, stats.totalReviewed)
+        assertEquals("Total de revisões acumuladas deve ser 3", 3, stats.totalReviewsCount)
+    }
+
+    @Test
+    fun testDisciplinePaletteAll17TcuAcronymsAndNoCollisionWithEstatistica() {
+        // Teste de colisão clássica: 'Estatística' contém 'ti' no meio da palavra
+        val estatisticaColor = com.example.ui.components.DisciplinePalette.getColorForDiscipline("Estatística")
+        val tiColor = com.example.ui.components.DisciplinePalette.getColorForDiscipline("TI")
+
+        assertEquals("#4F46E5", estatisticaColor)
+        assertEquals("#0891B2", tiColor)
+        assertNotEquals("Estatística NÃO pode receber a cor da disciplina TI", estatisticaColor, tiColor)
+
+        val estatisticaIcon = com.example.ui.components.DisciplinePalette.getIconKeyForDiscipline("Estatística")
+        val tiIcon = com.example.ui.components.DisciplinePalette.getIconKeyForDiscipline("TI")
+        assertEquals("Timeline", estatisticaIcon)
+        assertEquals("Analytics", tiIcon)
+
+        // Teste das 17 siglas oficiais do TCU
+        val tcuDisciplines = listOf(
+            "CEX" to "#7C3AED",
+            "AFO" to "#9333EA",
+            "AUD" to "#16A34A",
+            "CON" to "#2563EB",
+            "ADM" to "#D97706",
+            "CPB" to "#CA8A04",
+            "CGE" to "#B45309",
+            "TI"  to "#0891B2",
+            "ECO" to "#059669",
+            "POR" to "#3B82F6",
+            "ING" to "#0D9488",
+            "RLM" to "#6366F1",
+            "EST" to "#4F46E5",
+            "CIV" to "#1D4ED8",
+            "CPC" to "#0E7490",
+            "PEN" to "#DC2626",
+            "PUB" to "#EA580C"
+        )
+
+        for ((acronym, expectedHex) in tcuDisciplines) {
+            val color = com.example.ui.components.DisciplinePalette.getColorForDiscipline(acronym)
+            assertEquals("Cor para a sigla $acronym deve ser $expectedHex", expectedHex, color)
+
+            val iconKey = com.example.ui.components.DisciplinePalette.getIconKeyForDiscipline(acronym)
+            assertNotEquals("Sigla $acronym não deve receber o ícone genérico School", "School", iconKey)
+        }
+    }
+}

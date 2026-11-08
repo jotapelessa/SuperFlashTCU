@@ -1,0 +1,481 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1600" height="840" viewBox="0 0 1600 840"><rect width="1600" height="840" fill="#f7f7f4"/><text x="60" y="78" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="40" font-weight="700" fill="#161616">SuperFlash TCU — Conceitos de Identidade Visual</text><text x="60" y="116" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="20" fill="#6b6b6b">Concepts for review — pick a direction (or tell me what you like in each).</text><rect x="60" y="150" width="474.667" height="630" rx="18" fill="#fff" stroke="#161616" stroke-width="2"/><g><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" x="90" y="190" width="414.667" height="300" preserveAspectRatio="xMidYMid meet">
+  <defs>
+    <!-- Background / Shadow Gradients -->
+    <linearGradient id="c0-cardGradBottom" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1E3A8A"/>
+      <stop offset="100%" stop-color="#0F172A"/>
+    </linearGradient>
+
+    <linearGradient id="c0-cardGradTop" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#3B82F6"/>
+      <stop offset="100%" stop-color="#1D4ED8"/>
+    </linearGradient>
+
+    <linearGradient id="c0-cardGradAccent" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#60A5FA"/>
+      <stop offset="100%" stop-color="#2563EB"/>
+    </linearGradient>
+
+    <!-- Bolt Spark Gradient -->
+    <linearGradient id="c0-boltGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FEF08A"/>
+      <stop offset="45%" stop-color="#FBBF24"/>
+      <stop offset="100%" stop-color="#EA580C"/>
+    </linearGradient>
+
+    <!-- Bolt Inner Glow / Facet -->
+    <linearGradient id="c0-boltFacet" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#F59E0B"/>
+      <stop offset="100%" stop-color="#FDE047"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Base Backing Card (Isométrica inferior, representando o acervo / repetição espaçada) -->
+  <path d="M120 200 L280 120 L400 185 L240 265 Z" fill="url(#c0-cardGradBottom)" opacity="0.95"/>
+  <path d="M120 200 L240 265 L240 295 L120 230 Z" fill="#0F172A"/>
+  <path d="M240 265 L400 185 L400 215 L240 295 Z" fill="#1E293B"/>
+
+  <!-- Mid Active Flashcard (Isométrica central, deslocada para cima) -->
+  <path d="M100 280 L270 190 L410 265 L240 355 Z" fill="url(#c0-cardGradTop)"/>
+  <path d="M100 280 L240 355 L240 385 L100 310 Z" fill="#1E40AF"/>
+  <path d="M240 355 L410 265 L410 295 L240 385 Z" fill="#1D4ED8"/>
+
+  <!-- Top Floating Card Highlight (Reflexo e linhas de estudo) -->
+  <path d="M140 275 L260 212 L330 250 L210 312 Z" fill="url(#c0-cardGradAccent)" opacity="0.3"/>
+
+  <!-- Dynamic Lightning Bolt (O Raio SuperFlash cortando vertical-diagonalmente) -->
+  <!-- Faceta Esquerda / Sombra -->
+  <polygon points="305,60 175,250 255,250 195,450 355,230 275,230 325,60" fill="url(#c0-boltGrad)"/>
+  <!-- Faceta Chanfrada Interna para relevo 3D de alta performance -->
+  <polygon points="305,60 255,230 275,230 195,450 240,250 175,250" fill="url(#c0-boltFacet)" opacity="0.45"/>
+  <polygon points="305,60 325,60 275,230 355,230 300,310" fill="#FEF08A" opacity="0.6"/>
+
+  <!-- Pequeno Spark / Estrela de Inteligência Artificial no topo do raio -->
+  <polygon points="380,110 390,130 410,140 390,150 380,170 370,150 350,140 370,130" fill="#FDE047" opacity="0.9"/>
+</svg>
+</g><g><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" x="90" y="516" width="64" height="64" preserveAspectRatio="xMidYMid meet">
+  <defs>
+    <!-- Background / Shadow Gradients -->
+    <linearGradient id="s064-cardGradBottom" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1E3A8A"/>
+      <stop offset="100%" stop-color="#0F172A"/>
+    </linearGradient>
+
+    <linearGradient id="s064-cardGradTop" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#3B82F6"/>
+      <stop offset="100%" stop-color="#1D4ED8"/>
+    </linearGradient>
+
+    <linearGradient id="s064-cardGradAccent" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#60A5FA"/>
+      <stop offset="100%" stop-color="#2563EB"/>
+    </linearGradient>
+
+    <!-- Bolt Spark Gradient -->
+    <linearGradient id="s064-boltGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FEF08A"/>
+      <stop offset="45%" stop-color="#FBBF24"/>
+      <stop offset="100%" stop-color="#EA580C"/>
+    </linearGradient>
+
+    <!-- Bolt Inner Glow / Facet -->
+    <linearGradient id="s064-boltFacet" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#F59E0B"/>
+      <stop offset="100%" stop-color="#FDE047"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Base Backing Card (Isométrica inferior, representando o acervo / repetição espaçada) -->
+  <path d="M120 200 L280 120 L400 185 L240 265 Z" fill="url(#s064-cardGradBottom)" opacity="0.95"/>
+  <path d="M120 200 L240 265 L240 295 L120 230 Z" fill="#0F172A"/>
+  <path d="M240 265 L400 185 L400 215 L240 295 Z" fill="#1E293B"/>
+
+  <!-- Mid Active Flashcard (Isométrica central, deslocada para cima) -->
+  <path d="M100 280 L270 190 L410 265 L240 355 Z" fill="url(#s064-cardGradTop)"/>
+  <path d="M100 280 L240 355 L240 385 L100 310 Z" fill="#1E40AF"/>
+  <path d="M240 355 L410 265 L410 295 L240 385 Z" fill="#1D4ED8"/>
+
+  <!-- Top Floating Card Highlight (Reflexo e linhas de estudo) -->
+  <path d="M140 275 L260 212 L330 250 L210 312 Z" fill="url(#s064-cardGradAccent)" opacity="0.3"/>
+
+  <!-- Dynamic Lightning Bolt (O Raio SuperFlash cortando vertical-diagonalmente) -->
+  <!-- Faceta Esquerda / Sombra -->
+  <polygon points="305,60 175,250 255,250 195,450 355,230 275,230 325,60" fill="url(#s064-boltGrad)"/>
+  <!-- Faceta Chanfrada Interna para relevo 3D de alta performance -->
+  <polygon points="305,60 255,230 275,230 195,450 240,250 175,250" fill="url(#s064-boltFacet)" opacity="0.45"/>
+  <polygon points="305,60 325,60 275,230 355,230 300,310" fill="#FEF08A" opacity="0.6"/>
+
+  <!-- Pequeno Spark / Estrela de Inteligência Artificial no topo do raio -->
+  <polygon points="380,110 390,130 410,140 390,150 380,170 370,150 350,140 370,130" fill="#FDE047" opacity="0.9"/>
+</svg>
+</g><text x="122" y="600" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" fill="#8a8a8a" text-anchor="middle">64px</text><g><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" x="180" y="548" width="32" height="32" preserveAspectRatio="xMidYMid meet">
+  <defs>
+    <!-- Background / Shadow Gradients -->
+    <linearGradient id="s032-cardGradBottom" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1E3A8A"/>
+      <stop offset="100%" stop-color="#0F172A"/>
+    </linearGradient>
+
+    <linearGradient id="s032-cardGradTop" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#3B82F6"/>
+      <stop offset="100%" stop-color="#1D4ED8"/>
+    </linearGradient>
+
+    <linearGradient id="s032-cardGradAccent" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#60A5FA"/>
+      <stop offset="100%" stop-color="#2563EB"/>
+    </linearGradient>
+
+    <!-- Bolt Spark Gradient -->
+    <linearGradient id="s032-boltGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FEF08A"/>
+      <stop offset="45%" stop-color="#FBBF24"/>
+      <stop offset="100%" stop-color="#EA580C"/>
+    </linearGradient>
+
+    <!-- Bolt Inner Glow / Facet -->
+    <linearGradient id="s032-boltFacet" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#F59E0B"/>
+      <stop offset="100%" stop-color="#FDE047"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Base Backing Card (Isométrica inferior, representando o acervo / repetição espaçada) -->
+  <path d="M120 200 L280 120 L400 185 L240 265 Z" fill="url(#s032-cardGradBottom)" opacity="0.95"/>
+  <path d="M120 200 L240 265 L240 295 L120 230 Z" fill="#0F172A"/>
+  <path d="M240 265 L400 185 L400 215 L240 295 Z" fill="#1E293B"/>
+
+  <!-- Mid Active Flashcard (Isométrica central, deslocada para cima) -->
+  <path d="M100 280 L270 190 L410 265 L240 355 Z" fill="url(#s032-cardGradTop)"/>
+  <path d="M100 280 L240 355 L240 385 L100 310 Z" fill="#1E40AF"/>
+  <path d="M240 355 L410 265 L410 295 L240 385 Z" fill="#1D4ED8"/>
+
+  <!-- Top Floating Card Highlight (Reflexo e linhas de estudo) -->
+  <path d="M140 275 L260 212 L330 250 L210 312 Z" fill="url(#s032-cardGradAccent)" opacity="0.3"/>
+
+  <!-- Dynamic Lightning Bolt (O Raio SuperFlash cortando vertical-diagonalmente) -->
+  <!-- Faceta Esquerda / Sombra -->
+  <polygon points="305,60 175,250 255,250 195,450 355,230 275,230 325,60" fill="url(#s032-boltGrad)"/>
+  <!-- Faceta Chanfrada Interna para relevo 3D de alta performance -->
+  <polygon points="305,60 255,230 275,230 195,450 240,250 175,250" fill="url(#s032-boltFacet)" opacity="0.45"/>
+  <polygon points="305,60 325,60 275,230 355,230 300,310" fill="#FEF08A" opacity="0.6"/>
+
+  <!-- Pequeno Spark / Estrela de Inteligência Artificial no topo do raio -->
+  <polygon points="380,110 390,130 410,140 390,150 380,170 370,150 350,140 370,130" fill="#FDE047" opacity="0.9"/>
+</svg>
+</g><text x="196" y="600" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" fill="#8a8a8a" text-anchor="middle">32px</text><g><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" x="238" y="564" width="16" height="16" preserveAspectRatio="xMidYMid meet">
+  <defs>
+    <!-- Background / Shadow Gradients -->
+    <linearGradient id="s016-cardGradBottom" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1E3A8A"/>
+      <stop offset="100%" stop-color="#0F172A"/>
+    </linearGradient>
+
+    <linearGradient id="s016-cardGradTop" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#3B82F6"/>
+      <stop offset="100%" stop-color="#1D4ED8"/>
+    </linearGradient>
+
+    <linearGradient id="s016-cardGradAccent" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#60A5FA"/>
+      <stop offset="100%" stop-color="#2563EB"/>
+    </linearGradient>
+
+    <!-- Bolt Spark Gradient -->
+    <linearGradient id="s016-boltGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FEF08A"/>
+      <stop offset="45%" stop-color="#FBBF24"/>
+      <stop offset="100%" stop-color="#EA580C"/>
+    </linearGradient>
+
+    <!-- Bolt Inner Glow / Facet -->
+    <linearGradient id="s016-boltFacet" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#F59E0B"/>
+      <stop offset="100%" stop-color="#FDE047"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Base Backing Card (Isométrica inferior, representando o acervo / repetição espaçada) -->
+  <path d="M120 200 L280 120 L400 185 L240 265 Z" fill="url(#s016-cardGradBottom)" opacity="0.95"/>
+  <path d="M120 200 L240 265 L240 295 L120 230 Z" fill="#0F172A"/>
+  <path d="M240 265 L400 185 L400 215 L240 295 Z" fill="#1E293B"/>
+
+  <!-- Mid Active Flashcard (Isométrica central, deslocada para cima) -->
+  <path d="M100 280 L270 190 L410 265 L240 355 Z" fill="url(#s016-cardGradTop)"/>
+  <path d="M100 280 L240 355 L240 385 L100 310 Z" fill="#1E40AF"/>
+  <path d="M240 355 L410 265 L410 295 L240 385 Z" fill="#1D4ED8"/>
+
+  <!-- Top Floating Card Highlight (Reflexo e linhas de estudo) -->
+  <path d="M140 275 L260 212 L330 250 L210 312 Z" fill="url(#s016-cardGradAccent)" opacity="0.3"/>
+
+  <!-- Dynamic Lightning Bolt (O Raio SuperFlash cortando vertical-diagonalmente) -->
+  <!-- Faceta Esquerda / Sombra -->
+  <polygon points="305,60 175,250 255,250 195,450 355,230 275,230 325,60" fill="url(#s016-boltGrad)"/>
+  <!-- Faceta Chanfrada Interna para relevo 3D de alta performance -->
+  <polygon points="305,60 255,230 275,230 195,450 240,250 175,250" fill="url(#s016-boltFacet)" opacity="0.45"/>
+  <polygon points="305,60 325,60 275,230 355,230 300,310" fill="#FEF08A" opacity="0.6"/>
+
+  <!-- Pequeno Spark / Estrela de Inteligência Artificial no topo do raio -->
+  <polygon points="380,110 390,130 410,140 390,150 380,170 370,150 350,140 370,130" fill="#FDE047" opacity="0.9"/>
+</svg>
+</g><text x="246" y="600" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" fill="#8a8a8a" text-anchor="middle">16px</text><text x="90.0" y="636" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="26" font-weight="700" fill="#161616">A · The Isometric Spark</text><text x="90.0" y="664" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="15" font-weight="700" fill="#161616" letter-spacing="1.5">RECOMMENDED</text><text x="90.0" y="698" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="19" fill="#555">Camadas isométricas de flashcards com raio</text><text x="90.0" y="724" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="19" fill="#555">âmbar dinâmico.</text><rect x="562.667" y="150" width="474.667" height="630" rx="18" fill="#fff" stroke="#e4e4e0" stroke-width="1"/><g><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" x="592.667" y="190" width="414.667" height="300" preserveAspectRatio="xMidYMid meet">
+  <defs>
+    <linearGradient id="c1-monogramBlue1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38BDF8"/>
+      <stop offset="100%" stop-color="#1D4ED8"/>
+    </linearGradient>
+    <linearGradient id="c1-monogramBlue2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#2563EB"/>
+      <stop offset="100%" stop-color="#0F172A"/>
+    </linearGradient>
+    <linearGradient id="c1-monogramGold" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FDE047"/>
+      <stop offset="50%" stop-color="#F59E0B"/>
+      <stop offset="100%" stop-color="#D97706"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Base Circular Plate (Dark Indigo Plate para contraste em qualquer fundo) -->
+  <rect x="36" y="36" width="440" height="440" rx="96" fill="#0B1120"/>
+
+  <!-- S-Curve Upper Ribbons -->
+  <path d="M140 160 C140 120 180 90 240 90 L340 90 L310 150 L230 150 C200 150 190 165 190 180 C190 200 210 215 250 230 L290 245 C345 265 375 295 375 345 C375 405 320 435 250 435 L140 435 L170 375 L250 375 C285 375 315 365 315 340 C315 320 295 305 260 290 L220 275 C165 255 140 220 140 160 Z" fill="url(#c1-monogramBlue1)"/>
+
+  <!-- F Crossbars & Forward Arrow Extension -->
+  <path d="M260 170 L400 170 L380 230 L280 230 Z" fill="url(#c1-monogramBlue2)" opacity="0.9"/>
+  <path d="M280 260 L380 260 L360 320 L290 320 Z" fill="url(#c1-monogramBlue2)" opacity="0.75"/>
+
+  <!-- Angular Center Flash Lightning Cut (O Raio 'Super' em ouro) -->
+  <polygon points="270,110 190,260 250,260 210,400 330,220 265,220 295,110" fill="url(#c1-monogramGold)"/>
+</svg>
+</g><g><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" x="592.667" y="516" width="64" height="64" preserveAspectRatio="xMidYMid meet">
+  <defs>
+    <linearGradient id="s164-monogramBlue1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38BDF8"/>
+      <stop offset="100%" stop-color="#1D4ED8"/>
+    </linearGradient>
+    <linearGradient id="s164-monogramBlue2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#2563EB"/>
+      <stop offset="100%" stop-color="#0F172A"/>
+    </linearGradient>
+    <linearGradient id="s164-monogramGold" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FDE047"/>
+      <stop offset="50%" stop-color="#F59E0B"/>
+      <stop offset="100%" stop-color="#D97706"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Base Circular Plate (Dark Indigo Plate para contraste em qualquer fundo) -->
+  <rect x="36" y="36" width="440" height="440" rx="96" fill="#0B1120"/>
+
+  <!-- S-Curve Upper Ribbons -->
+  <path d="M140 160 C140 120 180 90 240 90 L340 90 L310 150 L230 150 C200 150 190 165 190 180 C190 200 210 215 250 230 L290 245 C345 265 375 295 375 345 C375 405 320 435 250 435 L140 435 L170 375 L250 375 C285 375 315 365 315 340 C315 320 295 305 260 290 L220 275 C165 255 140 220 140 160 Z" fill="url(#s164-monogramBlue1)"/>
+
+  <!-- F Crossbars & Forward Arrow Extension -->
+  <path d="M260 170 L400 170 L380 230 L280 230 Z" fill="url(#s164-monogramBlue2)" opacity="0.9"/>
+  <path d="M280 260 L380 260 L360 320 L290 320 Z" fill="url(#s164-monogramBlue2)" opacity="0.75"/>
+
+  <!-- Angular Center Flash Lightning Cut (O Raio 'Super' em ouro) -->
+  <polygon points="270,110 190,260 250,260 210,400 330,220 265,220 295,110" fill="url(#s164-monogramGold)"/>
+</svg>
+</g><text x="624.667" y="600" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" fill="#8a8a8a" text-anchor="middle">64px</text><g><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" x="682.667" y="548" width="32" height="32" preserveAspectRatio="xMidYMid meet">
+  <defs>
+    <linearGradient id="s132-monogramBlue1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38BDF8"/>
+      <stop offset="100%" stop-color="#1D4ED8"/>
+    </linearGradient>
+    <linearGradient id="s132-monogramBlue2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#2563EB"/>
+      <stop offset="100%" stop-color="#0F172A"/>
+    </linearGradient>
+    <linearGradient id="s132-monogramGold" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FDE047"/>
+      <stop offset="50%" stop-color="#F59E0B"/>
+      <stop offset="100%" stop-color="#D97706"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Base Circular Plate (Dark Indigo Plate para contraste em qualquer fundo) -->
+  <rect x="36" y="36" width="440" height="440" rx="96" fill="#0B1120"/>
+
+  <!-- S-Curve Upper Ribbons -->
+  <path d="M140 160 C140 120 180 90 240 90 L340 90 L310 150 L230 150 C200 150 190 165 190 180 C190 200 210 215 250 230 L290 245 C345 265 375 295 375 345 C375 405 320 435 250 435 L140 435 L170 375 L250 375 C285 375 315 365 315 340 C315 320 295 305 260 290 L220 275 C165 255 140 220 140 160 Z" fill="url(#s132-monogramBlue1)"/>
+
+  <!-- F Crossbars & Forward Arrow Extension -->
+  <path d="M260 170 L400 170 L380 230 L280 230 Z" fill="url(#s132-monogramBlue2)" opacity="0.9"/>
+  <path d="M280 260 L380 260 L360 320 L290 320 Z" fill="url(#s132-monogramBlue2)" opacity="0.75"/>
+
+  <!-- Angular Center Flash Lightning Cut (O Raio 'Super' em ouro) -->
+  <polygon points="270,110 190,260 250,260 210,400 330,220 265,220 295,110" fill="url(#s132-monogramGold)"/>
+</svg>
+</g><text x="698.667" y="600" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" fill="#8a8a8a" text-anchor="middle">32px</text><g><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" x="740.667" y="564" width="16" height="16" preserveAspectRatio="xMidYMid meet">
+  <defs>
+    <linearGradient id="s116-monogramBlue1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38BDF8"/>
+      <stop offset="100%" stop-color="#1D4ED8"/>
+    </linearGradient>
+    <linearGradient id="s116-monogramBlue2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#2563EB"/>
+      <stop offset="100%" stop-color="#0F172A"/>
+    </linearGradient>
+    <linearGradient id="s116-monogramGold" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FDE047"/>
+      <stop offset="50%" stop-color="#F59E0B"/>
+      <stop offset="100%" stop-color="#D97706"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Base Circular Plate (Dark Indigo Plate para contraste em qualquer fundo) -->
+  <rect x="36" y="36" width="440" height="440" rx="96" fill="#0B1120"/>
+
+  <!-- S-Curve Upper Ribbons -->
+  <path d="M140 160 C140 120 180 90 240 90 L340 90 L310 150 L230 150 C200 150 190 165 190 180 C190 200 210 215 250 230 L290 245 C345 265 375 295 375 345 C375 405 320 435 250 435 L140 435 L170 375 L250 375 C285 375 315 365 315 340 C315 320 295 305 260 290 L220 275 C165 255 140 220 140 160 Z" fill="url(#s116-monogramBlue1)"/>
+
+  <!-- F Crossbars & Forward Arrow Extension -->
+  <path d="M260 170 L400 170 L380 230 L280 230 Z" fill="url(#s116-monogramBlue2)" opacity="0.9"/>
+  <path d="M280 260 L380 260 L360 320 L290 320 Z" fill="url(#s116-monogramBlue2)" opacity="0.75"/>
+
+  <!-- Angular Center Flash Lightning Cut (O Raio 'Super' em ouro) -->
+  <polygon points="270,110 190,260 250,260 210,400 330,220 265,220 295,110" fill="url(#s116-monogramGold)"/>
+</svg>
+</g><text x="748.667" y="600" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" fill="#8a8a8a" text-anchor="middle">16px</text><text x="592.6666666666667" y="636" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="26" font-weight="700" fill="#161616">B · The SF Monogram</text><text x="592.6666666666667" y="670" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="19" fill="#555">Monograma entrelaçado S+F com corte</text><text x="592.6666666666667" y="696" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="19" fill="#555">negativo de velocidade.</text><rect x="1065.33" y="150" width="474.667" height="630" rx="18" fill="#fff" stroke="#e4e4e0" stroke-width="1"/><g><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" x="1095.33" y="190" width="414.667" height="300" preserveAspectRatio="xMidYMid meet">
+  <defs>
+    <linearGradient id="c2-shieldLeft" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#2563EB"/>
+      <stop offset="100%" stop-color="#1E3A8A"/>
+    </linearGradient>
+    <linearGradient id="c2-shieldRight" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#3B82F6"/>
+      <stop offset="100%" stop-color="#1D4ED8"/>
+    </linearGradient>
+    <linearGradient id="c2-shieldBolt" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FEF08A"/>
+      <stop offset="50%" stop-color="#F59E0B"/>
+      <stop offset="100%" stop-color="#D97706"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Left Facet of Shield / Flashcard Wing -->
+  <path d="M246 64 L100 134 L100 290 C100 375 165 440 246 470 Z" fill="url(#c2-shieldLeft)"/>
+
+  <!-- Right Facet of Shield / Flashcard Wing -->
+  <path d="M266 64 L412 134 L412 290 C412 375 347 440 266 470 Z" fill="url(#c2-shieldRight)"/>
+
+  <!-- Card Lines (Sutileza de linhas de flashcard) -->
+  <line x1="130" y1="200" x2="210" y2="200" stroke="#60A5FA" stroke-width="8" stroke-linecap="round" opacity="0.4"/>
+  <line x1="130" y1="230" x2="190" y2="230" stroke="#60A5FA" stroke-width="8" stroke-linecap="round" opacity="0.4"/>
+  <line x1="302" y1="200" x2="382" y2="200" stroke="#93C5FD" stroke-width="8" stroke-linecap="round" opacity="0.4"/>
+  <line x1="322" y1="230" x2="382" y2="230" stroke="#93C5FD" stroke-width="8" stroke-linecap="round" opacity="0.4"/>
+
+  <!-- Center Floating Lightning Bolt (Raio de Alta Retenção) -->
+  <polygon points="275,40 185,250 250,250 205,440 335,220 270,220 305,40" fill="url(#c2-shieldBolt)"/>
+
+  <!-- AI Gemini Sparkles -->
+  <polygon points="256,12 262,26 276,32 262,38 256,52 250,38 236,32 250,26" fill="#FDE047"/>
+</svg>
+</g><g><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" x="1095.33" y="516" width="64" height="64" preserveAspectRatio="xMidYMid meet">
+  <defs>
+    <linearGradient id="s264-shieldLeft" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#2563EB"/>
+      <stop offset="100%" stop-color="#1E3A8A"/>
+    </linearGradient>
+    <linearGradient id="s264-shieldRight" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#3B82F6"/>
+      <stop offset="100%" stop-color="#1D4ED8"/>
+    </linearGradient>
+    <linearGradient id="s264-shieldBolt" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FEF08A"/>
+      <stop offset="50%" stop-color="#F59E0B"/>
+      <stop offset="100%" stop-color="#D97706"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Left Facet of Shield / Flashcard Wing -->
+  <path d="M246 64 L100 134 L100 290 C100 375 165 440 246 470 Z" fill="url(#s264-shieldLeft)"/>
+
+  <!-- Right Facet of Shield / Flashcard Wing -->
+  <path d="M266 64 L412 134 L412 290 C412 375 347 440 266 470 Z" fill="url(#s264-shieldRight)"/>
+
+  <!-- Card Lines (Sutileza de linhas de flashcard) -->
+  <line x1="130" y1="200" x2="210" y2="200" stroke="#60A5FA" stroke-width="8" stroke-linecap="round" opacity="0.4"/>
+  <line x1="130" y1="230" x2="190" y2="230" stroke="#60A5FA" stroke-width="8" stroke-linecap="round" opacity="0.4"/>
+  <line x1="302" y1="200" x2="382" y2="200" stroke="#93C5FD" stroke-width="8" stroke-linecap="round" opacity="0.4"/>
+  <line x1="322" y1="230" x2="382" y2="230" stroke="#93C5FD" stroke-width="8" stroke-linecap="round" opacity="0.4"/>
+
+  <!-- Center Floating Lightning Bolt (Raio de Alta Retenção) -->
+  <polygon points="275,40 185,250 250,250 205,440 335,220 270,220 305,40" fill="url(#s264-shieldBolt)"/>
+
+  <!-- AI Gemini Sparkles -->
+  <polygon points="256,12 262,26 276,32 262,38 256,52 250,38 236,32 250,26" fill="#FDE047"/>
+</svg>
+</g><text x="1127.33" y="600" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" fill="#8a8a8a" text-anchor="middle">64px</text><g><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" x="1185.33" y="548" width="32" height="32" preserveAspectRatio="xMidYMid meet">
+  <defs>
+    <linearGradient id="s232-shieldLeft" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#2563EB"/>
+      <stop offset="100%" stop-color="#1E3A8A"/>
+    </linearGradient>
+    <linearGradient id="s232-shieldRight" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#3B82F6"/>
+      <stop offset="100%" stop-color="#1D4ED8"/>
+    </linearGradient>
+    <linearGradient id="s232-shieldBolt" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FEF08A"/>
+      <stop offset="50%" stop-color="#F59E0B"/>
+      <stop offset="100%" stop-color="#D97706"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Left Facet of Shield / Flashcard Wing -->
+  <path d="M246 64 L100 134 L100 290 C100 375 165 440 246 470 Z" fill="url(#s232-shieldLeft)"/>
+
+  <!-- Right Facet of Shield / Flashcard Wing -->
+  <path d="M266 64 L412 134 L412 290 C412 375 347 440 266 470 Z" fill="url(#s232-shieldRight)"/>
+
+  <!-- Card Lines (Sutileza de linhas de flashcard) -->
+  <line x1="130" y1="200" x2="210" y2="200" stroke="#60A5FA" stroke-width="8" stroke-linecap="round" opacity="0.4"/>
+  <line x1="130" y1="230" x2="190" y2="230" stroke="#60A5FA" stroke-width="8" stroke-linecap="round" opacity="0.4"/>
+  <line x1="302" y1="200" x2="382" y2="200" stroke="#93C5FD" stroke-width="8" stroke-linecap="round" opacity="0.4"/>
+  <line x1="322" y1="230" x2="382" y2="230" stroke="#93C5FD" stroke-width="8" stroke-linecap="round" opacity="0.4"/>
+
+  <!-- Center Floating Lightning Bolt (Raio de Alta Retenção) -->
+  <polygon points="275,40 185,250 250,250 205,440 335,220 270,220 305,40" fill="url(#s232-shieldBolt)"/>
+
+  <!-- AI Gemini Sparkles -->
+  <polygon points="256,12 262,26 276,32 262,38 256,52 250,38 236,32 250,26" fill="#FDE047"/>
+</svg>
+</g><text x="1201.33" y="600" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" fill="#8a8a8a" text-anchor="middle">32px</text><g><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" x="1243.33" y="564" width="16" height="16" preserveAspectRatio="xMidYMid meet">
+  <defs>
+    <linearGradient id="s216-shieldLeft" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#2563EB"/>
+      <stop offset="100%" stop-color="#1E3A8A"/>
+    </linearGradient>
+    <linearGradient id="s216-shieldRight" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#3B82F6"/>
+      <stop offset="100%" stop-color="#1D4ED8"/>
+    </linearGradient>
+    <linearGradient id="s216-shieldBolt" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FEF08A"/>
+      <stop offset="50%" stop-color="#F59E0B"/>
+      <stop offset="100%" stop-color="#D97706"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Left Facet of Shield / Flashcard Wing -->
+  <path d="M246 64 L100 134 L100 290 C100 375 165 440 246 470 Z" fill="url(#s216-shieldLeft)"/>
+
+  <!-- Right Facet of Shield / Flashcard Wing -->
+  <path d="M266 64 L412 134 L412 290 C412 375 347 440 266 470 Z" fill="url(#s216-shieldRight)"/>
+
+  <!-- Card Lines (Sutileza de linhas de flashcard) -->
+  <line x1="130" y1="200" x2="210" y2="200" stroke="#60A5FA" stroke-width="8" stroke-linecap="round" opacity="0.4"/>
+  <line x1="130" y1="230" x2="190" y2="230" stroke="#60A5FA" stroke-width="8" stroke-linecap="round" opacity="0.4"/>
+  <line x1="302" y1="200" x2="382" y2="200" stroke="#93C5FD" stroke-width="8" stroke-linecap="round" opacity="0.4"/>
+  <line x1="322" y1="230" x2="382" y2="230" stroke="#93C5FD" stroke-width="8" stroke-linecap="round" opacity="0.4"/>
+
+  <!-- Center Floating Lightning Bolt (Raio de Alta Retenção) -->
+  <polygon points="275,40 185,250 250,250 205,440 335,220 270,220 305,40" fill="url(#s216-shieldBolt)"/>
+
+  <!-- AI Gemini Sparkles -->
+  <polygon points="256,12 262,26 276,32 262,38 256,52 250,38 236,32 250,26" fill="#FDE047"/>
+</svg>
+</g><text x="1251.33" y="600" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" fill="#8a8a8a" text-anchor="middle">16px</text><text x="1095.3333333333335" y="636" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="26" font-weight="700" fill="#161616">C · The AI Shield &amp; Bolt</text><text x="1095.3333333333335" y="670" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="19" fill="#555">Escudo institucional com asas de flashcards</text><text x="1095.3333333333335" y="696" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="19" fill="#555">e raio central de IA.</text></svg>

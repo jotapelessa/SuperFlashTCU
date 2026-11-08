@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+  <defs>
+    <linearGradient id="shieldLeft" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#2563EB"/>
+      <stop offset="100%" stop-color="#1E3A8A"/>
+    </linearGradient>
+    <linearGradient id="shieldRight" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#3B82F6"/>
+      <stop offset="100%" stop-color="#1D4ED8"/>
+    </linearGradient>
+    <linearGradient id="shieldBolt" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FEF08A"/>
+      <stop offset="50%" stop-color="#F59E0B"/>
+      <stop offset="100%" stop-color="#D97706"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Left Facet of Shield / Flashcard Wing -->
+  <path d="M246 64 L100 134 L100 290 C100 375 165 440 246 470 Z" fill="url(#shieldLeft)"/>
+
+  <!-- Right Facet of Shield / Flashcard Wing -->
+  <path d="M266 64 L412 134 L412 290 C412 375 347 440 266 470 Z" fill="url(#shieldRight)"/>
+
+  <!-- Card Lines (Sutileza de linhas de flashcard) -->
+  <line x1="130" y1="200" x2="210" y2="200" stroke="#60A5FA" stroke-width="8" stroke-linecap="round" opacity="0.4"/>
+  <line x1="130" y1="230" x2="190" y2="230" stroke="#60A5FA" stroke-width="8" stroke-linecap="round" opacity="0.4"/>
+  <line x1="302" y1="200" x2="382" y2="200" stroke="#93C5FD" stroke-width="8" stroke-linecap="round" opacity="0.4"/>
+  <line x1="322" y1="230" x2="382" y2="230" stroke="#93C5FD" stroke-width="8" stroke-linecap="round" opacity="0.4"/>
+
+  <!-- Center Floating Lightning Bolt (Raio de Alta Retenção) -->
+  <polygon points="275,40 185,250 250,250 205,440 335,220 270,220 305,40" fill="url(#shieldBolt)"/>
+
+  <!-- AI Gemini Sparkles -->
+  <polygon points="256,12 262,26 276,32 262,38 256,52 250,38 236,32 250,26" fill="#FDE047"/>
+</svg>

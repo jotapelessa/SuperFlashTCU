@@ -1,0 +1,53 @@
+<svg fill="#000000" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%"><title>SuperFlash TCU Logo</title>
+  
+  <defs>
+    <linearGradient id="f1_glass1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#000000" stop-opacity="0.25"/>
+      <stop offset="100%" stop-color="#000000" stop-opacity="0.85"/>
+    </linearGradient>
+    <linearGradient id="f1_glass2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#000000" stop-opacity="0.4"/>
+      <stop offset="100%" stop-color="#000000" stop-opacity="0.85"/>
+    </linearGradient>
+    <linearGradient id="f1_glass3" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#000000" stop-opacity="0.6"/>
+      <stop offset="100%" stop-color="#000000" stop-opacity="0.9"/>
+    </linearGradient>
+    <linearGradient id="f1_stroke" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#000000" stop-opacity="0.8"/>
+      <stop offset="60%" stop-color="#000000" stop-opacity="0.5"/>
+      <stop offset="100%" stop-color="#000000" stop-opacity="0.1"/>
+    </linearGradient>
+    <linearGradient id="f1_bolt" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#000000"/>
+      <stop offset="35%" stop-color="#000000"/>
+      <stop offset="100%" stop-color="#000000"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Deep Obsidian Rounded Container -->
+  <rect x="36" y="36" width="440" height="440" rx="96" fill="#000000"/>
+
+  <!-- Tier 1: Base Glass Card (L1 Concurso) -->
+  <path d="M120 270 L256 195 L392 270 L256 345 Z" fill="url(#f1_glass1)" stroke="url(#f1_stroke)" stroke-width="2.5"/>
+  <path d="M120 270 L256 345 L256 362 L120 287 Z" fill="#000000" opacity="0.7"/>
+  <path d="M256 345 L392 270 L392 287 L256 362 Z" fill="#000000" opacity="0.7"/>
+
+  <!-- Tier 2: Mid Glass Card (L2 Disciplina) -->
+  <path d="M110 220 L256 140 L402 220 L256 300 Z" fill="url(#f1_glass2)" stroke="url(#f1_stroke)" stroke-width="3"/>
+  <path d="M110 220 L256 300 L256 318 L110 238 Z" fill="#000000" opacity="0.6"/>
+  <path d="M256 300 L402 220 L402 238 L256 318 Z" fill="#000000" opacity="0.6"/>
+
+  <!-- Tier 3: Top Glass Card (L3 Tópico) -->
+  <path d="M100 170 L256 85 L412 170 L256 255 Z" fill="url(#f1_glass3)" stroke="url(#f1_stroke)" stroke-width="3.5"/>
+  <path d="M100 170 L256 255 L256 273 L100 188 Z" fill="#000000" opacity="0.65"/>
+  <path d="M256 255 L412 170 L412 188 L256 273 Z" fill="#000000" opacity="0.65"/>
+
+  <!-- Internal Translucent Shimmer Lines -->
+  <line x1="140" y1="172" x2="256" y2="108" stroke="#000000" stroke-width="5" stroke-linecap="round" opacity="0.45"/>
+  <line x1="150" y1="195" x2="230" y2="150" stroke="#000000" stroke-width="5" stroke-linecap="round" opacity="0.35"/>
+
+  <!-- Piercing Golden Lightning Blade -->
+  <polygon points="280,35 180,225 255,225 200,435 345,210 270,210 310,35" fill="url(#f1_bolt)"/>
+  <polygon points="280,35 245,210 270,210 200,435 180,225" fill="#000000" opacity="0.4"/>
+</svg>

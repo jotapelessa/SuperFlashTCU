@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+  <title>SuperFlash - Concept 03: The Möbius Horizon</title>
+  <!--
+    Conceito 3: The Möbius Horizon (O Loop de Retorno)
+    Metáfora: O caminho da repetição contínua — a memória não se perde, ela circula e se fixa.
+    Primeira leitura: Uma fita contínua em nó infinito com espessura uniforme.
+    Segunda leitura: A curvatura vertical forma um 'S' fluido, guardando um diamante/estrela de ancoragem no centro.
+  -->
+  <g fill="#000000" fill-rule="evenodd">
+    <!-- Upper Loop & Descending Spine -->
+    <path d="M256 72 C335 72 400 137 400 216 C400 272 368 320 322 344 L284 290 C310 275 328 247 328 216 C328 176 296 144 256 144 C222 144 194 167 186 198 L114 198 C124 127 184 72 256 72 Z"/>
+    
+    <!-- Lower Loop & Ascending Spine -->
+    <path d="M256 440 C177 440 112 375 112 296 C112 240 144 192 190 168 L228 222 C202 237 184 265 184 296 C184 336 216 368 256 368 C290 368 318 345 326 314 L398 314 C388 385 328 440 256 440 Z"/>
+    
+    <!-- Central Retained Diamond Core (A Âncora Mnemônica) -->
+    <polygon points="256,216 288,256 256,296 224,256"/>
+  </g>
+</svg>

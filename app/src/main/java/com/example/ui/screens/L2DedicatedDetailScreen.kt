@@ -23,6 +23,9 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.DriveFileMove
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
+import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.DriveFileMove
@@ -41,8 +44,10 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilledTonalButton
+import androidx.compose.material3.FilterChip
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.PrimaryTabRow
 import androidx.compose.material3.Scaffold
@@ -68,6 +73,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.data.model.DomainStats
 import com.example.data.model.FlashcardEntity
+import com.example.data.model.isDueForReview
 import com.example.data.model.L2DisciplineSummary
 import com.example.data.model.L3TopicSummary
 import com.example.data.model.ReviewStats
@@ -94,6 +100,7 @@ fun L2DedicatedDetailScreen(
     onEditCard: (FlashcardEntity) -> Unit,
     onEditL2Discipline: (newName: String, iconKey: String, colorHex: String) -> Unit,
     onDeleteL2: () -> Unit,
+    onUpdateDailyGoalPercentage: (Float) -> Unit = {},
     srsAlgorithm: String = "FSRS"
 ) {
     var showEditL2Dialog by remember { mutableStateOf(false) }
@@ -260,7 +267,8 @@ fun L2DedicatedDetailScreen(
                         onToggleSelectL3 = onToggleSelectL3,
                         onClearL3Selection = onClearL3Selection,
                         onOpenMoveDialog = onOpenMoveDialog,
-                        onStudyCards = onStudyCards
+                        onStudyCards = onStudyCards,
+                        onUpdateDailyGoalPercentage = onUpdateDailyGoalPercentage
                     )
                 }
                 1 -> {
@@ -274,7 +282,7 @@ fun L2DedicatedDetailScreen(
                         onSelectL2Filter = {},
                         onSelectL3Filter = {},
                         onStartReviewSession = {
-                            val dueCards = l2Cards.filter { it.dueTimestamp <= System.currentTimeMillis() }
+                            val dueCards = l2Cards.filter { it.isDueForReview() }
                             onStudyCards(if (dueCards.isNotEmpty()) dueCards else l2Cards)
                         },
                         onOpenStudyConfig = { onOpenStudyConfig(l1, discipline.l2, null) },
@@ -349,7 +357,8 @@ fun L2TopicsTabContent(
     onToggleSelectL3: (l2: String, l3: String) -> Unit,
     onClearL3Selection: () -> Unit,
     onOpenMoveDialog: () -> Unit,
-    onStudyCards: (List<FlashcardEntity>) -> Unit
+    onStudyCards: (List<FlashcardEntity>) -> Unit,
+    onUpdateDailyGoalPercentage: (Float) -> Unit = {}
 ) {
     val disciplineColor = DisciplinePalette.parseColor(discipline.colorHex)
 
@@ -424,6 +433,115 @@ fun L2TopicsTabContent(
                                         Text("Desmarcar Todos", style = MaterialTheme.typography.labelSmall)
                                     }
                                 }
+                            }
+                        }
+                    }
+                }
+            }
+
+            // Card Consolidado de Metas Diárias
+            item {
+                Card(
+                    colors = CardDefaults.cardColors(
+                        containerColor = MaterialTheme.colorScheme.surfaceContainerHigh
+                    ),
+                    shape = RoundedCornerShape(16.dp),
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(16.dp),
+                        verticalArrangement = Arrangement.spacedBy(10.dp)
+                    ) {
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                Icon(
+                                    imageVector = Icons.Default.Tune,
+                                    contentDescription = null,
+                                    tint = MaterialTheme.colorScheme.primary,
+                                    modifier = Modifier.size(20.dp)
+                                )
+                                Spacer(modifier = Modifier.width(8.dp))
+                                Text(
+                                    text = "Meta Diária da Matéria",
+                                    style = MaterialTheme.typography.titleSmall,
+                                    fontWeight = FontWeight.Bold
+                                )
+                            }
+
+                            // Chips 5% | 7.5% | 10%
+                            Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+                                listOf(5f, 7.5f, 10f).forEach { pct ->
+                                    val isSelected = kotlin.math.abs(discipline.dailyGoalPercentage - pct) < 0.1f
+                                    FilterChip(
+                                        selected = isSelected,
+                                        onClick = { onUpdateDailyGoalPercentage(pct) },
+                                        label = {
+                                            Text(
+                                                text = if (pct == 7.5f) "7.5%" else "${pct.toInt()}%",
+                                                style = MaterialTheme.typography.labelSmall,
+                                                fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal
+                                            )
+                                        }
+                                    )
+                                }
+                            }
+                        }
+
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Text(
+                                text = "Estudados hoje: ${discipline.reviewedToday} / ${discipline.dailyTargetCards} cards",
+                                style = MaterialTheme.typography.bodyMedium,
+                                fontWeight = FontWeight.SemiBold,
+                                color = if (discipline.isDailyGoalMet) Color(0xFF2E7D32) else MaterialTheme.colorScheme.onSurface
+                            )
+                            Text(
+                                text = "%.0f%%".format(discipline.dailyProgressPercentage),
+                                style = MaterialTheme.typography.titleSmall,
+                                fontWeight = FontWeight.Bold,
+                                color = if (discipline.isDailyGoalMet) Color(0xFF2E7D32) else MaterialTheme.colorScheme.primary
+                            )
+                        }
+
+                        val animatedL2Progress by animateFloatAsState(
+                            targetValue = (discipline.dailyProgressPercentage / 100f).coerceIn(0f, 1f),
+                            animationSpec = tween(durationMillis = 600)
+                        )
+                        LinearProgressIndicator(
+                            progress = { animatedL2Progress },
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(8.dp)
+                                .clip(RoundedCornerShape(4.dp)),
+                            color = if (discipline.isDailyGoalMet) Color(0xFF4CAF50) else MaterialTheme.colorScheme.primary
+                        )
+
+                        if (discipline.isDailyGoalMet) {
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.spacedBy(6.dp)
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Default.CheckCircle,
+                                    contentDescription = null,
+                                    tint = Color(0xFF2E7D32),
+                                    modifier = Modifier.size(16.dp)
+                                )
+                                Text(
+                                    text = "Parabéns! Meta total desta disciplina atingida hoje!",
+                                    style = MaterialTheme.typography.labelSmall,
+                                    fontWeight = FontWeight.Bold,
+                                    color = Color(0xFF2E7D32)
+                                )
                             }
                         }
                     }
@@ -592,6 +710,52 @@ fun L3TopicRow(
                     fontWeight = FontWeight.Medium,
                     color = MaterialTheme.colorScheme.onSurface
                 )
+
+                Spacer(modifier = Modifier.height(4.dp))
+
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    if (topic.isDailyGoalMet) {
+                        Surface(
+                            shape = RoundedCornerShape(4.dp),
+                            color = Color(0xFF2E7D32).copy(alpha = 0.15f)
+                        ) {
+                            Text(
+                                text = "Meta Batida! (${topic.reviewedToday}/${topic.dailyTargetCards}) ✅",
+                                modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp),
+                                style = MaterialTheme.typography.labelSmall.copy(fontSize = 10.sp),
+                                fontWeight = FontWeight.Bold,
+                                color = Color(0xFF2E7D32)
+                            )
+                        }
+                    } else {
+                        Text(
+                            text = "Meta diária: ${topic.reviewedToday}/${topic.dailyTargetCards} cards (${topic.dailyGoalPercentage.toInt()}%)",
+                            style = MaterialTheme.typography.labelSmall.copy(fontSize = 10.sp),
+                            color = MaterialTheme.colorScheme.primary,
+                            fontWeight = FontWeight.Medium
+                        )
+                    }
+                }
+
+                if (!topic.isDailyGoalMet && topic.dailyTargetCards > 0) {
+                    Spacer(modifier = Modifier.height(4.dp))
+                    val animatedL3Progress by animateFloatAsState(
+                        targetValue = (topic.dailyProgressPercentage / 100f).coerceIn(0f, 1f),
+                        animationSpec = tween(durationMillis = 500)
+                    )
+                    LinearProgressIndicator(
+                        progress = { animatedL3Progress },
+                        modifier = Modifier
+                            .fillMaxWidth(0.9f)
+                            .height(4.dp)
+                            .clip(RoundedCornerShape(2.dp)),
+                        color = MaterialTheme.colorScheme.primary,
+                        trackColor = MaterialTheme.colorScheme.surfaceContainerHighest
+                    )
+                }
             }
 
             Spacer(modifier = Modifier.width(8.dp))

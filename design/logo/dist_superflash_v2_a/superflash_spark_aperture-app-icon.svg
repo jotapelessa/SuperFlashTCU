@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256"><title>SuperFlash Logo</title><rect width="256" height="256" rx="57.6" fill="#0B0F19"/><g transform="translate(12.54 12.54) scale(0.451)">
+  
+  <defs>
+    <linearGradient id="c_a_blue" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38BDF8"/>
+      <stop offset="100%" stop-color="#1D4ED8"/>
+    </linearGradient>
+    <linearGradient id="c_a_indigo" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#2563EB"/>
+      <stop offset="100%" stop-color="#0F172A"/>
+    </linearGradient>
+    <linearGradient id="c_a_spark" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FEF08A"/>
+      <stop offset="100%" stop-color="#F59E0B"/>
+    </linearGradient>
+  </defs>
+  <g fill-rule="evenodd">
+    <!-- Top-Right Anchor Shard -->
+    <path d="M176 80 L384 80 C406 80 424 98 424 120 L424 240 L340 240 L340 168 L264 168 L176 80 Z" fill="url(#c_a_blue)"/>
+    
+    <!-- Central Kinetic S-Blade (Upper Fin) -->
+    <path d="M120 152 L232 264 L160 264 C138 264 120 246 120 224 L120 152 Z" fill="url(#c_a_spark)"/>
+    
+    <!-- Central Kinetic S-Blade (Lower Fin) -->
+    <path d="M392 360 L280 248 L352 248 C374 248 392 266 392 288 L392 360 Z" fill="url(#c_a_spark)"/>
+
+    <!-- Bottom-Left Anchor Shard -->
+    <path d="M336 432 L128 432 C106 432 88 414 88 392 L88 272 L172 272 L172 344 L248 344 L336 432 Z" fill="url(#c_a_indigo)"/>
+  </g>
+</g></svg>

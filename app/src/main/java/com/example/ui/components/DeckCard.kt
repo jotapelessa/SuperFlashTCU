@@ -1,5 +1,6 @@
 package com.example.ui.components
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -23,6 +24,7 @@ import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.material.icons.filled.AutoStories
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.Flag
 import androidx.compose.material.icons.filled.Folder
 import androidx.compose.material.icons.filled.School
 import androidx.compose.material.icons.filled.Tune
@@ -327,6 +329,56 @@ fun DeckCard(
                     color = if (deck.masteryPercentage >= 70f) Color(0xFF10B981) else primaryColor,
                     trackColor = if (isCoverActive) Color.White.copy(alpha = 0.25f) else MaterialTheme.colorScheme.surfaceContainerHighest
                 )
+
+                // Indicador de Meta Diária deste Baralho L1 (5% a 15%)
+                if (deck.dailyTargetCards > 0) {
+                    Spacer(modifier = Modifier.height(10.dp))
+                    Surface(
+                        shape = RoundedCornerShape(10.dp),
+                        color = if (deck.isDailyGoalMet) {
+                            (if (isCoverActive) Color(0xFF10B981).copy(alpha = 0.35f) else Color(0xFFE8F5E9))
+                        } else {
+                            (if (isCoverActive) Color.White.copy(alpha = 0.15f) else MaterialTheme.colorScheme.surfaceContainerHighest.copy(alpha = 0.6f))
+                        },
+                        border = BorderStroke(
+                            1.dp,
+                            if (deck.isDailyGoalMet) Color(0xFF10B981) else (if (isCoverActive) Color.White.copy(alpha = 0.3f) else MaterialTheme.colorScheme.outlineVariant)
+                        ),
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 12.dp, vertical = 7.dp),
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.spacedBy(6.dp)
+                            ) {
+                                Icon(
+                                    imageVector = if (deck.isDailyGoalMet) Icons.Default.CheckCircle else Icons.Default.Flag,
+                                    contentDescription = null,
+                                    tint = if (deck.isDailyGoalMet) Color(0xFF10B981) else (if (isCoverActive) Color.White else MaterialTheme.colorScheme.primary),
+                                    modifier = Modifier.size(16.dp)
+                                )
+                                Text(
+                                    text = if (deck.isDailyGoalMet) "Meta concluída hoje! 🎉" else "Meta de estudo",
+                                    style = MaterialTheme.typography.labelSmall.copy(shadow = textShadow),
+                                    fontWeight = FontWeight.SemiBold,
+                                    color = if (isCoverActive) Color.White else MaterialTheme.colorScheme.onSurface
+                                )
+                            }
+                            Text(
+                                text = "${deck.reviewedToday}/${deck.dailyTargetCards} cards (${deck.dailyGoalPercentage.toInt()}%)",
+                                style = MaterialTheme.typography.labelSmall.copy(shadow = textShadow),
+                                fontWeight = FontWeight.Bold,
+                                color = if (deck.isDailyGoalMet) Color(0xFF10B981) else (if (isCoverActive) Color.White else primaryColor)
+                            )
+                        }
+                    }
+                }
 
                 Spacer(modifier = Modifier.height(14.dp))
 

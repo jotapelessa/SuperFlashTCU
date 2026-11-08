@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+  <title>SuperFlash - Concept 02 Reversed (White on Dark)</title>
+  <rect width="512" height="512" rx="112" fill="#0B0F19"/>
+  <g fill="#FFFFFF">
+    <path d="M96 160 C96 112 134 74 182 74 L276 74 L210 216 L286 216 L174 438 L182 350 L140 350 C116 350 96 330 96 306 Z"/>
+    <path d="M416 352 C416 400 378 438 330 438 L236 438 L302 296 L226 296 L338 74 L330 162 L372 162 C396 162 416 182 416 206 Z"/>
+  </g>
+</svg>

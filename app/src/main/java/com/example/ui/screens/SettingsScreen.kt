@@ -65,6 +65,8 @@ import androidx.compose.material3.MenuAnchorType
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Slider
+import androidx.compose.material3.SliderDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
@@ -73,6 +75,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -85,15 +88,21 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.data.model.L1DeckSummary
 import com.example.data.model.PerCardTimeLimit
 import com.example.data.model.StudyTimerConfig
 import com.example.ui.theme.AccentColorOption
 import com.example.ui.theme.AppThemeMode
+import java.util.Locale
+import kotlin.math.roundToInt
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
 fun SettingsScreen(
     dailyGoal: Int,
+    dailyGoalPercentage: Float = 10f,
+    onSetDailyGoalPercentage: (Float) -> Unit = {},
+    l1Decks: List<L1DeckSummary> = emptyList(),
     smartShuffleEnabled: Boolean,
     timerConfig: StudyTimerConfig,
     totalCardsCount: Int,
@@ -136,6 +145,7 @@ fun SettingsScreen(
     modifier: Modifier = Modifier
 ) {
     var goalText by remember(dailyGoal) { mutableStateOf(dailyGoal.toString()) }
+    var goalPercentageSlider by remember(dailyGoalPercentage) { mutableFloatStateOf(dailyGoalPercentage) }
     var expandedLimitMenu by remember { mutableStateOf(false) }
     var selectedLimit by remember(timerConfig.perCardLimit) { mutableStateOf(timerConfig.perCardLimit) }
     var targetMinutes by remember(timerConfig.targetSessionMinutes) { mutableIntStateOf(timerConfig.targetSessionMinutes) }
@@ -408,23 +418,69 @@ fun SettingsScreen(
                 }
             }
 
-            // 2. Meta Diária Card
+            // 2. Meta Diária Card (5% a 15% por concurso L1)
             item {
                 SettingsSectionCard(
-                    title = "Meta Diária de Estudos",
+                    title = "Meta Diária de Flashcards por Concurso",
                     icon = Icons.Default.Flag
                 ) {
                     Text(
-                        text = "Ajuste o número de cards que deseja revisar por dia para manter sua sequência ativa:",
+                        text = "Defina a porcentagem diária dos flashcards de cada concurso L1 (somando todas as suas disciplinas). O app equilibra e calcula a cota diária automaticamente:",
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
 
+                    Spacer(modifier = Modifier.height(14.dp))
+
+                    // Percentual ativo e badges informativos
+                    Surface(
+                        shape = RoundedCornerShape(12.dp),
+                        color = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.4f),
+                        border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(alpha = 0.2f)),
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 14.dp, vertical = 10.dp),
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Column {
+                                Text(
+                                    text = "Ritmo Diário Ativo",
+                                    style = MaterialTheme.typography.labelSmall,
+                                    color = MaterialTheme.colorScheme.primary,
+                                    fontWeight = FontWeight.Bold
+                                )
+                                Text(
+                                    text = "%.1f%% por concurso L1".format(Locale.US, goalPercentageSlider),
+                                    style = MaterialTheme.typography.titleMedium,
+                                    fontWeight = FontWeight.ExtraBold
+                                )
+                            }
+
+                            Surface(
+                                shape = CircleShape,
+                                color = MaterialTheme.colorScheme.primary,
+                                modifier = Modifier.padding(2.dp)
+                            ) {
+                                Text(
+                                    text = "$dailyGoal cards/dia",
+                                    style = MaterialTheme.typography.labelSmall,
+                                    fontWeight = FontWeight.Bold,
+                                    color = Color.White,
+                                    modifier = Modifier.padding(horizontal = 10.dp, vertical = 4.dp)
+                                )
+                            }
+                        }
+                    }
+
                     Spacer(modifier = Modifier.height(12.dp))
 
-                    // Quick Goal Preset Chips
+                    // Quick Goal Preset Chips (5%, 7.5%, 10%, 12.5%, 15%)
                     Text(
-                        text = "Atalhos Rápidos:",
+                        text = "Atalhos Rápidos de Porcentagem:",
                         style = MaterialTheme.typography.labelMedium,
                         fontWeight = FontWeight.SemiBold
                     )
@@ -435,59 +491,127 @@ fun SettingsScreen(
                         verticalArrangement = Arrangement.spacedBy(8.dp),
                         modifier = Modifier.fillMaxWidth()
                     ) {
-                        listOf(20, 50, 100, 200, 500).forEach { preset ->
-                            val isSelected = goalText == preset.toString()
+                        listOf(5.0f, 7.5f, 10.0f, 12.5f, 15.0f).forEach { preset ->
+                            val isSelected = kotlin.math.abs(goalPercentageSlider - preset) < 0.1f
                             FilterChip(
                                 selected = isSelected,
                                 onClick = {
-                                    goalText = preset.toString()
-                                    onSetDailyGoal(preset)
+                                    goalPercentageSlider = preset
+                                    onSetDailyGoalPercentage(preset)
                                 },
-                                label = { Text("$preset") },
+                                label = { Text(if (preset % 1.0f == 0f) "${preset.toInt()}%" else "$preset%") },
                                 colors = FilterChipDefaults.filterChipColors(
                                     selectedContainerColor = MaterialTheme.colorScheme.primaryContainer,
                                     selectedLabelColor = MaterialTheme.colorScheme.onPrimaryContainer
-                                )
+                                ),
+                                modifier = Modifier.testTag("chip_daily_goal_pct_${preset.toInt()}")
                             )
                         }
                     }
 
                     Spacer(modifier = Modifier.height(12.dp))
 
+                    // Slider contínuo de 5% a 15% (passo 0.5%)
                     Row(
                         modifier = Modifier.fillMaxWidth(),
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(12.dp)
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
                     ) {
-                        OutlinedTextField(
-                            value = goalText,
-                            onValueChange = { goalText = it.filter { char -> char.isDigit() } },
-                            label = { Text("Meta customizada") },
-                            suffix = { Text("cards/dia") },
-                            singleLine = true,
-                            shape = RoundedCornerShape(12.dp),
-                            modifier = Modifier
-                                .weight(1f)
-                                .testTag("input_settings_daily_goal")
+                        Text(
+                            text = "Ajuste fino da porcentagem:",
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
+                        Text(
+                            text = "%.1f%%".format(Locale.US, goalPercentageSlider),
+                            style = MaterialTheme.typography.labelMedium,
+                            fontWeight = FontWeight.Bold,
+                            color = MaterialTheme.colorScheme.primary
+                        )
+                    }
 
-                        Button(
-                            onClick = {
-                                val parsed = goalText.toIntOrNull() ?: dailyGoal
-                                if (parsed > 0) {
-                                    onSetDailyGoal(parsed)
+                    Slider(
+                        value = goalPercentageSlider,
+                        onValueChange = { raw ->
+                            goalPercentageSlider = (raw * 2).roundToInt() / 2f
+                        },
+                        onValueChangeFinished = {
+                            onSetDailyGoalPercentage(goalPercentageSlider)
+                        },
+                        valueRange = 5f..15f,
+                        steps = 19,
+                        colors = SliderDefaults.colors(
+                            thumbColor = MaterialTheme.colorScheme.primary,
+                            activeTrackColor = MaterialTheme.colorScheme.primary
+                        ),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .testTag("slider_settings_daily_goal_pct")
+                    )
+
+                    Spacer(modifier = Modifier.height(12.dp))
+
+                    // Card de Live Preview detalhado por Concurso L1
+                    Surface(
+                        shape = RoundedCornerShape(12.dp),
+                        color = MaterialTheme.colorScheme.surfaceContainer,
+                        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant),
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Column(modifier = Modifier.padding(14.dp)) {
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.SpaceBetween,
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Text(
+                                    text = "Prévia de Metas por Concurso L1",
+                                    style = MaterialTheme.typography.labelMedium,
+                                    fontWeight = FontWeight.Bold,
+                                    color = MaterialTheme.colorScheme.primary
+                                )
+                                Text(
+                                    text = "Total Geral: $dailyGoal cards/dia",
+                                    style = MaterialTheme.typography.labelSmall,
+                                    fontWeight = FontWeight.Bold,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                                )
+                            }
+
+                            Spacer(modifier = Modifier.height(8.dp))
+
+                            if (l1Decks.isEmpty()) {
+                                Text(
+                                    text = "Nenhum baralho L1 carregado para simulação.",
+                                    style = MaterialTheme.typography.bodySmall,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                                )
+                            } else {
+                                l1Decks.forEach { deck ->
+                                    val targetForDeck = kotlin.math.max(1, kotlin.math.ceil(deck.totalCards * (goalPercentageSlider / 100f)).toInt())
+                                    Row(
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .padding(vertical = 4.dp),
+                                        horizontalArrangement = Arrangement.SpaceBetween,
+                                        verticalAlignment = Alignment.CenterVertically
+                                    ) {
+                                        Text(
+                                            text = deck.l1,
+                                            style = MaterialTheme.typography.bodySmall,
+                                            fontWeight = FontWeight.Medium,
+                                            color = MaterialTheme.colorScheme.onSurface,
+                                            modifier = Modifier.weight(1f)
+                                        )
+                                        Text(
+                                            text = "$targetForDeck cards/dia (${deck.totalCards} cards)",
+                                            style = MaterialTheme.typography.labelSmall,
+                                            fontWeight = FontWeight.SemiBold,
+                                            color = MaterialTheme.colorScheme.primary
+                                        )
+                                    }
                                 }
-                            },
-                            shape = RoundedCornerShape(12.dp),
-                            modifier = Modifier.testTag("btn_save_settings_daily_goal")
-                        ) {
-                            Icon(
-                                imageVector = Icons.Default.Check,
-                                contentDescription = null,
-                                modifier = Modifier.size(18.dp)
-                            )
-                            Spacer(modifier = Modifier.width(6.dp))
-                            Text("Salvar")
+                            }
                         }
                     }
                 }

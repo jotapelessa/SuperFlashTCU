@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+  <title>SuperFlash - Concept A: The Spark Aperture</title>
+  <!-- 
+    Concept A: The Spark Aperture
+    Dois blocos chanfrados complementares em ângulo de 45 graus.
+    A fenda em espaço negativo esculpe o monograma 'S' dinâmico e o spark central de ativação.
+    Construído com geometria rigorosa em grid modular de 16px.
+  -->
+  <g fill="#000000" fill-rule="evenodd">
+    <!-- Top-Right Anchor Shard -->
+    <path d="M176 80 L384 80 C406 80 424 98 424 120 L424 240 L340 240 L340 168 L264 168 L176 80 Z"/>
+    
+    <!-- Central Kinetic S-Blade (Upper Fin) -->
+    <path d="M120 152 L232 264 L160 264 C138 264 120 246 120 224 L120 152 Z"/>
+    
+    <!-- Central Kinetic S-Blade (Lower Fin) -->
+    <path d="M392 360 L280 248 L352 248 C374 248 392 266 392 288 L392 360 Z"/>
+
+    <!-- Bottom-Left Anchor Shard -->
+    <path d="M336 432 L128 432 C106 432 88 414 88 392 L88 272 L172 272 L172 344 L248 344 L336 432 Z"/>
+  </g>
+</svg>
