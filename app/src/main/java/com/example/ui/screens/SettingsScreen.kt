@@ -1,5 +1,15 @@
 package com.example.ui.screens
 
+import android.widget.Toast
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.runtime.rememberCoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import java.text.SimpleDateFormat
+import java.util.Date
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
@@ -138,6 +148,8 @@ fun SettingsScreen(
     onDownloadFromSupabase: () -> Unit = {},
     onOpenImportCsv: () -> Unit,
     onOpenExportCsv: () -> Unit = {},
+    onExportFullBackupJson: ((onJsonReady: (String) -> Unit) -> Unit)? = null,
+    onImportFullBackupJson: ((jsonStr: String, onFinished: (Boolean, String) -> Unit) -> Unit)? = null,
     onResetData: () -> Unit,
     onResetStudyStats: () -> Unit = {},
     onDeleteAllDecks: () -> Unit = {},
@@ -164,6 +176,61 @@ fun SettingsScreen(
     var showResetStatsConfirmDialog by remember { mutableStateOf(false) }
     var showDeleteDecksConfirmDialog by remember { mutableStateOf(false) }
     var showZeroConfirmDialog by remember { mutableStateOf(false) }
+
+    val context = LocalContext.current
+    val coroutineScope = rememberCoroutineScope()
+    var fullBackupJsonData by remember { mutableStateOf("") }
+
+    val fullBackupSaveLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.CreateDocument("application/json")
+    ) { uri ->
+        if (uri != null && fullBackupJsonData.isNotBlank()) {
+            coroutineScope.launch(Dispatchers.IO) {
+                try {
+                    context.contentResolver.openOutputStream(uri)?.use { stream ->
+                        stream.write(fullBackupJsonData.toByteArray(Charsets.UTF_8))
+                    }
+                    withContext(Dispatchers.Main) {
+                        Toast.makeText(context, "Backup Completo FSRS (.json) exportado com sucesso!", Toast.LENGTH_LONG).show()
+                    }
+                } catch (e: Exception) {
+                    withContext(Dispatchers.Main) {
+                        Toast.makeText(context, "Erro ao salvar backup JSON: ${e.localizedMessage}", Toast.LENGTH_LONG).show()
+                    }
+                }
+            }
+        }
+    }
+
+    val fullBackupRestoreLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.OpenDocument()
+    ) { uri ->
+        if (uri != null) {
+            coroutineScope.launch(Dispatchers.IO) {
+                try {
+                    val jsonContent = context.contentResolver.openInputStream(uri)?.use { stream ->
+                        stream.bufferedReader(Charsets.UTF_8).readText()
+                    }.orEmpty()
+
+                    if (jsonContent.isNotBlank() && onImportFullBackupJson != null) {
+                        withContext(Dispatchers.Main) {
+                            onImportFullBackupJson(jsonContent) { _, message ->
+                                Toast.makeText(context, message, Toast.LENGTH_LONG).show()
+                            }
+                        }
+                    } else {
+                        withContext(Dispatchers.Main) {
+                            Toast.makeText(context, "Arquivo JSON vazio ou inválido.", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                } catch (e: Exception) {
+                    withContext(Dispatchers.Main) {
+                        Toast.makeText(context, "Erro ao ler arquivo JSON: ${e.localizedMessage}", Toast.LENGTH_LONG).show()
+                    }
+                }
+            }
+        }
+    }
 
     val modelOptions = listOf(
         "gemini-flash-latest" to "Gemini Flash Latest (Recomendado)",
@@ -1101,6 +1168,56 @@ fun SettingsScreen(
                             )
                             Spacer(modifier = Modifier.width(6.dp))
                             Text("Backup CSV L1", fontWeight = FontWeight.SemiBold)
+                        }
+                    }
+
+                    Spacer(modifier = Modifier.height(8.dp))
+
+                    // Full FSRS-5 Offline Backup & Restore Row
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        Button(
+                            onClick = {
+                                if (onExportFullBackupJson != null) {
+                                    onExportFullBackupJson { json ->
+                                        fullBackupJsonData = json
+                                        val df = SimpleDateFormat("yyyyMMdd_HHmm", Locale.getDefault())
+                                        fullBackupSaveLauncher.launch("superflash_backup_fsrs_${df.format(Date())}.json")
+                                    }
+                                }
+                            },
+                            modifier = Modifier
+                                .weight(1f)
+                                .testTag("btn_settings_export_full_json"),
+                            shape = RoundedCornerShape(12.dp)
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.Storage,
+                                contentDescription = null,
+                                modifier = Modifier.size(18.dp)
+                            )
+                            Spacer(modifier = Modifier.width(6.dp))
+                            Text("Backup FSRS (.json)", fontWeight = FontWeight.SemiBold, fontSize = 12.sp)
+                        }
+
+                        OutlinedButton(
+                            onClick = {
+                                fullBackupRestoreLauncher.launch(arrayOf("application/json", "text/*"))
+                            },
+                            modifier = Modifier
+                                .weight(1f)
+                                .testTag("btn_settings_import_full_json"),
+                            shape = RoundedCornerShape(12.dp)
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.CloudUpload,
+                                contentDescription = null,
+                                modifier = Modifier.size(18.dp)
+                            )
+                            Spacer(modifier = Modifier.width(6.dp))
+                            Text("Restaurar (.json)", fontWeight = FontWeight.SemiBold, fontSize = 12.sp)
                         }
                     }
 

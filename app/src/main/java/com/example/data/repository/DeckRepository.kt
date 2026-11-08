@@ -961,6 +961,132 @@ class DeckRepository(
         dao.insertOrReplaceAll(cards)
     }
 
+    suspend fun restoreDatabaseSnapshot(
+        cards: List<FlashcardEntity>,
+        logs: List<com.example.data.model.ReviewLogEntity> = emptyList()
+    ) {
+        dao.insertOrReplaceAll(cards)
+        if (logs.isNotEmpty()) {
+            reviewLogDao?.insertAll(logs)
+        }
+    }
+
+    suspend fun exportFullBackupJson(): String {
+        val cards = dao.getAllFlashcardsSync()
+        val logs = getAllReviewLogsSync()
+        val root = org.json.JSONObject()
+        root.put("version", 5)
+        root.put("app", "SuperFlash TCU")
+        root.put("timestamp", System.currentTimeMillis())
+        root.put("cards_count", cards.size)
+        root.put("logs_count", logs.size)
+
+        val cardsArray = org.json.JSONArray()
+        cards.forEach { card ->
+            val obj = org.json.JSONObject().apply {
+                put("id", card.id)
+                put("deck_raw", card.deckRaw)
+                put("l1", card.l1)
+                put("l2", card.l2)
+                put("l3", card.l3)
+                put("note_type", card.noteType)
+                put("front_html", card.frontHtml)
+                put("back_html", card.backHtml)
+                put("tags", card.tags)
+                put("content_hash", card.contentHash)
+                put("interval_days", card.intervalDays)
+                put("ease_factor", card.easeFactor.toDouble())
+                put("reps", card.reps)
+                put("lapses", card.lapses)
+                put("mastery_level", card.masteryLevel)
+                put("due_timestamp", card.dueTimestamp)
+                put("last_reviewed_timestamp", card.lastReviewedTimestamp)
+                put("stability", card.stability.toDouble())
+                put("difficulty", card.difficulty.toDouble())
+            }
+            cardsArray.put(obj)
+        }
+        root.put("cards", cardsArray)
+
+        val logsArray = org.json.JSONArray()
+        logs.forEach { log ->
+            val obj = org.json.JSONObject().apply {
+                put("id", log.id)
+                put("card_id", log.cardId)
+                put("l1", log.l1)
+                put("l2", log.l2)
+                put("l3", log.l3)
+                put("rating", log.rating)
+                put("duration_ms", log.reviewDurationMs)
+                put("timestamp", log.timestamp)
+            }
+            logsArray.put(obj)
+        }
+        root.put("logs", logsArray)
+
+        return root.toString()
+    }
+
+    suspend fun importFullBackupJson(jsonStr: String): Pair<Int, Int> {
+        val root = org.json.JSONObject(jsonStr)
+        val cardsArray = root.optJSONArray("cards") ?: org.json.JSONArray()
+        val cardsList = mutableListOf<FlashcardEntity>()
+        for (i in 0 until cardsArray.length()) {
+            val obj = cardsArray.getJSONObject(i)
+            cardsList.add(
+                FlashcardEntity(
+                    id = obj.optLong("id", 0L),
+                    deckRaw = obj.optString("deck_raw", ""),
+                    l1 = obj.optString("l1", "Geral"),
+                    l2 = obj.optString("l2", "Geral"),
+                    l3 = obj.optString("l3", "Geral"),
+                    noteType = obj.optString("note_type", "Básico+"),
+                    frontHtml = obj.optString("front_html", ""),
+                    backHtml = obj.optString("back_html", ""),
+                    tags = obj.optString("tags", ""),
+                    contentHash = obj.optString("content_hash", ""),
+                    intervalDays = obj.optInt("interval_days", 0),
+                    easeFactor = obj.optDouble("ease_factor", 2.5).toFloat(),
+                    reps = obj.optInt("reps", 0),
+                    lapses = obj.optInt("lapses", 0),
+                    masteryLevel = obj.optInt("mastery_level", 0),
+                    dueTimestamp = obj.optLong("due_timestamp", 0L),
+                    lastReviewedTimestamp = obj.optLong("last_reviewed_timestamp", 0L),
+                    stability = obj.optDouble("stability", 0.0).toFloat(),
+                    difficulty = obj.optDouble("difficulty", 0.0).toFloat()
+                )
+            )
+        }
+
+        val logsArray = root.optJSONArray("logs") ?: org.json.JSONArray()
+        val logsList = mutableListOf<com.example.data.model.ReviewLogEntity>()
+        for (i in 0 until logsArray.length()) {
+            val obj = logsArray.getJSONObject(i)
+            logsList.add(
+                com.example.data.model.ReviewLogEntity(
+                    id = obj.optLong("id", 0L),
+                    cardId = obj.optLong("card_id", 0L),
+                    l1 = obj.optString("l1", "Geral"),
+                    l2 = obj.optString("l2", "Geral"),
+                    l3 = obj.optString("l3", "Geral"),
+                    rating = obj.optInt("rating", 3),
+                    reviewDurationMs = obj.optLong("duration_ms", 0L),
+                    timestamp = obj.optLong("timestamp", System.currentTimeMillis())
+                )
+            )
+        }
+
+        if (cardsList.isNotEmpty()) {
+            restoreDatabaseSnapshot(cardsList, logsList)
+        }
+
+        return Pair(cardsList.size, logsList.size)
+    }
+
+    suspend fun getAllFlashcardsSync(): List<FlashcardEntity> {
+        return dao.getAllFlashcardsSync()
+    }
+
     suspend fun getAllReviewLogsSync(): List<com.example.data.model.ReviewLogEntity> {
         return reviewLogDao?.getAllReviewLogsSync().orEmpty()
     }

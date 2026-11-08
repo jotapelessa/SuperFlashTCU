@@ -124,7 +124,7 @@ class SupabaseSyncManager {
                 var lastCode = 0
                 for (attempt in 1..3) {
                     val cardsReq = Request.Builder()
-                        .url("$cleanUrl/rest/v1/app_flashcards")
+                        .url("$cleanUrl/rest/v1/app_flashcards?on_conflict=content_hash")
                         .addHeader("apikey", supabaseKey.trim())
                         .addHeader("Authorization", "Bearer ${supabaseKey.trim()}")
                         .addHeader("Content-Type", "application/json")
@@ -207,6 +207,12 @@ class SupabaseSyncManager {
                 ""
             }
 
+            val checksum = try {
+                val digest = java.security.MessageDigest.getInstance("SHA-256")
+                digest.digest((cardsJsonForBackup + logsJsonForBackup + settingsJson).toByteArray(Charsets.UTF_8))
+                    .joinToString("") { "%02x".format(it) }
+            } catch (_: Exception) { "" }
+
             val fullPayloadObj = JSONObject().apply {
                 put("key", "master_backup")
                 put("updated_at", System.currentTimeMillis())
@@ -215,6 +221,7 @@ class SupabaseSyncManager {
                 put("logs_json", logsJsonForBackup)
                 put("settings_json", settingsJson)
                 put("progress_json", progressReportToJson(progressReport))
+                if (checksum.isNotBlank()) put("checksum", checksum)
             }
 
             val backupArray = JSONArray().apply { put(fullPayloadObj) }

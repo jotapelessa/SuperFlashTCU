@@ -424,4 +424,84 @@ class AuditV2ParityTest {
 
         assertEquals("Intervalo de 3 dias NÃO deve sofrer fuzzing aleatório para manter paridade com botão FSRS", dueWithoutFuzz, dueShort)
     }
+
+    @Test
+    fun testFullBackupJsonExportAndImportPreservesFsrsVariablesAndLogs() = runTest {
+        val now = System.currentTimeMillis()
+        val card = FlashcardEntity(
+            id = 55L,
+            deckRaw = "TCU :: CEX :: Aula 01",
+            l1 = "TCU",
+            l2 = "CEX",
+            l3 = "Aula 01",
+            frontHtml = "<p>Quem julga as contas?</p>",
+            backHtml = "<p>O TCU</p>",
+            contentHash = "hash_tc_55",
+            intervalDays = 21,
+            reps = 6,
+            lapses = 1,
+            masteryLevel = 2,
+            dueTimestamp = now + 86400000L * 21,
+            stability = 18.75f,
+            difficulty = 3.42f
+        )
+        db.flashcardDao().insertFlashcard(card)
+
+        val log = com.example.data.model.ReviewLogEntity(
+            id = 101L,
+            cardId = 55L,
+            l1 = "TCU",
+            l2 = "CEX",
+            l3 = "Aula 01",
+            rating = 3,
+            reviewDurationMs = 4500L,
+            timestamp = now
+        )
+        db.reviewLogDao().insertReviewLog(log)
+
+        // 1. Exporta backup completo offline JSON
+        val exportedJson = repository.exportFullBackupJson()
+        assertTrue("JSON de backup deve conter chave master_backup", exportedJson.contains("cards"))
+        assertTrue("JSON deve conter frontHtml", exportedJson.contains("Quem julga as contas?"))
+
+        // 2. Limpa totalmente o banco de dados Room
+        repository.clearAll()
+        assertEquals(0, repository.getAllFlashcardsSync().size)
+        assertEquals(0, repository.getAllReviewLogsSync().size)
+
+        // 3. Restaura backup completo a partir do JSON exportado
+        val (restoredCards, restoredLogs) = repository.importFullBackupJson(exportedJson)
+        assertEquals(1, restoredCards)
+        assertEquals(1, restoredLogs)
+
+        // 4. Valida preservação matemática 100% fiel de variáveis FSRS-5 e histórico
+        val cardsFromDb = repository.getAllFlashcardsSync()
+        val logsFromDb = repository.getAllReviewLogsSync()
+
+        assertEquals(1, cardsFromDb.size)
+        val restoredCard = cardsFromDb[0]
+        assertEquals(55L, restoredCard.id)
+        assertEquals(18.75f, restoredCard.stability, 0.001f)
+        assertEquals(3.42f, restoredCard.difficulty, 0.001f)
+        assertEquals(21, restoredCard.intervalDays)
+        assertEquals(6, restoredCard.reps)
+        assertEquals(1, restoredCard.lapses)
+        assertEquals(2, restoredCard.masteryLevel)
+
+        assertEquals(1, logsFromDb.size)
+        assertEquals(101L, logsFromDb[0].id)
+        assertEquals(4500L, logsFromDb[0].reviewDurationMs)
+    }
+
+    @Test
+    fun testAtomicRoomRestoreSnapshot() = runTest {
+        val card1 = createCard(id = 100L, reps = 2)
+        val card2 = createCard(id = 200L, reps = 4)
+        val log1 = com.example.data.model.ReviewLogEntity(501L, 100L, "TCU", "CEX", "A1", 3, 2000L, System.currentTimeMillis())
+
+        repository.restoreDatabaseSnapshot(listOf(card1, card2), listOf(log1))
+
+        assertEquals(2, repository.getAllFlashcardsSync().size)
+        assertEquals(1, repository.getAllReviewLogsSync().size)
+    }
 }

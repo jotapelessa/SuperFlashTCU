@@ -696,6 +696,9 @@ class DeckViewModel(application: Application) : AndroidViewModel(application) {
                 _isAnswerRevealed.value = false
             } else {
                 _studyCompleted.value = true
+                if (_supabaseAutoSync.value && _supabaseUrl.value.isNotBlank() && _supabaseKey.value.isNotBlank()) {
+                    syncToSupabase()
+                }
             }
         }
     }
@@ -1017,10 +1020,8 @@ class DeckViewModel(application: Application) : AndroidViewModel(application) {
             val error = resultPair.second
 
             if (restoreData != null && restoreData.cards.isNotEmpty()) {
-                repository.restoreCardsFromCloud(restoreData.cards)
-                if (restoreData.logs.isNotEmpty()) {
-                    repository.restoreReviewLogs(restoreData.logs)
-                }
+                // Restauração atômica ACID em transação única no Room SQLite
+                repository.restoreDatabaseSnapshot(restoreData.cards, restoreData.logs)
 
                 // Restore preferences, L2 proportional goals and SRS parameters
                 if (!restoreData.settingsJson.isNullOrBlank()) {
@@ -1381,6 +1382,38 @@ class DeckViewModel(application: Application) : AndroidViewModel(application) {
             _sessionStats.value = SessionLiveStats()
             _aiAnalysisResult.value = null
             _aiErrorMessage.value = null
+        }
+    }
+
+    /**
+     * Exporta um arquivo JSON de backup completo offline, contendo cartões com variáveis
+     * cognitivas FSRS-5/SM-2, histórico de logs de revisão, configurações e metas proporcionais L2.
+     */
+    fun exportFullBackupJson(onResult: (String) -> Unit) {
+        viewModelScope.launch {
+            val json = repository.exportFullBackupJson()
+            onResult(json)
+        }
+    }
+
+    /**
+     * Restaura integralmente o banco SQLite e preferências a partir de um JSON de backup completo.
+     * Recarrega os StateFlows e caches reativos do repositório imediatamente.
+     */
+    fun importFullBackupJson(jsonStr: String, onResult: (Boolean, String) -> Unit) {
+        viewModelScope.launch {
+            try {
+                val (cardsCount, logsCount) = repository.importFullBackupJson(jsonStr)
+                repository.reloadPreferencesCache(prefs)
+                _smartShuffleEnabled.value = prefs.getBoolean("smart_shuffle_enabled", true)
+                _dailyGoalPercentage.value = prefs.getFloat("daily_goal_percentage", 10f).coerceIn(5f, 15f)
+                _srsAlgorithm.value = prefs.getString("srs_algorithm", "FSRS-5") ?: "FSRS-5"
+                _targetRetention.value = prefs.getFloat("target_retention", 0.90f)
+                _customizationsTrigger.value = System.currentTimeMillis()
+                onResult(true, "Restaurados com sucesso: $cardsCount cartões e $logsCount logs de histórico!")
+            } catch (e: Exception) {
+                onResult(false, "Erro ao restaurar backup: ${e.localizedMessage ?: "Formato inválido"}")
+            }
         }
     }
 }

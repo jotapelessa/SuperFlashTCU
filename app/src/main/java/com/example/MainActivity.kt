@@ -470,6 +470,8 @@ fun AnkiAppNavigation(viewModel: DeckViewModel) {
                         onDownloadFromSupabase = { viewModel.downloadFromSupabase() },
                         onOpenImportCsv = { showImportDialog = true },
                         onOpenExportCsv = { showExportCsvDialog = true },
+                        onExportFullBackupJson = { viewModel.exportFullBackupJson(it) },
+                        onImportFullBackupJson = { json, cb -> viewModel.importFullBackupJson(json, cb) },
                         onResetData = { viewModel.resetToDefault() },
                         onResetStudyStats = { viewModel.resetAllStudyStats() },
                         onDeleteAllDecks = { viewModel.deleteAllDecksAndCards() },
