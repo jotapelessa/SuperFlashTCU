@@ -9,6 +9,8 @@ import androidx.compose.animation.slideInVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
+import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -109,6 +111,7 @@ fun StudyScreen(
     onCheckShouldCelebrateTopic: ((l1: String, l2: String, l3: String, newReviewed: Int, targetCards: Int) -> Boolean)? = null,
     modifier: Modifier = Modifier
 ) {
+    val haptic = LocalHapticFeedback.current
     val sessionStartTimestamp = remember { SystemClock.elapsedRealtime() }
     var cardStartTimestamp by remember { mutableLongStateOf(SystemClock.elapsedRealtime()) }
     var sessionElapsedSeconds by remember { mutableLongStateOf(0L) }
@@ -429,6 +432,9 @@ fun StudyScreen(
                     }
 
                     fun handleRate(rating: Int) {
+                        try {
+                            haptic.performHapticFeedback(HapticFeedbackType.LongPress)
+                        } catch (_: Exception) {}
                         val now = SystemClock.elapsedRealtime()
                         val cardDurationMillis = (now - cardStartTimestamp).coerceAtLeast(300L)
                         val currentCard = cards.getOrNull(currentIndex)

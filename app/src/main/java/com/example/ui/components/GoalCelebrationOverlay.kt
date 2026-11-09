@@ -39,6 +39,7 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.withFrameNanos
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -111,19 +112,26 @@ fun GoalCelebrationDialog(
     }
 
     LaunchedEffect(Unit) {
+        var lastFrameTimeNanos = 0L
         while (true) {
-            delay(16L) // ~60 FPS
-            particles.forEach { p ->
-                p.x += p.vx
-                p.y += p.vy
-                p.vy += 0.0004f // gravidade leve
-                if (p.y > 1f) {
-                    p.y = 0f
-                    p.x = Random.nextFloat()
-                    p.vy = Random.nextFloat() * 0.01f + 0.005f
+            withFrameNanos { frameTimeNanos ->
+                if (lastFrameTimeNanos != 0L) {
+                    val dt = ((frameTimeNanos - lastFrameTimeNanos) / 1_000_000_000f).coerceIn(0.001f, 0.05f)
+                    val factor = dt / 0.016667f
+                    particles.forEach { p ->
+                        p.x += p.vx * factor
+                        p.y += p.vy * factor
+                        p.vy += 0.0004f * factor // gravidade leve
+                        if (p.y > 1f) {
+                            p.y = 0f
+                            p.x = Random.nextFloat()
+                            p.vy = Random.nextFloat() * 0.01f + 0.005f
+                        }
+                    }
+                    tick++
                 }
+                lastFrameTimeNanos = frameTimeNanos
             }
-            tick++
         }
     }
 
