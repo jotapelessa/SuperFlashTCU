@@ -246,11 +246,12 @@ fun SettingsScreen(
     }
 
     val modelOptions = listOf(
-        "gemini-flash-latest" to "Gemini Flash Latest (Recomendado)",
-        "gemini-flash-lite-latest" to "Gemini Flash Lite (Ultra Rápido & Alta Disponibilidade)",
-        "gemini-3.5-flash" to "Gemini 3.5 Flash",
+        "gemini-flash-latest" to "Gemini Flash Latest (Recomendado - 3.8+)",
+        "gemini-3.8-flash" to "Gemini 3.8 Flash (Mais Recente)",
         "gemini-3.7-flash" to "Gemini 3.7 Flash",
-        "gemini-3.8-flash" to "Gemini 3.8 Flash"
+        "gemini-flash-lite-latest" to "Gemini Flash Lite (Ultra Rápido)",
+        "gemini-3.5-flash" to "Gemini 3.5 Flash",
+        "gemini-2.5-flash" to "Gemini 2.5 Flash"
     )
 
     Scaffold(

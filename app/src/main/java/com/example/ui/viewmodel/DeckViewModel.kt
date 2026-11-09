@@ -1216,7 +1216,9 @@ class DeckViewModel(
     }
 
     private val _geminiModelVersion = MutableStateFlow(
-        prefs.getString("gemini_model_version", "gemini-flash-latest")?.takeIf { it != "gemini-1.5-flash" } ?: "gemini-flash-latest"
+        prefs.getString("gemini_model_version", "gemini-flash-latest")?.takeIf {
+            it != "gemini-1.5-flash" && it != "gemini-2.0-flash-lite"
+        } ?: "gemini-flash-latest"
     )
     val geminiModelVersion: StateFlow<String> = _geminiModelVersion.asStateFlow()
 

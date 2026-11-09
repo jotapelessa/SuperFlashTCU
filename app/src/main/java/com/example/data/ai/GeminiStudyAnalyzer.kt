@@ -29,14 +29,14 @@ data class GeminiContent(
 
 @JsonClass(generateAdapter = true)
 data class GeminiThinkingConfig(
-    val thinkingBudget: Int? = 0
+    val thinkingBudget: Int? = null
 )
 
 @JsonClass(generateAdapter = true)
 data class GeminiGenerationConfig(
     val temperature: Double? = 0.2,
     val maxOutputTokens: Int? = 2048,
-    val thinkingConfig: GeminiThinkingConfig? = GeminiThinkingConfig(thinkingBudget = 0)
+    val thinkingConfig: GeminiThinkingConfig? = null
 )
 
 @JsonClass(generateAdapter = true)
@@ -143,10 +143,13 @@ class GeminiStudyAnalyzer(
         val requestedModel = if (!customModelVersion.isNullOrBlank()) customModelVersion.trim() else "gemini-flash-latest"
         val modelsToTry = listOf(
             requestedModel,
-            "gemini-flash-lite-latest",
             "gemini-flash-latest",
-            "gemini-2.0-flash",
-            "gemini-2.0-flash-lite"
+            "gemini-flash-lite-latest",
+            "gemini-3.8-flash",
+            "gemini-3.7-flash",
+            "gemini-3.5-flash",
+            "gemini-2.5-flash",
+            "gemini-2.0-flash"
         ).distinct()
 
         // 1. Build prompt context from L1/L2/L3 hierarchies, SRS parameters, and study stats
@@ -339,9 +342,9 @@ class GeminiStudyAnalyzer(
                         }
                     } else {
                         val code = response.code
-                        val msg = response.message
-                        lastException = Exception("Falha na chamada da API Gemini para o modelo $modelName (HTTP $code): $msg")
-                        android.util.Log.w("GeminiStudyAnalyzer", "Falha no modelo $modelName (HTTP $code). Tentando modelo alternativo se houver...")
+                        val googleMsg = extractGoogleErrorMessage(responseBody) ?: response.message
+                        lastException = Exception("Falha na chamada da API Gemini para o modelo $modelName (HTTP $code): $googleMsg")
+                        android.util.Log.w("GeminiStudyAnalyzer", "Falha no modelo $modelName (HTTP $code): $googleMsg. Tentando modelo alternativo se houver...")
                     }
                 }
             } catch (e: Exception) {
@@ -351,6 +354,16 @@ class GeminiStudyAnalyzer(
         }
 
         Result.failure<GeminiAnalysisResult>(lastException ?: Exception("Não foi possível obter resposta da API Gemini."))
+    }
+
+    private fun extractGoogleErrorMessage(responseBody: String?): String? {
+        if (responseBody.isNullOrBlank()) return null
+        return try {
+            val regex = Regex("\"message\"\\s*:\\s*\"([^\"]+)\"")
+            regex.find(responseBody)?.groupValues?.getOrNull(1)
+        } catch (_: Exception) {
+            null
+        }
     }
 
     suspend fun testApiKeyConnection(
@@ -370,7 +383,10 @@ class GeminiStudyAnalyzer(
             primary,
             "gemini-flash-latest",
             "gemini-flash-lite-latest",
-            "gemini-2.0-flash"
+            "gemini-3.8-flash",
+            "gemini-3.7-flash",
+            "gemini-3.5-flash",
+            "gemini-2.5-flash"
         ).distinct()
 
         val payload = GeminiRequest(
@@ -388,17 +404,18 @@ class GeminiStudyAnalyzer(
             val startTime = System.currentTimeMillis()
             try {
                 val url = "https://generativelanguage.googleapis.com/v1beta/models/$m:generateContent?key=$apiKey"
-                // Create a fresh RequestBody per iteration — OkHttp closes the body after execute()
                 val body = jsonString.toRequestBody("application/json; charset=utf-8".toMediaType())
                 val request = Request.Builder().url(url).post(body).build()
                 client.newCall(request).execute().use { response ->
                     val latency = System.currentTimeMillis() - startTime
+                    val responseBody = response.body?.string()
                     if (response.isSuccessful) {
                         return@withContext Result.success(Pair(latency, m))
                     } else {
                         val code = response.code
-                        lastException = Exception("HTTP $code ($m): ${response.message}")
-                        android.util.Log.w("GeminiStudyAnalyzer", "Falha de teste em $m (HTTP $code). Tentando fallback...")
+                        val googleMsg = extractGoogleErrorMessage(responseBody) ?: response.message
+                        lastException = Exception("HTTP $code ($m): $googleMsg")
+                        android.util.Log.w("GeminiStudyAnalyzer", "Falha de teste em $m (HTTP $code): $googleMsg. Tentando fallback...")
                     }
                 }
             } catch (e: Exception) {
