@@ -2,6 +2,7 @@ package com.example.ui.screens
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
@@ -57,6 +58,7 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -260,135 +262,138 @@ fun StudyScreen(
 
                 Spacer(modifier = Modifier.height(10.dp))
 
-                // Card Flip Animation (Smooth 3D Y-rotation transition on answer reveal - Continuous 120Hz)
-                val cardRotationY by animateFloatAsState(
-                    targetValue = if (isAnswerRevealed) 180f else 0f,
-                    animationSpec = tween(durationMillis = 320, easing = androidx.compose.animation.core.FastOutSlowInEasing),
-                    label = "card_flip_rotation"
-                )
+                // Card Flip Animation & Content scoped to card entity + currentIndex (Guarantees zero answer leaks on next card)
+                key("${card.id}_$currentIndex") {
+                    val cardRotationY by animateFloatAsState(
+                        targetValue = if (isAnswerRevealed) 180f else 0f,
+                        animationSpec = tween(durationMillis = 300, easing = androidx.compose.animation.core.FastOutSlowInEasing),
+                        label = "card_flip_rotation"
+                    )
 
-                // Main Flashcard View
-                Card(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .weight(1f)
-                        .graphicsLayer {
-                            rotationY = cardRotationY
-                            cameraDistance = 14f * density
-                        }
-                        .testTag("study_flashcard"),
-                    shape = RoundedCornerShape(20.dp),
-                    colors = CardDefaults.cardColors(
-                        containerColor = MaterialTheme.colorScheme.surfaceContainerLow
-                    ),
-                    elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
-                ) {
-                    Column(
+                    // Main Flashcard View
+                    Card(
                         modifier = Modifier
-                            .fillMaxSize()
+                            .fillMaxWidth()
+                            .weight(1f)
                             .graphicsLayer {
-                                if (cardRotationY > 90f) {
-                                    rotationY = 180f
-                                }
+                                rotationY = cardRotationY
+                                cameraDistance = 14f * density
                             }
-                            .verticalScroll(rememberScrollState())
-                            .padding(18.dp)
+                            .testTag("study_flashcard"),
+                        shape = RoundedCornerShape(20.dp),
+                        colors = CardDefaults.cardColors(
+                            containerColor = MaterialTheme.colorScheme.surfaceContainerLow
+                        ),
+                        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
                     ) {
-                        // Card Header with Repetition Stats and Mastery
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.SpaceBetween,
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            val (masteryText, masteryColor) = when (card.masteryLevel) {
-                                2 -> "Dominado" to Color(0xFF059669)
-                                1 -> "Aprendendo" to Color(0xFFD97706)
-                                else -> "Novo" to Color(0xFF6B7280)
-                            }
-                            Surface(
-                                shape = RoundedCornerShape(6.dp),
-                                color = masteryColor.copy(alpha = 0.15f)
-                            ) {
-                                Text(
-                                    text = masteryText.uppercase(),
-                                    modifier = Modifier.padding(horizontal = 8.dp, vertical = 3.dp),
-                                    style = MaterialTheme.typography.labelSmall,
-                                    fontWeight = FontWeight.Bold,
-                                    color = masteryColor
-                                )
-                            }
-
-                            val cardStatsText = remember(card.reps, card.intervalDays, card.easeFactor, card.stability, card.difficulty, srsAlgorithm) {
-                                if (srsAlgorithm.equals("FSRS", ignoreCase = true) && card.stability > 0f) {
-                                    "Rep: ${card.reps} • S: ${String.format("%.1f", card.stability)}d • D: ${String.format("%.1f", card.difficulty)}/10 • Int: ${card.intervalDays}d"
-                                } else {
-                                    "Rep: ${card.reps} • Int: ${card.intervalDays}d • Fator: ${String.format("%.1f", card.easeFactor)}"
+                        Column(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .graphicsLayer {
+                                    if (cardRotationY > 90f) {
+                                        rotationY = 180f
+                                    }
                                 }
-                            }
-                            Text(
-                                text = cardStatsText,
-                                style = MaterialTheme.typography.labelSmall,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant
-                            )
-                        }
-
-                        Spacer(modifier = Modifier.height(14.dp))
-
-                        // Front HTML question
-                        HtmlText(
-                            html = card.frontHtml,
-                            style = MaterialTheme.typography.titleMedium.copy(fontSize = 18.sp, lineHeight = 26.sp),
-                            color = MaterialTheme.colorScheme.onSurface
-                        )
-
-                        // If Answer Revealed -> Show Back HTML Answer & Justification
-                        AnimatedVisibility(
-                            visible = isAnswerRevealed,
-                            enter = fadeIn(animationSpec = tween(150))
+                                .verticalScroll(rememberScrollState())
+                                .padding(18.dp)
                         ) {
-                            Column(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(top = 20.dp)
+                            // Card Header with Repetition Stats and Mastery
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.SpaceBetween,
+                                verticalAlignment = Alignment.CenterVertically
                             ) {
-                                Box(
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .height(1.dp)
-                                        .background(MaterialTheme.colorScheme.outlineVariant)
-                                )
-
-                                Spacer(modifier = Modifier.height(14.dp))
-
+                                val (masteryText, masteryColor) = when (card.masteryLevel) {
+                                    2 -> "Dominado" to Color(0xFF059669)
+                                    1 -> "Aprendendo" to Color(0xFFD97706)
+                                    else -> "Novo" to Color(0xFF6B7280)
+                                }
                                 Surface(
                                     shape = RoundedCornerShape(6.dp),
-                                    color = Color(0xFF10B981).copy(alpha = 0.15f)
+                                    color = masteryColor.copy(alpha = 0.15f)
                                 ) {
                                     Text(
-                                        text = "RESPOSTA & FUNDAMENTAÇÃO",
-                                        modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
+                                        text = masteryText.uppercase(),
+                                        modifier = Modifier.padding(horizontal = 8.dp, vertical = 3.dp),
                                         style = MaterialTheme.typography.labelSmall,
                                         fontWeight = FontWeight.Bold,
-                                        color = Color(0xFF059669)
+                                        color = masteryColor
                                     )
                                 }
 
-                                Spacer(modifier = Modifier.height(12.dp))
-
-                                // Back HTML answer with full preserved formatting!
-                                HtmlText(
-                                    html = card.backHtml,
-                                    style = MaterialTheme.typography.bodyLarge.copy(fontSize = 16.sp, lineHeight = 24.sp),
-                                    color = MaterialTheme.colorScheme.onSurface
+                                val cardStatsText = remember(card.reps, card.intervalDays, card.easeFactor, card.stability, card.difficulty, srsAlgorithm) {
+                                    if (srsAlgorithm.equals("FSRS", ignoreCase = true) && card.stability > 0f) {
+                                        "Rep: ${card.reps} • S: ${String.format("%.1f", card.stability)}d • D: ${String.format("%.1f", card.difficulty)}/10 • Int: ${card.intervalDays}d"
+                                    } else {
+                                        "Rep: ${card.reps} • Int: ${card.intervalDays}d • Fator: ${String.format("%.1f", card.easeFactor)}"
+                                    }
+                                }
+                                Text(
+                                    text = cardStatsText,
+                                    style = MaterialTheme.typography.labelSmall,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant
                                 )
+                            }
 
-                                if (card.tags.isNotBlank()) {
-                                    Spacer(modifier = Modifier.height(14.dp))
-                                    Text(
-                                        text = "Tags: ${card.tags}",
-                                        style = MaterialTheme.typography.labelSmall,
-                                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                            Spacer(modifier = Modifier.height(14.dp))
+
+                            // Front HTML question
+                            HtmlText(
+                                html = card.frontHtml,
+                                style = MaterialTheme.typography.titleMedium.copy(fontSize = 18.sp, lineHeight = 26.sp),
+                                color = MaterialTheme.colorScheme.onSurface
+                            )
+
+                            // If Answer Revealed -> Show Back HTML Answer & Justification (exit = ExitTransition.None to prevent any spoiler)
+                            AnimatedVisibility(
+                                visible = isAnswerRevealed,
+                                enter = fadeIn(animationSpec = tween(150)),
+                                exit = ExitTransition.None
+                            ) {
+                                Column(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(top = 20.dp)
+                                ) {
+                                    Box(
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .height(1.dp)
+                                            .background(MaterialTheme.colorScheme.outlineVariant)
                                     )
+
+                                    Spacer(modifier = Modifier.height(14.dp))
+
+                                    Surface(
+                                        shape = RoundedCornerShape(6.dp),
+                                        color = Color(0xFF10B981).copy(alpha = 0.15f)
+                                    ) {
+                                        Text(
+                                            text = "RESPOSTA & FUNDAMENTAÇÃO",
+                                            modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
+                                            style = MaterialTheme.typography.labelSmall,
+                                            fontWeight = FontWeight.Bold,
+                                            color = Color(0xFF059669)
+                                        )
+                                    }
+
+                                    Spacer(modifier = Modifier.height(12.dp))
+
+                                    // Back HTML answer with full preserved formatting!
+                                    HtmlText(
+                                        html = card.backHtml,
+                                        style = MaterialTheme.typography.bodyLarge.copy(fontSize = 16.sp, lineHeight = 24.sp),
+                                        color = MaterialTheme.colorScheme.onSurface
+                                    )
+
+                                    if (card.tags.isNotBlank()) {
+                                        Spacer(modifier = Modifier.height(14.dp))
+                                        Text(
+                                            text = "Tags: ${card.tags}",
+                                            style = MaterialTheme.typography.labelSmall,
+                                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                                        )
+                                    }
                                 }
                             }
                         }
