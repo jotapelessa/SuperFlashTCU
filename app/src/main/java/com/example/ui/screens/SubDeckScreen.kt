@@ -67,6 +67,7 @@ import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateMapOf
@@ -143,11 +144,17 @@ fun SubDeckScreen(
     modifier: Modifier = Modifier
 ) {
     var selectedTab by rememberSaveable { mutableIntStateOf(0) }
-    var selectedL2Detail by rememberSaveable { mutableStateOf<String?>(null) }
+    var selectedL2Detail by rememberSaveable { mutableStateOf(selectedL2Filter) }
     var selectedL2Tab by rememberSaveable(selectedL2Detail) { mutableIntStateOf(0) }
     var showDeleteConfirm by remember { mutableStateOf(false) }
     var showMoveDialog by remember { mutableStateOf(false) }
     val selectedL3Topics = remember { mutableStateListOf<Pair<String, String>>() }
+
+    LaunchedEffect(selectedL2Filter) {
+        if (selectedL2Filter != null && selectedL2Detail != selectedL2Filter) {
+            selectedL2Detail = selectedL2Filter
+        }
+    }
 
     // Dedicated L2 Screen (Nível L2)
     if (selectedL2Detail != null) {
@@ -165,6 +172,7 @@ fun SubDeckScreen(
 
             BackHandler(enabled = true) {
                 selectedL2Detail = null
+                onSelectL2Filter(null)
             }
 
             L2DedicatedDetailScreen(
@@ -176,7 +184,10 @@ fun SubDeckScreen(
                 l2ReviewStats = l2ReviewStats,
                 l2DomainStats = l2DomainStats,
                 selectedL3Topics = selectedL3Topics,
-                onBackToL1 = { selectedL2Detail = null },
+                onBackToL1 = {
+                    selectedL2Detail = null
+                    onSelectL2Filter(null)
+                },
                 onToggleSelectL3 = { l2, l3 ->
                     val pair = Pair(l2, l3)
                     if (selectedL3Topics.contains(pair)) {
@@ -194,10 +205,12 @@ fun SubDeckScreen(
                 onEditL2Discipline = { newName, iconKey, colorHex ->
                     onUpdateL2Discipline(l1, currentDiscipline.l2, newName, iconKey, colorHex)
                     selectedL2Detail = newName
+                    onSelectL2Filter(newName)
                 },
                 onDeleteL2 = {
                     onDeleteL2Discipline(l1, currentDiscipline.l2)
                     selectedL2Detail = null
+                    onSelectL2Filter(null)
                 },
                 onUpdateDailyGoalPercentage = { pct ->
                     onUpdateDailyGoalPercentage(l1, currentDiscipline.l2, pct)
@@ -228,7 +241,13 @@ fun SubDeckScreen(
             return
         } else {
             selectedL2Detail = null
+            onSelectL2Filter(null)
         }
+    }
+
+    // Intercepta o botão voltar do sistema no nível L1 de matérias para retornar à Home de baralhos
+    BackHandler(enabled = true) {
+        onBack()
     }
 
     // L1 Screen Overview (Nível L1)
@@ -379,7 +398,10 @@ fun SubDeckScreen(
                         l2Disciplines = l2Disciplines,
                         totalCardsCount = filteredCards.size,
                         domainStats = domainStats,
-                        onSelectL2 = { selectedL2Detail = it },
+                        onSelectL2 = {
+                            selectedL2Detail = it
+                            onSelectL2Filter(it)
+                        },
                         onStudyAllL1 = { onStudyCards(filteredCards) }
                     )
                 }

@@ -1,5 +1,6 @@
 package com.example.ui.screens
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
@@ -131,6 +132,12 @@ fun StudyScreen(
             delay(500L)
         }
     }
+
+    // Intercepta o botão e o gesto de voltar do sistema operacional Android
+    BackHandler(enabled = true) {
+        onFinish()
+    }
+
     Scaffold(
         modifier = modifier.fillMaxSize(),
         topBar = {

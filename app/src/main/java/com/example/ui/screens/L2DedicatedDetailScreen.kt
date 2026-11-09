@@ -64,6 +64,7 @@ import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -381,6 +382,10 @@ fun L2TopicsTabContent(
     var contextTopicForMenu by remember { mutableStateOf<L3TopicSummary?>(null) }
     var topicToRename by remember { mutableStateOf<L3TopicSummary?>(null) }
     var topicToDelete by remember { mutableStateOf<L3TopicSummary?>(null) }
+
+    LaunchedEffect(discipline.l2) {
+        onClearL3Selection()
+    }
 
     Box(modifier = Modifier.fillMaxSize()) {
         LazyColumn(

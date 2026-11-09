@@ -109,6 +109,8 @@ enum class AppDestination {
 fun AnkiAppNavigation(viewModel: DeckViewModel) {
     var selectedTab by rememberSaveable { mutableStateOf(AppTab.DECKS) }
     var subDestination by rememberSaveable { mutableStateOf<AppDestination?>(null) }
+    var studySourceL1 by rememberSaveable { mutableStateOf<String?>(null) }
+    var studySourceL2 by rememberSaveable { mutableStateOf<String?>(null) }
 
     var showImportDialog by remember { mutableStateOf(false) }
     var studyConfigInitialL1 by remember { mutableStateOf<String?>(null) }
@@ -220,6 +222,8 @@ fun AnkiAppNavigation(viewModel: DeckViewModel) {
                         initialTimerConfig = sessionTimerConfig,
                         onStartSession = { selectedCards, timerConfig ->
                             if (selectedCards.isNotEmpty()) {
+                                studySourceL1 = selectedCards.firstOrNull()?.l1 ?: selectedL1
+                                studySourceL2 = selectedCards.firstOrNull()?.l2 ?: selectedL2Filter
                                 viewModel.setSessionTimerConfig(timerConfig)
                                 viewModel.startStudySession(selectedCards, timerConfig, applySmartShuffle = false)
                                 subDestination = AppDestination.STUDY
@@ -247,8 +251,18 @@ fun AnkiAppNavigation(viewModel: DeckViewModel) {
                             viewModel.openEditCard(card)
                         },
                         onFinish = {
+                            val targetL1 = studySourceL1 ?: selectedL1
+                            val targetL2 = studySourceL2 ?: selectedL2Filter
                             viewModel.finishStudySession()
-                            subDestination = null
+                            if (targetL1 != null) {
+                                viewModel.selectL1(targetL1)
+                                if (targetL2 != null) {
+                                    viewModel.setL2Filter(targetL2)
+                                }
+                                subDestination = AppDestination.SUB_DECKS
+                            } else {
+                                subDestination = null
+                            }
                         },
                         onNextL3Topic = { l1Target, l2Target, currentL3 ->
                             val nextCards = viewModel.getNextL3TopicCards(l1Target, l2Target, currentL3)
@@ -278,11 +292,16 @@ fun AnkiAppNavigation(viewModel: DeckViewModel) {
                             onSelectL2Filter = { viewModel.setL2Filter(it) },
                             onSelectL3Filter = { viewModel.setL3Filter(it) },
                             onBack = {
+                                studySourceL1 = null
+                                studySourceL2 = null
                                 viewModel.selectL1(null)
+                                viewModel.setL2Filter(null)
                                 subDestination = null
                             },
                             onStudyCards = { cards ->
                                 if (cards.isNotEmpty()) {
+                                    studySourceL1 = cards.firstOrNull()?.l1 ?: selectedL1
+                                    studySourceL2 = cards.firstOrNull()?.l2 ?: selectedL2Filter
                                     viewModel.startStudySession(cards, sessionTimerConfig)
                                     subDestination = AppDestination.STUDY
                                 }
@@ -360,6 +379,8 @@ fun AnkiAppNavigation(viewModel: DeckViewModel) {
                             subDestination = AppDestination.SUB_DECKS
                         },
                         onQuickStudyL1 = { l1 ->
+                            studySourceL1 = l1
+                            studySourceL2 = null
                             viewModel.selectL1(l1)
                             val cardsToStudy = allCards.filter { it.l1 == l1 }
                             if (cardsToStudy.isNotEmpty()) {

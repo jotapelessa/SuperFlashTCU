@@ -28,9 +28,15 @@ data class GeminiContent(
 )
 
 @JsonClass(generateAdapter = true)
+data class GeminiThinkingConfig(
+    val thinkingBudget: Int? = 0
+)
+
+@JsonClass(generateAdapter = true)
 data class GeminiGenerationConfig(
-    val temperature: Double? = 0.3,
-    val maxOutputTokens: Int? = 2048
+    val temperature: Double? = 0.2,
+    val maxOutputTokens: Int? = 2048,
+    val thinkingConfig: GeminiThinkingConfig? = GeminiThinkingConfig(thinkingBudget = 0)
 )
 
 @JsonClass(generateAdapter = true)
@@ -137,9 +143,10 @@ class GeminiStudyAnalyzer(
         val requestedModel = if (!customModelVersion.isNullOrBlank()) customModelVersion.trim() else "gemini-flash-latest"
         val modelsToTry = listOf(
             requestedModel,
-            "gemini-flash-latest",
             "gemini-flash-lite-latest",
-            "gemini-2.0-flash"
+            "gemini-flash-latest",
+            "gemini-2.0-flash",
+            "gemini-2.0-flash-lite"
         ).distinct()
 
         // 1. Build prompt context from L1/L2/L3 hierarchies, SRS parameters, and study stats
@@ -148,12 +155,19 @@ class GeminiStudyAnalyzer(
         promptBuilder.appendLine("- Algoritmo SRS Ativo: $srsAlgorithm")
         if (srsAlgorithm.equals("FSRS", ignoreCase = true)) {
             promptBuilder.appendLine("- Retenção Alvo Parametrizada: ${(targetRetention * 100).toInt()}%")
-            val cardsWithS = allCards.filter { it.stability > 0f }
-            if (cardsWithS.isNotEmpty()) {
-                val globalAvgS = cardsWithS.map { it.stability.toDouble() }.average()
-                val globalAvgD = cardsWithS.map { it.difficulty.toDouble() }.average()
-                promptBuilder.appendLine("- Estabilidade Média Global (S): ${String.format("%.1f", globalAvgS)} dias")
-                promptBuilder.appendLine("- Dificuldade Média Global (D): ${String.format("%.1f", globalAvgD)} / 10")
+            var countS = 0
+            var sumS = 0.0
+            var sumD = 0.0
+            for (card in allCards) {
+                if (card.stability > 0f) {
+                    countS++
+                    sumS += card.stability
+                    sumD += card.difficulty
+                }
+            }
+            if (countS > 0) {
+                promptBuilder.appendLine("- Estabilidade Média Global (S): ${String.format("%.1f", sumS / countS)} dias")
+                promptBuilder.appendLine("- Dificuldade Média Global (D): ${String.format("%.1f", sumD / countS)} / 10")
             }
         }
         promptBuilder.appendLine("- Meta Diária: $dailyGoal cards/dia")
@@ -170,6 +184,9 @@ class GeminiStudyAnalyzer(
             promptBuilder.appendLine("Nenhum baralho cadastrado.")
         } else {
             val nowTime = System.currentTimeMillis()
+            // Agrupamento O(N) único para suportar bases massivas (13k+ cards) com latência imperceptível
+            val cardsByL1 = allCards.groupBy { it.l1.trim().lowercase() }
+
             l1Decks.forEach { l1 ->
                 promptBuilder.appendLine("### [L1] Baralho Principal: ${l1.l1}")
                 promptBuilder.appendLine("  - Total Cards: ${l1.totalCards}")
@@ -178,22 +195,35 @@ class GeminiStudyAnalyzer(
                 promptBuilder.appendLine("  - Dominados: ${l1.masteredCards}")
                 promptBuilder.appendLine("  - Taxa de Domínio: ${String.format("%.1f", l1.masteryPercentage)}%")
 
-                // Group cards under this L1 by L2 and L3 with smart compacting for 18k+ card bases
-                val cardsInL1 = allCards.filter { it.l1.trim().equals(l1.l1.trim(), ignoreCase = true) }
+                val cardsInL1 = cardsByL1[l1.l1.trim().lowercase()] ?: emptyList()
                 val l2Groups = cardsInL1.groupBy { it.l2 }
                 l2Groups.forEach { (l2Name, l2Cards) ->
-                    val l2Due = l2Cards.count { it.reps > 0 && it.dueTimestamp <= nowTime }
-                    val l2Mastered = l2Cards.count { it.masteryLevel >= 2 }
-                    val l2WithS = l2Cards.filter { it.stability > 0f }
-                    val fsrsInfo = if (srsAlgorithm.equals("FSRS", ignoreCase = true) && l2WithS.isNotEmpty()) {
-                        val sAvg = l2WithS.map { it.stability.toDouble() }.average()
-                        val dAvg = l2WithS.map { it.difficulty.toDouble() }.average()
-                        ", Estabilidade Média S: ${String.format("%.1f", sAvg)}d, Dificuldade D: ${String.format("%.1f", dAvg)}/10"
+                    var l2Due = 0
+                    var l2Mastered = 0
+                    var l2CountS = 0
+                    var l2SumS = 0.0
+                    var l2SumD = 0.0
+
+                    // Agrupamento interno por L3
+                    val l3CardMap = mutableMapOf<String, MutableList<FlashcardEntity>>()
+
+                    for (c in l2Cards) {
+                        if (c.reps > 0 && c.dueTimestamp <= nowTime) l2Due++
+                        if (c.masteryLevel >= 2) l2Mastered++
+                        if (c.stability > 0f) {
+                            l2CountS++
+                            l2SumS += c.stability
+                            l2SumD += c.difficulty
+                        }
+                        l3CardMap.getOrPut(c.l3) { mutableListOf() }.add(c)
+                    }
+
+                    val fsrsInfo = if (srsAlgorithm.equals("FSRS", ignoreCase = true) && l2CountS > 0) {
+                        ", Estabilidade Média S: ${String.format("%.1f", l2SumS / l2CountS)}d, Dificuldade D: ${String.format("%.1f", l2SumD / l2CountS)}/10"
                     } else ""
                     promptBuilder.appendLine("    * [L2 Disciplina] $l2Name: ${l2Cards.size} cards (Vencidos: $l2Due, Dominados: $l2Mastered$fsrsInfo)")
 
-                    val l3Groups = l2Cards.groupBy { it.l3 }
-                    val criticalL3Groups = l3Groups.filter { (_, cards) ->
+                    val criticalL3Groups = l3CardMap.filter { (_, cards) ->
                         cards.any { (it.reps > 0 && it.dueTimestamp <= nowTime) || it.lapses >= 2 }
                     }
                     val topicsToShow = criticalL3Groups.entries.take(3)
